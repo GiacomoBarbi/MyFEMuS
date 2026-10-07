@@ -1,0 +1,17 @@
+case,new_default_core,new_dense_vs_old_json_bytewise,new_dense_vs_old_log_lines_identical,default_vs_old_max_field_rel,default_vs_old_J_track_rel,default_vs_old_J_reg_rel,outer_old,outer_default,true_res_old,true_res_default,core_its_max
+convoff_be_l2,iterative/rt/1.0e-08,True,True,1.92e-15,1.24e-16,8.21e-16,2,2,5.05e-15,5.02e-15,7
+convoff_be_h1s,iterative/rt/1.0e-08,True,True,1.91e-15,0.00e+00,1.16e-15,2,2,5.05e-15,5.06e-15,7
+convoff_be_h1t,iterative/rt/1.0e-08,True,True,2.59e-14,7.98e-16,3.24e-15,2,2,4.61e-15,4.50e-15,6
+convoff_be_h1st,iterative/rt/1.0e-08,True,True,1.64e-14,7.59e-15,2.37e-14,2,2,4.55e-15,4.63e-15,6
+convoff_cn_l2,iterative/rt/1.0e-08,True,True,3.08e-15,3.73e-16,1.74e-16,2,2,3.46e-15,3.49e-15,7
+convoff_cn_h1s,iterative/rt/1.0e-08,True,True,3.48e-15,0.00e+00,5.28e-16,2,2,3.46e-15,3.47e-15,7
+convoff_cn_h1t,iterative/rt/1.0e-08,True,True,9.10e-12,1.78e-13,5.63e-13,1,1,6.01e-11,6.01e-11,6
+convoff_cn_h1st,iterative/rt/1.0e-08,True,True,1.79e-12,3.86e-14,1.22e-13,1,1,5.71e-11,5.71e-11,6
+convon_be_l2,iterative/rt/1.0e-08,True,True,2.66e-15,0.00e+00,1.07e-15,2,2,7.35e-15,7.45e-15,8
+convon_be_h1s,iterative/rt/1.0e-08,True,True,1.77e-15,4.30e-16,1.95e-15,2,2,6.68e-15,6.66e-15,8
+convon_be_h1t,iterative/rt/1.0e-08,True,True,1.34e-14,0.00e+00,3.32e-15,2,2,6.95e-15,6.87e-15,7
+convon_be_h1st,iterative/rt/1.0e-08,True,True,8.98e-15,6.83e-15,1.16e-14,2,2,6.39e-15,6.48e-15,7
+convon_cn_l2,iterative/rt/1.0e-08,True,True,3.43e-15,5.04e-16,8.11e-16,2,2,5.11e-15,5.07e-15,9
+convon_cn_h1s,iterative/rt/1.0e-08,True,True,3.15e-15,4.23e-16,1.60e-16,2,2,4.65e-15,4.64e-15,9
+convon_cn_h1t,iterative/rt/1.0e-08,True,True,1.28e-14,2.14e-15,2.86e-15,2,2,4.78e-15,4.79e-15,7
+convon_cn_h1st,iterative/rt/1.0e-08,True,True,7.84e-15,6.18e-15,9.98e-15,2,2,4.43e-15,4.41e-15,7

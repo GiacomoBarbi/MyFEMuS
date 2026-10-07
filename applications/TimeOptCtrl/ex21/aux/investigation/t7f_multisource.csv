@@ -1,0 +1,129 @@
+section,case,scheme,check,value,criterion,verdict
+superposition/overlap/MPI,,,BE y: zero-amplitude baseline independent of the boxes,0.000e+00,<= 1e-14,PASS
+superposition/overlap/MPI,,,BE y: region 1 contributes  max|d1|/max|d12|,9.882e-01,> 1e-02,PASS
+superposition/overlap/MPI,,,BE y: region 2 contributes  max|d2|/max|d12|,6.844e-01,> 1e-02,PASS
+superposition/overlap/MPI,,,BE y: contributions are distinct  max|d1-d2|/max|d12|,9.765e-01,> 1e-02,PASS
+superposition/overlap/MPI,,,BE y: superposition z12 - z0 = (z1 - z0) + (z2 - z0),2.467e-13,<= 1e-10,PASS
+superposition/overlap/MPI,,,BE y: removing region 1: z12 - z2 = z1 - z0,2.496e-13,<= 1e-10,PASS
+superposition/overlap/MPI,,,BE y: removing region 2: z12 - z1 = z2 - z0,3.604e-13,<= 1e-10,PASS
+superposition/overlap/MPI,,,BE y: amplitude 2.5: z12x - z0 = 2.5 (z12 - z0),1.441e-13,<= 1e-10,PASS
+superposition/overlap/MPI,,,BE y: two regions differ from whole-domain source,4.269e+00,> 1e-02,PASS
+superposition/overlap/MPI,,,BE y: overlapping boxes == single union box (bitwise),0.000e+00,<= 0e+00,PASS
+superposition/overlap/MPI,,,BE y: MPI np=2 vs np=1,2.773e-15,<= 1e-12,PASS
+superposition/overlap/MPI,,,BE y: MPI np=4 vs np=1,2.080e-15,<= 1e-12,PASS
+superposition/overlap/MPI,,,BE p: zero-amplitude baseline independent of the boxes,0.000e+00,<= 1e-14,PASS
+superposition/overlap/MPI,,,BE p: region 1 contributes  max|d1|/max|d12|,8.775e-01,> 1e-02,PASS
+superposition/overlap/MPI,,,BE p: region 2 contributes  max|d2|/max|d12|,1.225e-01,> 1e-02,PASS
+superposition/overlap/MPI,,,BE p: contributions are distinct  max|d1-d2|/max|d12|,7.550e-01,> 1e-02,PASS
+superposition/overlap/MPI,,,BE p: superposition z12 - z0 = (z1 - z0) + (z2 - z0),9.958e-13,<= 1e-10,PASS
+superposition/overlap/MPI,,,BE p: removing region 1: z12 - z2 = z1 - z0,1.135e-12,<= 1e-10,PASS
+superposition/overlap/MPI,,,BE p: removing region 2: z12 - z1 = z2 - z0,8.128e-12,<= 1e-10,PASS
+superposition/overlap/MPI,,,BE p: amplitude 2.5: z12x - z0 = 2.5 (z12 - z0),5.862e-13,<= 1e-10,PASS
+superposition/overlap/MPI,,,BE p: two regions differ from whole-domain source,1.983e+00,> 1e-02,PASS
+superposition/overlap/MPI,,,BE p: overlapping boxes == single union box (bitwise),0.000e+00,<= 0e+00,PASS
+superposition/overlap/MPI,,,BE p: MPI np=2 vs np=1,1.782e-15,<= 1e-12,PASS
+superposition/overlap/MPI,,,BE p: MPI np=4 vs np=1,1.867e-15,<= 1e-12,PASS
+superposition/overlap/MPI,,,BE u: zero-amplitude baseline independent of the boxes,0.000e+00,<= 1e-14,PASS
+superposition/overlap/MPI,,,BE u: region 1 contributes  max|d1|/max|d12|,8.754e-01,> 1e-02,PASS
+superposition/overlap/MPI,,,BE u: region 2 contributes  max|d2|/max|d12|,1.246e-01,> 1e-02,PASS
+superposition/overlap/MPI,,,BE u: contributions are distinct  max|d1-d2|/max|d12|,7.607e-01,> 1e-02,PASS
+superposition/overlap/MPI,,,BE u: superposition z12 - z0 = (z1 - z0) + (z2 - z0),3.836e-12,<= 1e-10,PASS
+superposition/overlap/MPI,,,BE u: removing region 1: z12 - z2 = z1 - z0,4.382e-12,<= 1e-10,PASS
+superposition/overlap/MPI,,,BE u: removing region 2: z12 - z1 = z2 - z0,3.077e-11,<= 1e-10,PASS
+superposition/overlap/MPI,,,BE u: amplitude 2.5: z12x - z0 = 2.5 (z12 - z0),2.258e-12,<= 1e-10,PASS
+superposition/overlap/MPI,,,BE u: two regions differ from whole-domain source,1.900e+00,> 1e-02,PASS
+superposition/overlap/MPI,,,BE u: overlapping boxes == single union box (bitwise),0.000e+00,<= 0e+00,PASS
+superposition/overlap/MPI,,,BE u: MPI np=2 vs np=1,2.184e-15,<= 1e-12,PASS
+superposition/overlap/MPI,,,BE u: MPI np=4 vs np=1,2.084e-15,<= 1e-12,PASS
+superposition/overlap/MPI,,,BE true KKT residual z12,1.676e-15,<= 1e-10,PASS
+superposition/overlap/MPI,,,BE true KKT residual z12_np2,1.679e-15,<= 1e-10,PASS
+superposition/overlap/MPI,,,BE true KKT residual z12_np4,1.666e-15,<= 1e-10,PASS
+superposition/overlap/MPI,,,BE J np=1/2/4 max relative spread,1.657e-16,<= 1e-13,PASS
+superposition/overlap/MPI,,,"BE outer iterations np=1/2/4 identical ([2, 2, 2])",0.000e+00,<= 0e+00,PASS
+superposition/overlap/MPI,,,CN y: zero-amplitude baseline independent of the boxes,0.000e+00,<= 1e-14,PASS
+superposition/overlap/MPI,,,CN y: region 1 contributes  max|d1|/max|d12|,9.886e-01,> 1e-02,PASS
+superposition/overlap/MPI,,,CN y: region 2 contributes  max|d2|/max|d12|,6.834e-01,> 1e-02,PASS
+superposition/overlap/MPI,,,CN y: contributions are distinct  max|d1-d2|/max|d12|,9.773e-01,> 1e-02,PASS
+superposition/overlap/MPI,,,CN y: superposition z12 - z0 = (z1 - z0) + (z2 - z0),4.513e-15,<= 1e-10,PASS
+superposition/overlap/MPI,,,CN y: removing region 1: z12 - z2 = z1 - z0,4.565e-15,<= 1e-10,PASS
+superposition/overlap/MPI,,,CN y: removing region 2: z12 - z1 = z2 - z0,6.657e-15,<= 1e-10,PASS
+superposition/overlap/MPI,,,CN y: amplitude 2.5: z12x - z0 = 2.5 (z12 - z0),3.981e-15,<= 1e-10,PASS
+superposition/overlap/MPI,,,CN y: two regions differ from whole-domain source,4.220e+00,> 1e-02,PASS
+superposition/overlap/MPI,,,CN y: overlapping boxes == single union box (bitwise),0.000e+00,<= 0e+00,PASS
+superposition/overlap/MPI,,,CN y: MPI np=2 vs np=1,3.960e-15,<= 1e-12,PASS
+superposition/overlap/MPI,,,CN y: MPI np=4 vs np=1,4.096e-15,<= 1e-12,PASS
+superposition/overlap/MPI,,,CN p: zero-amplitude baseline independent of the boxes,0.000e+00,<= 1e-14,PASS
+superposition/overlap/MPI,,,CN p: region 1 contributes  max|d1|/max|d12|,8.783e-01,> 1e-02,PASS
+superposition/overlap/MPI,,,CN p: region 2 contributes  max|d2|/max|d12|,1.217e-01,> 1e-02,PASS
+superposition/overlap/MPI,,,CN p: contributions are distinct  max|d1-d2|/max|d12|,7.565e-01,> 1e-02,PASS
+superposition/overlap/MPI,,,CN p: superposition z12 - z0 = (z1 - z0) + (z2 - z0),2.805e-14,<= 1e-10,PASS
+superposition/overlap/MPI,,,CN p: removing region 1: z12 - z2 = z1 - z0,3.193e-14,<= 1e-10,PASS
+superposition/overlap/MPI,,,CN p: removing region 2: z12 - z1 = z2 - z0,2.304e-13,<= 1e-10,PASS
+superposition/overlap/MPI,,,CN p: amplitude 2.5: z12x - z0 = 2.5 (z12 - z0),1.601e-14,<= 1e-10,PASS
+superposition/overlap/MPI,,,CN p: two regions differ from whole-domain source,1.956e+00,> 1e-02,PASS
+superposition/overlap/MPI,,,CN p: overlapping boxes == single union box (bitwise),0.000e+00,<= 0e+00,PASS
+superposition/overlap/MPI,,,CN p: MPI np=2 vs np=1,1.905e-15,<= 1e-12,PASS
+superposition/overlap/MPI,,,CN p: MPI np=4 vs np=1,2.598e-15,<= 1e-12,PASS
+superposition/overlap/MPI,,,CN u: zero-amplitude baseline independent of the boxes,0.000e+00,<= 1e-14,PASS
+superposition/overlap/MPI,,,CN u: region 1 contributes  max|d1|/max|d12|,8.761e-01,> 1e-02,PASS
+superposition/overlap/MPI,,,CN u: region 2 contributes  max|d2|/max|d12|,1.239e-01,> 1e-02,PASS
+superposition/overlap/MPI,,,CN u: contributions are distinct  max|d1-d2|/max|d12|,7.753e-01,> 1e-02,PASS
+superposition/overlap/MPI,,,CN u: superposition z12 - z0 = (z1 - z0) + (z2 - z0),4.504e-14,<= 1e-10,PASS
+superposition/overlap/MPI,,,CN u: removing region 1: z12 - z2 = z1 - z0,5.141e-14,<= 1e-10,PASS
+superposition/overlap/MPI,,,CN u: removing region 2: z12 - z1 = z2 - z0,3.635e-13,<= 1e-10,PASS
+superposition/overlap/MPI,,,CN u: amplitude 2.5: z12x - z0 = 2.5 (z12 - z0),6.153e-14,<= 1e-10,PASS
+superposition/overlap/MPI,,,CN u: two regions differ from whole-domain source,1.889e+00,> 1e-02,PASS
+superposition/overlap/MPI,,,CN u: overlapping boxes == single union box (bitwise),0.000e+00,<= 0e+00,PASS
+superposition/overlap/MPI,,,CN u: MPI np=2 vs np=1,2.339e-15,<= 1e-12,PASS
+superposition/overlap/MPI,,,CN u: MPI np=4 vs np=1,3.254e-15,<= 1e-12,PASS
+superposition/overlap/MPI,,,CN true KKT residual z12,1.541e-15,<= 1e-10,PASS
+superposition/overlap/MPI,,,CN true KKT residual z12_np2,1.525e-15,<= 1e-10,PASS
+superposition/overlap/MPI,,,CN true KKT residual z12_np4,1.534e-15,<= 1e-10,PASS
+superposition/overlap/MPI,,,CN J np=1/2/4 max relative spread,8.318e-16,<= 1e-13,PASS
+superposition/overlap/MPI,,,"CN outer iterations np=1/2/4 identical ([2, 2, 2])",0.000e+00,<= 0e+00,PASS
+gates,src2_mz_dirichlet,BE,G2_transpose,5.821e-18,<= 1e-15,PASS
+gates,src2_mz_dirichlet,BE,G2_neg_ex20,1.675e-03,> 1e-5 (must fail),PASS
+gates,src2_mz_dirichlet,BE,hess_shell,4.643e-16,<= 1e-12,PASS
+gates,src2_mz_dirichlet,BE,fd_shell,1.241e-15,<= 1e-10,PASS
+gates,src2_mz_dirichlet,BE,fd_ex20_wrong,1.589e-02,> 1e-3 (must fail),PASS
+gates,src2_mz_dirichlet,BE,G4_true_res,1.974e-15,<= 1e-10,PASS
+gates,src2_mz_dirichlet,BE,G4_gradJ,3.592e-13,<= 1e-10,PASS
+gates,src2_mz_dirichlet,BE,G4_forward_march,6.048e-16,<= 1e-12,PASS
+gates,src2_mz_dirichlet,CN,G2_transpose,1.023e-17,<= 1e-15,PASS
+gates,src2_mz_dirichlet,CN,G2_neg_ex20,6.239e-05,> 1e-5 (must fail),PASS
+gates,src2_mz_dirichlet,CN,hess_shell,3.482e-16,<= 1e-12,PASS
+gates,src2_mz_dirichlet,CN,fd_shell,4.038e-15,<= 1e-10,PASS
+gates,src2_mz_dirichlet,CN,fd_ex20_wrong,1.093e-02,> 1e-3 (must fail),PASS
+gates,src2_mz_dirichlet,CN,G4_true_res,2.112e-15,<= 1e-10,PASS
+gates,src2_mz_dirichlet,CN,G4_gradJ,3.292e-13,<= 1e-10,PASS
+gates,src2_mz_dirichlet,CN,G4_forward_march,7.912e-16,<= 1e-12,PASS
+gates,src2_natural,BE,G2_transpose,1.244e-17,<= 1e-15,PASS
+gates,src2_natural,BE,G2_neg_ex20,2.037e-04,> 1e-5 (must fail),PASS
+gates,src2_natural,BE,G8b_wrongbc_transpose,2.142e-04,> 1e-5 (must fail),PASS
+gates,src2_natural,BE,G1N_boundary_identity,3.462e-14,<= 1e-12,PASS
+gates,src2_natural,BE,hess_shell,1.314e-15,<= 1e-12,PASS
+gates,src2_natural,BE,fd_shell,1.031e-14,<= 1e-10,PASS
+gates,src2_natural,BE,fd_ex20_wrong,8.704e-01,> 1e-3 (must fail),PASS
+gates,src2_natural,BE,fd_wrongbc,2.721e-01,> 1e-3 (must fail),PASS
+gates,src2_natural,BE,G4_true_res,2.769e-15,<= 1e-10,PASS
+gates,src2_natural,BE,G4_gradJ,2.325e-14,<= 1e-10,PASS
+gates,src2_natural,BE,G4_forward_march,1.420e-15,<= 1e-12,PASS
+gates,src2_natural,CN,G2_transpose,7.067e-18,<= 1e-15,PASS
+gates,src2_natural,CN,G2_neg_ex20,6.857e-04,> 1e-5 (must fail),PASS
+gates,src2_natural,CN,G8b_wrongbc_transpose,1.182e-04,> 1e-5 (must fail),PASS
+gates,src2_natural,CN,G1N_boundary_identity,3.462e-14,<= 1e-12,PASS
+gates,src2_natural,CN,hess_shell,1.637e-16,<= 1e-12,PASS
+gates,src2_natural,CN,fd_shell,8.983e-15,<= 1e-10,PASS
+gates,src2_natural,CN,fd_ex20_wrong,7.950e-01,> 1e-3 (must fail),PASS
+gates,src2_natural,CN,fd_wrongbc,2.149e-01,> 1e-3 (must fail),PASS
+gates,src2_natural,CN,G4_true_res,2.129e-15,<= 1e-10,PASS
+gates,src2_natural,CN,G4_gradJ,2.681e-14,<= 1e-10,PASS
+gates,src2_natural,CN,G4_forward_march,1.006e-15,<= 1e-12,PASS
+masks,,,nx=8 overlap source: M(A u B) == M(single union box),0.00e+00,expected identical,PASS
+masks,,,nx=8 overlap source: area of A u B (0.75*0.25),0.187500000000000,,PASS
+masks,,,nx=8 source union area (2 x 0.25^2),0.125000000000000,,PASS
+masks,,,nx=8 M_source(S1 u S2) == M_source(S1) + M_source(S2),0.00e+00,expected identical,PASS
+masks,,,nx=16 overlap source: M(A u B) == M(single union box),0.00e+00,expected identical,PASS
+masks,,,nx=16 overlap source: area of A u B (0.75*0.25),0.187500000000000,,PASS
+masks,,,nx=16 source union area (2 x 0.25^2),0.125000000000000,,PASS
+masks,,,nx=16 M_source(S1 u S2) == M_source(S1) + M_source(S2),0.00e+00,expected identical,PASS

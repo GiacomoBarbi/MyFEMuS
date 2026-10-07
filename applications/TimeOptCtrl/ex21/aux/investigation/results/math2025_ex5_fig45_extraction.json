@@ -1,0 +1,78 @@
+{
+ "source": "/home/giacomo/Downloads/mathematics-13-03707.pdf",
+ "page": 31,
+ "figure": 45,
+ "svg": "/home/giacomo/software/MyFEMuS-control/applications/TimeOptCtrl/ex21/aux/investigation/math2025_ex5/scripts/../logs/page31.svg",
+ "tick_x_page": [
+  174.6328,
+  200.0157,
+  225.3947,
+  250.7776,
+  276.1566,
+  301.5356
+ ],
+ "tick_y_page": [
+  500.8476,
+  491.9296,
+  483.0156,
+  474.0976,
+  465.1796,
+  456.2616,
+  447.3436,
+  438.4295,
+  429.5115,
+  420.5935
+ ],
+ "x_labels": [
+  0,
+  2,
+  4,
+  6,
+  8,
+  10
+ ],
+ "y_labels": [
+  0.0,
+  0.01,
+  0.02,
+  0.03,
+  0.04,
+  0.05,
+  0.06,
+  0.07,
+  0.08,
+  0.09
+ ],
+ "x_map": [
+  0.07880046770287229,
+  -13.761248753272199
+ ],
+ "y_map": [
+  -0.001121438843449376,
+  0.5616703917496748
+ ],
+ "calibration_residual_t": 0.00014341613162827116,
+ "calibration_residual_value": 2.064082331703493e-06,
+ "value_quantum": 4.380340122513263e-06,
+ "stroke_width_value": 0.000560719421724688,
+ "t_quantum_page_to_data": 7.880046770287229e-05,
+ "curves": {
+  "e3_cascade_c": {
+   "stroke": "rgb(0%, 0%, 100%)",
+   "vertices": 197,
+   "t_first": 0.09994049293426066,
+   "t_last": 9.999894864236516,
+   "max_value": 0.05119247496366652,
+   "t_at_max": 4.69993172831737
+  },
+  "e_plant_c": {
+   "stroke": "rgb(100%, 0%, 0%)",
+   "vertices": 199,
+   "t_first": 0.09994049293426066,
+   "t_last": 9.999894864236516,
+   "max_value": 0.08902362804667607,
+   "t_at_max": 0.09994049293426066
+  }
+ },
+ "identification": "[B] blue=e3 cascade, red=plant error with phi=xy (Ex.3 Figs.30-31 convention; red starts at 0.089 and decays like a free response)"
+}

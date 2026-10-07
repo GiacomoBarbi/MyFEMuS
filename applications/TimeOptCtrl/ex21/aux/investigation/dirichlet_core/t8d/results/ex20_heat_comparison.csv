@@ -1,0 +1,17 @@
+scheme,reg,vs_ex20,max_field_rel,bitwise_fields,J_rel,outer,outer_ex20,true_res,true_res_ex20,core_its_max
+BE,l2,ex21dense,0.00e+00,True,0.00e+00,2,2,3.18e-14,3.18e-14,
+BE,l2,ex21iter,2.58e-15,False,7.62e-16,2,2,3.16e-14,3.18e-14,11
+BE,h1s,ex21dense,0.00e+00,True,0.00e+00,2,2,3.16e-14,3.16e-14,
+BE,h1s,ex21iter,2.48e-15,False,5.70e-16,2,2,3.14e-14,3.16e-14,11
+BE,h1t,ex21dense,0.00e+00,True,0.00e+00,2,2,2.77e-14,2.77e-14,
+BE,h1t,ex21iter,2.34e-14,False,5.85e-16,2,2,2.75e-14,2.77e-14,8
+BE,h1st,ex21dense,0.00e+00,True,0.00e+00,2,2,2.77e-14,2.77e-14,
+BE,h1st,ex21iter,1.07e-14,False,0.00e+00,2,2,2.79e-14,2.77e-14,8
+CN,l2,ex21dense,0.00e+00,True,0.00e+00,2,2,2.22e-14,2.22e-14,
+CN,l2,ex21iter,3.39e-15,False,1.09e-15,2,2,2.22e-14,2.22e-14,12
+CN,h1s,ex21dense,0.00e+00,True,0.00e+00,2,2,2.22e-14,2.22e-14,
+CN,h1s,ex21iter,3.93e-15,False,1.27e-15,2,2,2.26e-14,2.22e-14,12
+CN,h1t,ex21dense,0.00e+00,True,0.00e+00,2,2,1.95e-14,1.95e-14,
+CN,h1t,ex21iter,2.39e-14,False,0.00e+00,2,2,1.92e-14,1.95e-14,8
+CN,h1st,ex21dense,0.00e+00,True,0.00e+00,2,2,1.96e-14,1.96e-14,
+CN,h1st,ex21iter,1.01e-14,False,8.44e-16,2,2,1.97e-14,1.96e-14,8

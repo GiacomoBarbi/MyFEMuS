@@ -1,0 +1,152 @@
+{
+ "source": "~/Downloads/ErrorFeedback2026.pdf (3 Oct 2026), Figures 28 (p.36) and 32 (p.38)",
+ "verdict": "NOT machine-recoverable: tick labels are vector glyphs (absent from the text layer) and the drawing is not to scale (tick spacing non-uniform; boxes not aligned with their own ticks; frame not a linear [0,pi] axis). Exact region coordinates: [C]. Visual reading of the glyph labels suggests multiples of pi/8 in x and [1/3,2/3] in y: an UNVERIFIED candidate, not data.",
+ "fig28": {
+  "page": 36,
+  "frame_x": [
+   209.031,
+   409.0
+  ],
+  "frame_y": [
+   40.93,
+   129.422
+  ],
+  "boxes": {
+   "Omega_B=Omega_C": [
+    272.898,
+    303.457,
+    66.109,
+    104.242
+   ],
+   "Omega_d": [
+    349.352,
+    381.133,
+    66.109,
+    104.242
+   ]
+  },
+  "bottom_ticks_x": [
+   273.875,
+   303.457,
+   345.016,
+   375.816
+  ],
+  "left_ticks_y": [
+   66.074,
+   105.223
+  ],
+  "glyph_labels_visual_only": [
+   "3pi/8",
+   "4pi/8",
+   "6pi/8",
+   "7pi/8",
+   "1/3",
+   "2/3"
+  ],
+  "tick_positions_in_units_of_first_spacing": [
+   3.0,
+   4.0,
+   5.405,
+   6.446
+  ],
+  "expected": [
+   3,
+   4,
+   6,
+   7
+  ],
+  "frame_as_[0,pi]_box_x_fractions_of_pi": {
+   "Omega_B=Omega_C": [
+    0.3194,
+    0.4722
+   ],
+   "Omega_d": [
+    0.7017,
+    0.8606
+   ]
+  }
+ },
+ "fig32": {
+  "page": 38,
+  "frame_x": [
+   187.484,
+   431.902
+  ],
+  "frame_y": [
+   444.094,
+   552.262
+  ],
+  "boxes": {
+   "Omega_B": [
+    221.918,
+    259.27,
+    474.871,
+    521.484
+   ],
+   "Omega_C": [
+    291.988,
+    329.34,
+    474.871,
+    521.484
+   ],
+   "Omega_d": [
+    363.773,
+    402.617,
+    476.066,
+    522.68
+   ]
+  },
+  "bottom_ticks_x": [
+   221.918,
+   259.27,
+   292.137,
+   329.785,
+   365.047,
+   400.902
+  ],
+  "left_ticks_y": [
+   474.828,
+   522.68
+  ],
+  "glyph_labels_visual_only": [
+   "pi/8",
+   "2pi/8",
+   "3pi/8",
+   "4pi/8",
+   "6pi/8",
+   "7pi/8",
+   "1/3",
+   "2/3"
+  ],
+  "tick_positions_in_units_of_first_spacing": [
+   1.0,
+   2.0,
+   2.88,
+   3.888,
+   4.832,
+   5.792
+  ],
+  "expected": [
+   1,
+   2,
+   3,
+   4,
+   6,
+   7
+  ],
+  "frame_as_[0,pi]_box_x_fractions_of_pi": {
+   "Omega_B": [
+    0.1409,
+    0.2937
+   ],
+   "Omega_C": [
+    0.4276,
+    0.5804
+   ],
+   "Omega_d": [
+    0.7213,
+    0.8802
+   ]
+  }
+ }
+}

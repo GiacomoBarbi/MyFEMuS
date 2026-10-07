@@ -1,0 +1,9 @@
+full_natural_variablewind_cn               G2T=7.552e-18 neg=2.119e-03 H=1.530e-14 Hwrong=3.621e-01 G3=1.095e-15 G3wrong=4.096e-01 G4reason=2 G4res=9.073e-16 march=5.324e-16 G5act=- EXIT=0
+multizone_dirichlet_be                     G2T=2.115e-18 neg=1.989e-04 H=1.751e-15 Hwrong=2.833e-03 G3=7.650e-15 G3wrong=6.232e-01 G4reason=2 G4res=1.513e-15 march=2.013e-15 G5act=- EXIT=0
+multizone_dirichlet_cn                     G2T=3.037e-17 neg=1.043e-03 H=3.365e-15 Hwrong=3.577e-03 G3=2.798e-15 G3wrong=6.463e-01 G4reason=2 G4res=1.453e-15 march=8.996e-16 G5act=- EXIT=0
+multizone_natural_be                       G2T=8.455e-18 neg=2.077e-04 H=4.130e-15 Hwrong=9.014e-03 G3=3.734e-16 G3wrong=1.859e+00 G4reason=2 G4res=1.019e-15 march=7.473e-15 G5act=- EXIT=0
+multizone_natural_cn                       G2T=4.741e-18 neg=6.900e-04 H=6.356e-16 Hwrong=2.484e-03 G3=1.395e-15 G3wrong=1.591e+00 G4reason=2 G4res=1.468e-15 march=8.428e-16 G5act=- EXIT=0
+multizone_natural_lps_cn                   G2T=1.254e-17 neg=3.130e-03 H=1.334e-15 Hwrong=1.598e-02 G3=2.239e-14 G3wrong=8.996e-01 G4reason=2 G4res=2.355e-15 march=6.348e-16 G5act=64 EXIT=0
+production_multizone_natural_cn_np1        reason=2 outer=2 sweep_failures=0 state_rel=4.663389471123142e-16 rejected=False EXIT=0
+production_multizone_natural_cn_np2        reason=2 outer=2 sweep_failures=0 state_rel=4.5540301958352534e-16 rejected=False EXIT=0
+production np2 vs np1: max|dy|=2.08e-16 max|dp|=7.81e-18 J_track 8.917080945417794e-04 / 8.917080945417795e-04

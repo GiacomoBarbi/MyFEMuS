@@ -1,0 +1,167 @@
+section,case,scheme,check,value,criterion,verdict
+masks,,,nx=8 control union area (2 x 0.25^2),0.125000000000000,,PASS
+masks,,,nx=8 tracking union area (0.375*0.25 + 0.375^2),0.234375000000000,,PASS
+masks,,,nx=8 M_ctrl(C1 u C2) == M_ctrl(C1) + M_ctrl(C2),0.00e+00,expected identical,PASS
+masks,,,nx=8 M_track(T1 u T2) == M_track(T1) + M_track(T2),0.00e+00,expected identical,PASS
+masks,,,nx=8 N_selected == M_ctrl_box (multi-zone),0.000000000000000,,PASS
+masks,,,nx=8 control and tracking share no element-mass entries,0.000000000000000,,PASS
+masks,,,nx=8 overlap control: M(A u B) == M(single union box),0.00e+00,expected identical,PASS
+masks,,,nx=8 overlap control: M(A u B) != M(A) + M(B) (no double count),4.44e-03,expected DIFFERENT,PASS
+masks,,,nx=8 overlap control: area of A u B (0.75*0.25),0.187500000000000,,PASS
+masks,,,nx=8 overlap tracking: M(A u B) == M(single union box),0.00e+00,expected identical,PASS
+masks,,,nx=8 overlap tracking: M(A u B) != M(A) + M(B) (no double count),4.44e-03,expected DIFFERENT,PASS
+masks,,,nx=8 overlap tracking: area of A u B (0.75*0.25),0.187500000000000,,PASS
+masks,,,nx=8 overlap source: M(A u B) == M(single union box),0.00e+00,expected identical,PASS
+masks,,,nx=8 overlap source: area of A u B (0.75*0.25),0.187500000000000,,PASS
+masks,,,nx=8 source union area (2 x 0.25^2),0.125000000000000,,PASS
+masks,,,nx=8 M_source(S1 u S2) == M_source(S1) + M_source(S2),0.00e+00,expected identical,PASS
+masks,,,"nx=8 non-aligned box (0.3,0.7)^2: area = (#centroids inside * h)^2",0.250000000000000,,PASS
+masks,,,nx=16 control union area (2 x 0.25^2),0.125000000000000,,PASS
+masks,,,nx=16 tracking union area (0.375*0.25 + 0.375^2),0.234375000000000,,PASS
+masks,,,nx=16 M_ctrl(C1 u C2) == M_ctrl(C1) + M_ctrl(C2),0.00e+00,expected identical,PASS
+masks,,,nx=16 M_track(T1 u T2) == M_track(T1) + M_track(T2),0.00e+00,expected identical,PASS
+masks,,,nx=16 N_selected == M_ctrl_box (multi-zone),0.000000000000000,,PASS
+masks,,,nx=16 control and tracking share no element-mass entries,0.000000000000000,,PASS
+masks,,,nx=16 overlap control: M(A u B) == M(single union box),0.00e+00,expected identical,PASS
+masks,,,nx=16 overlap control: M(A u B) != M(A) + M(B) (no double count),1.11e-03,expected DIFFERENT,PASS
+masks,,,nx=16 overlap control: area of A u B (0.75*0.25),0.187500000000000,,PASS
+masks,,,nx=16 overlap tracking: M(A u B) == M(single union box),0.00e+00,expected identical,PASS
+masks,,,nx=16 overlap tracking: M(A u B) != M(A) + M(B) (no double count),1.11e-03,expected DIFFERENT,PASS
+masks,,,nx=16 overlap tracking: area of A u B (0.75*0.25),0.187500000000000,,PASS
+masks,,,nx=16 overlap source: M(A u B) == M(single union box),0.00e+00,expected identical,PASS
+masks,,,nx=16 overlap source: area of A u B (0.75*0.25),0.187500000000000,,PASS
+masks,,,nx=16 source union area (2 x 0.25^2),0.125000000000000,,PASS
+masks,,,nx=16 M_source(S1 u S2) == M_source(S1) + M_source(S2),0.00e+00,expected identical,PASS
+masks,,,"nx=16 non-aligned box (0.3,0.7)^2: area = (#centroids inside * h)^2",0.140625000000000,,PASS
+lowest-index rule,,,control_region,"cells=64 counts(0/1/2)=[52, 6, 6] overlap_cells=2 index_in_overlap=[1] matches_rule=True",overlap cells carry index 1,PASS
+lowest-index rule,,,tracking_region,"cells=64 counts(0/1/2)=[46, 12, 6] overlap_cells=3 index_in_overlap=[1] matches_rule=True",overlap cells carry index 1,PASS
+gates,mz_dirichlet,BE,G2_transpose,1.359e-17,<= 1e-15,PASS
+gates,mz_dirichlet,BE,G2_neg_ex20,1.826e-04,> 1e-5 (must fail),PASS
+gates,mz_dirichlet,BE,hess_shell,1.626e-15,<= 1e-12,PASS
+gates,mz_dirichlet,BE,fd_shell,6.899e-15,<= 1e-10,PASS
+gates,mz_dirichlet,BE,fd_ex20_wrong,1.990e-01,> 1e-3 (must fail),PASS
+gates,mz_dirichlet,BE,G4_true_res,4.831e-15,<= 1e-10,PASS
+gates,mz_dirichlet,BE,G4_gradJ,6.377e-13,<= 1e-10,PASS
+gates,mz_dirichlet,BE,G4_forward_march,6.562e-16,<= 1e-12,PASS
+gates,mz_dirichlet,CN,G2_transpose,2.193e-17,<= 1e-15,PASS
+gates,mz_dirichlet,CN,G2_neg_ex20,9.672e-04,> 1e-5 (must fail),PASS
+gates,mz_dirichlet,CN,hess_shell,1.046e-15,<= 1e-12,PASS
+gates,mz_dirichlet,CN,fd_shell,6.265e-15,<= 1e-10,PASS
+gates,mz_dirichlet,CN,fd_ex20_wrong,2.071e-01,> 1e-3 (must fail),PASS
+gates,mz_dirichlet,CN,G4_true_res,4.399e-15,<= 1e-10,PASS
+gates,mz_dirichlet,CN,G4_gradJ,4.064e-13,<= 1e-10,PASS
+gates,mz_dirichlet,CN,G4_forward_march,1.027e-15,<= 1e-12,PASS
+gates,mz_natural,BE,G2_transpose,1.244e-17,<= 1e-15,PASS
+gates,mz_natural,BE,G2_neg_ex20,2.037e-04,> 1e-5 (must fail),PASS
+gates,mz_natural,BE,G8b_wrongbc_transpose,2.142e-04,> 1e-5 (must fail),PASS
+gates,mz_natural,BE,G1N_boundary_identity,3.462e-14,<= 1e-12,PASS
+gates,mz_natural,BE,hess_shell,0.000e+00,<= 1e-12,PASS
+gates,mz_natural,BE,fd_shell,8.354e-15,<= 1e-10,PASS
+gates,mz_natural,BE,fd_ex20_wrong,4.993e-01,> 1e-3 (must fail),PASS
+gates,mz_natural,BE,fd_wrongbc,2.601e-01,> 1e-3 (must fail),PASS
+gates,mz_natural,BE,G4_true_res,2.478e-16,<= 1e-10,PASS
+gates,mz_natural,BE,G4_gradJ,2.001e-14,<= 1e-10,PASS
+gates,mz_natural,BE,G4_forward_march,1.414e-15,<= 1e-12,PASS
+gates,mz_natural,CN,G2_transpose,7.067e-18,<= 1e-15,PASS
+gates,mz_natural,CN,G2_neg_ex20,6.857e-04,> 1e-5 (must fail),PASS
+gates,mz_natural,CN,G8b_wrongbc_transpose,1.182e-04,> 1e-5 (must fail),PASS
+gates,mz_natural,CN,G1N_boundary_identity,3.462e-14,<= 1e-12,PASS
+gates,mz_natural,CN,hess_shell,8.171e-16,<= 1e-12,PASS
+gates,mz_natural,CN,fd_shell,4.654e-15,<= 1e-10,PASS
+gates,mz_natural,CN,fd_ex20_wrong,4.313e-01,> 1e-3 (must fail),PASS
+gates,mz_natural,CN,fd_wrongbc,1.660e-01,> 1e-3 (must fail),PASS
+gates,mz_natural,CN,G4_true_res,1.537e-16,<= 1e-10,PASS
+gates,mz_natural,CN,G4_gradJ,1.162e-14,<= 1e-10,PASS
+gates,mz_natural,CN,G4_forward_march,1.318e-15,<= 1e-12,PASS
+gates,mz_overlap,BE,G2_transpose,1.244e-17,<= 1e-15,PASS
+gates,mz_overlap,BE,G2_neg_ex20,2.037e-04,> 1e-5 (must fail),PASS
+gates,mz_overlap,BE,G8b_wrongbc_transpose,2.142e-04,> 1e-5 (must fail),PASS
+gates,mz_overlap,BE,G1N_boundary_identity,3.462e-14,<= 1e-12,PASS
+gates,mz_overlap,BE,hess_shell,1.654e-16,<= 1e-12,PASS
+gates,mz_overlap,BE,fd_shell,5.942e-15,<= 1e-10,PASS
+gates,mz_overlap,BE,fd_ex20_wrong,9.924e-02,> 1e-3 (must fail),PASS
+gates,mz_overlap,BE,fd_wrongbc,3.783e-02,> 1e-3 (must fail),PASS
+gates,mz_overlap,BE,G4_true_res,6.291e-15,<= 1e-10,PASS
+gates,mz_overlap,BE,G4_gradJ,4.838e-13,<= 1e-10,PASS
+gates,mz_overlap,BE,G4_forward_march,1.224e-15,<= 1e-12,PASS
+gates,mz_overlap,CN,G2_transpose,7.067e-18,<= 1e-15,PASS
+gates,mz_overlap,CN,G2_neg_ex20,6.857e-04,> 1e-5 (must fail),PASS
+gates,mz_overlap,CN,G8b_wrongbc_transpose,1.182e-04,> 1e-5 (must fail),PASS
+gates,mz_overlap,CN,G1N_boundary_identity,3.462e-14,<= 1e-12,PASS
+gates,mz_overlap,CN,hess_shell,1.654e-16,<= 1e-12,PASS
+gates,mz_overlap,CN,fd_shell,1.722e-14,<= 1e-10,PASS
+gates,mz_overlap,CN,fd_ex20_wrong,1.017e-01,> 1e-3 (must fail),PASS
+gates,mz_overlap,CN,fd_wrongbc,1.729e-02,> 1e-3 (must fail),PASS
+gates,mz_overlap,CN,G4_true_res,4.526e-15,<= 1e-10,PASS
+gates,mz_overlap,CN,G4_gradJ,3.051e-13,<= 1e-10,PASS
+gates,mz_overlap,CN,G4_forward_march,1.480e-15,<= 1e-12,PASS
+gates,src2_mz_dirichlet,BE,G2_transpose,5.821e-18,<= 1e-15,PASS
+gates,src2_mz_dirichlet,BE,G2_neg_ex20,1.675e-03,> 1e-5 (must fail),PASS
+gates,src2_mz_dirichlet,BE,hess_shell,4.643e-16,<= 1e-12,PASS
+gates,src2_mz_dirichlet,BE,fd_shell,1.241e-15,<= 1e-10,PASS
+gates,src2_mz_dirichlet,BE,fd_ex20_wrong,1.589e-02,> 1e-3 (must fail),PASS
+gates,src2_mz_dirichlet,BE,G4_true_res,1.974e-15,<= 1e-10,PASS
+gates,src2_mz_dirichlet,BE,G4_gradJ,3.592e-13,<= 1e-10,PASS
+gates,src2_mz_dirichlet,BE,G4_forward_march,6.048e-16,<= 1e-12,PASS
+gates,src2_mz_dirichlet,CN,G2_transpose,1.023e-17,<= 1e-15,PASS
+gates,src2_mz_dirichlet,CN,G2_neg_ex20,6.239e-05,> 1e-5 (must fail),PASS
+gates,src2_mz_dirichlet,CN,hess_shell,3.482e-16,<= 1e-12,PASS
+gates,src2_mz_dirichlet,CN,fd_shell,4.038e-15,<= 1e-10,PASS
+gates,src2_mz_dirichlet,CN,fd_ex20_wrong,1.093e-02,> 1e-3 (must fail),PASS
+gates,src2_mz_dirichlet,CN,G4_true_res,2.112e-15,<= 1e-10,PASS
+gates,src2_mz_dirichlet,CN,G4_gradJ,3.292e-13,<= 1e-10,PASS
+gates,src2_mz_dirichlet,CN,G4_forward_march,7.912e-16,<= 1e-12,PASS
+self-convergence,time nx=16 nt=8 ref=512,BE,y error vs fine reference (order),9.8634e-03,,
+self-convergence,time nx=16 nt=8 ref=512,BE,u error vs fine reference (order),5.1482e-02,,
+self-convergence,time nx=16 nt=8 ref=512,BE,p error vs fine reference (order),1.5128e-03,,
+self-convergence,time nx=16 nt=16 ref=512,BE,y error vs fine reference (order),4.5319e-03,1.12,
+self-convergence,time nx=16 nt=16 ref=512,BE,u error vs fine reference (order),2.5039e-02,1.04,
+self-convergence,time nx=16 nt=16 ref=512,BE,p error vs fine reference (order),7.3870e-04,1.03,
+self-convergence,time nx=16 nt=32 ref=512,BE,y error vs fine reference (order),2.1170e-03,1.10,
+self-convergence,time nx=16 nt=32 ref=512,BE,u error vs fine reference (order),1.2046e-02,1.06,
+self-convergence,time nx=16 nt=32 ref=512,BE,p error vs fine reference (order),3.5621e-04,1.05,
+self-convergence,time nx=16 nt=64 ref=512,BE,y error vs fine reference (order),9.7049e-04,1.13,
+self-convergence,time nx=16 nt=64 ref=512,BE,u error vs fine reference (order),5.6055e-03,1.10,
+self-convergence,time nx=16 nt=64 ref=512,BE,p error vs fine reference (order),1.6597e-04,1.10,
+self-convergence,time nx=16 nt=128 ref=512,BE,y error vs fine reference (order),4.1223e-04,1.24,
+self-convergence,time nx=16 nt=128 ref=512,BE,u error vs fine reference (order),2.3990e-03,1.22,
+self-convergence,time nx=16 nt=128 ref=512,BE,p error vs fine reference (order),7.1077e-05,1.22,
+self-convergence,space nx=8 nt=32 ref=128,BE,y error vs fine reference (order),2.9658e-05,,
+self-convergence,space nx=8 nt=32 ref=128,BE,u error vs fine reference (order),1.2376e-04,,
+self-convergence,space nx=8 nt=32 ref=128,BE,p error vs fine reference (order),5.7949e-06,,
+self-convergence,space nx=16 nt=32 ref=128,BE,y error vs fine reference (order),4.5303e-06,2.71,
+self-convergence,space nx=16 nt=32 ref=128,BE,u error vs fine reference (order),1.5732e-05,2.98,
+self-convergence,space nx=16 nt=32 ref=128,BE,p error vs fine reference (order),7.9314e-07,2.87,
+self-convergence,space nx=32 nt=32 ref=128,BE,y error vs fine reference (order),6.5155e-07,2.80,
+self-convergence,space nx=32 nt=32 ref=128,BE,u error vs fine reference (order),1.9927e-06,2.98,
+self-convergence,space nx=32 nt=32 ref=128,BE,p error vs fine reference (order),1.0594e-07,2.90,
+self-convergence,space nx=64 nt=32 ref=128,BE,y error vs fine reference (order),9.9113e-08,2.72,
+self-convergence,space nx=64 nt=32 ref=128,BE,u error vs fine reference (order),2.7403e-07,2.86,
+self-convergence,space nx=64 nt=32 ref=128,BE,p error vs fine reference (order),1.5246e-08,2.80,
+self-convergence,time nx=16 nt=8 ref=512,CN,y error vs fine reference (order),7.6986e-04,,
+self-convergence,time nx=16 nt=8 ref=512,CN,u error vs fine reference (order),3.9879e-03,,
+self-convergence,time nx=16 nt=8 ref=512,CN,p error vs fine reference (order),1.3994e-04,,
+self-convergence,time nx=16 nt=16 ref=512,CN,y error vs fine reference (order),2.0292e-04,1.92,
+self-convergence,time nx=16 nt=16 ref=512,CN,u error vs fine reference (order),1.0078e-03,1.98,
+self-convergence,time nx=16 nt=16 ref=512,CN,p error vs fine reference (order),3.6594e-05,1.94,
+self-convergence,time nx=16 nt=32 ref=512,CN,y error vs fine reference (order),5.4396e-05,1.90,
+self-convergence,time nx=16 nt=32 ref=512,CN,u error vs fine reference (order),2.4767e-04,2.02,
+self-convergence,time nx=16 nt=32 ref=512,CN,p error vs fine reference (order),9.1337e-06,2.00,
+self-convergence,time nx=16 nt=64 ref=512,CN,y error vs fine reference (order),1.4587e-05,1.90,
+self-convergence,time nx=16 nt=64 ref=512,CN,u error vs fine reference (order),5.9029e-05,2.07,
+self-convergence,time nx=16 nt=64 ref=512,CN,p error vs fine reference (order),2.1524e-06,2.09,
+self-convergence,time nx=16 nt=128 ref=512,CN,y error vs fine reference (order),3.8840e-06,1.91,
+self-convergence,time nx=16 nt=128 ref=512,CN,u error vs fine reference (order),1.3264e-05,2.15,
+self-convergence,time nx=16 nt=128 ref=512,CN,p error vs fine reference (order),4.8200e-07,2.16,
+self-convergence,space nx=8 nt=32 ref=128,CN,y error vs fine reference (order),3.1559e-05,,
+self-convergence,space nx=8 nt=32 ref=128,CN,u error vs fine reference (order),1.2028e-04,,
+self-convergence,space nx=8 nt=32 ref=128,CN,p error vs fine reference (order),5.7328e-06,,
+self-convergence,space nx=16 nt=32 ref=128,CN,y error vs fine reference (order),6.3256e-06,2.32,
+self-convergence,space nx=16 nt=32 ref=128,CN,u error vs fine reference (order),1.5281e-05,2.98,
+self-convergence,space nx=16 nt=32 ref=128,CN,p error vs fine reference (order),7.8780e-07,2.86,
+self-convergence,space nx=32 nt=32 ref=128,CN,y error vs fine reference (order),1.3649e-06,2.21,
+self-convergence,space nx=32 nt=32 ref=128,CN,u error vs fine reference (order),1.9353e-06,2.98,
+self-convergence,space nx=32 nt=32 ref=128,CN,p error vs fine reference (order),1.0578e-07,2.90,
+self-convergence,space nx=64 nt=32 ref=128,CN,y error vs fine reference (order),2.5810e-07,2.40,
+self-convergence,space nx=64 nt=32 ref=128,CN,u error vs fine reference (order),2.6614e-07,2.86,
+self-convergence,space nx=64 nt=32 ref=128,CN,p error vs fine reference (order),1.5304e-08,2.79,

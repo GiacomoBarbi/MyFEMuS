@@ -1,0 +1,505 @@
+cfg,point,eps,nx,theta,block,Pe_cell,adv_ratio,its,max_its,cap_hits,reasons,setup_s,solve_s,maxrss_kb,petsc_options
+gamg_base,A,1/20,32,1,E,1.250000e+00,1.000000e+00,24/24/24/22,24,0,2/2/2/2,0.014,0.037,268700,
+gamg_base,A,1/20,32,1,right,1.250000e+00,1.000000e+00,23/24/24/21,24,0,2/2/2/2,0.013,0.037,268700,
+gamg_base,A,1/20,32,1,left,1.250000e+00,1.000000e+00,24/24/24/21,24,0,2/2/2/2,0.013,0.038,268700,
+gamg_base,A,1/20,32,0.5,E,1.250000e+00,5.000000e-01,23/23/23/21,23,0,2/2/2/2,0.013,0.036,268700,
+gamg_base,A,1/20,32,0.5,right,1.250000e+00,5.000000e-01,23/23/23/20,23,0,2/2/2/2,0.015,0.036,268700,
+gamg_base,A,1/20,32,0.5,left,1.250000e+00,5.000000e-01,23/23/23/20,23,0,2/2/2/2,0.013,0.035,268700,
+gamg_base,B,1/20,16,1,E,2.500000e+00,1.000000e+00,500/500/500/500,500,4,-3/-3/-3/-3,0.005,0.186,68868,
+gamg_base,B,1/20,16,1,right,2.500000e+00,1.000000e+00,278/270/275/247,278,0,2/2/2/2,0.003,0.097,68868,
+gamg_base,B,1/20,16,1,left,2.500000e+00,1.000000e+00,257/266/243/241,266,0,2/2/2/2,0.003,0.093,68868,
+gamg_base,B,1/20,16,0.5,E,2.500000e+00,5.000000e-01,129/125/127/111,129,0,2/2/2/2,0.003,0.048,68868,
+gamg_base,B,1/20,16,0.5,right,2.500000e+00,5.000000e-01,45/45/45/42,45,0,2/2/2/2,0.003,0.016,68868,
+gamg_base,B,1/20,16,0.5,left,2.500000e+00,5.000000e-01,44/44/44/42,44,0,2/2/2/2,0.003,0.015,68868,
+gamg_base,C,1/100,32,1,E,6.250000e+00,1.000000e+00,500/500/500/500,500,4,-3/-3/-3/-3,0.014,0.818,270968,
+gamg_base,C,1/100,32,1,right,6.250000e+00,1.000000e+00,500/500/500/500,500,4,-3/-3/-3/-3,0.012,0.879,270968,
+gamg_base,C,1/100,32,1,left,6.250000e+00,1.000000e+00,500/500/500/500,500,4,-3/-3/-3/-3,0.011,0.816,270968,
+gamg_base,C,1/100,32,0.5,E,6.250000e+00,5.000000e-01,500/500/500/500,500,4,-3/-3/-3/-3,0.012,0.845,270968,
+gamg_base,C,1/100,32,0.5,right,6.250000e+00,5.000000e-01,500/500/500/500,500,4,-3/-3/-3/-3,0.012,0.869,270968,
+gamg_base,C,1/100,32,0.5,left,6.250000e+00,5.000000e-01,500/500/500/500,500,4,-3/-3/-3/-3,0.012,0.853,270968,
+gamg_base,D,1/500,32,1,E,3.125000e+01,1.000000e+00,500/500/500/500,500,4,-3/-3/-3/-3,0.013,0.868,268996,
+gamg_base,D,1/500,32,1,right,3.125000e+01,1.000000e+00,500/500/500/500,500,4,-3/-3/-3/-3,0.014,0.806,268996,
+gamg_base,D,1/500,32,1,left,3.125000e+01,1.000000e+00,500/500/500/500,500,4,-3/-3/-3/-3,0.012,0.823,268996,
+gamg_base,D,1/500,32,0.5,E,3.125000e+01,5.000000e-01,500/500/500/500,500,4,-3/-3/-3/-3,0.013,0.864,268996,
+gamg_base,D,1/500,32,0.5,right,3.125000e+01,5.000000e-01,500/500/500/500,500,4,-3/-3/-3/-3,0.013,0.812,268996,
+gamg_base,D,1/500,32,0.5,left,3.125000e+01,5.000000e-01,500/500/500/500,500,4,-3/-3/-3/-3,0.013,0.916,268996,
+gamg_sor,A,1/20,32,1,E,1.250000e+00,1.000000e+00,8/8/8/8,8,0,2/2/2/2,0.016,0.025,271640,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor,A,1/20,32,1,right,1.250000e+00,1.000000e+00,7/7/7/7,7,0,2/2/2/2,0.013,0.021,271640,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor,A,1/20,32,1,left,1.250000e+00,1.000000e+00,7/7/7/7,7,0,2/2/2/2,0.018,0.020,271640,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor,A,1/20,32,0.5,E,1.250000e+00,5.000000e-01,5/5/5/5,5,0,2/2/2/2,0.015,0.017,271640,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor,A,1/20,32,0.5,right,1.250000e+00,5.000000e-01,5/5/5/4,5,0,2/2/2/2,0.013,0.014,271640,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor,A,1/20,32,0.5,left,1.250000e+00,5.000000e-01,5/5/5/4,5,0,2/2/2/2,0.016,0.015,271640,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor,B,1/20,16,1,E,2.500000e+00,1.000000e+00,6/6/5/6,6,0,2/2/2/2,0.005,0.004,68600,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor,B,1/20,16,1,right,2.500000e+00,1.000000e+00,4/4/4/4,4,0,2/2/2/2,0.004,0.003,68600,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor,B,1/20,16,1,left,2.500000e+00,1.000000e+00,4/4/4/4,4,0,2/2/2/2,0.003,0.003,68600,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor,B,1/20,16,0.5,E,2.500000e+00,5.000000e-01,4/4/4/4,4,0,2/2/2/2,0.003,0.003,68600,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor,B,1/20,16,0.5,right,2.500000e+00,5.000000e-01,3/3/3/3,3,0,2/2/2/2,0.003,0.002,68600,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor,B,1/20,16,0.5,left,2.500000e+00,5.000000e-01,3/3/3/3,3,0,2/2/2/2,0.003,0.002,68600,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor,C,1/100,32,1,E,6.250000e+00,1.000000e+00,500/500/500/500,500,4,-3/-3/-3/-3,0.014,1.331,269216,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor,C,1/100,32,1,right,6.250000e+00,1.000000e+00,41/41/41/37,41,0,2/2/2/2,0.012,0.098,269216,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor,C,1/100,32,1,left,6.250000e+00,1.000000e+00,37/37/37/34,37,0,2/2/2/2,0.012,0.090,269216,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor,C,1/100,32,0.5,E,6.250000e+00,5.000000e-01,11/11/11/8,11,0,2/2/2/2,0.012,0.026,269216,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor,C,1/100,32,0.5,right,6.250000e+00,5.000000e-01,7/7/7/4,7,0,2/2/2/2,0.012,0.019,269216,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor,C,1/100,32,0.5,left,6.250000e+00,5.000000e-01,7/7/7/5,7,0,2/2/2/2,0.012,0.018,269216,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor,D,1/500,32,1,E,3.125000e+01,1.000000e+00,500/500/500/500,500,4,-3/-3/-3/-3,0.017,1.254,271452,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor,D,1/500,32,1,right,3.125000e+01,1.000000e+00,500/500/500/500,500,4,-3/-3/-3/-3,0.014,1.326,271452,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor,D,1/500,32,1,left,3.125000e+01,1.000000e+00,500/500/500/500,500,4,-3/-3/-3/-3,0.012,1.341,271452,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor,D,1/500,32,0.5,E,3.125000e+01,5.000000e-01,500/500/500/500,500,4,-3/-3/-3/-3,0.016,1.338,271452,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor,D,1/500,32,0.5,right,3.125000e+01,5.000000e-01,45/45/45/40,45,0,2/2/2/2,0.012,0.110,271452,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor,D,1/500,32,0.5,left,3.125000e+01,5.000000e-01,45/46/46/41,46,0,2/2/2/2,0.012,0.113,271452,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor
+gamg_sor_unsm,A,1/20,32,1,E,1.250000e+00,1.000000e+00,9/9/9/9,9,0,2/2/2/2,0.009,0.023,272012,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm,A,1/20,32,1,right,1.250000e+00,1.000000e+00,8/8/8/8,8,0,2/2/2/2,0.013,0.018,272012,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm,A,1/20,32,1,left,1.250000e+00,1.000000e+00,8/7/8/8,8,0,2/2/2/2,0.010,0.020,272012,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm,A,1/20,32,0.5,E,1.250000e+00,5.000000e-01,6/6/6/6,6,0,2/2/2/2,0.015,0.021,272012,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm,A,1/20,32,0.5,right,1.250000e+00,5.000000e-01,5/5/5/5,5,0,2/2/2/2,0.016,0.013,272012,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm,A,1/20,32,0.5,left,1.250000e+00,5.000000e-01,5/5/5/5,5,0,2/2/2/2,0.009,0.012,272012,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm,B,1/20,16,1,E,2.500000e+00,1.000000e+00,6/6/6/6,6,0,2/2/2/2,0.003,0.004,66360,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm,B,1/20,16,1,right,2.500000e+00,1.000000e+00,4/4/4/4,4,0,2/2/2/2,0.003,0.003,66360,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm,B,1/20,16,1,left,2.500000e+00,1.000000e+00,4/4/4/4,4,0,2/2/2/2,0.003,0.003,66360,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm,B,1/20,16,0.5,E,2.500000e+00,5.000000e-01,4/4/4/4,4,0,2/2/2/2,0.003,0.003,66360,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm,B,1/20,16,0.5,right,2.500000e+00,5.000000e-01,3/3/3/3,3,0,2/2/2/2,0.003,0.003,66360,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm,B,1/20,16,0.5,left,2.500000e+00,5.000000e-01,3/3/3/3,3,0,2/2/2/2,0.004,0.004,66360,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm,C,1/100,32,1,E,6.250000e+00,1.000000e+00,500/500/500/500,500,4,-3/-3/-3/-3,0.015,1.216,272240,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm,C,1/100,32,1,right,6.250000e+00,1.000000e+00,36/34/35/31,36,0,2/2/2/2,0.009,0.073,272240,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm,C,1/100,32,1,left,6.250000e+00,1.000000e+00,35/34/35/29,35,0,2/2/2/2,0.010,0.074,272240,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm,C,1/100,32,0.5,E,6.250000e+00,5.000000e-01,10/10/11/7,11,0,2/2/2/2,0.011,0.022,272240,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm,C,1/100,32,0.5,right,6.250000e+00,5.000000e-01,7/7/7/4,7,0,2/2/2/2,0.011,0.016,272240,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm,C,1/100,32,0.5,left,6.250000e+00,5.000000e-01,7/7/7/4,7,0,2/2/2/2,0.012,0.015,272240,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm,D,1/500,32,1,E,3.125000e+01,1.000000e+00,500/500/500/500,500,4,-3/-3/-3/-3,0.011,1.189,269832,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm,D,1/500,32,1,right,3.125000e+01,1.000000e+00,500/500/500/500,500,4,-3/-3/-3/-3,0.009,1.230,269832,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm,D,1/500,32,1,left,3.125000e+01,1.000000e+00,500/500/500/500,500,4,-3/-3/-3/-3,0.010,1.245,269832,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm,D,1/500,32,0.5,E,3.125000e+01,5.000000e-01,500/500/500/500,500,4,-3/-3/-3/-3,0.009,1.287,269832,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm,D,1/500,32,0.5,right,3.125000e+01,5.000000e-01,45/45/45/40,45,0,2/2/2/2,0.010,0.103,269832,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm,D,1/500,32,0.5,left,3.125000e+01,5.000000e-01,45/45/45/39,45,0,2/2/2/2,0.010,0.115,269832,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0
+gamg_sor_unsm4,A,1/20,32,1,E,1.250000e+00,1.000000e+00,5/5/5/5,5,0,2/2/2/2,0.007,0.028,268448,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+gamg_sor_unsm4,A,1/20,32,1,right,1.250000e+00,1.000000e+00,4/4/4/4,4,0,2/2/2/2,0.008,0.024,268448,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+gamg_sor_unsm4,A,1/20,32,1,left,1.250000e+00,1.000000e+00,4/4/4/4,4,0,2/2/2/2,0.007,0.021,268448,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+gamg_sor_unsm4,A,1/20,32,0.5,E,1.250000e+00,5.000000e-01,3/3/3/3,3,0,2/2/2/2,0.006,0.018,268448,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+gamg_sor_unsm4,A,1/20,32,0.5,right,1.250000e+00,5.000000e-01,3/3/3/3,3,0,2/2/2/2,0.008,0.019,268448,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+gamg_sor_unsm4,A,1/20,32,0.5,left,1.250000e+00,5.000000e-01,3/3/3/3,3,0,2/2/2/2,0.006,0.019,268448,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+gamg_sor_unsm4,B,1/20,16,1,E,2.500000e+00,1.000000e+00,3/3/3/3,3,0,2/2/2/2,0.003,0.005,65972,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+gamg_sor_unsm4,B,1/20,16,1,right,2.500000e+00,1.000000e+00,2/2/2/2,2,0,2/2/2/2,0.002,0.003,65972,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+gamg_sor_unsm4,B,1/20,16,1,left,2.500000e+00,1.000000e+00,2/2/2/2,2,0,2/2/2/2,0.002,0.003,65972,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+gamg_sor_unsm4,B,1/20,16,0.5,E,2.500000e+00,5.000000e-01,2/2/2/2,2,0,2/2/2/2,0.002,0.003,65972,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+gamg_sor_unsm4,B,1/20,16,0.5,right,2.500000e+00,5.000000e-01,2/2/2/2,2,0,2/2/2/2,0.002,0.004,65972,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+gamg_sor_unsm4,B,1/20,16,0.5,left,2.500000e+00,5.000000e-01,2/2/2/2,2,0,2/2/2/2,0.002,0.004,65972,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+gamg_sor_unsm4,C,1/100,32,1,E,6.250000e+00,1.000000e+00,500/500/500/345,500,3,-3/-3/-3/2,0.011,2.135,270888,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+gamg_sor_unsm4,C,1/100,32,1,right,6.250000e+00,1.000000e+00,22/23/23/17,23,0,2/2/2/2,0.007,0.091,270888,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+gamg_sor_unsm4,C,1/100,32,1,left,6.250000e+00,1.000000e+00,23/22/23/17,23,0,2/2/2/2,0.006,0.090,270888,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+gamg_sor_unsm4,C,1/100,32,0.5,E,6.250000e+00,5.000000e-01,6/6/7/3,7,0,2/2/2/2,0.006,0.028,270888,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+gamg_sor_unsm4,C,1/100,32,0.5,right,6.250000e+00,5.000000e-01,4/4/4/2,4,0,2/2/2/2,0.007,0.019,270888,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+gamg_sor_unsm4,C,1/100,32,0.5,left,6.250000e+00,5.000000e-01,4/4/4/2,4,0,2/2/2/2,0.007,0.019,270888,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+gamg_sor_unsm4,D,1/500,32,1,E,3.125000e+01,1.000000e+00,500/500/500/500,500,4,-3/-3/-3/-3,0.007,2.186,270408,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+gamg_sor_unsm4,D,1/500,32,1,right,3.125000e+01,1.000000e+00,500/500/500/500,500,4,-3/-3/-3/-3,0.008,2.272,270408,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+gamg_sor_unsm4,D,1/500,32,1,left,3.125000e+01,1.000000e+00,500/500/500/500,500,4,-3/-3/-3/-3,0.007,2.387,270408,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+gamg_sor_unsm4,D,1/500,32,0.5,E,3.125000e+01,5.000000e-01,500/500/500/500,500,4,-3/-3/-3/-3,0.007,2.348,270408,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+gamg_sor_unsm4,D,1/500,32,0.5,right,3.125000e+01,5.000000e-01,30/30/30/25,30,0,2/2/2/2,0.008,0.119,270408,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+gamg_sor_unsm4,D,1/500,32,0.5,left,3.125000e+01,5.000000e-01,30/30/30/26,30,0,2/2/2/2,0.006,0.123,270408,-block_test_pc_type gamg -block_test_mg_levels_ksp_type richardson -block_test_mg_levels_pc_type sor -block_test_pc_gamg_agg_nsmooths 0 -block_test_mg_levels_ksp_max_it 4 -block_test_pc_gamg_aggressive_coarsening 0
+ilu0,A,1/20,32,1,E,1.250000e+00,1.000000e+00,25/25/25/24,25,0,2/2/2/2,0.001,0.015,267312,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,A,1/20,32,1,right,1.250000e+00,1.000000e+00,21/21/21/20,21,0,2/2/2/2,0.001,0.012,267312,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,A,1/20,32,1,left,1.250000e+00,1.000000e+00,21/21/21/20,21,0,2/2/2/2,0.001,0.011,267312,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,A,1/20,32,0.5,E,1.250000e+00,5.000000e-01,16/16/16/15,16,0,2/2/2/2,0.001,0.008,267312,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,A,1/20,32,0.5,right,1.250000e+00,5.000000e-01,14/14/14/12,14,0,2/2/2/2,0.001,0.007,267312,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,A,1/20,32,0.5,left,1.250000e+00,5.000000e-01,14/14/14/12,14,0,2/2/2/2,0.001,0.007,267312,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,B,1/20,16,1,E,2.500000e+00,1.000000e+00,20/20/20/20,20,0,2/2/2/2,0.000,0.004,66408,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,B,1/20,16,1,right,2.500000e+00,1.000000e+00,15/15/15/14,15,0,2/2/2/2,0.000,0.002,66408,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,B,1/20,16,1,left,2.500000e+00,1.000000e+00,15/15/15/14,15,0,2/2/2/2,0.000,0.002,66408,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,B,1/20,16,0.5,E,2.500000e+00,5.000000e-01,13/13/13/12,13,0,2/2/2/2,0.000,0.002,66408,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,B,1/20,16,0.5,right,2.500000e+00,5.000000e-01,10/9/9/9,10,0,2/2/2/2,0.000,0.001,66408,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,B,1/20,16,0.5,left,2.500000e+00,5.000000e-01,9/10/10/9,10,0,2/2/2/2,0.000,0.001,66408,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,C,1/100,32,1,E,6.250000e+00,1.000000e+00,22/22/22/21,22,0,2/2/2/2,0.002,0.018,265232,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,C,1/100,32,1,right,6.250000e+00,1.000000e+00,18/18/18/16,18,0,2/2/2/2,0.001,0.013,265232,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,C,1/100,32,1,left,6.250000e+00,1.000000e+00,18/18/18/16,18,0,2/2/2/2,0.001,0.012,265232,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,C,1/100,32,0.5,E,6.250000e+00,5.000000e-01,13/14/14/11,14,0,2/2/2/2,0.001,0.008,265232,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,C,1/100,32,0.5,right,6.250000e+00,5.000000e-01,11/11/11/9,11,0,2/2/2/2,0.001,0.007,265232,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,C,1/100,32,0.5,left,6.250000e+00,5.000000e-01,11/11/11/9,11,0,2/2/2/2,0.001,0.008,265232,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,D,1/500,32,1,E,3.125000e+01,1.000000e+00,32/33/33/30,33,0,2/2/2/2,0.002,0.026,265880,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,D,1/500,32,1,right,3.125000e+01,1.000000e+00,26/26/26/24,26,0,2/2/2/2,0.001,0.015,265880,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,D,1/500,32,1,left,3.125000e+01,1.000000e+00,26/26/26/24,26,0,2/2/2/2,0.001,0.015,265880,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,D,1/500,32,0.5,E,3.125000e+01,5.000000e-01,19/19/19/16,19,0,2/2/2/2,0.001,0.011,265880,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,D,1/500,32,0.5,right,3.125000e+01,5.000000e-01,16/16/17/14,17,0,2/2/2/2,0.001,0.008,265880,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,D,1/500,32,0.5,left,3.125000e+01,5.000000e-01,17/16/16/14,17,0,2/2/2/2,0.001,0.009,265880,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu1,A,1/20,32,1,E,1.250000e+00,1.000000e+00,6/6/6/6,6,0,2/2/2/2,0.012,0.008,267124,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,A,1/20,32,1,right,1.250000e+00,1.000000e+00,6/6/6/6,6,0,2/2/2/2,0.009,0.007,267124,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,A,1/20,32,1,left,1.250000e+00,1.000000e+00,6/6/6/6,6,0,2/2/2/2,0.009,0.007,267124,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,A,1/20,32,0.5,E,1.250000e+00,5.000000e-01,5/5/5/5,5,0,2/2/2/2,0.009,0.006,267124,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,A,1/20,32,0.5,right,1.250000e+00,5.000000e-01,5/5/4/4,5,0,2/2/2/2,0.009,0.006,267124,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,A,1/20,32,0.5,left,1.250000e+00,5.000000e-01,4/5/4/4,5,0,2/2/2/2,0.008,0.006,267124,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,B,1/20,16,1,E,2.500000e+00,1.000000e+00,6/6/6/6,6,0,2/2/2/2,0.003,0.002,64552,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,B,1/20,16,1,right,2.500000e+00,1.000000e+00,5/5/5/5,5,0,2/2/2/2,0.003,0.002,64552,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,B,1/20,16,1,left,2.500000e+00,1.000000e+00,5/5/5/5,5,0,2/2/2/2,0.003,0.002,64552,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,B,1/20,16,0.5,E,2.500000e+00,5.000000e-01,4/5/5/5,5,0,2/2/2/2,0.003,0.002,64552,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,B,1/20,16,0.5,right,2.500000e+00,5.000000e-01,4/4/4/4,4,0,2/2/2/2,0.003,0.001,64552,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,B,1/20,16,0.5,left,2.500000e+00,5.000000e-01,4/4/4/4,4,0,2/2/2/2,0.003,0.002,64552,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,C,1/100,32,1,E,6.250000e+00,1.000000e+00,7/7/7/7,7,0,2/2/2/2,0.010,0.009,268708,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,C,1/100,32,1,right,6.250000e+00,1.000000e+00,7/7/7/6,7,0,2/2/2/2,0.009,0.009,268708,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,C,1/100,32,1,left,6.250000e+00,1.000000e+00,7/7/7/6,7,0,2/2/2/2,0.010,0.009,268708,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,C,1/100,32,0.5,E,6.250000e+00,5.000000e-01,6/6/6/6,6,0,2/2/2/2,0.012,0.007,268708,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,C,1/100,32,0.5,right,6.250000e+00,5.000000e-01,6/6/6/5,6,0,2/2/2/2,0.011,0.009,268708,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,C,1/100,32,0.5,left,6.250000e+00,5.000000e-01,6/6/6/5,6,0,2/2/2/2,0.011,0.008,268708,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,D,1/500,32,1,E,3.125000e+01,1.000000e+00,16/16/16/15,16,0,2/2/2/2,0.011,0.020,268940,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,D,1/500,32,1,right,3.125000e+01,1.000000e+00,13/13/13/12,13,0,2/2/2/2,0.010,0.017,268940,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,D,1/500,32,1,left,3.125000e+01,1.000000e+00,13/13/13/12,13,0,2/2/2/2,0.012,0.018,268940,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,D,1/500,32,0.5,E,3.125000e+01,5.000000e-01,10/10/10/9,10,0,2/2/2/2,0.010,0.012,268940,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,D,1/500,32,0.5,right,3.125000e+01,5.000000e-01,9/9/9/8,9,0,2/2/2/2,0.010,0.011,268940,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,D,1/500,32,0.5,left,3.125000e+01,5.000000e-01,9/9/9/8,9,0,2/2/2/2,0.010,0.011,268940,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu2,A,1/20,32,1,E,1.250000e+00,1.000000e+00,5/5/5/5,5,0,2/2/2/2,0.056,0.015,272264,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,A,1/20,32,1,right,1.250000e+00,1.000000e+00,4/4/4/4,4,0,2/2/2/2,0.042,0.011,272264,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,A,1/20,32,1,left,1.250000e+00,1.000000e+00,4/4/4/4,4,0,2/2/2/2,0.059,0.019,272264,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,A,1/20,32,0.5,E,1.250000e+00,5.000000e-01,4/4/4/4,4,0,2/2/2/2,0.044,0.013,272264,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,A,1/20,32,0.5,right,1.250000e+00,5.000000e-01,3/3/3/3,3,0,2/2/2/2,0.042,0.011,272264,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,A,1/20,32,0.5,left,1.250000e+00,5.000000e-01,3/3/3/3,3,0,2/2/2/2,0.040,0.009,272264,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,B,1/20,16,1,E,2.500000e+00,1.000000e+00,4/4/4/4,4,0,2/2/2/2,0.009,0.003,65172,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,B,1/20,16,1,right,2.500000e+00,1.000000e+00,3/3/3/3,3,0,2/2/2/2,0.012,0.003,65172,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,B,1/20,16,1,left,2.500000e+00,1.000000e+00,3/3/3/4,4,0,2/2/2/2,0.009,0.002,65172,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,B,1/20,16,0.5,E,2.500000e+00,5.000000e-01,3/3/3/3,3,0,2/2/2/2,0.011,0.003,65172,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,B,1/20,16,0.5,right,2.500000e+00,5.000000e-01,3/3/3/3,3,0,2/2/2/2,0.021,0.003,65172,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,B,1/20,16,0.5,left,2.500000e+00,5.000000e-01,3/3/3/3,3,0,2/2/2/2,0.011,0.002,65172,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,C,1/100,32,1,E,6.250000e+00,1.000000e+00,5/5/5/5,5,0,2/2/2/2,0.041,0.014,272056,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,C,1/100,32,1,right,6.250000e+00,1.000000e+00,5/5/5/4,5,0,2/2/2/2,0.043,0.016,272056,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,C,1/100,32,1,left,6.250000e+00,1.000000e+00,5/5/5/5,5,0,2/2/2/2,0.040,0.018,272056,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,C,1/100,32,0.5,E,6.250000e+00,5.000000e-01,4/4/4/4,4,0,2/2/2/2,0.037,0.010,272056,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,C,1/100,32,0.5,right,6.250000e+00,5.000000e-01,4/4/4/4,4,0,2/2/2/2,0.037,0.011,272056,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,C,1/100,32,0.5,left,6.250000e+00,5.000000e-01,4/4/4/4,4,0,2/2/2/2,0.043,0.010,272056,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,D,1/500,32,1,E,3.125000e+01,1.000000e+00,9/10/10/9,10,0,2/2/2/2,0.041,0.026,272104,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,D,1/500,32,1,right,3.125000e+01,1.000000e+00,8/8/8/8,8,0,2/2/2/2,0.037,0.020,272104,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,D,1/500,32,1,left,3.125000e+01,1.000000e+00,8/8/8/8,8,0,2/2/2/2,0.040,0.021,272104,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,D,1/500,32,0.5,E,3.125000e+01,5.000000e-01,7/7/7/6,7,0,2/2/2/2,0.040,0.022,272104,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,D,1/500,32,0.5,right,3.125000e+01,5.000000e-01,6/6/6/6,6,0,2/2/2/2,0.042,0.016,272104,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,D,1/500,32,0.5,left,3.125000e+01,5.000000e-01,6/6/6/6,6,0,2/2/2/2,0.039,0.017,272104,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+asm4o1_ilu1,A,1/20,32,1,E,1.250000e+00,1.000000e+00,7/7/7/6,7,0,2/2/2/2,0.007,0.066,279104,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,A,1/20,32,1,right,1.250000e+00,1.000000e+00,6/6/6/6,6,0,2/2/2/2,0.004,0.059,279104,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,A,1/20,32,1,left,1.250000e+00,1.000000e+00,6/6/6/6,6,0,2/2/2/2,0.005,0.056,279104,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,A,1/20,32,0.5,E,1.250000e+00,5.000000e-01,5/5/5/5,5,0,2/2/2/2,0.004,0.055,279104,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,A,1/20,32,0.5,right,1.250000e+00,5.000000e-01,5/5/5/5,5,0,2/2/2/2,0.004,0.055,279104,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,A,1/20,32,0.5,left,1.250000e+00,5.000000e-01,5/5/5/5,5,0,2/2/2/2,0.005,0.056,279104,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,B,1/20,16,1,E,2.500000e+00,1.000000e+00,6/6/6/6,6,0,2/2/2/2,0.002,0.014,67672,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,B,1/20,16,1,right,2.500000e+00,1.000000e+00,5/5/5/5,5,0,2/2/2/2,0.001,0.012,67672,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,B,1/20,16,1,left,2.500000e+00,1.000000e+00,5/5/5/5,5,0,2/2/2/2,0.001,0.013,67672,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,B,1/20,16,0.5,E,2.500000e+00,5.000000e-01,5/5/5/5,5,0,2/2/2/2,0.002,0.011,67672,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,B,1/20,16,0.5,right,2.500000e+00,5.000000e-01,5/4/5/5,5,0,2/2/2/2,0.001,0.011,67672,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,B,1/20,16,0.5,left,2.500000e+00,5.000000e-01,5/5/5/5,5,0,2/2/2/2,0.001,0.011,67672,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,C,1/100,32,1,E,6.250000e+00,1.000000e+00,8/8/8/8,8,0,2/2/2/2,0.008,0.070,277376,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,C,1/100,32,1,right,6.250000e+00,1.000000e+00,7/7/7/7,7,0,2/2/2/2,0.006,0.059,277376,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,C,1/100,32,1,left,6.250000e+00,1.000000e+00,7/7/7/7,7,0,2/2/2/2,0.003,0.052,277376,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,C,1/100,32,0.5,E,6.250000e+00,5.000000e-01,6/6/6/6,6,0,2/2/2/2,0.003,0.056,277376,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,C,1/100,32,0.5,right,6.250000e+00,5.000000e-01,6/6/6/6,6,0,2/2/2/2,0.004,0.048,277376,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,C,1/100,32,0.5,left,6.250000e+00,5.000000e-01,6/6/6/6,6,0,2/2/2/2,0.004,0.052,277376,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,D,1/500,32,1,E,3.125000e+01,1.000000e+00,16/17/16/16,17,0,2/2/2/2,0.005,0.088,276684,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,D,1/500,32,1,right,3.125000e+01,1.000000e+00,13/13/13/13,13,0,2/2/2/2,0.004,0.076,276684,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,D,1/500,32,1,left,3.125000e+01,1.000000e+00,13/13/13/13,13,0,2/2/2/2,0.004,0.072,276684,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,D,1/500,32,0.5,E,3.125000e+01,5.000000e-01,10/10/10/10,10,0,2/2/2/2,0.004,0.075,276684,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,D,1/500,32,0.5,right,3.125000e+01,5.000000e-01,9/9/9/9,9,0,2/2/2/2,0.005,0.074,276684,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,D,1/500,32,0.5,left,3.125000e+01,5.000000e-01,9/9/9/9,9,0,2/2/2/2,0.005,0.079,276684,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,A,1/20,32,1,E,1.250000e+00,1.000000e+00,52/52/52/50,52,0,2/2/2/2,0.002,0.037,269064,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,A,1/20,32,1,right,1.250000e+00,1.000000e+00,44/44/43/41,44,0,2/2/2/2,0.002,0.028,269064,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,A,1/20,32,1,left,1.250000e+00,1.000000e+00,44/44/44/41,44,0,2/2/2/2,0.001,0.036,269064,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,A,1/20,32,0.5,E,1.250000e+00,5.000000e-01,33/33/33/31,33,0,2/2/2/2,0.001,0.026,269064,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,A,1/20,32,0.5,right,1.250000e+00,5.000000e-01,28/28/28/26,28,0,2/2/2/2,0.001,0.017,269064,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,A,1/20,32,0.5,left,1.250000e+00,5.000000e-01,28/28/28/26,28,0,2/2/2/2,0.001,0.018,269064,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,B,1/20,16,1,E,2.500000e+00,1.000000e+00,43/43/43/41,43,0,2/2/2/2,0.001,0.009,67532,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,B,1/20,16,1,right,2.500000e+00,1.000000e+00,31/30/30/29,31,0,2/2/2/2,0.001,0.005,67532,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,B,1/20,16,1,left,2.500000e+00,1.000000e+00,30/30/30/29,30,0,2/2/2/2,0.000,0.005,67532,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,B,1/20,16,0.5,E,2.500000e+00,5.000000e-01,26/26/26/25,26,0,2/2/2/2,0.001,0.004,67532,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,B,1/20,16,0.5,right,2.500000e+00,5.000000e-01,19/19/19/18,19,0,2/2/2/2,0.000,0.003,67532,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,B,1/20,16,0.5,left,2.500000e+00,5.000000e-01,19/19/19/18,19,0,2/2/2/2,0.000,0.003,67532,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,C,1/100,32,1,E,6.250000e+00,1.000000e+00,42/42/42/37,42,0,2/2/2/2,0.002,0.025,267068,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,C,1/100,32,1,right,6.250000e+00,1.000000e+00,35/34/35/30,35,0,2/2/2/2,0.001,0.019,267068,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,C,1/100,32,1,left,6.250000e+00,1.000000e+00,35/34/34/31,35,0,2/2/2/2,0.001,0.018,267068,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,C,1/100,32,0.5,E,6.250000e+00,5.000000e-01,26/25/26/23,26,0,2/2/2/2,0.001,0.013,267068,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,C,1/100,32,0.5,right,6.250000e+00,5.000000e-01,23/23/23/20,23,0,2/2/2/2,0.001,0.012,267068,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,C,1/100,32,0.5,left,6.250000e+00,5.000000e-01,23/23/23/21,23,0,2/2/2/2,0.001,0.012,267068,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,D,1/500,32,1,E,3.125000e+01,1.000000e+00,82/80/81/66,82,0,2/2/2/2,0.001,0.048,267268,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,D,1/500,32,1,right,3.125000e+01,1.000000e+00,68/68/68/56,68,0,2/2/2/2,0.001,0.059,267268,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,D,1/500,32,1,left,3.125000e+01,1.000000e+00,68/68/67/57,68,0,2/2/2/2,0.001,0.043,267268,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,D,1/500,32,0.5,E,3.125000e+01,5.000000e-01,54/54/54/45,54,0,2/2/2/2,0.001,0.042,267268,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,D,1/500,32,0.5,right,3.125000e+01,5.000000e-01,48/47/47/40,48,0,2/2/2/2,0.001,0.029,267268,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o0_ilu1,D,1/500,32,0.5,left,3.125000e+01,5.000000e-01,47/48/47/39,48,0,2/2/2/2,0.001,0.033,267268,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 0 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,A,1/20,32,1,E,1.250000e+00,1.000000e+00,52/52/52/50,52,0,2/2/2/2,0.001,0.034,268916,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,A,1/20,32,1,right,1.250000e+00,1.000000e+00,44/44/43/41,44,0,2/2/2/2,0.001,0.029,268916,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,A,1/20,32,1,left,1.250000e+00,1.000000e+00,44/44/44/41,44,0,2/2/2/2,0.001,0.030,268916,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,A,1/20,32,0.5,E,1.250000e+00,5.000000e-01,33/33/33/31,33,0,2/2/2/2,0.001,0.020,268916,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,A,1/20,32,0.5,right,1.250000e+00,5.000000e-01,28/28/28/26,28,0,2/2/2/2,0.001,0.017,268916,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,A,1/20,32,0.5,left,1.250000e+00,5.000000e-01,28/28/28/26,28,0,2/2/2/2,0.001,0.017,268916,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,B,1/20,16,1,E,2.500000e+00,1.000000e+00,43/43/43/41,43,0,2/2/2/2,0.001,0.007,66744,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,B,1/20,16,1,right,2.500000e+00,1.000000e+00,31/30/30/29,31,0,2/2/2/2,0.000,0.004,66744,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,B,1/20,16,1,left,2.500000e+00,1.000000e+00,30/30/30/29,30,0,2/2/2/2,0.000,0.004,66744,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,B,1/20,16,0.5,E,2.500000e+00,5.000000e-01,26/26/26/25,26,0,2/2/2/2,0.000,0.004,66744,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,B,1/20,16,0.5,right,2.500000e+00,5.000000e-01,19/19/19/18,19,0,2/2/2/2,0.000,0.003,66744,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,B,1/20,16,0.5,left,2.500000e+00,5.000000e-01,19/19/19/18,19,0,2/2/2/2,0.000,0.003,66744,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,C,1/100,32,1,E,6.250000e+00,1.000000e+00,42/42/42/37,42,0,2/2/2/2,0.002,0.027,266784,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,C,1/100,32,1,right,6.250000e+00,1.000000e+00,35/34/35/30,35,0,2/2/2/2,0.001,0.033,266784,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,C,1/100,32,1,left,6.250000e+00,1.000000e+00,35/34/34/31,35,0,2/2/2/2,0.001,0.027,266784,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,C,1/100,32,0.5,E,6.250000e+00,5.000000e-01,26/25/26/23,26,0,2/2/2/2,0.001,0.016,266784,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,C,1/100,32,0.5,right,6.250000e+00,5.000000e-01,23/23/23/20,23,0,2/2/2/2,0.001,0.015,266784,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,C,1/100,32,0.5,left,6.250000e+00,5.000000e-01,23/23/23/21,23,0,2/2/2/2,0.001,0.014,266784,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,D,1/500,32,1,E,3.125000e+01,1.000000e+00,82/80/81/66,82,0,2/2/2/2,0.001,0.056,269288,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,D,1/500,32,1,right,3.125000e+01,1.000000e+00,68/68/68/56,68,0,2/2/2/2,0.001,0.035,269288,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,D,1/500,32,1,left,3.125000e+01,1.000000e+00,68/68/67/57,68,0,2/2/2/2,0.001,0.035,269288,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,D,1/500,32,0.5,E,3.125000e+01,5.000000e-01,54/54/54/45,54,0,2/2/2/2,0.001,0.031,269288,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,D,1/500,32,0.5,right,3.125000e+01,5.000000e-01,48/47/47/40,48,0,2/2/2/2,0.001,0.029,269288,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,D,1/500,32,0.5,left,3.125000e+01,5.000000e-01,47/48/47/39,48,0,2/2/2/2,0.001,0.027,269288,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+lu_petsc,A,1/20,32,1,E,1.250000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.013,0.004,268412,-block_test_pc_type lu
+lu_petsc,A,1/20,32,1,right,1.250000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.011,0.003,268412,-block_test_pc_type lu
+lu_petsc,A,1/20,32,1,left,1.250000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.010,0.003,268412,-block_test_pc_type lu
+lu_petsc,A,1/20,32,0.5,E,1.250000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.010,0.002,268412,-block_test_pc_type lu
+lu_petsc,A,1/20,32,0.5,right,1.250000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.024,0.003,268412,-block_test_pc_type lu
+lu_petsc,A,1/20,32,0.5,left,1.250000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.011,0.003,268412,-block_test_pc_type lu
+lu_petsc,B,1/20,16,1,E,2.500000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.002,0.002,64532,-block_test_pc_type lu
+lu_petsc,B,1/20,16,1,right,2.500000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.002,0.001,64532,-block_test_pc_type lu
+lu_petsc,B,1/20,16,1,left,2.500000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.002,0.001,64532,-block_test_pc_type lu
+lu_petsc,B,1/20,16,0.5,E,2.500000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.002,0.001,64532,-block_test_pc_type lu
+lu_petsc,B,1/20,16,0.5,right,2.500000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.002,0.000,64532,-block_test_pc_type lu
+lu_petsc,B,1/20,16,0.5,left,2.500000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.002,0.000,64532,-block_test_pc_type lu
+lu_petsc,C,1/100,32,1,E,6.250000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.012,0.003,268224,-block_test_pc_type lu
+lu_petsc,C,1/100,32,1,right,6.250000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.011,0.003,268224,-block_test_pc_type lu
+lu_petsc,C,1/100,32,1,left,6.250000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.010,0.003,268224,-block_test_pc_type lu
+lu_petsc,C,1/100,32,0.5,E,6.250000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.011,0.003,268224,-block_test_pc_type lu
+lu_petsc,C,1/100,32,0.5,right,6.250000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.011,0.003,268224,-block_test_pc_type lu
+lu_petsc,C,1/100,32,0.5,left,6.250000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.013,0.003,268224,-block_test_pc_type lu
+lu_petsc,D,1/500,32,1,E,3.125000e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.010,0.003,268276,-block_test_pc_type lu
+lu_petsc,D,1/500,32,1,right,3.125000e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.010,0.002,268276,-block_test_pc_type lu
+lu_petsc,D,1/500,32,1,left,3.125000e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.009,0.004,268276,-block_test_pc_type lu
+lu_petsc,D,1/500,32,0.5,E,3.125000e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.011,0.003,268276,-block_test_pc_type lu
+lu_petsc,D,1/500,32,0.5,right,3.125000e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.011,0.003,268276,-block_test_pc_type lu
+lu_petsc,D,1/500,32,0.5,left,3.125000e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.012,0.004,268276,-block_test_pc_type lu
+lu_mumps,A,1/20,32,1,E,1.250000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.011,0.006,273492,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,A,1/20,32,1,right,1.250000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.010,0.005,273492,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,A,1/20,32,1,left,1.250000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.009,0.004,273492,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,A,1/20,32,0.5,E,1.250000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.009,0.004,273492,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,A,1/20,32,0.5,right,1.250000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.009,0.006,273492,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,A,1/20,32,0.5,left,1.250000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.009,0.006,273492,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,B,1/20,16,1,E,2.500000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.003,0.002,69784,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,B,1/20,16,1,right,2.500000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.002,0.002,69784,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,B,1/20,16,1,left,2.500000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.002,0.001,69784,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,B,1/20,16,0.5,E,2.500000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.002,0.001,69784,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,B,1/20,16,0.5,right,2.500000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.003,0.001,69784,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,B,1/20,16,0.5,left,2.500000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.002,0.001,69784,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,C,1/100,32,1,E,6.250000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.017,0.010,273760,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,C,1/100,32,1,right,6.250000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.012,0.005,273760,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,C,1/100,32,1,left,6.250000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.010,0.006,273760,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,C,1/100,32,0.5,E,6.250000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.009,0.005,273760,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,C,1/100,32,0.5,right,6.250000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.009,0.005,273760,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,C,1/100,32,0.5,left,6.250000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.009,0.005,273760,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,D,1/500,32,1,E,3.125000e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.010,0.007,273172,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,D,1/500,32,1,right,3.125000e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.010,0.007,273172,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,D,1/500,32,1,left,3.125000e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.009,0.005,273172,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,D,1/500,32,0.5,E,3.125000e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.010,0.005,273172,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,D,1/500,32,0.5,right,3.125000e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.009,0.005,273172,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,D,1/500,32,0.5,left,3.125000e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.010,0.005,273172,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_umfpack,A,1/20,32,1,E,1.250000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.013,0.003,271412,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,A,1/20,32,1,right,1.250000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.012,0.003,271412,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,A,1/20,32,1,left,1.250000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.013,0.004,271412,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,A,1/20,32,0.5,E,1.250000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.013,0.003,271412,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,A,1/20,32,0.5,right,1.250000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.012,0.004,271412,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,A,1/20,32,0.5,left,1.250000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.012,0.003,271412,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,B,1/20,16,1,E,2.500000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.004,0.001,67520,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,B,1/20,16,1,right,2.500000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.003,0.001,67520,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,B,1/20,16,1,left,2.500000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.004,0.001,67520,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,B,1/20,16,0.5,E,2.500000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.003,0.001,67520,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,B,1/20,16,0.5,right,2.500000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.003,0.001,67520,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,B,1/20,16,0.5,left,2.500000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.003,0.001,67520,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,C,1/100,32,1,E,6.250000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.012,0.003,271756,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,C,1/100,32,1,right,6.250000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.011,0.003,271756,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,C,1/100,32,1,left,6.250000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.013,0.004,271756,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,C,1/100,32,0.5,E,6.250000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.016,0.006,271756,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,C,1/100,32,0.5,right,6.250000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.019,0.004,271756,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,C,1/100,32,0.5,left,6.250000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.012,0.003,271756,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,D,1/500,32,1,E,3.125000e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.012,0.003,271428,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,D,1/500,32,1,right,3.125000e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.011,0.003,271428,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,D,1/500,32,1,left,3.125000e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.012,0.003,271428,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,D,1/500,32,0.5,E,3.125000e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.012,0.003,271428,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,D,1/500,32,0.5,right,3.125000e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.011,0.003,271428,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,D,1/500,32,0.5,left,3.125000e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.011,0.003,271428,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+ilu0,E16,1/500,16,1,E,6.250000e+01,1.000000e+00,33/33/33/32,33,0,2/2/2/2,0.000,0.005,66048,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,E16,1/500,16,1,right,6.250000e+01,1.000000e+00,22/22/21/21,22,0,2/2/2/2,0.000,0.003,66048,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,E16,1/500,16,1,left,6.250000e+01,1.000000e+00,22/21/22/21,22,0,2/2/2/2,0.000,0.003,66048,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,E16,1/500,16,0.5,E,6.250000e+01,5.000000e-01,19/19/19/18,19,0,2/2/2/2,0.000,0.002,66048,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,E16,1/500,16,0.5,right,6.250000e+01,5.000000e-01,16/15/15/14,16,0,2/2/2/2,0.000,0.002,66048,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,E16,1/500,16,0.5,left,6.250000e+01,5.000000e-01,15/15/15/14,15,0,2/2/2/2,0.000,0.002,66048,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,C64,1/100,64,1,E,3.125000e+00,1.000000e+00,25/25/25/18,25,0,2/2/2/2,0.003,0.067,1795868,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,C64,1/100,64,1,right,3.125000e+00,1.000000e+00,22/22/22/16,22,0,2/2/2/2,0.003,0.047,1795868,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,C64,1/100,64,1,left,3.125000e+00,1.000000e+00,22/22/22/16,22,0,2/2/2/2,0.003,0.052,1795868,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,C64,1/100,64,0.5,E,3.125000e+00,5.000000e-01,15/15/15/11,15,0,2/2/2/2,0.003,0.040,1795868,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,C64,1/100,64,0.5,right,3.125000e+00,5.000000e-01,13/13/13/10,13,0,2/2/2/2,0.003,0.030,1795868,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,C64,1/100,64,0.5,left,3.125000e+00,5.000000e-01,13/13/13/10,13,0,2/2/2/2,0.003,0.031,1795868,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,D64,1/500,64,1,E,1.562500e+01,1.000000e+00,30/30/30/22,30,0,2/2/2/2,0.003,0.076,1796304,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,D64,1/500,64,1,right,1.562500e+01,1.000000e+00,27/27/27/18,27,0,2/2/2/2,0.002,0.069,1796304,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,D64,1/500,64,1,left,1.562500e+01,1.000000e+00,27/27/27/18,27,0,2/2/2/2,0.003,0.062,1796304,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,D64,1/500,64,0.5,E,1.562500e+01,5.000000e-01,17/18/17/13,18,0,2/2/2/2,0.004,0.047,1796304,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,D64,1/500,64,0.5,right,1.562500e+01,5.000000e-01,16/16/16/13,16,0,2/2/2/2,0.003,0.051,1796304,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,D64,1/500,64,0.5,left,1.562500e+01,5.000000e-01,16/16/16/13,16,0,2/2/2/2,0.003,0.039,1796304,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,D128,1/500,128,1,E,7.812500e+00,1.000000e+00,28/28/28/17,28,0,2/2/2/2,0.016,0.314,13742936,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,D128,1/500,128,1,right,7.812500e+00,1.000000e+00,26/26/26/16,26,0,2/2/2/2,0.017,0.284,13742936,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,D128,1/500,128,1,left,7.812500e+00,1.000000e+00,26/26/26/16,26,0,2/2/2/2,0.015,0.285,13742936,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,D128,1/500,128,0.5,E,7.812500e+00,5.000000e-01,15/15/15/11,15,0,2/2/2/2,0.018,0.154,13742936,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,D128,1/500,128,0.5,right,7.812500e+00,5.000000e-01,14/14/14/11,14,0,2/2/2/2,0.014,0.147,13742936,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu0,D128,1/500,128,0.5,left,7.812500e+00,5.000000e-01,14/14/14/11,14,0,2/2/2/2,0.014,0.140,13742936,-block_test_pc_type ilu -block_test_pc_factor_levels 0
+ilu1,E16,1/500,16,1,E,6.250000e+01,1.000000e+00,17/17/17/17,17,0,2/2/2/2,0.002,0.005,66640,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,E16,1/500,16,1,right,6.250000e+01,1.000000e+00,11/11/11/11,11,0,2/2/2/2,0.002,0.003,66640,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,E16,1/500,16,1,left,6.250000e+01,1.000000e+00,11/11/11/11,11,0,2/2/2/2,0.002,0.003,66640,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,E16,1/500,16,0.5,E,6.250000e+01,5.000000e-01,10/10/10/10,10,0,2/2/2/2,0.002,0.003,66640,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,E16,1/500,16,0.5,right,6.250000e+01,5.000000e-01,8/8/8/8,8,0,2/2/2/2,0.002,0.002,66640,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,E16,1/500,16,0.5,left,6.250000e+01,5.000000e-01,8/8/8/8,8,0,2/2/2/2,0.002,0.002,66640,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,C64,1/100,64,1,E,3.125000e+00,1.000000e+00,6/6/6/6,6,0,2/2/2/2,0.033,0.035,1799732,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,C64,1/100,64,1,right,3.125000e+00,1.000000e+00,6/6/6/6,6,0,2/2/2/2,0.033,0.034,1799732,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,C64,1/100,64,1,left,3.125000e+00,1.000000e+00,6/6/6/5,6,0,2/2/2/2,0.035,0.032,1799732,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,C64,1/100,64,0.5,E,3.125000e+00,5.000000e-01,5/5/5/4,5,0,2/2/2/2,0.032,0.027,1799732,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,C64,1/100,64,0.5,right,3.125000e+00,5.000000e-01,5/5/5/4,5,0,2/2/2/2,0.033,0.026,1799732,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,C64,1/100,64,0.5,left,3.125000e+00,5.000000e-01,5/5/5/4,5,0,2/2/2/2,0.034,0.028,1799732,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,D64,1/500,64,1,E,1.562500e+01,1.000000e+00,12/12/12/11,12,0,2/2/2/2,0.036,0.060,1799812,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,D64,1/500,64,1,right,1.562500e+01,1.000000e+00,11/11/11/10,11,0,2/2/2/2,0.036,0.059,1799812,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,D64,1/500,64,1,left,1.562500e+01,1.000000e+00,11/11/11/10,11,0,2/2/2/2,0.033,0.057,1799812,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,D64,1/500,64,0.5,E,1.562500e+01,5.000000e-01,9/9/9/7,9,0,2/2/2/2,0.036,0.047,1799812,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,D64,1/500,64,0.5,right,1.562500e+01,5.000000e-01,8/8/8/7,8,0,2/2/2/2,0.033,0.042,1799812,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,D64,1/500,64,0.5,left,1.562500e+01,5.000000e-01,8/8/8/7,8,0,2/2/2/2,0.036,0.045,1799812,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,D128,1/500,128,1,E,7.812500e+00,1.000000e+00,9/9/9/7,9,0,2/2/2/2,0.148,0.189,13741340,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,D128,1/500,128,1,right,7.812500e+00,1.000000e+00,8/8/8/7,8,0,2/2/2/2,0.148,0.191,13741340,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,D128,1/500,128,1,left,7.812500e+00,1.000000e+00,8/8/8/7,8,0,2/2/2/2,0.171,0.195,13741340,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,D128,1/500,128,0.5,E,7.812500e+00,5.000000e-01,7/7/7/6,7,0,2/2/2/2,0.166,0.174,13741340,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,D128,1/500,128,0.5,right,7.812500e+00,5.000000e-01,7/7/7/6,7,0,2/2/2/2,0.167,0.163,13741340,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu1,D128,1/500,128,0.5,left,7.812500e+00,5.000000e-01,7/7/7/6,7,0,2/2/2/2,0.157,0.158,13741340,-block_test_pc_type ilu -block_test_pc_factor_levels 1
+ilu2,E16,1/500,16,1,E,6.250000e+01,1.000000e+00,10/10/10/10,10,0,2/2/2/2,0.008,0.006,67476,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,E16,1/500,16,1,right,6.250000e+01,1.000000e+00,7/7/7/7,7,0,2/2/2/2,0.008,0.004,67476,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,E16,1/500,16,1,left,6.250000e+01,1.000000e+00,7/7/7/7,7,0,2/2/2/2,0.008,0.004,67476,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,E16,1/500,16,0.5,E,6.250000e+01,5.000000e-01,7/7/6/7,7,0,2/2/2/2,0.007,0.004,67476,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,E16,1/500,16,0.5,right,6.250000e+01,5.000000e-01,6/5/5/5,6,0,2/2/2/2,0.008,0.003,67476,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,E16,1/500,16,0.5,left,6.250000e+01,5.000000e-01,6/5/5/5,6,0,2/2/2/2,0.008,0.003,67476,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,C64,1/100,64,1,E,3.125000e+00,1.000000e+00,5/5/5/5,5,0,2/2/2/2,0.144,0.059,1813008,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,C64,1/100,64,1,right,3.125000e+00,1.000000e+00,4/4/4/4,4,0,2/2/2/2,0.143,0.047,1813008,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,C64,1/100,64,1,left,3.125000e+00,1.000000e+00,4/4/4/4,4,0,2/2/2/2,0.145,0.047,1813008,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,C64,1/100,64,0.5,E,3.125000e+00,5.000000e-01,3/3/3/3,3,0,2/2/2/2,0.151,0.045,1813008,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,C64,1/100,64,0.5,right,3.125000e+00,5.000000e-01,3/3/3/3,3,0,2/2/2/2,0.162,0.042,1813008,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,C64,1/100,64,0.5,left,3.125000e+00,5.000000e-01,3/3/3/3,3,0,2/2/2/2,0.164,0.043,1813008,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,D64,1/500,64,1,E,1.562500e+01,1.000000e+00,8/8/8/7,8,0,2/2/2/2,0.145,0.081,1812688,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,D64,1/500,64,1,right,1.562500e+01,1.000000e+00,7/7/7/7,7,0,2/2/2/2,0.144,0.073,1812688,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,D64,1/500,64,1,left,1.562500e+01,1.000000e+00,7/7/7/7,7,0,2/2/2/2,0.141,0.077,1812688,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,D64,1/500,64,0.5,E,1.562500e+01,5.000000e-01,6/6/6/6,6,0,2/2/2/2,0.153,0.071,1812688,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,D64,1/500,64,0.5,right,1.562500e+01,5.000000e-01,6/6/6/5,6,0,2/2/2/2,0.157,0.068,1812688,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,D64,1/500,64,0.5,left,1.562500e+01,5.000000e-01,6/6/6/5,6,0,2/2/2/2,0.148,0.065,1812688,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,D128,1/500,128,1,E,7.812500e+00,1.000000e+00,6/6/6/5,6,0,2/2/2/2,0.658,0.269,13760940,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,D128,1/500,128,1,right,7.812500e+00,1.000000e+00,6/6/6/5,6,0,2/2/2/2,0.667,0.280,13760940,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,D128,1/500,128,1,left,7.812500e+00,1.000000e+00,6/6/6/5,6,0,2/2/2/2,0.673,0.280,13760940,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,D128,1/500,128,0.5,E,7.812500e+00,5.000000e-01,5/5/5/5,5,0,2/2/2/2,0.706,0.235,13760940,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,D128,1/500,128,0.5,right,7.812500e+00,5.000000e-01,5/5/5/4,5,0,2/2/2/2,0.635,0.227,13760940,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+ilu2,D128,1/500,128,0.5,left,7.812500e+00,5.000000e-01,5/5/5/5,5,0,2/2/2/2,0.633,0.229,13760940,-block_test_pc_type ilu -block_test_pc_factor_levels 2
+asm4o1_ilu1,E16,1/500,16,1,E,6.250000e+01,1.000000e+00,18/19/19/18,19,0,2/2/2/2,0.002,0.021,69868,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,E16,1/500,16,1,right,6.250000e+01,1.000000e+00,12/12/12/12,12,0,2/2/2/2,0.001,0.015,69868,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,E16,1/500,16,1,left,6.250000e+01,1.000000e+00,12/12/12/12,12,0,2/2/2/2,0.001,0.015,69868,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,E16,1/500,16,0.5,E,6.250000e+01,5.000000e-01,10/10/10/10,10,0,2/2/2/2,0.001,0.015,69868,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,E16,1/500,16,0.5,right,6.250000e+01,5.000000e-01,8/8/8/8,8,0,2/2/2/2,0.001,0.013,69868,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,E16,1/500,16,0.5,left,6.250000e+01,5.000000e-01,8/8/8/8,8,0,2/2/2/2,0.001,0.013,69868,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,C64,1/100,64,1,E,3.125000e+00,1.000000e+00,6/6/6/6,6,0,2/2/2/2,0.015,0.210,1844776,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,C64,1/100,64,1,right,3.125000e+00,1.000000e+00,6/6/6/6,6,0,2/2/2/2,0.013,0.203,1844776,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,C64,1/100,64,1,left,3.125000e+00,1.000000e+00,6/6/6/6,6,0,2/2/2/2,0.014,0.201,1844776,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,C64,1/100,64,0.5,E,3.125000e+00,5.000000e-01,5/5/5/5,5,0,2/2/2/2,0.013,0.185,1844776,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,C64,1/100,64,0.5,right,3.125000e+00,5.000000e-01,5/5/5/5,5,0,2/2/2/2,0.012,0.190,1844776,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,C64,1/100,64,0.5,left,3.125000e+00,5.000000e-01,5/5/5/5,5,0,2/2/2/2,0.012,0.185,1844776,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,D64,1/500,64,1,E,1.562500e+01,1.000000e+00,13/13/13/12,13,0,2/2/2/2,0.014,0.291,1840036,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,D64,1/500,64,1,right,1.562500e+01,1.000000e+00,12/12/12/11,12,0,2/2/2/2,0.012,0.263,1840036,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,D64,1/500,64,1,left,1.562500e+01,1.000000e+00,12/12/12/11,12,0,2/2/2/2,0.012,0.276,1840036,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,D64,1/500,64,0.5,E,1.562500e+01,5.000000e-01,9/9/9/8,9,0,2/2/2/2,0.012,0.231,1840036,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,D64,1/500,64,0.5,right,1.562500e+01,5.000000e-01,9/8/8/8,9,0,2/2/2/2,0.012,0.234,1840036,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,D64,1/500,64,0.5,left,1.562500e+01,5.000000e-01,9/8/9/8,9,0,2/2/2/2,0.014,0.256,1840036,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,D128,1/500,128,1,E,7.812500e+00,1.000000e+00,9/9/9/9,9,0,2/2/2/2,0.061,1.089,13818900,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,D128,1/500,128,1,right,7.812500e+00,1.000000e+00,9/9/9/8,9,0,2/2/2/2,0.063,1.059,13818900,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,D128,1/500,128,1,left,7.812500e+00,1.000000e+00,9/9/9/8,9,0,2/2/2/2,0.055,1.074,13818900,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,D128,1/500,128,0.5,E,7.812500e+00,5.000000e-01,7/7/7/7,7,0,2/2/2/2,0.061,0.984,13818900,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,D128,1/500,128,0.5,right,7.812500e+00,5.000000e-01,7/7/7/7,7,0,2/2/2/2,0.055,0.979,13818900,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+asm4o1_ilu1,D128,1/500,128,0.5,left,7.812500e+00,5.000000e-01,7/7/7/7,7,0,2/2/2/2,0.058,0.963,13818900,-block_test_pc_type asm -block_test_pc_asm_blocks 4 -block_test_pc_asm_overlap 1 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,E16,1/500,16,1,E,6.250000e+01,1.000000e+00,91/90/90/77,91,0,2/2/2/2,0.001,0.013,67016,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,E16,1/500,16,1,right,6.250000e+01,1.000000e+00,68/67/67/58,68,0,2/2/2/2,0.000,0.009,67016,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,E16,1/500,16,1,left,6.250000e+01,1.000000e+00,68/68/67/58,68,0,2/2/2/2,0.000,0.009,67016,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,E16,1/500,16,0.5,E,6.250000e+01,5.000000e-01,61/60/60/51,61,0,2/2/2/2,0.000,0.008,67016,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,E16,1/500,16,0.5,right,6.250000e+01,5.000000e-01,48/47/47/40,48,0,2/2/2/2,0.000,0.006,67016,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,E16,1/500,16,0.5,left,6.250000e+01,5.000000e-01,48/47/47/40,48,0,2/2/2/2,0.000,0.006,67016,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,C64,1/100,64,1,E,3.125000e+00,1.000000e+00,48/48/48/42,48,0,2/2/2/2,0.002,0.131,1798808,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,C64,1/100,64,1,right,3.125000e+00,1.000000e+00,43/43/43/38,43,0,2/2/2/2,0.002,0.113,1798808,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,C64,1/100,64,1,left,3.125000e+00,1.000000e+00,43/43/43/38,43,0,2/2/2/2,0.002,0.116,1798808,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,C64,1/100,64,0.5,E,3.125000e+00,5.000000e-01,28/28/28/25,28,0,2/2/2/2,0.002,0.069,1798808,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,C64,1/100,64,0.5,right,3.125000e+00,5.000000e-01,25/25/25/23,25,0,2/2/2/2,0.002,0.062,1798808,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,C64,1/100,64,0.5,left,3.125000e+00,5.000000e-01,25/25/25/23,25,0,2/2/2/2,0.002,0.060,1798808,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,D64,1/500,64,1,E,1.562500e+01,1.000000e+00,59/59/59/49,59,0,2/2/2/2,0.002,0.155,1798824,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,D64,1/500,64,1,right,1.562500e+01,1.000000e+00,55/55/54/46,55,0,2/2/2/2,0.002,0.143,1798824,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,D64,1/500,64,1,left,1.562500e+01,1.000000e+00,54/54/54/46,54,0,2/2/2/2,0.002,0.135,1798824,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,D64,1/500,64,0.5,E,1.562500e+01,5.000000e-01,42/42/42/36,42,0,2/2/2/2,0.002,0.104,1798824,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,D64,1/500,64,0.5,right,1.562500e+01,5.000000e-01,40/40/40/34,40,0,2/2/2/2,0.002,0.091,1798824,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,D64,1/500,64,0.5,left,1.562500e+01,5.000000e-01,40/40/40/34,40,0,2/2/2/2,0.002,0.092,1798824,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,D128,1/500,128,1,E,7.812500e+00,1.000000e+00,48/48/48/41,48,0,2/2/2/2,0.013,0.562,13755728,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,D128,1/500,128,1,right,7.812500e+00,1.000000e+00,45/45/45/39,45,0,2/2/2/2,0.006,0.502,13755728,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,D128,1/500,128,1,left,7.812500e+00,1.000000e+00,45/45/45/39,45,0,2/2/2/2,0.006,0.495,13755728,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,D128,1/500,128,0.5,E,7.812500e+00,5.000000e-01,29/29/29/26,29,0,2/2/2/2,0.007,0.287,13755728,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,D128,1/500,128,0.5,right,7.812500e+00,5.000000e-01,29/29/29/25,29,0,2/2/2/2,0.006,0.298,13755728,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+bjac4_ilu1,D128,1/500,128,0.5,left,7.812500e+00,5.000000e-01,29/29/29/25,29,0,2/2/2/2,0.006,0.300,13755728,-block_test_pc_type bjacobi -block_test_pc_bjacobi_blocks 4 -block_test_sub_pc_type ilu -block_test_sub_pc_factor_levels 1
+lu_petsc,E16,1/500,16,1,E,6.250000e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.002,0.001,64576,-block_test_pc_type lu
+lu_petsc,E16,1/500,16,1,right,6.250000e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.002,0.001,64576,-block_test_pc_type lu
+lu_petsc,E16,1/500,16,1,left,6.250000e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.002,0.001,64576,-block_test_pc_type lu
+lu_petsc,E16,1/500,16,0.5,E,6.250000e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.002,0.001,64576,-block_test_pc_type lu
+lu_petsc,E16,1/500,16,0.5,right,6.250000e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.002,0.001,64576,-block_test_pc_type lu
+lu_petsc,E16,1/500,16,0.5,left,6.250000e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.002,0.001,64576,-block_test_pc_type lu
+lu_petsc,C64,1/100,64,1,E,3.125000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.055,0.014,1806448,-block_test_pc_type lu
+lu_petsc,C64,1/100,64,1,right,3.125000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.055,0.014,1806448,-block_test_pc_type lu
+lu_petsc,C64,1/100,64,1,left,3.125000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.057,0.015,1806448,-block_test_pc_type lu
+lu_petsc,C64,1/100,64,0.5,E,3.125000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.057,0.014,1806448,-block_test_pc_type lu
+lu_petsc,C64,1/100,64,0.5,right,3.125000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.058,0.014,1806448,-block_test_pc_type lu
+lu_petsc,C64,1/100,64,0.5,left,3.125000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.056,0.014,1806448,-block_test_pc_type lu
+lu_petsc,D64,1/500,64,1,E,1.562500e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.056,0.014,1806440,-block_test_pc_type lu
+lu_petsc,D64,1/500,64,1,right,1.562500e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.056,0.014,1806440,-block_test_pc_type lu
+lu_petsc,D64,1/500,64,1,left,1.562500e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.057,0.014,1806440,-block_test_pc_type lu
+lu_petsc,D64,1/500,64,0.5,E,1.562500e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.059,0.014,1806440,-block_test_pc_type lu
+lu_petsc,D64,1/500,64,0.5,right,1.562500e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.057,0.014,1806440,-block_test_pc_type lu
+lu_petsc,D64,1/500,64,0.5,left,1.562500e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.057,0.014,1806440,-block_test_pc_type lu
+lu_petsc,D128,1/500,128,1,E,7.812500e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.374,0.066,13759064,-block_test_pc_type lu
+lu_petsc,D128,1/500,128,1,right,7.812500e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.382,0.069,13759064,-block_test_pc_type lu
+lu_petsc,D128,1/500,128,1,left,7.812500e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.397,0.069,13759064,-block_test_pc_type lu
+lu_petsc,D128,1/500,128,0.5,E,7.812500e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.391,0.069,13759064,-block_test_pc_type lu
+lu_petsc,D128,1/500,128,0.5,right,7.812500e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.395,0.069,13759064,-block_test_pc_type lu
+lu_petsc,D128,1/500,128,0.5,left,7.812500e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.406,0.075,13759064,-block_test_pc_type lu
+lu_mumps,E16,1/500,16,1,E,6.250000e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.015,0.002,69740,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,E16,1/500,16,1,right,6.250000e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.002,0.001,69740,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,E16,1/500,16,1,left,6.250000e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.002,0.001,69740,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,E16,1/500,16,0.5,E,6.250000e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.002,0.001,69740,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,E16,1/500,16,0.5,right,6.250000e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.002,0.001,69740,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,E16,1/500,16,0.5,left,6.250000e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.002,0.001,69740,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,C64,1/100,64,1,E,3.125000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.125,0.027,1814584,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,C64,1/100,64,1,right,3.125000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.126,0.026,1814584,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,C64,1/100,64,1,left,3.125000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.123,0.026,1814584,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,C64,1/100,64,0.5,E,3.125000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.125,0.026,1814584,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,C64,1/100,64,0.5,right,3.125000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.122,0.028,1814584,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,C64,1/100,64,0.5,left,3.125000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.129,0.026,1814584,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,D64,1/500,64,1,E,1.562500e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.135,0.027,1816956,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,D64,1/500,64,1,right,1.562500e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.126,0.026,1816956,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,D64,1/500,64,1,left,1.562500e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.126,0.029,1816956,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,D64,1/500,64,0.5,E,1.562500e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.126,0.026,1816956,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,D64,1/500,64,0.5,right,1.562500e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.123,0.026,1816956,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,D64,1/500,64,0.5,left,1.562500e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.124,0.028,1816956,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,D128,1/500,128,1,E,7.812500e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.620,0.121,13761488,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,D128,1/500,128,1,right,7.812500e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.605,0.124,13761488,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,D128,1/500,128,1,left,7.812500e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.604,0.122,13761488,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,D128,1/500,128,0.5,E,7.812500e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.627,0.125,13761488,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,D128,1/500,128,0.5,right,7.812500e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.605,0.125,13761488,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_mumps,D128,1/500,128,0.5,left,7.812500e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.609,0.120,13761488,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type mumps
+lu_umfpack,E16,1/500,16,1,E,6.250000e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.003,0.001,67776,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,E16,1/500,16,1,right,6.250000e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.003,0.001,67776,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,E16,1/500,16,1,left,6.250000e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.003,0.001,67776,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,E16,1/500,16,0.5,E,6.250000e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.003,0.001,67776,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,E16,1/500,16,0.5,right,6.250000e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.003,0.001,67776,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,E16,1/500,16,0.5,left,6.250000e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.003,0.001,67776,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,C64,1/100,64,1,E,3.125000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.049,0.022,1813620,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,C64,1/100,64,1,right,3.125000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.050,0.016,1813620,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,C64,1/100,64,1,left,3.125000e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.052,0.017,1813620,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,C64,1/100,64,0.5,E,3.125000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.049,0.019,1813620,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,C64,1/100,64,0.5,right,3.125000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.050,0.017,1813620,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,C64,1/100,64,0.5,left,3.125000e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.056,0.016,1813620,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,D64,1/500,64,1,E,1.562500e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.046,0.015,1813448,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,D64,1/500,64,1,right,1.562500e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.056,0.017,1813448,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,D64,1/500,64,1,left,1.562500e+01,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.047,0.017,1813448,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,D64,1/500,64,0.5,E,1.562500e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.048,0.015,1813448,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,D64,1/500,64,0.5,right,1.562500e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.047,0.016,1813448,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,D64,1/500,64,0.5,left,1.562500e+01,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.047,0.015,1813448,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,D128,1/500,128,1,E,7.812500e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.242,0.083,13759048,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,D128,1/500,128,1,right,7.812500e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.234,0.085,13759048,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,D128,1/500,128,1,left,7.812500e+00,1.000000e+00,1/1/1/1,1,0,2/2/2/2,0.231,0.084,13759048,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,D128,1/500,128,0.5,E,7.812500e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.237,0.084,13759048,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,D128,1/500,128,0.5,right,7.812500e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.234,0.084,13759048,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack
+lu_umfpack,D128,1/500,128,0.5,left,7.812500e+00,5.000000e-01,1/1/1/1,1,0,2/2/2/2,0.232,0.084,13759048,-block_test_pc_type lu -block_test_pc_factor_mat_solver_type umfpack

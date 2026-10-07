@@ -1,0 +1,28 @@
+feature,ex21_mode,same_algebra,same_discrete_matrices,same_default_solver,same_numerical_solution,byte_identical,reason_for_any_difference,evidence
+"spatial operators M, K (=L), tracking mass, control-box mass, M_Gamma, N (distributed/Neumann/Dirichlet)",convection off,YES,YES (byte-identical dumps),n/a,n/a,YES,-,t8d_final/logs/parity_dumps.log (24/24)
+"spatial operators M, K (=L), tracking mass, control-box mass, M_Gamma, N (distributed/Neumann/Dirichlet)","convection on, w=(0,0)",YES,YES (byte-identical dumps: the advective term adds exact +-0),n/a,n/a,YES,-,t8d_final/logs/parity_dumps.log (24/24)
+"state operator E (AY shell), BE and CN",convection off,YES,YES (built from the identical M, K),n/a,YES,YES,-,parity solutions (all bitwise in off mode)
+"state operator E (AY shell), BE and CN","convection on, w=(0,0)",YES,YES,n/a,YES,YES (AY path does not branch on the flag),-,parity solutions
+"adjoint operator E^T (AP shell), BE and CN",convection off,YES,YES,n/a,YES,YES,-,parity solutions
+"adjoint operator E^T (AP shell), BE and CN","convection on, w=(0,0)",YES,YES,n/a,YES (ADDITIVE/MATCHING bitwise),"YES on the ADDITIVE/MATCHING paths","HasConvection=true selects MatMultTranspose(K) in the AP shell; K is symmetric so the product is the same (bitwise here)",parity solutions
+"distributed control, default solver ADDITIVE_GAMG, BE/CN",convection off,YES,YES,YES (ADDITIVE_GAMG in both),YES,YES (fields+JSON+log lines),-,parity_solutions.csv distributed_*_default
+"distributed control, default solver ADDITIVE_GAMG, BE/CN","convection on, w=(0,0)",YES,YES,YES,YES,"fields+JSON YES; log differs only by the label convection=on",label only,parity_solutions.csv
+"distributed control, SCHUR_SWEEP (GMRES+GAMG and LU spatial), BE/CN",convection off,YES,YES,n/a (explicit),YES,YES,-,parity_solutions.csv distributed_*_sweep*
+"distributed control, SCHUR_SWEEP (GMRES+GAMG and LU spatial), BE/CN","convection on, w=(0,0)",YES,YES,n/a,YES (<= 3.8e-15; same outer its),NO,"HasConvection=true rebuilds the backward-sweep blocks as MatTranspose(A) + sqrt(beta) M_omega and transposes the CN coupling (different floating-point order); path difference only",parity_solutions.csv
+"distributed control, SCHUR_MATCHING, BE/CN",convection off,YES,YES,n/a,"YES (CN: both diverge, reason -11, identically)",YES,"CN failure is pre-existing in ex20",parity_solutions.csv
+"distributed control, SCHUR_MATCHING, BE/CN","convection on, w=(0,0)",YES,YES,n/a,YES (CN: identical divergence),"fields+JSON YES; log label only",label only,parity_solutions.csv
+"Neumann control, default ADDITIVE_GAMG / SCHUR_MATCHING, BE/CN",convection off,YES,YES,YES,YES,YES,-,parity_solutions.csv neumann_*
+"Neumann control, default ADDITIVE_GAMG / SCHUR_MATCHING, BE/CN","convection on, w=(0,0)",YES,YES,YES,YES,"fields+JSON YES; log label only",label only,parity_solutions.csv
+"Neumann control, SCHUR_SWEEP (GMRES+GAMG and LU), BE/CN",convection off,YES,YES,n/a,YES,YES,-,parity_solutions.csv
+"Neumann control, SCHUR_SWEEP (GMRES+GAMG and LU), BE/CN","convection on, w=(0,0)",YES,YES,n/a,YES (<= 2.8e-15; same outer its),NO,"transposed sweep blocks (as distributed); path difference only",parity_solutions.csv
+"Neumann control, SCHUR_BOUNDARY_REDUCED, BE/CN",convection off,YES,YES,n/a,YES,YES,-,parity_solutions.csv
+"Neumann control, SCHUR_BOUNDARY_REDUCED, BE/CN","convection on, w=(0,0)",YES,YES,n/a,NOT RUN (refused),n/a,"refused explicitly by the CLI whenever --convection on (flag, not value): the boundary-reduced Schur is SPD-specific; intended T7N restriction",parity_solutions.csv
+"Dirichlet control L2 / H1-space / H1-time / combined, BE/CN, DEFAULT solver",convection off,YES,YES,"NO: ex20 dense Woodbury core, ex21 iterative core (T8D default)",YES (<= 2.3e-14; J <= 1e-15; same outer its),NO,"new ex21 default (CG + R_H1t, rtol 1e-8); solver-default difference only",parity_solutions.csv dirichlet*_default
+"Dirichlet control L2 / H1-space / H1-time / combined, BE/CN, --dirichlet-core-solver dense",convection off,YES,YES,n/a (explicit),YES,YES (fields+JSON+log lines),-,parity_solutions.csv dirichlet*_dense
+"Dirichlet control L2 / H1-space / H1-time / combined, BE/CN, --dirichlet-core-solver dense","convection on, w=(0,0)",YES,YES,n/a,YES (<= 2.2e-15; same outer its),NO,"HasConvection=true: LU (not Cholesky) factors of A_I and A_I^T, transposed CN coupling, B_D^T via MatMultTranspose(K); path difference only",parity_solutions.csv
+"Dirichlet control L2 / H1-space / H1-time / combined, BE/CN, iterative core","convection off / on w=0",YES,YES,n/a,YES (<= 2.3e-14),NO,CG core (rtol 1e-8) vs dense reference,parity_solutions.csv dirichlet*_iterative
+"objectives J_track, J_reg",all modes,YES,YES,-,"YES (bitwise wherever fields are; else <= 2e-15 relative)",as fields,as above,parity_solutions.csv J_*_rel
+"KKT residuals (state/adjoint/stationarity) and true residual",all modes,YES,YES,-,YES (same order of magnitude; bitwise where fields are),as fields,as above,parity_solutions.csv
+"solver availability",convection off,-,-,"YES: identical set (ADDITIVE, MATCHING, SWEEP, BOUNDARY_REDUCED (Neumann), DIRICHLET_REDUCED (Dirichlet)); ex21 adds the iterative Dirichlet core",-,-,-,CLI
+"solver availability","convection on, w=(0,0)",-,-,"NO: boundary-reduced refused (flag); Dirichlet SWEEP/MATCHING refused as in ex20",-,-,"availability keyed on the convection FLAG, by design",CLI
+"ADDITIVE_GAMG under CN (distributed)",all,YES,YES,YES,"YES: converges at nx=8 N=16 in ex20 and ex21; fails (reason -3) at nx=16 N=32 IDENTICALLY in ex20 and ex21 (true residual 6.531e-3 defaults / 3.961e-3 T7F data)",YES,"pre-existing ex20 limitation, inherited unchanged",t8d_final/logs/additive_cn/

@@ -1,0 +1,7 @@
+A_t7f_data ex20 exit=8 reason=-3 outer_iterations=200 true_residual=0.0039614707436903106 
+A_t7f_data ex21 exit=8 reason=-3 true_residual=3.961e-03 reason=-3 
+B_defaults_nx16 ex20 exit=8 reason=-3 outer_iterations=200 true_residual=0.0065307570973697588 
+B_defaults_nx16 ex21 exit=8 reason=-3 true_residual=6.531e-03 reason=-3 
+
+[exited with code 144]
+T8F_NOTE rows C-F (single-parameter variants) stopped by the operator: B (ex20 defaults, nx=16 N=32) already fails identically in ex20 and ex21, so the failure is not attributable to nu, target, T or alpha_u; nx=8 N=16 converges (parity matrix).

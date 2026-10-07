@@ -1,0 +1,235 @@
+--- ex20/include/DirichletReducedSchur.cpp	2026-09-23 15:06:45.923146380 -0500
++++ ex21/include/DirichletReducedSchur.cpp	2026-10-05 21:36:48.027573888 -0500
+@@ -19,7 +19,8 @@
+     const ProblemConfig& config, DirichletControlOperators& dirichlet,
+     Mat mass, Mat stiffness, Mat tracking)
+     : dirichlet_(dirichlet), scheme_(config.time.scheme), tracking_(tracking),
+-      mass_(mass), steps_(config.time.steps), dt_(config.time.dt) {
++      mass_(mass), steps_(config.time.steps), dt_(config.time.dt),
++      convection_(HasConvection(config)) {
+   const double t0 = MPI_Wtime();
+   PetscCallAbort(PETSC_COMM_WORLD, MatGetSize(mass, &n_, nullptr));
+   PetscCallAbort(PETSC_COMM_WORLD, MatGetLocalSize(mass, &local_, nullptr));
+@@ -72,6 +73,8 @@
+   DestroyTimeSweepContext(forward_);
+   for (Vec* v : {&q_, &s_, &t_, &w_, &spatial_c_, &spatial_b_, &spatial_a_})
+     PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(v));
++  PetscCallAbort(PETSC_COMM_WORLD, MatDestroy(&coupling_transpose_));
++  PetscCallAbort(PETSC_COMM_WORLD, MatDestroy(&A_transpose_));
+   PetscCallAbort(PETSC_COMM_WORLD, MatDestroy(&coupling_));
+   PetscCallAbort(PETSC_COMM_WORLD, MatDestroy(&A_minus_));
+   PetscCallAbort(PETSC_COMM_WORLD, MatDestroy(&A_));
+@@ -116,16 +119,45 @@
+     PetscCallAbort(PETSC_COMM_WORLD,
+                    MatDuplicate(A_minus_, MAT_COPY_VALUES, &coupling_));
+     PetscCallAbort(PETSC_COMM_WORLD, MatScale(coupling_, -1.0));
+-    for (Mat m : {A_minus_, coupling_})
+-      PetscCallAbort(PETSC_COMM_WORLD, MatSetOption(m, MAT_SYMMETRIC, PETSC_TRUE));
++    if (!convection_)
++      for (Mat m : {A_minus_, coupling_})
++        PetscCallAbort(PETSC_COMM_WORLD, MatSetOption(m, MAT_SYMMETRIC, PETSC_TRUE));
++  }
++  Mat sweep_coupling = crank_nicolson ? coupling_ : mass_;
++  const double sweep_scale = crank_nicolson ? 1.0 : 0.0;   // 0 selects 1/dt
++  if (convection_) {
++    // T7D: A_I = M_I/dt + L_I (Aplus_I) is NOT symmetric.  The forward sweep
++    // (E_I) factors A_I by LU; the backward sweep (E_I^T) runs on A_I^T with the
++    // transposed coupling (BE: the hatted mass, symmetric; CN: -Aminus_I^T) and
++    // its own LU factor.  No symmetry flag is set.
++    // one reference each: spatial_ is adopted by the forward sweep only,
++    // spatial_transpose_ by the backward sweep only
++    spatial_ = CreateDirichletDirectSolver(A_, "dirichlet_reduced_a_", &backend_, true);
++    PetscCallAbort(PETSC_COMM_WORLD, MatTranspose(A_, MAT_INITIAL_MATRIX, &A_transpose_));
++    std::string backend_t;
++    spatial_transpose_ = CreateDirichletDirectSolver(A_transpose_, "dirichlet_reduced_at_",
++                                                     &backend_t, true);
++    Mat backward_coupling = sweep_coupling;
++    if (crank_nicolson) {
++      PetscCallAbort(PETSC_COMM_WORLD,
++                     MatTranspose(coupling_, MAT_INITIAL_MATRIX, &coupling_transpose_));
++      backward_coupling = coupling_transpose_;
++    }
++    InitializeTimeSweepContextWithSpatialSolver(forward_, TimeSweepDirection::FORWARD,
++                                                A_, sweep_coupling, steps_, dt_,
++                                                "dirichlet-forward", spatial_,
++                                                sweep_scale);
++    InitializeTimeSweepContextWithSpatialSolver(backward_, TimeSweepDirection::BACKWARD,
++                                                A_transpose_, backward_coupling, steps_, dt_,
++                                                "dirichlet-backward", spatial_transpose_,
++                                                sweep_scale);
++    return;
+   }
+   PetscCallAbort(PETSC_COMM_WORLD, MatSetOption(A_, MAT_SYMMETRIC, PETSC_TRUE));
+   PetscCallAbort(PETSC_COMM_WORLD, MatSetOption(A_, MAT_SPD, PETSC_TRUE));
+   spatial_ = CreateDirichletDirectSolver(A_, "dirichlet_reduced_a_", &backend_);
+   PetscCallAbort(PETSC_COMM_WORLD,
+                  PetscObjectReference(reinterpret_cast<PetscObject>(spatial_)));
+-  Mat sweep_coupling = crank_nicolson ? coupling_ : mass_;
+-  const double sweep_scale = crank_nicolson ? 1.0 : 0.0;   // 0 selects 1/dt
+   InitializeTimeSweepContextWithSpatialSolver(forward_, TimeSweepDirection::FORWARD,
+                                               A_, sweep_coupling, steps_, dt_,
+                                               "dirichlet-forward", spatial_,
+--- ex20/include/DirichletReducedSchur.hpp	2026-09-23 10:46:00.653619212 -0500
++++ ex21/include/DirichletReducedSchur.hpp	2026-10-05 21:36:30.043359655 -0500
+@@ -142,6 +142,14 @@
+   Mat coupling_ = nullptr;   // owned, Crank-Nicolson only: -Aminus_I
+   Mat mass_ = nullptr;       // borrowed hatted M_I (sweep coupling)
+   KSP spatial_ = nullptr;    // direct factor of A_, adopted by the sweeps
++  // T7D, convection only (null otherwise): the backward (E_I^T) sweep needs
++  // A_I^T and the transposed CN coupling; A_I is nonsymmetric, so both factors
++  // are LU, never Cholesky.  K = R_T + beta H stays SPD (H = Z^T W M_w Z with
++  // Z = E_I^{-1} B_D from forward responses only), so its dense Cholesky is kept.
++  bool convection_ = false;
++  Mat A_transpose_ = nullptr;
++  Mat coupling_transpose_ = nullptr;
++  KSP spatial_transpose_ = nullptr;
+   std::string backend_;
+   TimeSweepContext forward_, backward_;
+   unsigned steps_ = 0;
+--- ex20/include/DirichletControl.cpp	2026-09-23 15:06:26.487235808 -0500
++++ ex21/include/DirichletControl.cpp	2026-10-05 21:36:30.043359655 -0500
+@@ -21,6 +21,13 @@
+ 
+ KSP CreateDirichletDirectSolver(Mat matrix, const char* prefix,
+                                 std::string* backend) {
++  return CreateDirichletDirectSolver(matrix, prefix, backend, false);
++}
++
++/** T7D: `lu_only` skips the Cholesky candidates (a nonsymmetric matrix, e.g.
++ *  the convection block A_I, must never be handed to a Cholesky factor). */
++KSP CreateDirichletDirectSolver(Mat matrix, const char* prefix,
++                                std::string* backend, bool lu_only) {
+   int ranks = 1;
+   MPI_Comm_size(PETSC_COMM_WORLD, &ranks);
+   struct Candidate {
+@@ -33,7 +40,7 @@
+                                 {MATSOLVERMUMPS, MAT_FACTOR_LU}};
+   const Candidate* candidates = ranks > 1 ? parallel : serial;
+   const Candidate* chosen = nullptr;
+-  for (int i = 0; i < 2 && !chosen; ++i) {
++  for (int i = lu_only ? 1 : 0; i < 2 && !chosen; ++i) {
+     PetscBool available = PETSC_FALSE;
+     PetscCallAbort(PETSC_COMM_WORLD,
+                    MatGetFactorAvailable(matrix, candidates[i].package,
+@@ -71,6 +78,7 @@
+       ell_(config.control_h1_length), alpha_u_(config.alpha_u),
+       gamma_(config.control_h1_time_weight),
+       rho_(ControlTimeRatio(config)) {
++  transpose_stiffness_ = HasConvection(config);
+   PetscCallAbort(PETSC_COMM_WORLD, MatGetSize(mass_, &n_, nullptr));
+   PetscCallAbort(PETSC_COMM_WORLD, MatGetLocalSize(mass_, &local_, nullptr));
+   PetscCallAbort(PETSC_COMM_WORLD,
+@@ -337,30 +345,37 @@
+   return PETSC_SUCCESS;
+ }
+ 
+-/** out = A current - (M/dt) previous with A = M/dt + K on the unhatted
+- *  matrices: the step of both B_D (current = Q_C u_n, previous = Q_C u_{n-1})
+- *  and B_D^T (current = p_n, previous = p_{n+1}). */
+ /** out = A v_cur - (M/dt) v_prev   (backward Euler)
+  *      = A_plus v_cur + A_minus v_prev   (Crank-Nicolson),
+- *  the single place where the time scheme enters B_D and B_D^T. */
++ *  on the unhatted matrices: the single place where the time scheme enters B_D
++ *  (current = Q_C u_n, previous = Q_C u_{n-1}) and B_D^T (current = p_n,
++ *  previous = p_{n+1}).  T7D: `transpose` (B_D^T) applies the TRANSPOSED
++ *  blocks A^T = M/dt + L^T, A_plus^T, A_minus^T -- the mass matrix is
++ *  symmetric, so only the stiffness product changes, and only when the
++ *  stiffness is nonsymmetric (transpose_stiffness_, convection on). */
+ PetscErrorCode DirichletControlOperators::ApplyStep(Vec spatial_current,
+                                                     Vec spatial_previous,
+                                                     bool have_previous,
+-                                                    Vec spatial_out) {
++                                                    Vec spatial_out,
++                                                    bool transpose) {
++  auto stiffness_product = [&](Vec in, Vec out) -> PetscErrorCode {
++    if (transpose && transpose_stiffness_) return MatMultTranspose(stiffness_, in, out);
++    return MatMult(stiffness_, in, out);
++  };
+   if (scheme_ == ProblemConfig::TimeScheme::CRANK_NICOLSON) {
+-    PetscCall(MatMult(stiffness_, spatial_current, spatial_out));
++    PetscCall(stiffness_product(spatial_current, spatial_out));
+     PetscCall(VecScale(spatial_out, 0.5));
+     PetscCall(MatMult(mass_, spatial_current, spatial_d_));
+     PetscCall(VecAXPY(spatial_out, 1.0 / dt_, spatial_d_));
+     if (have_previous) {
+-      PetscCall(MatMult(stiffness_, spatial_previous, spatial_d_));
++      PetscCall(stiffness_product(spatial_previous, spatial_d_));
+       PetscCall(VecAXPY(spatial_out, 0.5, spatial_d_));
+       PetscCall(MatMult(mass_, spatial_previous, spatial_d_));
+       PetscCall(VecAXPY(spatial_out, -1.0 / dt_, spatial_d_));
+     }
+     return PETSC_SUCCESS;
+   }
+-  PetscCall(MatMult(stiffness_, spatial_current, spatial_out));
++  PetscCall(stiffness_product(spatial_current, spatial_out));
+   PetscCall(MatMult(mass_, spatial_current, spatial_d_));
+   PetscCall(VecAXPY(spatial_out, 1.0 / dt_, spatial_d_));
+   if (have_previous) {
+@@ -386,6 +401,18 @@
+ }
+ 
+ PetscErrorCode DirichletControlOperators::ApplyBDT(Vec p, Vec out) {
++  return ApplyBDTImpl(p, out, true);
++}
++
++PetscErrorCode DirichletControlOperators::ApplyBDTLegacy(Vec p, Vec out) {
++  return ApplyBDTImpl(p, out, false);
++}
++
++/** (B_D^T P)_n = Q_C^T [ A^T P_I p_n - (M/dt) P_I p_{n+1} ]          (BE)
++ *             = Q_C^T [ A_plus^T P_I p_n + A_minus^T P_I p_{n+1} ]    (CN):
++ *  the exact transpose of ApplyBD (T7D derivation,
++ *  boundary_convection/T7D_DIRICHLET_CONVECTION.md section 1). */
++PetscErrorCode DirichletControlOperators::ApplyBDTImpl(Vec p, Vec out, bool transpose) {
+   for (unsigned n = 0; n < steps_; ++n) {
+     PetscCall(SliceToSpatial(p, n, local_, spatial_a_));
+     PetscCall(MaskSpatial(spatial_a_, mask_, false));  // P_I p_n
+@@ -394,7 +421,7 @@
+       PetscCall(SliceToSpatial(p, n + 1, local_, spatial_b_));
+       PetscCall(MaskSpatial(spatial_b_, mask_, false));
+     }
+-    PetscCall(ApplyStep(spatial_a_, spatial_b_, have_next, spatial_c_));
++    PetscCall(ApplyStep(spatial_a_, spatial_b_, have_next, spatial_c_, transpose));
+     PetscCall(MaskSpatial(spatial_c_, mask_, true));   // Q_C^T
+     PetscCall(SpatialToSlice(spatial_c_, n, local_, out));
+   }
+--- ex20/include/DirichletControl.hpp	2026-09-23 15:11:24.753863433 -0500
++++ ex21/include/DirichletControl.hpp	2026-10-05 21:36:30.043359655 -0500
+@@ -86,6 +86,9 @@
+  *  several) with PETSc LU / MUMPS LU as the fallback.  The caller owns the
+  *  KSP; `backend` receives "package:factor". */
+ KSP CreateDirichletDirectSolver(Mat matrix, const char* prefix,
++                                std::string* backend, bool lu_only);
++/** Cholesky first (SPD matrices); `lu_only` overload above: nonsymmetric. */
++KSP CreateDirichletDirectSolver(Mat matrix, const char* prefix,
+                                 std::string* backend);
+ 
+ class DirichletControlOperators {
+@@ -104,6 +107,12 @@
+   PetscErrorCode ApplyBD(Vec u, Vec out);
+   /** out = B_D^T p (supported on C). */
+   PetscErrorCode ApplyBDT(Vec p, Vec out);
++  /** T7D DIAGNOSTIC ONLY (negative control): the pre-T7D B_D^T, which applies
++   *  the FORWARD step (A, not A^T) -- exact without convection, wrong with it.
++   *  Never used by the solver. */
++  PetscErrorCode ApplyBDTLegacy(Vec p, Vec out);
++  /** True when B_D^T transposes the (nonsymmetric) stiffness: convection on. */
++  bool transposes_stiffness() const { return transpose_stiffness_; }
+   /** z = R_H1t^{-1} b on C, zero outside.  With gamma_u = 0 this is the
+    *  accepted per-slot solve z_n = (1/What_u(n)) R_Gamma^{-1} (b_n)_C; with
+    *  gamma_u > 0 it is one dense replicated Cholesky solve over all slots. */
+@@ -183,7 +192,13 @@
+   /** out = rho R_H1t^{-1} q_0 on the space-time layout. */
+   PetscErrorCode AffineControl(Vec initial_trace, Vec out);
+   PetscErrorCode ApplyStep(Vec spatial_current, Vec spatial_previous,
+-                           bool have_previous, Vec spatial_out);
++                           bool have_previous, Vec spatial_out,
++                           bool transpose = false);
++  PetscErrorCode ApplyBDTImpl(Vec p, Vec out, bool transpose);
++  // T7D: B_D^T needs A^T = M/dt + L^T (CN: A_plus^T, A_minus^T).  M is
++  // symmetric; L is not under convection.  False (no convection) keeps the
++  // ex20 products bit for bit.
++  bool transpose_stiffness_ = false;
+ 
+   Mat mass_ = nullptr;        // borrowed, unhatted
+   Mat stiffness_ = nullptr;   // borrowed, unhatted

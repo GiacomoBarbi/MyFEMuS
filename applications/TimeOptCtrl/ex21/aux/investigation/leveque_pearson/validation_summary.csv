@@ -1,0 +1,76 @@
+test,quantity,value,criterion,status,note
+T0,algebraic LP-vs-ex21 CN checks,49/49,all PASS,PASS,
+T2 gates BE,"space-time transpose <Ex,y> - <x,E^T y>",1.6e-17,<= 1e-14,PASS,
+T2 gates BE,FD reduced gradient (production adjoint),5.4e-13,<= 1e-9,PASS,
+T2 gates BE,reduced Hessian symmetry,2.5e-14,<= 1e-12,PASS,
+T2 gates BE,negative control: FD gradient with untransposed L,5.7e-01,>= 1e-2 (must fail),PASS,
+T2 gates CN,"space-time transpose <Ex,y> - <x,E^T y>",7.3e-18,<= 1e-14,PASS,
+T2 gates CN,FD reduced gradient (production adjoint),5.3e-13,<= 1e-9,PASS,
+T2 gates CN,reduced Hessian symmetry,4.4e-14,<= 1e-12,PASS,
+T2 gates CN,negative control: FD gradient with untransposed L,7.7e-01,>= 1e-2 (must fail),PASS,
+"T2 space (sin3, compatible)","Q2 L2(L2) order of y on (0,T), nx 32->64",3.00,2.8 .. 3.3,PASS,
+"T2 space (sin3, compatible)","Q2 L2(L2) order of p on (0,T/2), nx 32->64",3.01,2.8 .. 3.3,PASS,
+"T2 space (sin3, compatible)","Q2 L2(L2) order of u on (0,T/2), nx 32->64",3.01,2.8 .. 3.3,PASS,
+"T2 space (sin3, compatible)","Q2 L2(L2) order of p on (0,T), nx 16->32",3.05,2.8 .. 3.3,PASS,
+"T2 space (sin3, compatible)","Q2 L2(L2) order of p on (0,T), nx 32->64",2.83,reported,PASS,temporal contamination: CN terminal adjoint layer at Nt = 256 (window t<=T/2 gives 3.0)
+"T2 space (sin3, compatible)","Q2 L2(L2) order of u on (0,T), nx 16->32",3.05,2.8 .. 3.3,PASS,
+"T2 space (sin3, compatible)","Q2 L2(L2) order of u on (0,T), nx 32->64",2.83,reported,PASS,temporal contamination: CN terminal adjoint layer at Nt = 256 (window t<=T/2 gives 3.0)
+T2 space,"max relative KKT block residual (state, adjoint)",5.41e-12,<= 1e-10,PASS,absolute ||Kx-b|| max 7.6e-12
+T2 space,max ||y_prod - y_march|| / ||y|| (independent LU march),4.22e-13,<= 1e-10,PASS,
+T2 space,max ||alpha_u u + eta p|| / ||alpha_u u||,8.56e-16,<= 1e-12,PASS,
+T2 space,all solves converged; outer FGMRES its,"[1, 2]",reason > 0,PASS,
+"T2 space (sin, f/y_d != 0 on boundary)","Q2 L2(L2) order of y, nx 16->32",2.50,~2.5 expected (inherited M_elim I_h f load),PASS,
+T2 space,temporal contamination of y_L2L2_rel at nx=32 (Nt 128 vs 256),6.6e-04,<= 2e-2,PASS,
+T2 space,temporal contamination of p_int_rel at nx=32 (Nt 128 vs 256),1.8e-02,<= 2e-2,PASS,
+T2 CN time,"order of y, Nt 16->32",2.22,1.8 .. 2.4,PASS,
+T2 CN time,"order of p (all slots), Nt 16->32",1.97,1.8 .. 2.4,PASS,
+T2 CN time,"order of p (interior), Nt 16->32",1.93,1.8 .. 2.4,PASS,
+T2 CN time,"order of u, Nt 16->32",1.97,1.8 .. 2.4,PASS,
+T2 CN time,"order of y(T), Nt 16->32",1.97,1.8 .. 2.4,PASS,
+T2 CN time,order of p sampled at t_n instead of t_{n-1/2},1.02,~1 (adjoint is an interval quantity),PASS,
+T2 CN time,relative error of p against -p_exact (wrong sign),2.000,~2 (sign confirmed),PASS,
+T2 CN time,"max relative KKT block residual (state, adjoint)",1.27e-14,<= 1e-10,PASS,absolute ||Kx-b|| max 1.3e-14
+T2 CN time,max ||y_prod - y_march|| / ||y|| (independent LU march),9.49e-14,<= 1e-10,PASS,
+T2 CN time,max ||alpha_u u + eta p|| / ||alpha_u u||,5.23e-17,<= 1e-12,PASS,
+T2 CN time,all solves converged; outer FGMRES its,[2],reason > 0,PASS,
+T2 CN terminal slot,"order of |p_N - p(t_(N-1/2))| (abs), Nt 256->512",1.89,reported (no first-order stagnation: > 1.2),PASS,
+T2 CN terminal slot,relative terminal error at Nt = 512,0.032,reported,PASS,|p(t_(N-1/2))| = O(dt): relative error O(dt)
+T2 CN terminal,"max relative KKT block residual (state, adjoint)",4.59e-15,<= 1e-10,PASS,absolute ||Kx-b|| max 1.9e-14
+T2 CN terminal,max ||y_prod - y_march|| / ||y|| (independent LU march),6.50e-15,<= 1e-10,PASS,
+T2 CN terminal,max ||alpha_u u + eta p|| / ||alpha_u u||,5.29e-17,<= 1e-12,PASS,
+T2 CN terminal,all solves converged; outer FGMRES its,[2],reason > 0,PASS,
+T2 BE time,"order of y, Nt 32->64",1.01,0.9 .. 1.1,PASS,
+T2 BE time,"order of p, Nt 32->64",1.00,0.9 .. 1.1,PASS,
+T2 BE time,"order of u, Nt 32->64",1.00,0.9 .. 1.1,PASS,
+T2 BE time,"max relative KKT block residual (state, adjoint)",1.30e-14,<= 1e-10,PASS,absolute ||Kx-b|| max 1.3e-14
+T2 BE time,max ||y_prod - y_march|| / ||y|| (independent LU march),4.48e-14,<= 1e-10,PASS,
+T2 BE time,max ||alpha_u u + eta p|| / ||alpha_u u||,5.22e-17,<= 1e-12,PASS,
+T2 BE time,all solves converged; outer FGMRES its,[2],reason > 0,PASS,
+T1 CN paper rule,"h-order of y on (0,T), l 5->6",2.12,1.8 .. 2.4 (O(h^2) via the tau rule),PASS,
+T1 CN paper rule,"h-order of p on (0,T/2), l 5->6",2.00,1.8 .. 2.4 (O(h^2) via the tau rule),PASS,
+T1 CN paper rule,"h-order of p on (0,T), l 5->6",1.78,reported,PASS,includes the DTO terminal adjoint layer (ex20 section 27)
+T1 CN paper rule,"h-order of u on (0,T), l 5->6",1.78,reported,PASS,includes the DTO terminal adjoint layer (ex20 section 27)
+T1 CN paper rule,"max relative KKT block residual (state, adjoint)",2.95e-13,<= 1e-10,PASS,absolute ||Kx-b|| max 1.9e-10
+T1 CN paper rule,max ||y_prod - y_march|| / ||y|| (independent LU march),9.73e-15,<= 1e-10,PASS,
+T1 CN paper rule,max ||alpha_u u + eta p|| / ||alpha_u u||,5.26e-17,<= 1e-12,PASS,
+T1 CN paper rule,all solves converged; outer FGMRES its,[2],reason > 0,PASS,
+T1 BE paper rule,"h-order of y on (0,T), l 4->5",2.04,1.8 .. 2.4 (O(h^2) via the tau rule),PASS,
+T1 BE paper rule,"h-order of p on (0,T/2), l 4->5",2.02,1.8 .. 2.4 (O(h^2) via the tau rule),PASS,
+T1 BE paper rule,"h-order of p on (0,T), l 4->5",1.84,reported,PASS,includes the DTO terminal adjoint layer (ex20 section 27)
+T1 BE paper rule,"h-order of u on (0,T), l 4->5",1.84,reported,PASS,includes the DTO terminal adjoint layer (ex20 section 27)
+T1 BE paper rule,"max relative KKT block residual (state, adjoint)",4.15e-13,<= 1e-10,PASS,absolute ||Kx-b|| max 3.9e-10
+T1 BE paper rule,max ||y_prod - y_march|| / ||y|| (independent LU march),3.56e-14,<= 1e-10,PASS,
+T1 BE paper rule,max ||alpha_u u + eta p|| / ||alpha_u u||,5.29e-17,<= 1e-12,PASS,
+T1 BE paper rule,all solves converged; outer FGMRES its,[2],reason > 0,PASS,
+T1 temporal vs ex20,"max |ex21/ex20 - 1| of y_l2rel, p_l2rel at Nt = 8..32",0.035,<= 0.1 (both temporal-dominated: identical time discretisation),PASS,
+T1 temporal,"dt-order of p on (0,T/2), Nt 32->64",1.96,1.8 .. 2.3,PASS,
+T1 temporal,"dt-order of p on (0,T), Nt 32->64",1.78,reported,PASS,terminal adjoint layer; ex20 section 22 measured the same (1.72-1.82)
+T1 temporal,"max relative KKT block residual (state, adjoint)",1.77e-13,<= 1e-10,PASS,absolute ||Kx-b|| max 9.4e-11
+T1 temporal,max ||y_prod - y_march|| / ||y|| (independent LU march),1.41e-14,<= 1e-10,PASS,
+T1 temporal,max ||alpha_u u + eta p|| / ||alpha_u u||,5.26e-17,<= 1e-12,PASS,
+T1 temporal,all solves converged; outer FGMRES its,[2],reason > 0,PASS,
+T1 v = 0,"convection on (v = 0, transposed adjoint path) vs off: max rel. change of errors",0.0e+00,<= 1e-6,PASS,
+T1 beta / v=0,"max relative KKT block residual (state, adjoint)",1.75e-13,<= 1e-10,PASS,absolute ||Kx-b|| max 2.3e-10
+T1 beta / v=0,max ||y_prod - y_march|| / ||y|| (independent LU march),2.97e-15,<= 1e-10,PASS,
+T1 beta / v=0,max ||alpha_u u + eta p|| / ||alpha_u u||,6.68e-17,<= 1e-12,PASS,
+T1 beta / v=0,all solves converged; outer FGMRES its,[2],reason > 0,PASS,

@@ -1,0 +1,34 @@
+category,feature,status_with_convection,validated_solver,evidence,documented_limitation
+CONTROL,full-domain distributed control,VALIDATED,"SCHUR_SWEEP (LU or GMRES+GAMG spatial); ADDITIVE_GAMG BE only","LP T1-T6 (lp-heat exact, lp52, LPS); exact OC conv-sin3/lift-*; T7F natural-conv exact (Q2 order 3, BE 1, CN 2)",-
+CONTROL,subdomain (box) distributed control,VALIDATED,SCHUR_SWEEP,"M25 Ex3/Ex4/Ex5, EF 9.5/9.6; gates",axis-aligned boxes; element-centroid selection
+CONTROL,multi-zone distributed control (--control-box-add),VALIDATED WITH DOCUMENTED LIMITATION,SCHUR_SWEEP,"T7F: masks/union/overlap exact; lowest-index rule; gates BE/CN natural+Dirichlet BC; self-convergence u 2.98, p 2.9, BE 1, CN 2; MPI np 1/2/4",state spatial order 2.2-2.8 (error concentrated at control-box interfaces: discontinuous chi_C u); no closed-form optimum; centroid selection
+CONTROL,Neumann boundary control,VALIDATED WITH DOCUMENTED LIMITATION,SCHUR_SWEEP only (ADDITIVE/MATCHING fail for Neumann CN - pre-existing; boundary-reduced refused under convection),"T7N exact OC, gates, orders, MPI",CN trace terminal layer in u; boundary-reduced Schur heat-only; high-Pe not campaigned
+CONTROL,Dirichlet boundary control,VALIDATED WITH DOCUMENTED LIMITATION,SCHUR_DIRICHLET_REDUCED (convection-aware LU/MUMPS; sweep/matching/boundary-reduced refused),"T7D exact OC (image kernel), symbolic, gates G3D-G9D, orders, MPI",dense Woodbury memory ~ (Nt*|C|)^2; corner/initial data compatibility; CN J_reg endpoint reporting constant
+TRACKING,full-domain tracking,VALIDATED,all distributed solvers,LP; exact OC (incl. T7F natural-conv),-
+TRACKING,subdomain tracking,VALIDATED,SCHUR_SWEEP,"M25/EF; gates",centroid selection
+TRACKING,multi-zone tracking (--tracking-box-add),VALIDATED,SCHUR_SWEEP,"T7F: union areas, sum of disjoint masks, overlap no double count, lowest-index rule; gates; p converges at Q2 rate",centroid selection
+TRACKING,non-colocated control/tracking,VALIDATED,SCHUR_SWEEP,"M25 Ex3/Ex5, EF 9.6; T7F multi-zone (no shared element verified on the matrices)",-
+TRACKING,time-dependent target,VALIDATED WITH DOCUMENTED LIMITATION,all,"every exact OC uses a time-dependent y_d; sin_x_minus_t gates",moving_gaussian / exp_minus_t_cos2pi preset-only (CLI rejects them)
+DATA/BC,whole-domain source,VALIDATED,all,exact-OC manufactured sources (T2/T3/T7N/T7D/T7F),-
+DATA/BC,single-region source,VALIDATED,SCHUR_SWEEP,"M25 Ex3-5, EF 9.5/9.6",-
+DATA/BC,multiple source regions (--source-box-add),VALIDATED WITH DOCUMENTED LIMITATION,SCHUR_SWEEP,"T7F: two regions, contributions, superposition/removal <= 4e-12, overlap bitwise, BE/CN, KKT 1.7e-15, march, MPI <= 4e-15",one source field on the union (no per-region amplitude; equivalent by superposition); non-constant source shapes preset/override-only
+DATA/BC,homogeneous Dirichlet state BC,VALIDATED,all distributed solvers,"LP, exact OC, gates",whole external boundary only
+DATA/BC,inhomogeneous Dirichlet state BC (lifting),VALIDATED WITH DOCUMENTED LIMITATION,SCHUR_SWEEP,"T3/T3b lift-const/exp/track, lp52",time-independent g; distributed control only; presets only
+DATA/BC,natural state BC,VALIDATED,"SCHUR_SWEEP; ADDITIVE_GAMG BE only (50 its full domain)","T7F natural-conv exact OC: nu dn p + (w.n) p = 0 exercised (p != 0 on dOmega, w.n != 0); G1N; wrong-BC negative control; Q2 order 3; BE 1; CN 2; 3 winds; MPI",no convective-flux (Robin) inflow BC option
+TIME/REG,backward Euler,VALIDATED,all,orders 1 everywhere (T2-T7F),-
+TIME/REG,Crank-Nicolson,VALIDATED,all,orders 2 everywhere (T2-T7F),CN data-compatibility order reduction (T7D production data); interval-constant distributed/Neumann controls
+TIME/REG,L2 control regularisation,VALIDATED,all,everything above,-
+TIME/REG,Dirichlet H1-space,VALIDATED,SCHUR_DIRICHLET_REDUCED,T7D closed form + gates,-
+TIME/REG,Dirichlet H1-time,VALIDATED WITH DOCUMENTED LIMITATION,SCHUR_DIRICHLET_REDUCED,T7D gates + self-convergence (BE 1 / CN 2),no closed-form optimum; Dirichlet control only
+TIME/REG,combined H1-space/H1-time,VALIDATED WITH DOCUMENTED LIMITATION,SCHUR_DIRICHLET_REDUCED,T7D gates + self-convergence,as H1-time
+CONVECTION,constant wind,VALIDATED,all,"G1-G4, exact OC orders (T2, T7N, T7D, T7F)",-
+CONVECTION,variable wind,VALIDATED WITH DOCUMENTED LIMITATION,SCHUR_SWEEP,"T3 MMS/OC orders, LP 5.2",two named fields only; time-independent; div-free assumed; boundary-control exact OCs use constant wind
+CONVECTION,exact transpose adjoint,VALIDATED,all,"G2 <= 3e-17 everywhere; G3D B_D^T; G1N boundary identity; negative controls fail",-
+CONVECTION,Galerkin high-Pe behaviour,VALIDATED WITH DOCUMENTED LIMITATION,SCHUR_SWEEP + LU / ILU / ASM,"T4 map, T5",oscillations on under-resolved meshes; GAMG spatial fails at high Pe; boundary-control high-Pe not campaigned
+CONVECTION,LPS,VALIDATED WITH DOCUMENTED LIMITATION,SCHUR_SWEEP (GAMG+LPS),T6 matrix/KKT gates; MPI,P0 projection loses one Q2 order; corner undershoots; distributed control only
+SOLVERS,SCHUR_SWEEP,VALIDATED,-,"2 outer its for every T7F feature (LU and GMRES+GAMG spatial), MPI",default spatial GAMG fails at high Pe (use LU/ILU)
+SOLVERS,ADDITIVE_GAMG (distributed default),VALIDATED WITH DOCUMENTED LIMITATION,-,"BE: gates; T7F 8-50 its (multi-zone, sources, full-domain natural)","BE ONLY: under CN it does not converge for ANY distributed configuration (heat or convection, natural or Dirichlet BC, one box/full domain/multi-zone; reason -3, residual not reduced; identical in the T7D binary => pre-existing; rejected explicitly by the T6 acceptance guard, exit 8) -> use --pc-schur-sweep for CN; BE outer its grow with Pe (>37 min, stopped, at Pe_cell 0.87 full domain); not for Neumann CN"
+SOLVERS,SCHUR_MATCHING,VALIDATED WITH DOCUMENTED LIMITATION,-,run_all_gates (distributed),low Pe only; not for Neumann CN
+SOLVERS,SCHUR_DIRICHLET_REDUCED,VALIDATED WITH DOCUMENTED LIMITATION,-,"T7D: 1-2 its, all winds/regularisations, MPI",memory ~ (Nt*|C|)^2
+SOLVERS,SCHUR_BOUNDARY_REDUCED,NOT VALIDATED (heat only; refused under convection),-,explicit refusal,SPD-specific; non-blocking
+SOLVERS,MPI production path,VALIDATED,-,"T5, T6, T7N, T7D, T7F (np 1/2/4; fields <= 4e-15)",verification drivers serial-only

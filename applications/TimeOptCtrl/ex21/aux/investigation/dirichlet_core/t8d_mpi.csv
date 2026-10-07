@@ -1,0 +1,10 @@
+case,np,max_field_rel_vs_np1,J_rel_vs_np1,outer,true_residual,core_its_total,core_its_max,rt_backend,spatial_backend,rank_maxrss_MB_max,rank_maxrss_MB_min,sum_maxrss_MB,wall
+iterative_nx32_nt128,1,0.00e+00,0.00e+00,1,2.56e-10,13,13,cholmod:cholesky,petsc:lu,712,712,712,8.73
+iterative_nx32_nt128,2,7.52e-11,7.93e-13,1,3.47e-10,13,13,mumps:cholesky,mumps:lu,411,397,808,9.26
+iterative_nx32_nt128,4,9.14e-11,8.78e-12,1,3.06e-10,13,13,mumps:cholesky,mumps:lu,233,213,894,8.01
+dense_nx32_nt128,1,0.00e+00,0.00e+00,1,2.56e-10,,,,petsc:lu,1782,1782,1782,23.40
+dense_nx32_nt128,2,7.38e-11,7.92e-13,1,3.47e-10,,,,mumps:lu,1351,1334,2685,23.45
+dense_nx32_nt128,4,9.27e-11,8.78e-12,1,3.06e-10,,,,mumps:lu,1114,1083,4392,21.21
+iterative_nx48_nt256,1,0.00e+00,0.00e+00,1,1.15e-09,13,13,cholmod:cholesky,petsc:lu,2973,2973,2973,39.48
+iterative_nx48_nt256,2,1.84e-10,1.61e-12,1,1.21e-09,13,13,mumps:cholesky,mumps:lu,1629,1582,3211,42.47
+iterative_nx48_nt256,4,1.63e-10,1.15e-11,1,9.36e-10,13,13,mumps:cholesky,mumps:lu,862,811,3305,43.47

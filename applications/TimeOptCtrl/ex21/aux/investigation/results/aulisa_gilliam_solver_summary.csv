@@ -1,0 +1,37 @@
+benchmark,dim,colocated,nu,velocity,Pe_cell,alpha_u,mesh,steps,scheme,outer_its,schur_its,schur_per_outer,schur_cap_hit,spatial_its,true_residual,reason,sweep_failures,wall_s,log
+Math2025 Ex3,1,no,2.0,2,0.0125,1e-09,40,1600,CN,7,700,100.0,yes (every solve),n/r,7.091e-09,2,0,556.92,math2025_ex3/logs/cn_sweep_nx40_nt1600.log
+Math2025 Ex3 (alpha sweep),1,no,2.0,2,0.00313,1e-11,160,800,BE,5,500,100.0,yes (every solve),n/r,4.41e-10,2,0,577.17,math2025_ex4/logs/ex3sweep_be_a1e-11_nx160_nt800.log
+Math2025 Ex3 (alpha sweep),1,no,2.0,2,0.00313,0.001,160,800,BE,2,15,7.5,no,n/r,5.102e-12,2,0,34.96,math2025_ex4/logs/ex3sweep_be_a1e-3_nx160_nt800.log
+Math2025 Ex3 (alpha sweep),1,no,2.0,2,0.00313,1e-05,160,800,BE,2,29,14.5,no,n/r,3.022e-11,2,0,61.19,math2025_ex4/logs/ex3sweep_be_a1e-5_nx160_nt800.log
+Math2025 Ex3 (alpha sweep),1,no,2.0,2,0.00313,1e-07,160,800,BE,2,61,30.5,no,n/r,3.188e-11,2,0,116.86,math2025_ex4/logs/ex3sweep_be_a1e-7_nx160_nt800.log
+Math2025 Ex3 (alpha sweep),1,no,2.0,2,0.00313,1e-09,160,800,BE,2,175,87.5,no,n/r,3.179e-11,2,0,263.54,math2025_ex4/logs/ex3sweep_be_a1e-9_nx160_nt800.log
+Math2025 Ex4,1,yes,2.0,2,0.000781,1e-11,640,1200,CN,2,15,7.5,no,n/r,1.299e-10,2,0,165.49,math2025_ex4/logs/sweep_cn_a1e-11_nx640_nt1200.log
+Math2025 Ex4,1,yes,2.0,2,0.000781,0.001,640,1200,CN,2,13,6.5,no,n/r,1.5e-11,2,0,157.43,math2025_ex4/logs/sweep_cn_a1e-3_nx640_nt1200.log
+Math2025 Ex4,1,yes,2.0,2,0.000781,1e-05,640,1200,CN,2,15,7.5,no,n/r,1.171e-10,2,0,182.75,math2025_ex4/logs/sweep_cn_a1e-5_nx640_nt1200.log
+Math2025 Ex4,1,yes,2.0,2,0.000781,1e-07,640,1200,CN,2,15,7.5,no,n/r,1.259e-10,2,0,175.79,math2025_ex4/logs/sweep_cn_a1e-7_nx640_nt1200.log
+Math2025 Ex4,1,yes,2.0,2,0.000781,1e-09,640,1200,CN,2,16,8.0,no,n/r,1.29e-10,2,0,187.31,math2025_ex4/logs/sweep_cn_a1e-9_nx640_nt1200.log
+Math2025 Ex5,2,no,2.0,"(2,2)",0.0463,1e-07,48x16,400,CN,3,300,100.0,yes (every solve),n/r,9.223e-11,2,0,4699.94,math2025_ex5/logs/ref_cn_nx48_nz16_nt400.log
+EF 9.5,2,yes,1.0,"(2,1)",0.11,1e-10,32x12,400,CN,2,12,6.0,no,n/r,9.22e-14,2,0,120.59,errorfeedback_95_96/logs/sweep_ef95_a1e-10_cn_nx32_nz12_nt400.log
+EF 9.5,2,yes,1.0,"(2,1)",0.11,1e-11,32x12,400,CN,2,9,4.5,no,n/r,6.936e-14,2,0,87.82,errorfeedback_95_96/logs/sweep_ef95_a1e-11_cn_nx32_nz12_nt400.log
+EF 9.5,2,yes,1.0,"(2,1)",0.11,0.001,32x12,400,CN,2,15,7.5,no,n/r,1.612e-13,2,0,142.6,errorfeedback_95_96/logs/sweep_ef95_a1e-3_cn_nx32_nz12_nt400.log
+EF 9.5,2,yes,1.0,"(2,1)",0.11,0.0001,32x12,400,CN,2,17,8.5,no,n/r,6.413e-14,2,0,153.57,errorfeedback_95_96/logs/sweep_ef95_a1e-4_cn_nx32_nz12_nt400.log
+EF 9.5,2,yes,1.0,"(2,1)",0.11,1e-05,32x12,400,CN,2,17,8.5,no,n/r,7.238e-14,2,0,126.22,errorfeedback_95_96/logs/sweep_ef95_a1e-5_cn_nx32_nz12_nt400.log
+EF 9.5,2,yes,1.0,"(2,1)",0.11,1e-06,32x12,400,CN,2,17,8.5,no,n/r,6.161e-14,2,0,125.56,errorfeedback_95_96/logs/sweep_ef95_a1e-6_cn_nx32_nz12_nt400.log
+EF 9.5,2,yes,1.0,"(2,1)",0.11,1e-07,32x12,400,CN,2,16,8.0,no,n/r,7.84e-14,2,0,120.64,errorfeedback_95_96/logs/sweep_ef95_a1e-7_cn_nx32_nz12_nt400.log
+EF 9.5,2,yes,1.0,"(2,1)",0.11,1e-08,32x12,400,CN,2,16,8.0,no,n/r,1.341e-13,2,0,155.64,errorfeedback_95_96/logs/sweep_ef95_a1e-8_cn_nx32_nz12_nt400.log
+EF 9.5,2,yes,1.0,"(2,1)",0.11,1e-09,32x12,400,CN,2,16,8.0,no,n/r,6.617e-14,2,0,149.06,errorfeedback_95_96/logs/sweep_ef95_a1e-9_cn_nx32_nz12_nt400.log
+EF 9.5,2,yes,1.0,"(2,1)",0.0274,1e-10,128x48,200,CN,2,14,7.0,no,n/r,2.256e-13,2,0,1907.98,errorfeedback_95_96/logs/sweep_ef95_a1e-10_cn_nx128_nz48_nt200.log
+EF 9.5,2,yes,1.0,"(2,1)",0.0274,1e-11,128x48,200,CN,2,15,7.5,no,n/r,1.749e-13,2,0,1147.5,errorfeedback_95_96/logs/sweep_ef95_a1e-11_cn_nx128_nz48_nt200.log
+EF 9.5,2,yes,1.0,"(2,1)",0.0274,1e-07,128x48,200,CN,2,16,8.0,no,n/r,1.726e-13,2,0,1927.34,errorfeedback_95_96/logs/sweep_ef95_a1e-7_cn_nx128_nz48_nt200.log
+EF 9.5,2,yes,1.0,"(2,1)",0.0274,1e-09,128x48,200,CN,2,16,8.0,no,n/r,1.73e-13,2,0,1762.15,errorfeedback_95_96/logs/sweep_ef95_a1e-9_cn_nx128_nz48_nt200.log
+EF 9.6,2,no,1.0,"(2,1)",0.11,1e-10,32x12,400,CN,70,7000,100.0,yes (every solve),n/r,7.969e-09,2,0,24482.84,errorfeedback_95_96/logs/sweep_ef96_a1e-10_cn_nx32_nz12_nt400.log
+EF 9.6,2,no,1.0,"(2,1)",0.11,0.001,32x12,400,CN,2,17,8.5,no,n/r,5.054e-13,2,0,166.43,errorfeedback_95_96/logs/sweep_ef96_a1e-3_cn_nx32_nz12_nt400.log
+EF 9.6,2,no,1.0,"(2,1)",0.11,0.0001,32x12,400,CN,2,34,17.0,no,n/r,2.072e-13,2,0,290.3,errorfeedback_95_96/logs/sweep_ef96_a1e-4_cn_nx32_nz12_nt400.log
+EF 9.6,2,no,1.0,"(2,1)",0.11,1e-05,32x12,400,CN,2,77,38.5,no,n/r,2.492e-13,2,0,514.76,errorfeedback_95_96/logs/sweep_ef96_a1e-5_cn_nx32_nz12_nt400.log
+EF 9.6,2,no,1.0,"(2,1)",0.11,1e-06,32x12,400,CN,2,168,84.0,no,n/r,2.823e-12,2,0,1269.47,errorfeedback_95_96/logs/sweep_ef96_a1e-6_cn_nx32_nz12_nt400.log
+EF 9.6,2,no,1.0,"(2,1)",0.11,1e-07,32x12,400,CN,3,300,100.0,yes (every solve),n/r,1.422e-09,2,0,2726.17,errorfeedback_95_96/logs/sweep_ef96_a1e-7_cn_nx32_nz12_nt400.log
+EF 9.6,2,no,1.0,"(2,1)",0.11,1e-08,32x12,400,CN,7,700,100.0,yes (every solve),n/r,5.968e-09,2,0,6336.86,errorfeedback_95_96/logs/sweep_ef96_a1e-8_cn_nx32_nz12_nt400.log
+EF 9.6,2,no,1.0,"(2,1)",0.11,1e-09,32x12,400,CN,18,1800,100.0,yes (every solve),n/r,8.375e-09,2,0,11534.48,errorfeedback_95_96/logs/sweep_ef96_a1e-9_cn_nx32_nz12_nt400.log
+EF 9.6,2,no,1.0,"(2,1)",0.0549,1e-07,64x24,200,CN,5,500,100.0,yes (every solve),n/r,1.862e-09,2,0,6745.68,errorfeedback_95_96/logs/sweep_ef96_a1e-7_cn_nx64_nz24_nt200.log
+EF 9.6,2,no,1.0,"(2,1)",0.0549,1e-07,64x24,400,CN,3,300,100.0,yes (every solve),n/r,1.739e-09,2,0,7210.56,errorfeedback_95_96/logs/sweep_ef96_a1e-7_cn_nx64_nz24_nt400.log
+EF 9.6 (ABORTED production),2,no,1.0,"(2,1)",0.11,1e-11,32x12,400,CN,n/a (killed),n/a,,"(yes, per diagnostics)",n/r,n/a,killed by user request,,37515.24,errorfeedback_95_96/logs/ABORTED_sweep_ef96_a1e-11_cn_nx32_nz12_nt400.log
