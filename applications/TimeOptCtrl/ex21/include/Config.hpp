@@ -54,19 +54,28 @@ struct ProblemConfig {
    *  where the control lives on the boundary the constraint would remove. */
   enum class StateBoundaryCondition { NATURAL, HOMOGENEOUS_DIRICHLET };
 
+  /** Storage axes (T9): axis 0 = x always.  In 2D the second storage axis is
+   *  historically called "z" (zmin/zmax, nz, vy).  In 3D the storage axes are
+   *  (x, y, z): axis 1 = y (ymin/ymax, ny, vy) and axis 2 = z (zmin/zmax, nz,
+   *  vz).  ymin/ymax and ny are read only in 3D. */
   struct Domain {
     double xmin = 0.0;
     double xmax = 1.0;
     double zmin = 0.0;
     double zmax = 1.0;
+    double ymin = 0.0;   // 3D only (storage axis 1)
+    double ymax = 1.0;   // 3D only
   } domain;
 
   struct MeshConfig {
     unsigned nx = 4;
     unsigned nz = 4;
+    unsigned ny = 4;     // 3D only (storage axis 1)
   } mesh;
 
-  /** Spatial dimension of the mesh: 2 (QUAD9 box, the ex20 default) or 1
+  /** Spatial dimension of the mesh: 2 (QUAD9 box, the ex20 default), 1, or
+   *  (T9, phase 1) 3 = HEX27 box with the restricted feature set of Validate.
+   *  Original note: 2 (QUAD9 box, the ex20 default) or 1
    *  (EDGE3 interval [xmin, xmax]).  In 1D every z coordinate is 0, the z
    *  extents of the domain and of every box are ignored, and only DISTRIBUTED
    *  control is available (there is no control face). */
@@ -88,6 +97,7 @@ struct ProblemConfig {
     bool enabled = false;
     double vx = 0.0;
     double vy = 0.0;
+    double vz = 0.0;   // T9: 3D only (storage axis 2); must stay 0 in 1D/2D
     /** Optional VARIABLE, time-independent velocity w(x, z), evaluated at
      *  every quadrature point of the convection assembly.  Null (the default)
      *  is the constant pair (vx, vy) above, operation for operation.  The
@@ -213,6 +223,14 @@ struct ProblemConfig {
      *  are those of the homogeneous problem (see Discretization.cpp).  Null
      *  (the default) is the homogeneous problem, operation for operation. */
     double (*dirichlet_state)(const ProblemConfig&, double x, double z) = nullptr;
+    /** T9: 3D data (x, y, z) = storage axes (0, 1, 2); read only when
+     *  dimension == 3.  Null in 3D falls back to the built-in forms that do
+     *  not depend on the second/third coordinate (Validate refuses the rest). */
+    double (*source3d)(const ProblemConfig&, double x, double y, double z,
+                       double time) = nullptr;
+    double (*initial3d)(const ProblemConfig&, double x, double y, double z) = nullptr;
+    double (*target3d)(const ProblemConfig&, double x, double y, double z,
+                       double time) = nullptr;
   } data_overrides;
 
   /** T3b DIAGNOSTIC ONLY (negative control): false drops the affine tracking
@@ -293,8 +311,11 @@ struct ProblemConfig {
   // ignore z, so the default z ranges of the domain and boxes are left alone.
 
   void Validate() const {
-    if (dimension != 1u && dimension != 2u)
-      throw std::invalid_argument("dimension must be 1 or 2");
+    if (dimension != 1u && dimension != 2u && dimension != 3u)
+      throw std::invalid_argument("dimension must be 1, 2 or 3");
+    if (dimension != 3u && convection.vz != 0.0)
+      throw std::invalid_argument("--vz is a 3D wind component (--dimension 3)");
+    if (dimension == 3u) Validate3DPhase1();
     if (dimension == 1u && control.type != ControlType::DISTRIBUTED)
       throw std::invalid_argument(
           "1D meshes support DISTRIBUTED control only (no control face)");
@@ -382,6 +403,51 @@ struct ProblemConfig {
     // Crank-Nicolson covers every control type: DISTRIBUTED (stage 1) and
     // NEUMANN (stage 2) with piecewise-constant interval controls, DIRICHLET
     // (stage 3) with nodal controls and u_0 = y_0|_Gamma_c / eta as data.
+  }
+
+  /** T9 phase-1 whitelist for dimension 3: distributed full-domain control and
+   *  tracking, homogeneous Dirichlet state, constant wind (or none), BE/CN, L2
+   *  regularisation, unit cube.  Everything else is REFUSED, never
+   *  reinterpreted.  (Solver and run-mode restrictions: CommandLine.cpp.) */
+  void Validate3DPhase1() const {
+    auto refuse = [](const char* what) {
+      throw std::invalid_argument(std::string("3D phase 1: ") + what);
+    };
+    if (control.type != ControlType::DISTRIBUTED)
+      refuse("only distributed control (Neumann/Dirichlet boundary control are not ported)");
+    if (state_bc != StateBoundaryCondition::HOMOGENEOUS_DIRICHLET)
+      refuse("only the homogeneous Dirichlet state BC (--state-bc dirichlet)");
+    if (domain.xmin != 0.0 || domain.xmax != 1.0 || domain.ymin != 0.0 ||
+        domain.ymax != 1.0 || domain.zmin != 0.0 || domain.zmax != 1.0)
+      refuse("only the unit cube (0,1)^3 (--domain is not ported)");
+    if (mesh.nx == 0 || mesh.ny == 0 || mesh.nz == 0)
+      refuse("--nx, --ny, --nz must be positive");
+    auto full = [&](const Box& b) {
+      return b.xmin == domain.xmin && b.xmax == domain.xmax &&
+             b.zmin == domain.zmin && b.zmax == domain.zmax;
+    };
+    if (!full(control.region))
+      refuse("only full-domain control (--control-full-domain); boxes are not ported");
+    if (!full(tracking_box))
+      refuse("only full-domain tracking (--tracking-box 0 1 0 1); boxes are not ported");
+    if (!additional_tracking_regions.empty() || !additional_control_regions.empty())
+      refuse("multi-zone control/tracking is not ported");
+    if (!source_regions.empty()) refuse("source regions are not ported");
+    if (control_h1_length != 0.0 || control_h1_time_weight != 0.0)
+      refuse("only L2 control regularisation (no H1-space / H1-time)");
+    if (data_overrides.dirichlet_state) refuse("inhomogeneous Dirichlet lifting is not ported");
+    if (convection.field) refuse("only a constant wind (named/variable winds are not ported)");
+    if (convection.stabilization != ConvectionConfig::Stabilization::NONE)
+      refuse("no convection stabilisation (LPS is not ported)");
+    if (!std::isfinite(convection.vz)) refuse("invalid --vz");
+    if (!convection.enabled && (convection.vx != 0.0 || convection.vy != 0.0))
+      refuse("--vx/--vy/--vz need --convection on");
+    // data forms that read the 2D second coordinate
+    if (data.source_form != DataFieldForm::CONSTANT || data.initial_form != DataFieldForm::CONSTANT)
+      refuse("only constant built-in source/initial data (the cos(2 pi x) cos(2 pi z) forms are 2D)");
+    if (tracking.target_type != TrackingTargetType::CONSTANT &&
+        tracking.target_type != TrackingTargetType::SIN_X_MINUS_T)
+      refuse("only the constant and sin_x_minus_t built-in targets (the others are 2D-shaped)");
   }
 };
 
@@ -500,7 +566,10 @@ inline double UnitCosineMode(double x, double z, double time) {
 
 /** Distributed source term f(x, z, t) of the state equation. */
 inline double EvaluateSource(const ProblemConfig& config, double x, double z,
-                             double time) {
+                             double time, double axis2 = 0.0) {
+  // T9: in 3D (x, z, axis2) are the storage axes (0, 1, 2) = physical (x, y, z)
+  if (config.dimension == 3u && config.data_overrides.source3d)
+    return config.data_overrides.source3d(config, x, z, axis2, time);
   if (config.data_overrides.source)
     return config.data_overrides.source(config, x, z, time);
   if (config.data.source_form ==
@@ -511,7 +580,9 @@ inline double EvaluateSource(const ProblemConfig& config, double x, double z,
 
 /** Initial state y_0(x, z) of the state equation. */
 inline double EvaluateInitialState(const ProblemConfig& config, double x,
-                                   double z) {
+                                   double z, double axis2 = 0.0) {
+  if (config.dimension == 3u && config.data_overrides.initial3d)
+    return config.data_overrides.initial3d(config, x, z, axis2);
   if (config.data_overrides.initial_state)
     return config.data_overrides.initial_state(config, x, z);
   if (config.data.initial_form ==
@@ -521,7 +592,9 @@ inline double EvaluateInitialState(const ProblemConfig& config, double x,
 }
 
 inline double EvaluateTrackingTarget(const ProblemConfig& config, double x,
-                                     double z, double time) {
+                                     double z, double time, double axis2 = 0.0) {
+  if (config.dimension == 3u && config.data_overrides.target3d)
+    return config.data_overrides.target3d(config, x, z, axis2, time);
   if (config.data_overrides.tracking_target)
     return config.data_overrides.tracking_target(config, x, z, time);
   if (config.tracking.target_type ==

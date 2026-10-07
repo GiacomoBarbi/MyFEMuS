@@ -358,8 +358,11 @@ void DumpSpatialOperatorsSerial(const std::string& prefix,
     const std::string path = prefix + "_coords.txt";
     std::ofstream stream(path.c_str());
     stream << std::setprecision(17) << "# x z\n";
-    for (PetscInt i = 0; i < layout.local_size; ++i)
-      stream << layout.x[i] << ' ' << layout.z[i] << '\n';
+    for (PetscInt i = 0; i < layout.local_size; ++i) {
+      stream << layout.x[i] << ' ' << layout.z[i];
+      if (layout.three_d) stream << ' ' << layout.axis2[i];   // T9: 3D
+      stream << '\n';
+    }
   }
   std::cout << "EX20_OPERATOR_DUMP prefix=" << prefix
             << " n_spatial=" << layout.local_size << std::endl;

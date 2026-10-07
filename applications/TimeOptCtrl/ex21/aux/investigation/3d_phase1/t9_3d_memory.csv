@@ -1,0 +1,38 @@
+source,tag,backend,tolerance,n,N,spatial_dofs,spacetime_unknowns,maxrss_MB,bytes_per_unknown,outer_its,spatial_its_per_solve_max,spatial_solves,solve_wall_s,wall_s
+exact_ladder,spaceA_cn_n10_nt64,lu,tight 1e-12,10,64,9261,1778112,3883,2290,2,1,5504,72.932,92.93
+exact_ladder,spaceA_cn_n12_nt64,lu,tight 1e-12,12,64,15625,3000000,6705,2344,2,1,5504,150.046,183.09
+exact_ladder,spaceA_cn_n16_nt64,lu,tight 1e-12,16,64,35937,6899904,16096,2446,2,1,5504,482.844,565.67
+exact_ladder,spaceA_cn_n2_nt64,lu,tight 1e-12,2,64,125,24000,94,4088,1,1,2560,0.111,1.68
+exact_ladder,spaceA_cn_n4_nt64,lu,tight 1e-12,4,64,729,139968,307,2296,1,1,2560,1.089,3.69
+exact_ladder,spaceA_cn_n6_nt64,lu,tight 1e-12,6,64,2197,421824,888,2207,1,1,2752,4.646,9.94
+exact_ladder,spaceA_cn_n8_nt64,lu,tight 1e-12,8,64,4913,943296,2010,2234,2,1,5504,30.827,41.93
+exact_ladder,spaceB_cn_n10_nt64,lu,tight 1e-12,10,64,9261,1778112,3883,2290,2,1,5504,88.022,110.53
+exact_ladder,spaceB_cn_n12_nt64,lu,tight 1e-12,12,64,15625,3000000,6705,2344,2,1,5504,185.274,227.82
+exact_ladder,spaceB_cn_n16_nt64,gamg,tight 1e-12,16,64,35937,6899904,14496,2203,2,12,5504,1329.399,1446.27
+exact_ladder,spaceB_cn_n2_nt64,lu,tight 1e-12,2,64,125,24000,90,3911,1,1,2560,0.109,1.77
+exact_ladder,spaceB_cn_n4_nt64,lu,tight 1e-12,4,64,729,139968,306,2296,1,1,2560,1.121,3.74
+exact_ladder,spaceB_cn_n6_nt64,lu,tight 1e-12,6,64,2197,421824,887,2206,1,1,2752,5.094,10.57
+exact_ladder,spaceB_cn_n8_nt64,lu,tight 1e-12,8,64,4913,943296,2010,2235,1,1,2752,18.092,29.62
+exact_ladder,spaceH_cn_n10_nt64,lu,tight 1e-12,10,64,9261,1778112,3831,2259,1,1,2560,28.867,50.18
+exact_ladder,spaceH_cn_n12_nt64,lu,tight 1e-12,12,64,15625,3000000,6617,2313,1,1,2560,67.393,107.51
+exact_ladder,spaceH_cn_n2_nt64,lu,tight 1e-12,2,64,125,24000,91,3978,1,1,2368,0.093,1.75
+exact_ladder,spaceH_cn_n4_nt64,lu,tight 1e-12,4,64,729,139968,306,2289,1,1,2368,0.901,3.53
+exact_ladder,spaceH_cn_n6_nt64,lu,tight 1e-12,6,64,2197,421824,886,2203,2,1,5120,6.714,12.07
+exact_ladder,spaceH_cn_n8_nt64,lu,tight 1e-12,8,64,4913,943296,1983,2204,1,1,2560,12.157,23.60
+solver_baseline,be_nu0.02_asmilu,asmilu,production 1e-8,8,32,4913,471648,1204,2677,1,6,,49.6523,51.22
+solver_baseline,be_nu0.02_gamg,gamg,production 1e-8,8,32,4913,471648,989,2198,,,,,
+solver_baseline,be_nu0.02_lu,lu,production 1e-8,8,32,4913,471648,1065,2367,1,1,,10.229,11.76
+solver_baseline,be_nu0.25_asmilu,asmilu,production 1e-8,8,32,4913,471648,1204,2678,1,8,,64.5904,66.08
+solver_baseline,be_nu0.25_gamg,gamg,production 1e-8,8,32,4913,471648,996,2215,1,11,,20.1285,21.65
+solver_baseline,be_nu0.25_lu,lu,production 1e-8,8,32,4913,471648,1063,2363,1,1,,10.0983,11.62
+solver_baseline,cn_nu0.02_asmilu,asmilu,production 1e-8,8,32,4913,471648,1278,2842,1,6,,50.8715,52.37
+solver_baseline,cn_nu0.02_gamg,gamg,production 1e-8,8,32,4913,471648,1015,2257,1,39,,85.2446,86.79
+solver_baseline,cn_nu0.02_lu,lu,production 1e-8,8,32,4913,471648,1093,2430,1,1,,13.2711,14.83
+solver_baseline,cn_nu0.25_asmilu,asmilu,production 1e-8,8,32,4913,471648,1280,2846,1,6,,61.8207,63.43
+solver_baseline,cn_nu0.25_gamg,gamg,production 1e-8,8,32,4913,471648,1009,2244,1,10,,26.1299,27.74
+solver_baseline,cn_nu0.25_lu,lu,production 1e-8,8,32,4913,471648,1093,2429,1,1,,14.2881,15.83
+extrapolation (proportional fit of the LU exact ladder n>=4),n16_N64,lu,,16,64,35937,6899904,15693,,,,,,
+extrapolation (proportional fit of the LU exact ladder n>=4),n20_N64,lu,,20,64,68921,13232832,30096,,,,,,
+extrapolation (proportional fit of the LU exact ladder n>=4),n24_N64,lu,,24,64,117649,22588608,51374,,,,,,
+extrapolation (proportional fit of the LU exact ladder n>=4),n32_N64,lu,,32,64,274625,52728000,119921,,,,,,
+extrapolation (proportional fit of the LU exact ladder n>=4),n16_N128,lu,,16,128,35937,13799808,31385,,,,,,

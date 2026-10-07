@@ -115,13 +115,18 @@ RootDistributedFields GatherDistributedSolveToRoot(
       GatherSpatialOwnedValuesToRoot(layout.x, spatial_matrix);
   const std::vector<double> z =
       GatherSpatialOwnedValuesToRoot(layout.z, spatial_matrix);
+  // T9: the third storage coordinate, 3D only (layout.three_d is the same
+  // on every rank, so the collective gather is entered consistently).
+  std::vector<double> w;
+  if (layout.three_d) w = GatherSpatialOwnedValuesToRoot(layout.axis2, spatial_matrix);
   int rank = 0;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == 0) {
-    root.coordinates.assign(x.size(), std::vector<double>(2, 0.0));
+    root.coordinates.assign(x.size(), std::vector<double>(layout.three_d ? 3 : 2, 0.0));
     for (unsigned i = 0; i < x.size(); ++i) {
       root.coordinates[i][0] = x[i];
       root.coordinates[i][1] = z[i];
+      if (layout.three_d) root.coordinates[i][2] = w[i];
     }
   }
   root.state = GatherSpaceTimeToRoot(
@@ -150,7 +155,9 @@ void WriteParallelSolveJsonRankZero(
                  ? "NEUMANN"
              : config.control.type == ProblemConfig::ControlType::DIRICHLET
                  ? "DIRICHLET" : "DISTRIBUTED")
-         << "\",\"mesh\":[" << config.mesh.nx << ',' << config.mesh.nz
+         << "\",\"mesh\":[" << config.mesh.nx << ','
+         << (config.dimension == 3u ? std::to_string(config.mesh.ny) + "," : std::string())   // T9
+         << config.mesh.nz
          << "],\"N\":" << config.time.steps << ",\"dt\":"
          << config.time.dt << ",\"time_scheme\":\""
          << TimeSchemeName(config) << "\",\"target_type\":\""
@@ -224,7 +231,9 @@ void WriteParallelSolveJsonRankZero(
   for (unsigned i = 0; i < spatial_dofs; ++i) {
     if (i) stream << ',';
     stream << '[' << fields.coordinates[i][0] << ','
-           << fields.coordinates[i][1] << ']';
+           << fields.coordinates[i][1];
+    if (fields.coordinates[i].size() == 3u) stream << ',' << fields.coordinates[i][2];   // T9: 3D
+    stream << ']';
   }
   const char* names[] = {"state", "adjoint", "control_full"};
   const std::vector<double>* values[] = {
@@ -365,7 +374,9 @@ void PrintParallelSolveSummary(const ProblemConfig& config,
                          ? "DISTRIBUTED_WHOLE" : "DISTRIBUTED_BOX"))
               << dirichlet_suffix
               << " target=" << TrackingTargetName(config)
-              << " mesh=" << config.mesh.nx << 'x' << config.mesh.nz
+              << " mesh=" << config.mesh.nx << 'x'
+              << (config.dimension == 3u ? std::to_string(config.mesh.ny) + "x" : std::string())
+              << config.mesh.nz
               << " N=" << config.time.steps
               << " time_scheme=" << TimeSchemeName(config)
               << (config.dimension == 1u ? " dimension=1" : "")

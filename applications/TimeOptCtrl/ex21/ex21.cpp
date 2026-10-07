@@ -38,6 +38,7 @@
 #include "ConvectionVerification.hpp"
 #include "Benchmark2D.hpp"
 #include "ExactOcBenchmark.hpp"
+#include "ExactOc3D.hpp"
 #include "Math2025Benchmark.hpp"
 #include "Discretization.hpp"
 #include "Options.hpp"
@@ -104,6 +105,9 @@ static int RunNonProductionMode(const ProblemConfig& config,
                             solution_type);
 
     case RunMode::EXACT_OC:
+      if (config.dimension == 3u)   // T9: the 3D exact driver
+        return RunExactOptimalControl3D(config, options, solution, level_mesh,
+                                        solution_type);
       return RunExactOptimalControl(config, options, solution, level_mesh,
                                     solution_type);
 

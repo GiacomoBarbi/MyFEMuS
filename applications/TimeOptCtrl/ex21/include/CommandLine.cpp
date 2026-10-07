@@ -23,6 +23,7 @@
 //     ResolveProblemData in the order written there.
 
 #include "Options.hpp"
+#include "ExactOc3D.hpp"
 
 #include <stdexcept>
 #include <string>
@@ -53,6 +54,9 @@ struct RawCommandLineOptions {
   bool math2025_ex5 = false;        // ex21
   int errorfeedback = 0;            // ex21: 95 or 96
   bool solve_only = false;          // ex21: 2D preset data, production path
+  bool domain_given = false;        // T9: --domain (refused in 3D phase 1)
+  bool dimension3_requested = false;  // T9: --dimension 3 (presets may not override it)
+  bool ny_given = false;            // T9: --ny is 3D-only
   bool final_time_was_set = false;
   double requested_final_time = 0.0;
 };
@@ -124,6 +128,10 @@ static void ParseArguments(int argc, char** argv, ProblemConfig& config,
       raw.final_time_was_set = true;
     } else if (option == "--nx" && argument + 1 < argc) {
       config.mesh.nx = static_cast<unsigned>(std::stoul(argv[++argument]));
+    } else if (option == "--ny" && argument + 1 < argc) {
+      // T9: 3D only -- elements along storage axis 1 (physical y)
+      raw.ny_given = true;
+      config.mesh.ny = static_cast<unsigned>(std::stoul(argv[++argument]));
     } else if (option == "--nz" && argument + 1 < argc) {
       config.mesh.nz = static_cast<unsigned>(std::stoul(argv[++argument]));
     } else if (option == "--control-box" && argument + 4 < argc) {
@@ -249,10 +257,12 @@ static void ParseArguments(int argc, char** argv, ProblemConfig& config,
     // ---- ex21: dimension, domain, state BC, convection, convection gates ----
     } else if (option == "--dimension" && argument + 1 < argc) {
       const std::string value(argv[++argument]);
-      if (value != "1" && value != "2")
-        throw std::invalid_argument("--dimension must be 1 or 2");
-      config.dimension = value == "1" ? 1u : 2u;
+      if (value != "1" && value != "2" && value != "3")
+        throw std::invalid_argument("--dimension must be 1, 2 or 3");
+      config.dimension = value == "1" ? 1u : (value == "3" ? 3u : 2u);
+      raw.dimension3_requested = value == "3";
     } else if (option == "--domain" && argument + 4 < argc) {
+      raw.domain_given = true;
       config.domain.xmin = std::stod(argv[++argument]);
       config.domain.xmax = std::stod(argv[++argument]);
       config.domain.zmin = std::stod(argv[++argument]);
@@ -276,8 +286,9 @@ static void ParseArguments(int argc, char** argv, ProblemConfig& config,
     } else if (option == "--vy" && argument + 1 < argc) {
       config.convection.vy = std::stod(argv[++argument]);
     } else if (option == "--vz" && argument + 1 < argc) {
-      if (std::stod(argv[++argument]) != 0.0)
-        throw std::invalid_argument("--vz: ex21 meshes are 1D or 2D");
+      // T9: third wind component (storage axis 2); Validate refuses a
+      // nonzero value outside --dimension 3.
+      config.convection.vz = std::stod(argv[++argument]);
     } else if (option == "--wind" && argument + 1 < argc) {
       // ex21: a named variable velocity field (Config.hpp); requires
       // --convection on.  Absent: the constant (--vx, --vy).
@@ -473,6 +484,15 @@ static void ResolveProblemData(const RawCommandLineOptions& raw,
     if (raw.math2025_ex3 || raw.math2025_ex4 || raw.math2025_ex5 ||
         raw.errorfeedback != 0)
       throw std::invalid_argument("--exact-oc excludes the literature presets");
+    if (options.exact_oc == "conv-sin-3d" || options.exact_oc == "conv-sin3-3d") {
+      // T9: the 3D exact case (ExactOc3D.hpp); the wind stays the CLI one
+      if (options.exact_oc_velocity_set)
+        throw std::invalid_argument(
+            "the 3D exact cases take their wind from --convection on --vx --vy --vz");
+      ApplyExactOptimalControl3D(config, options.exact_oc, options.exact_oc_alpha_u,
+                                 raw.final_time_was_set ? raw.requested_final_time : -1.0,
+                                 options.exact_oc_nu);
+    } else
     ApplyExactOptimalControl(config, options.exact_oc, options.exact_oc_alpha_u,
                              raw.final_time_was_set ? raw.requested_final_time
                                                     : -1.0,
@@ -485,8 +505,43 @@ static void ResolveProblemData(const RawCommandLineOptions& raw,
   // ex21: a nonzero velocity without --convection on would be silently
   // ignored, and the ex20 batteries encode a symmetric diffusion operator.
   if (!config.convection.enabled &&
-      (config.convection.vx != 0.0 || config.convection.vy != 0.0))
-    throw std::invalid_argument("--vx/--vy require --convection on");
+      (config.convection.vx != 0.0 || config.convection.vy != 0.0 ||
+       config.convection.vz != 0.0))
+    throw std::invalid_argument("--vx/--vy/--vz require --convection on");
+  // T9: 3D phase-1 run modes and solvers (the feature whitelist is
+  // ProblemConfig::Validate3DPhase1).  Refuse, never reinterpret: the 1D/2D
+  // presets and exact cases above overwrite config.dimension, so the test is on
+  // what the command line REQUESTED, not on the (possibly reset) config.
+  if (raw.dimension3_requested && config.dimension != 3u)
+    throw std::invalid_argument(
+        "3D phase 1: --dimension 3 requested, but the selected preset / exact case"
+        " is 1D/2D (refused, not reinterpreted)");
+  if (raw.ny_given && config.dimension != 3u)
+    throw std::invalid_argument("--ny is 3D-only (in 2D the second axis is --nz)");
+  if (config.dimension == 3u) {
+    auto refuse = [](const std::string& what) {
+      throw std::invalid_argument("3D phase 1: " + what);
+    };
+    if (raw.domain_given) refuse("--domain is not ported (unit cube only)");
+    if (raw.math2025_ex3 || raw.math2025_ex4 || raw.math2025_ex5 || raw.errorfeedback != 0)
+      refuse("the Math2025 / ErrorFeedback presets are 1D/2D");
+    if (options.benchmark != LiteratureBenchmark::NONE ||
+        options.manufactured != ManufacturedCase::NONE)
+      refuse("the literature / manufactured batteries are 2D");
+    if (raw.convection_mms) refuse("--convection-mms is 2D");
+    if (raw.verify_stage1 || raw.verify_sweeps || raw.verify_boundary_reduced)
+      refuse("the ex20 verification batteries are 2D");
+    if (!options.exact_oc.empty() && options.exact_oc != "conv-sin-3d" &&
+        options.exact_oc != "conv-sin3-3d")
+      refuse("the only 3D exact OC cases are conv-sin-3d and conv-sin3-3d");
+    if (raw.pc_schur_matching || raw.pc_schur_boundary_reduced || raw.pc_schur_dirichlet_reduced)
+      refuse("only SCHUR_SWEEP (--pc-schur-sweep) or ADDITIVE_GAMG (BE) are validated");
+    if (options.pc_time_blocks > 0 || options.pc_sweep_depth > 0)
+      refuse("the inexact temporal sweep prototypes are not ported");
+    if (!raw.pc_schur_sweep && config.time.scheme == ProblemConfig::TimeScheme::CRANK_NICOLSON)
+      refuse("Crank-Nicolson needs --pc-schur-sweep (ADDITIVE_GAMG is not robust under CN,"
+             " T7F/T8D finalisation)");
+  }
   if (config.convection.enabled &&
       (options.benchmark != LiteratureBenchmark::NONE ||
        options.manufactured != ManufacturedCase::NONE || raw.verify_stage1 ||

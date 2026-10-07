@@ -43,4 +43,5 @@ target_sources(${EXEC_FILE} PRIVATE
   ${PROJECT_SOURCE_DIR}/include/Math2025Benchmark.cpp
   ${PROJECT_SOURCE_DIR}/include/Benchmark2D.cpp
   ${PROJECT_SOURCE_DIR}/include/ExactOcBenchmark.cpp
+  ${PROJECT_SOURCE_DIR}/include/ExactOc3D.cpp
 )

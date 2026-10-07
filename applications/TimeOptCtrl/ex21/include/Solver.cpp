@@ -56,7 +56,7 @@ static void FillTrackingTarget(const ProblemConfig& config,
     const PetscInt offset = static_cast<PetscInt>(slot) * layout.local_size;
     for (PetscInt i = 0; i < layout.local_size; ++i)
       values[offset + i] =
-          EvaluateTrackingTarget(config, layout.x[i], layout.z[i], time);
+          EvaluateTrackingTarget(config, layout.x[i], layout.z[i], time, layout.Axis2(i));
   }
   PetscCallAbort(PETSC_COMM_WORLD, VecRestoreArray(target, &values));
 }
@@ -165,7 +165,7 @@ DistributedDataSideResult BuildDistributedRightHandSide(
   PetscScalar* local = nullptr;
   PetscCallAbort(PETSC_COMM_WORLD, VecGetArray(spatial_input, &local));
   for (PetscInt i = 0; i < layout.local_size; ++i)
-    local[i] = EvaluateInitialState(config, layout.x[i], layout.z[i]);
+    local[i] = EvaluateInitialState(config, layout.x[i], layout.z[i], layout.Axis2(i));
   PetscCallAbort(PETSC_COMM_WORLD, VecRestoreArray(spatial_input, &local));
   if (IsCrankNicolson(config) &&
       config.state_bc ==
@@ -209,7 +209,7 @@ DistributedDataSideResult BuildDistributedRightHandSide(
       const double time = node * config.time.dt;
       PetscCallAbort(PETSC_COMM_WORLD, VecGetArray(spatial_input, &local));
       for (PetscInt i = 0; i < layout.local_size; ++i)
-        local[i] = EvaluateSource(config, layout.x[i], layout.z[i], time);
+        local[i] = EvaluateSource(config, layout.x[i], layout.z[i], time, layout.Axis2(i));
       PetscCallAbort(PETSC_COMM_WORLD, VecRestoreArray(spatial_input, &local));
       PetscCallAbort(PETSC_COMM_WORLD,
                      MatMult(source_operator, spatial_input, spatial_result));
@@ -234,7 +234,7 @@ DistributedDataSideResult BuildDistributedRightHandSide(
       const double time = (slot + 1u) * config.time.dt;
       PetscCallAbort(PETSC_COMM_WORLD, VecGetArray(spatial_input, &local));
       for (PetscInt i = 0; i < layout.local_size; ++i)
-        local[i] = EvaluateSource(config, layout.x[i], layout.z[i], time);
+        local[i] = EvaluateSource(config, layout.x[i], layout.z[i], time, layout.Axis2(i));
       PetscCallAbort(PETSC_COMM_WORLD, VecRestoreArray(spatial_input, &local));
       PetscCallAbort(PETSC_COMM_WORLD,
                      MatMult(source_operator, spatial_input, spatial_result));
@@ -287,7 +287,7 @@ static void FillInitialControlTrace(const ProblemConfig& config,
   PetscCallAbort(PETSC_COMM_WORLD, VecGetArray(spatial, &a));
   for (PetscInt i = 0; i < layout.local_size; ++i)
     a[i] = mask[static_cast<std::size_t>(i)]
-               ? EvaluateInitialState(config, layout.x[i], layout.z[i]) /
+               ? EvaluateInitialState(config, layout.x[i], layout.z[i], layout.Axis2(i)) /
                      config.eta
                : 0.0;
   PetscCallAbort(PETSC_COMM_WORLD, VecRestoreArray(spatial, &a));
@@ -453,7 +453,7 @@ static DistributedDataSideResult ReconstructDistributedDataSide(
     PetscCallAbort(PETSC_COMM_WORLD, VecGetArray(spatial_input, &initial));
     for (PetscInt i = 0; i < layout.local_size; ++i)
       initial[i] = mask[static_cast<std::size_t>(i)]
-                       ? EvaluateInitialState(config, layout.x[i], layout.z[i]) /
+                       ? EvaluateInitialState(config, layout.x[i], layout.z[i], layout.Axis2(i)) /
                              config.eta
                        : 0.0;
     PetscCallAbort(PETSC_COMM_WORLD, VecRestoreArray(spatial_input, &initial));
@@ -473,8 +473,8 @@ static DistributedDataSideResult ReconstructDistributedDataSide(
     PetscScalar* initial = nullptr;
     PetscCallAbort(PETSC_COMM_WORLD, VecGetArray(difference, &initial));
     for (PetscInt i = 0; i < layout.local_size; ++i)
-      initial[i] = EvaluateInitialState(config, layout.x[i], layout.z[i]) -
-                   EvaluateTrackingTarget(config, layout.x[i], layout.z[i], 0.0);
+      initial[i] = EvaluateInitialState(config, layout.x[i], layout.z[i], layout.Axis2(i)) -
+                   EvaluateTrackingTarget(config, layout.x[i], layout.z[i], 0.0, layout.Axis2(i));
     PetscCallAbort(PETSC_COMM_WORLD, VecRestoreArray(difference, &initial));
     // physical: y_0 (whose trace is g) against y_d(0), full tracking matrix
     PetscCallAbort(PETSC_COMM_WORLD,

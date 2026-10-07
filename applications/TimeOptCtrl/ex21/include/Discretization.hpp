@@ -103,7 +103,11 @@ struct OwnedSpatialLayout {
   PetscInt end = 0;
   PetscInt local_size = 0;
   std::vector<double> x;
-  std::vector<double> z;
+  std::vector<double> z;       // storage axis 1 (2D "z"; physical y in 3D)
+  std::vector<double> axis2;   // T9: storage axis 2 (physical z), 3D only; empty otherwise
+  bool three_d = false;        // T9: same on every rank (collective decisions use this)
+  /** The third storage coordinate of owned DOF i (0 outside 3D). */
+  double Axis2(PetscInt i) const { return axis2.empty() ? 0.0 : axis2[i]; }
 };
 
 // ---------------------------------------------------------------------------
@@ -247,6 +251,13 @@ SpatialFieldIntegrals IntegrateSpatialField(
  *  config.neumann_control_face integrates over exactly the faces carrying
  *  M_Gamma.  The quadrature is the same JacobianSur rule that assembled
  *  M_Gamma, so the error is consistent with the operator the solver used. */
+/** T9: 3D counterpart of IntegrateSpatialField with an exact field of the
+ *  three storage coordinates (x, y, z).  Same quadrature, same conventions. */
+typedef double (*SpatialScalarFunction3D)(double x, double y, double z, void* context);
+SpatialFieldIntegrals IntegrateSpatialField3D(
+    femus::Mesh* mesh, unsigned solution_type, const double* global_values,
+    SpatialScalarFunction3D exact, void* context);
+
 SpatialFieldIntegrals IntegrateBoundaryField(
     femus::Mesh* mesh, unsigned solution_type, unsigned face_id,
     const double* global_values, SpatialScalarFunction exact, void* context);

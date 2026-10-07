@@ -46,6 +46,13 @@ void BuildMesh(const ProblemConfig& config, MultiLevelMesh& mesh) {
     mesh.GenerateCoarseBoxMesh(config.mesh.nx, 0, 0, config.domain.xmin,
                                config.domain.xmax, 0.0, 0.0, 0.0, 0.0, EDGE3,
                                "seventh");
+  else if (config.dimension == 3u)
+    // T9: Q2 HEX27 box, storage axes (x, y, z) with (nx, ny, nz) elements.
+    mesh.GenerateCoarseBoxMesh(config.mesh.nx, config.mesh.ny, config.mesh.nz,
+                               config.domain.xmin, config.domain.xmax,
+                               config.domain.ymin, config.domain.ymax,
+                               config.domain.zmin, config.domain.zmax,
+                               HEX27, "seventh");
   else
     mesh.GenerateCoarseBoxMesh(config.mesh.nx, config.mesh.nz, 0,
                                config.domain.xmin, config.domain.xmax,
@@ -148,6 +155,8 @@ static bool CentroidIsInBox(double x_centroid, double z_centroid, double xmin,
  *  The centroid is computed once per element and reused for every box. */
 unsigned TrackingRegionIndex(const ProblemConfig& config, Mesh* mesh,
                              unsigned element) {
+  // T9: 3D phase 1 tracks the whole domain (Validate refuses boxes).
+  if (config.dimension == 3u) return 1u;
   double x_centroid = 0.0;
   double z_centroid = 0.0;
   ElementCentroid(mesh, element, x_centroid, z_centroid);
@@ -166,6 +175,8 @@ unsigned TrackingRegionIndex(const ProblemConfig& config, Mesh* mesh,
 
 unsigned ControlRegionIndex(const ProblemConfig& config, Mesh* mesh,
                             unsigned element) {
+  // T9: 3D phase 1 controls the whole domain (Validate refuses boxes).
+  if (config.dimension == 3u) return 1u;
   double x_centroid = 0.0;
   double z_centroid = 0.0;
   ElementCentroid(mesh, element, x_centroid, z_centroid);
@@ -399,13 +410,19 @@ NativeSpatialOperators BuildNativeSpatialOperators(
        {&operators.M, &operators.K, &operators.M_track, &operators.M_ctrl_box,
         &operators.M_Gamma, &operators.K_Gamma, &operators.M_source}) {
     *matrix = SparseMatrix::build();
-    (*matrix)->init(global_rows, global_rows, local_rows, local_rows, 64, 64);
+    // T9: a Q2 HEX27 vertex row couples 5^3 = 125 DOFs; 1D/2D keep 64.
+    const int row_nonzeros = config.dimension == 3u ? 125 : 64;
+    (*matrix)->init(global_rows, global_rows, local_rows, local_rows,
+                    row_nonzeros, row_nonzeros);
   }
 
   const unsigned dimension = mesh->GetDimension();
   // Convection velocity per mesh axis (axis 1 is the coordinate called z).
   const bool convection = HasConvection(config);
-  const double velocity[2] = {config.convection.vx, config.convection.vy};
+  // T9: the third component (storage axis 2) is read only in 3D; the 2D
+  // loop below never touches it.
+  const double velocity[3] = {config.convection.vx, config.convection.vy,
+                              config.convection.vz};
   std::vector<double> phi;
   std::vector<double> gradient;
   double weight = 0.0;
@@ -439,7 +456,7 @@ NativeSpatialOperators BuildNativeSpatialOperators(
       // orientation is checked numerically by --verify-convection.
       // A variable field w(x) is evaluated at the physical quadrature point
       // (isoparametric map); the constant pair is used unchanged otherwise.
-      double point_velocity[2] = {velocity[0], velocity[1]};
+      double point_velocity[3] = {velocity[0], velocity[1], velocity[2]};
       if (convection && config.convection.field) {
         double x = 0.0, z = 0.0;
         for (unsigned a = 0; a < element_dofs; ++a) {
@@ -452,7 +469,7 @@ NativeSpatialOperators BuildNativeSpatialOperators(
         for (unsigned a = 0; a < element_dofs; ++a)
           for (unsigned b = 0; b < element_dofs; ++b) {
             double advective = 0.0;
-            for (unsigned axis = 0; axis < dimension && axis < 2u; ++axis)
+            for (unsigned axis = 0; axis < dimension && axis < 3u; ++axis)
               advective += point_velocity[axis] * gradient[b * dimension + axis];
             local_stiffness[a * element_dofs + b] += advective * phi[a] * weight;
           }
@@ -484,8 +501,10 @@ NativeSpatialOperators BuildNativeSpatialOperators(
 
     // A 1D mesh has point faces and no control face (Validate allows only
     // DISTRIBUTED control there), so M_Gamma and K_Gamma stay empty.
-    for (unsigned face = 0;
-         config.dimension != 1u && face < mesh->GetElementFaceNumber(element);
+    // T9: skipped in 3D too -- no boundary control in phase 1, and the
+  // tangential stiffness below assumes one-dimensional faces.
+  for (unsigned face = 0;
+         config.dimension == 2u && face < mesh->GetElementFaceNumber(element);
          ++face) {
       const unsigned face_id = static_cast<unsigned>(
           -(mesh->el->GetFaceElementIndex(element, face) + 1));
@@ -691,6 +710,9 @@ OwnedSpatialLayout BuildOwnedSpatialLayout(Mesh* mesh,
     throw std::runtime_error("FEMuS/PETSc spatial ownership mismatch");
   layout.x.assign(layout.local_size, 0.0);
   layout.z.assign(layout.local_size, 0.0);
+  const bool three_d = mesh->GetDimension() == 3u;   // T9
+  layout.three_d = three_d;
+  if (three_d) layout.axis2.assign(layout.local_size, 0.0);
   std::vector<unsigned char> seen(layout.local_size, 0u);
   for (unsigned element = mesh->_elementOffset[rank];
        element < mesh->_elementOffset[rank + 1u]; ++element) {
@@ -704,6 +726,7 @@ OwnedSpatialLayout BuildOwnedSpatialLayout(Mesh* mesh,
       const unsigned coordinate_dof = mesh->GetSolutionDof(a, element, 2);
       layout.x[local] = (*mesh->_topology->_Sol[0])(coordinate_dof);
       layout.z[local] = (*mesh->_topology->_Sol[1])(coordinate_dof);
+      if (three_d) layout.axis2[local] = (*mesh->_topology->_Sol[2])(coordinate_dof);
       seen[local] = 1u;
     }
   }
@@ -787,6 +810,45 @@ SpatialFieldIntegrals IntegrateSpatialField(
         discrete += phi[a] * nodal[a];
       }
       const double analytic = exact(x, z, context);
+      const double difference = discrete - analytic;
+      totals.error_squared += difference * difference * weight;
+      totals.exact_squared += analytic * analytic * weight;
+      totals.field_squared += discrete * discrete * weight;
+    }
+  }
+  return totals;
+}
+
+SpatialFieldIntegrals IntegrateSpatialField3D(
+    Mesh* mesh, unsigned solution_type, const double* global_values,
+    SpatialScalarFunction3D exact, void* context) {
+  SpatialFieldIntegrals totals;
+  const unsigned rank = mesh->processor_id();
+  std::vector<double> phi;
+  std::vector<double> gradient;
+  double weight = 0.0;
+  for (unsigned element = mesh->_elementOffset[rank];
+       element < mesh->_elementOffset[rank + 1u]; ++element) {
+    const ElementData data = GatherElementData(mesh, solution_type, element);
+    const unsigned element_dofs = data.dofs.size();
+    if (data.coordinates.size() != 3u)
+      throw std::runtime_error("IntegrateSpatialField3D needs a 3D mesh");
+    std::vector<double> nodal(element_dofs, 0.0);
+    for (unsigned a = 0; a < element_dofs; ++a)
+      nodal[a] = global_values[mesh->GetSolutionDof(a, element, solution_type)];
+    for (unsigned gauss = 0;
+         gauss < mesh->_finiteElement[data.geometry][solution_type]->GetGaussPointNumber();
+         ++gauss) {
+      mesh->_finiteElement[data.geometry][solution_type]->Jacobian(
+          data.coordinates, gauss, weight, phi, gradient);
+      double x = 0.0, y = 0.0, z = 0.0, discrete = 0.0;
+      for (unsigned a = 0; a < element_dofs; ++a) {
+        x += phi[a] * data.coordinates[0][a];
+        y += phi[a] * data.coordinates[1][a];
+        z += phi[a] * data.coordinates[2][a];
+        discrete += phi[a] * nodal[a];
+      }
+      const double analytic = exact(x, y, z, context);
       const double difference = discrete - analytic;
       totals.error_squared += difference * difference * weight;
       totals.exact_squared += analytic * analytic * weight;

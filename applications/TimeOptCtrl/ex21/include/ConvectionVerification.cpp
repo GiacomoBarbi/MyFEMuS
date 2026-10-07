@@ -391,7 +391,7 @@ static void RunDirichletConvectionGates(const ProblemConfig& config,
     const std::vector<unsigned char>& m = d.control_mask();
     for (PetscInt i = 0; i < local; ++i)
       a[i] = m[static_cast<std::size_t>(i)]
-                 ? EvaluateInitialState(config, spatial.layout.x[i], spatial.layout.z[i]) / config.eta
+                 ? EvaluateInitialState(config, spatial.layout.x[i], spatial.layout.z[i], spatial.layout.Axis2(i)) / config.eta
                  : 0.0;
     PetscCallAbort(PETSC_COMM_WORLD, VecRestoreArray(trace_spatial, &a));
   }
@@ -512,6 +512,10 @@ int RunConvectionVerification(const ProblemConfig& config,
               config.convection.field ? " wind=" : "",
               config.convection.field ? config.convection.field_name : "",
               config.data_overrides.dirichlet_state ? " dirichlet_data=lifted" : "");
+  if (config.dimension == 3u)   // T9: the 3D extents and wind component
+    std::printf("EX21_VC_CONFIG3D nx=%u ny=%u nz=%u vx=%.6g vy=%.6g vz=%.6g\n",
+                config.mesh.nx, config.mesh.ny, config.mesh.nz, config.convection.vx,
+                config.convection.vy, config.convection.vz);
 
   // ---------------------------------------------------------------- G1
   // C = L - K with the convection term switched on and off on the SAME mesh.
@@ -525,7 +529,7 @@ int RunConvectionVerification(const ProblemConfig& config,
         ProblemConfig::StateBoundaryCondition::NATURAL;
     with.convection.enabled = true;
     without.convection.enabled = false;
-    without.convection.vx = without.convection.vy = 0.0;
+    without.convection.vx = without.convection.vy = without.convection.vz = 0.0;
     // G1 tests the Galerkin convection term alone (T6: LPS is gated in G5).
     with.convection.stabilization = without.convection.stabilization =
         ProblemConfig::ConvectionConfig::Stabilization::NONE;
@@ -555,12 +559,13 @@ int RunConvectionVerification(const ProblemConfig& config,
     PetscCallAbort(PETSC_COMM_WORLD, VecSet(one, 1.0));
     PetscCallAbort(PETSC_COMM_WORLD, MatMult(L.mass, one, m_one));
     for (unsigned axis = 0; axis < config.dimension; ++axis) {
-      const double v_axis =
-          axis == 0u ? config.convection.vx : config.convection.vy;
+      // T9: storage axis 2 (3D only) carries vz
+      const double v_axis = axis == 0u ? config.convection.vx
+                            : axis == 1u ? config.convection.vy : config.convection.vz;
       PetscScalar* f = nullptr;
       PetscCallAbort(PETSC_COMM_WORLD, VecGetArray(field, &f));
       for (PetscInt i = 0; i < L.layout.local_size; ++i)
-        f[i] = axis == 0u ? L.layout.x[i] : L.layout.z[i];
+        f[i] = axis == 0u ? L.layout.x[i] : axis == 1u ? L.layout.z[i] : L.layout.axis2[i];
       PetscCallAbort(PETSC_COMM_WORLD, VecRestoreArray(field, &f));
       if (config.convection.field) {
         // Variable field: (C lin)_i = int w_axis phi_i = (M I_h w_axis)_i,
@@ -587,7 +592,8 @@ int RunConvectionVerification(const ProblemConfig& config,
       const double transposed = Norm(c_field, NORM_INFINITY) / scale;
       std::printf("EX21_VC_G1_ORIENTATION axis=%s v=%.6g"
                   " |C*lin - v*M1|/|M1|=%.3e |C^T*lin - v*M1|/|M1|=%.3e\n",
-                  axis == 0u ? "x" : "z", v_axis, strong, transposed);
+                  axis == 0u ? "x" : (config.dimension == 3u ? (axis == 1u ? "y" : "z") : "z"),
+                  v_axis, strong, transposed);
     }
     std::printf("EX21_VC_G1_NORMS ||C||_F=%.6e ||K||_F=%.6e\n", c_norm, k_norm);
     for (Vec* v : {&one, &m_one, &field, &c_field, &expected})
