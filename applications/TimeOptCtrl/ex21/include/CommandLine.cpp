@@ -73,6 +73,7 @@ struct RawCommandLineOptions {
   ProblemConfig::Box tracking_box3d, control_box3d;
   std::vector<ProblemConfig::Box> tracking_add3d, control_add3d, source_add3d;
   std::string neumann_face3d;       // T11N: --neumann-face3d xmin|xmax|ymin|ymax|zmin|zmax
+  std::string dirichlet_face3d;     // T11D: --dirichlet-face3d xmin|xmax|ymin|ymax|zmin|zmax
   bool final_time_was_set = false;
   double requested_final_time = 0.0;
 };
@@ -81,10 +82,10 @@ struct RawCommandLineOptions {
 static ProblemConfig::Box ReadBox3D(char** argv, int& argument);
 
 /** The 3D exact OC cases (ExactOc3D): T9 conv-sin-3d / conv-sin3-3d, T10
- *  natural-conv-3d, T11N neumann-conv-3d. */
+ *  natural-conv-3d, T11N neumann-conv-3d, T11D dirichlet-conv-3d. */
 static bool IsExact3DCase(const std::string& name) {
   return name == "conv-sin-3d" || name == "conv-sin3-3d" || name == "natural-conv-3d" ||
-         name == "neumann-conv-3d";
+         name == "neumann-conv-3d" || name == "dirichlet-conv-3d";   // T11D
 }
 
 /** T10: the 3D domain and regions, after every preset / exact case has run
@@ -99,10 +100,10 @@ static void ApplyRegions3D(ProblemConfig& config, const RawCommandLineOptions& r
                      raw.control_box3d_given || !raw.tracking_add3d.empty() ||
                      !raw.control_add3d.empty() || !raw.source_add3d.empty();
   if (config.dimension != 3u) {
-    if (any3d || !raw.neumann_face3d.empty())
+    if (any3d || !raw.neumann_face3d.empty() || !raw.dirichlet_face3d.empty())
       throw std::invalid_argument(
           "--domain3d / --tracking-box3d* / --control-box3d* / --source-box3d-add /"
-          " --neumann-face3d are 3D-only (--dimension 3)");
+          " --neumann-face3d / --dirichlet-face3d are 3D-only (--dimension 3)");
     return;
   }
   auto refuse = [](const std::string& what) {
@@ -112,9 +113,22 @@ static void ApplyRegions3D(ProblemConfig& config, const RawCommandLineOptions& r
   // default control type is NEUMANN, so a 3D run must say --neumann-solve and
   // name the face; the exact cases set their own face.
   const bool neumann = config.control.type == ProblemConfig::ControlType::NEUMANN;
+  const bool dirichlet = config.control.type == ProblemConfig::ControlType::DIRICHLET;
   if (!raw.neumann_face3d.empty() && (!neumann || exact3d))
     refuse(exact3d ? "the 3D exact OC cases own their control face (no --neumann-face3d)"
                    : "--neumann-face3d needs Neumann boundary control (--neumann-solve)");
+  // T11D: the Dirichlet control face, explicit; the 2D bottom edge is never implied
+  if (!raw.dirichlet_face3d.empty() && (!dirichlet || exact3d))
+    refuse(exact3d ? "the 3D exact OC cases own their control face (no --dirichlet-face3d)"
+                   : "--dirichlet-face3d needs Dirichlet boundary control (--dirichlet-solve)");
+  if (dirichlet && !exact3d) {
+    BoxFace3D face;
+    if (raw.dirichlet_face3d.empty() || !LookupBoxFace3D(raw.dirichlet_face3d, face))
+      refuse("Dirichlet control needs one whole face: --dirichlet-face3d"
+             " xmin|xmax|ymin|ymax|zmin|zmax");
+    config.neumann_control_face = face.id;
+    config.neumann_control_boundary = face.name;
+  }
   if (neumann && !exact3d) {
     if (!raw.neumann_control)
       refuse("give the control type explicitly (--distributed-solve or --neumann-solve);"
@@ -163,11 +177,11 @@ static void ApplyRegions3D(ProblemConfig& config, const RawCommandLineOptions& r
   } else
     refuse("an explicit tracking region is required (--tracking-box3d x0 x1 y0 y1 z0 z1);"
            " the 2D default box has no 3D meaning");
-  if (neumann) {   // T11N: the control lives on the face, not in volume boxes
+  if (neumann || dirichlet) {   // T11N/T11D: the control lives on the face, not in volume boxes
     if (raw.control_box3d_given || raw.control_full_domain || raw.control_box_2d ||
         !raw.control_add3d.empty())
       refuse("control regions (--control-box3d*, --control-full-domain) are for distributed"
-             " control; Neumann control acts on the face --neumann-face3d");
+             " control; boundary control acts on the face --neumann-face3d / --dirichlet-face3d");
 
     config.control.region = full;   // inert for Neumann (N = M_Gamma); keeps ValidateBox valid
   } else if (raw.control_box3d_given)
@@ -179,7 +193,7 @@ static void ApplyRegions3D(ProblemConfig& config, const RawCommandLineOptions& r
       refuse("--control-box (4 numbers) is ambiguous in 3D; use --control-box3d"
              " x0 x1 y0 y1 z0 z1");
     config.control.region = full;
-  } else if (!neumann)
+  } else if (!neumann && !dirichlet)
     refuse("an explicit control region is required (--control-full-domain or"
            " --control-box3d x0 x1 y0 y1 z0 z1); the 2D default box has no 3D meaning");
   for (const ProblemConfig::Box& b : raw.tracking_add3d)
@@ -431,6 +445,8 @@ static void ParseArguments(int argc, char** argv, ProblemConfig& config,
       raw.control_add3d.push_back(ReadBox3D(argv, argument));
     } else if (option == "--neumann-face3d" && argument + 1 < argc) {
       raw.neumann_face3d = argv[++argument];   // T11N, resolved in ApplyRegions3D
+    } else if (option == "--dirichlet-face3d" && argument + 1 < argc) {
+      raw.dirichlet_face3d = argv[++argument];   // T11D, resolved in ApplyRegions3D
     } else if (option == "--source-box3d-add" && argument + 6 < argc) {
       raw.source_add3d.push_back(ReadBox3D(argv, argument));
     } else if (option == "--domain" && argument + 4 < argc) {
@@ -704,13 +720,21 @@ static void ResolveProblemData(const RawCommandLineOptions& raw,
     if (raw.verify_stage1 || raw.verify_sweeps || raw.verify_boundary_reduced)
       refuse("the ex20 verification batteries are 2D");
     if (!options.exact_oc.empty() && !IsExact3DCase(options.exact_oc))
-      refuse("the only 3D exact OC cases are conv-sin-3d, conv-sin3-3d, natural-conv-3d and"
-             " neumann-conv-3d");
-    if (raw.pc_schur_matching || raw.pc_schur_boundary_reduced || raw.pc_schur_dirichlet_reduced)
+      refuse("the only 3D exact OC cases are conv-sin-3d, conv-sin3-3d, natural-conv-3d,"
+             " neumann-conv-3d and dirichlet-conv-3d");
+    const bool dirichlet3d = config.control.type == ProblemConfig::ControlType::DIRICHLET;
+    if (dirichlet3d) {
+      // T11D: the reduced Dirichlet solver (SCHUR_DIRICHLET_REDUCED, the Dirichlet
+      // default) is the only validated 3D Dirichlet path.
+      if (raw.pc_schur_sweep || raw.pc_schur_matching || raw.pc_schur_boundary_reduced)
+        refuse("Dirichlet control: only the reduced Dirichlet solver (SCHUR_DIRICHLET_REDUCED,"
+               " the default; --pc-schur-dirichlet-reduced) is validated");
+    } else if (raw.pc_schur_matching || raw.pc_schur_boundary_reduced || raw.pc_schur_dirichlet_reduced)
       refuse("only SCHUR_SWEEP (--pc-schur-sweep) or ADDITIVE_GAMG (BE) are validated");
     if (options.pc_time_blocks > 0 || options.pc_sweep_depth > 0)
       refuse("the inexact temporal sweep prototypes are not ported");
-    if (!raw.pc_schur_sweep && config.time.scheme == ProblemConfig::TimeScheme::CRANK_NICOLSON)
+    if (!dirichlet3d && !raw.pc_schur_sweep &&
+        config.time.scheme == ProblemConfig::TimeScheme::CRANK_NICOLSON)
       refuse("Crank-Nicolson needs --pc-schur-sweep (ADDITIVE_GAMG is not robust under CN,"
              " T7F/T8D finalisation)");
   }
@@ -732,8 +756,12 @@ static void ResolveProblemData(const RawCommandLineOptions& raw,
       throw std::invalid_argument(
           "--time-scheme cn is not supported by the literature and"
           " manufactured benchmarks, which encode backward-Euler quadrature");
+    // T11D: the 3D Dirichlet operator dump is CN-aware (the spatial operators
+    // are scheme-independent; the explicit B_D / B_D^T use the selected scheme).
+    const bool cn_dump_ok = config.dimension == 3u &&
+        config.control.type == ProblemConfig::ControlType::DIRICHLET;
     if (raw.verify_stage1 || raw.verify_sweeps || raw.verify_boundary_reduced ||
-        !options.operator_dump_prefix.empty())
+        (!options.operator_dump_prefix.empty() && !cn_dump_ok))
       throw std::invalid_argument(
           "--time-scheme cn is not supported by the verification run modes,"
           " which encode backward-Euler operators");

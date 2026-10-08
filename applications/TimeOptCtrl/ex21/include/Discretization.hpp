@@ -125,7 +125,8 @@ void BuildMesh(const ProblemConfig& config, femus::MultiLevelMesh& mesh);
 void InitializeStateSpace(
     femus::MultiLevelSolution& solution, bool with_region_fields = false,
     ProblemConfig::StateBoundaryCondition state_bc =
-        ProblemConfig::StateBoundaryCondition::NATURAL);
+        ProblemConfig::StateBoundaryCondition::NATURAL,
+    unsigned free_face = 0u);   // T11D: FEMuS face id left unconstrained (0 = none)
 
 /** 1-based index of the region of the tracking / distributed-control UNION
  *  containing this element, or 0 if it is in none.

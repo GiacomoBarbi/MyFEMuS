@@ -714,9 +714,26 @@ void DirichletControlOperators::BuildReducedRegularization() {
   PetscCallAbort(PETSC_COMM_WORLD, MatCreate(PETSC_COMM_WORLD, &RT_));
   PetscCallAbort(PETSC_COMM_WORLD, MatSetSizes(RT_, local, local, PETSC_DETERMINE, PETSC_DETERMINE));
   PetscCallAbort(PETSC_COMM_WORLD, MatSetType(RT_, MATAIJ));
-  PetscCallAbort(PETSC_COMM_WORLD, MatSeqAIJSetPreallocation(RT_, 24, nullptr));
-  PetscCallAbort(PETSC_COMM_WORLD, MatMPIAIJSetPreallocation(RT_, 24, nullptr, 24, nullptr));
   const double coupling = gamma_ > 0.0 ? rho_ / dt_ : 0.0;
+  // T11D: preallocation from the actual trace stencil.  A 1D (EDGE3) trace row
+  // couples 5 DOFs, a QUAD9 face row 25; the temporal coupling triples it.
+  // Never below the historical 24 (2D: identical allocation; values never
+  // depend on it).
+  PetscInt row_max = 0;
+  for (PetscInt i = 0; i < owned; ++i)
+    for (int which = 0; which < (coupling > 0.0 ? 2 : 1); ++which) {
+      PetscInt ncols = 0;
+      PetscCallAbort(PETSC_COMM_WORLD,
+                     MatGetRow(which == 0 ? R_ : M_face_, C_owned_[i], &ncols, nullptr, nullptr));
+      row_max = std::max(row_max, ncols);
+      PetscCallAbort(PETSC_COMM_WORLD,
+                     MatRestoreRow(which == 0 ? R_ : M_face_, C_owned_[i], &ncols, nullptr, nullptr));
+    }
+  PetscInt row_max_global = 0;
+  MPI_Allreduce(&row_max, &row_max_global, 1, MPIU_INT, MPI_MAX, PETSC_COMM_WORLD);
+  const PetscInt prealloc = std::max<PetscInt>(24, (coupling > 0.0 ? 3 : 1) * row_max_global);
+  PetscCallAbort(PETSC_COMM_WORLD, MatSeqAIJSetPreallocation(RT_, prealloc, nullptr));
+  PetscCallAbort(PETSC_COMM_WORLD, MatMPIAIJSetPreallocation(RT_, prealloc, nullptr, prealloc, nullptr));
   for (PetscInt i = 0; i < owned; ++i) {
     const PetscInt prow = C_owned_position_.empty()
         ? position(C_owned_[i]) : C_owned_position_[i];

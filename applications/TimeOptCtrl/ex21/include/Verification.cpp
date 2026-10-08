@@ -412,6 +412,63 @@ int RunSpatialOperatorDump(const ProblemConfig& config,
              << SourceRegionIndex3D(config, mesh, element) << '\n';
     }
   }
+  // T11D: 3D Dirichlet control (serial) -- the unhatted M and L (C kept, D
+  // eliminated), the controlled set C, and B_D / B_D^T EXPLICITLY, column by
+  // column from DirichletControlOperators::ApplyBD / ApplyBDT on unit
+  // space-time vectors, so that the BE/CN formulas and the transpose can be
+  // checked independently (t11d_bd_transpose.py).  Space-time index = n N + i.
+  if (config.dimension == 3u && config.control.type == ProblemConfig::ControlType::DIRICHLET &&
+      spatial.dirichlet) {
+    DirichletControlOperators& d = *spatial.dirichlet;
+    auto write_mat = [&](Mat m, const std::string& path) {
+      PetscInt rows = 0, cols = 0;
+      PetscCallAbort(PETSC_COMM_WORLD, MatGetSize(m, &rows, &cols));
+      std::ofstream out(path.c_str());
+      out << std::setprecision(17) << "# rows cols\n" << rows << ' ' << cols << "\n# row col value\n";
+      for (PetscInt r = 0; r < rows; ++r) {
+        PetscInt count = 0;
+        const PetscInt* c = nullptr;
+        const PetscScalar* v = nullptr;
+        PetscCallAbort(PETSC_COMM_WORLD, MatGetRow(m, r, &count, &c, &v));
+        for (PetscInt k = 0; k < count; ++k)
+          if (PetscRealPart(v[k]) != 0.0) out << r << ' ' << c[k] << ' ' << PetscRealPart(v[k]) << '\n';
+        PetscCallAbort(PETSC_COMM_WORLD, MatRestoreRow(m, r, &count, &c, &v));
+      }
+    };
+    write_mat(d.unhatted_mass(), prefix + "_D_Mfull.coo");
+    write_mat(d.unhatted_stiffness(), prefix + "_D_Lfull.coo");
+    {
+      std::ofstream out((prefix + "_D_C.txt").c_str());
+      out << "# controlled DOFs C (global), steps dt scheme transposes_L\n"
+          << config.time.steps << ' ' << std::setprecision(17) << config.time.dt << ' '
+          << (IsCrankNicolson(config) ? "CN" : "BE") << ' ' << (d.transposes_stiffness() ? 1 : 0) << '\n';
+      for (PetscInt g : d.owned_control_dofs()) out << g << '\n';
+    }
+    const PetscInt N = spatial.layout.local_size, T = static_cast<PetscInt>(config.time.steps);
+    Vec e = nullptr, out_v = nullptr;
+    PetscCallAbort(PETSC_COMM_WORLD, VecCreateSeq(PETSC_COMM_SELF, T * N, &e));
+    PetscCallAbort(PETSC_COMM_WORLD, VecDuplicate(e, &out_v));
+    for (int which = 0; which < 2; ++which) {   // 0: B_D (columns over C), 1: B_D^T (columns over all)
+      std::ofstream out((prefix + (which == 0 ? "_BD.coo" : "_BDT.coo")).c_str());
+      out << std::setprecision(17) << "# rows cols\n" << T * N << ' ' << T * N << "\n# row col value\n";
+      for (PetscInt n = 0; n < T; ++n)
+        for (PetscInt i = 0; i < N; ++i) {
+          if (which == 0 && !d.control_mask()[static_cast<std::size_t>(i)]) continue;
+          PetscCallAbort(PETSC_COMM_WORLD, VecSet(e, 0.0));
+          PetscCallAbort(PETSC_COMM_WORLD, VecSetValue(e, n * N + i, 1.0, INSERT_VALUES));
+          PetscCallAbort(PETSC_COMM_WORLD, VecAssemblyBegin(e));
+          PetscCallAbort(PETSC_COMM_WORLD, VecAssemblyEnd(e));
+          PetscCallAbort(PETSC_COMM_WORLD, which == 0 ? d.ApplyBD(e, out_v) : d.ApplyBDT(e, out_v));
+          const PetscScalar* a = nullptr;
+          PetscCallAbort(PETSC_COMM_WORLD, VecGetArrayRead(out_v, &a));
+          for (PetscInt r = 0; r < T * N; ++r)
+            if (PetscRealPart(a[r]) != 0.0) out << r << ' ' << n * N + i << ' ' << PetscRealPart(a[r]) << '\n';
+          PetscCallAbort(PETSC_COMM_WORLD, VecRestoreArrayRead(out_v, &a));
+        }
+    }
+    PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(&e));
+    PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(&out_v));
+  }
   return 0;
 }
 

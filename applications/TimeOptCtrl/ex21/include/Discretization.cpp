@@ -24,6 +24,12 @@ using namespace femus;
 // written once by InitializeStateSpace and read only by the callback.
 static ProblemConfig::StateBoundaryCondition g_state_bc =
     ProblemConfig::StateBoundaryCondition::NATURAL;
+// T11D: the FEMuS face id left UNCONSTRAINED by the homogeneous Dirichlet state
+// BC (3D Dirichlet control: y = eta u there, imposed by the control operators).
+// 0 = none (every other run).  FEMuS's GenerateBdc only ever SETS a node to
+// constrained, so the perimeter of this face -- shared with the neighbouring
+// homogeneous faces -- stays constrained.
+static unsigned g_free_face = 0u;
 
 /** NATURAL leaves every boundary unconstrained.  HOMOGENEOUS_DIRICHLET
  *  constrains the state to zero on the whole external boundary; the carrier
@@ -31,11 +37,12 @@ static ProblemConfig::StateBoundaryCondition g_state_bc =
 static bool StateBoundaryCondition(const std::vector<double>&,
                             const char name[],
                             double& value,
-                            const int,
+                            const int face_index,
                             const double) {
   value = 0.0;
   if (g_state_bc == ProblemConfig::StateBoundaryCondition::NATURAL)
     return false;
+  if (g_free_face != 0u && face_index == static_cast<int>(g_free_face)) return false;   // T11D
   return std::string(name) == "Ti";
 }
 
@@ -63,8 +70,10 @@ void BuildMesh(const ProblemConfig& config, MultiLevelMesh& mesh) {
 
 void InitializeStateSpace(MultiLevelSolution& solution,
                           bool with_region_fields,
-                          ProblemConfig::StateBoundaryCondition state_bc) {
+                          ProblemConfig::StateBoundaryCondition state_bc,
+                          unsigned free_face) {
   g_state_bc = state_bc;
+  g_free_face = free_face;
   if (with_region_fields) {
     // Piecewise constant, one DOF per element: FEMuS emits solutions of this
     // type as VTK <CellData>, which a centroid-selected region needs -- nodal
@@ -477,8 +486,11 @@ NativeSpatialOperators BuildNativeSpatialOperators(
   double weight = 0.0;
   // T11N: 3D Neumann control face -- area and integrated outward normal, to
   // verify the face selector against the geometry after assembly.
+  // (T11D: the same QUAD9 face mass for 3D Dirichlet control -- its support,
+  // after the homogeneous elimination of the other faces, is C = int(Gamma_c).)
   const bool neumann3d = config.dimension == 3u &&
-                         config.control.type == ProblemConfig::ControlType::NEUMANN;
+                         (config.control.type == ProblemConfig::ControlType::NEUMANN ||
+                          config.control.type == ProblemConfig::ControlType::DIRICHLET);
   double face_area_normal[4] = {0.0, 0.0, 0.0, 0.0};   // area, int n_x, n_y, n_z
   for (unsigned element = mesh->_elementOffset[rank];
        element < mesh->_elementOffset[rank + 1u]; ++element) {
@@ -676,7 +688,7 @@ NativeSpatialOperators BuildNativeSpatialOperators(
     }
     if (!(g[0] > 0.0) || mismatch > 1.0e-10)
       throw std::runtime_error(
-          std::string("3D Neumann control face ") + face.name + " (FEMuS id " +
+          std::string("3D boundary-control face ") + face.name + " (FEMuS id " +
           std::to_string(face.id) + "): assembled area/normal do not match the box face");
   }
   operators.M->close();

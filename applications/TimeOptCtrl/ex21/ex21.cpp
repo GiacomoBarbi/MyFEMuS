@@ -136,7 +136,12 @@ int main(int argc, char** argv) {
   BuildMesh(config, mesh);
 
   MultiLevelSolution solution(&mesh);
-  InitializeStateSpace(solution, options.region_fields, config.state_bc);
+  // T11D: 3D Dirichlet control -- the controlled face is not part of the
+  // homogeneous Dirichlet set (its interior is the control trace C).
+  InitializeStateSpace(solution, options.region_fields, config.state_bc,
+                       (config.dimension == 3u &&
+                        config.control.type == ProblemConfig::ControlType::DIRICHLET)
+                           ? config.neumann_control_face : 0u);
 
   Mesh* level_mesh = mesh.GetLevel(0);
   const unsigned solution_type =

@@ -1,0 +1,9 @@
+case,m,nC,K_asym,lambda_min,cond_K,cond_RinvK,action_max,shell_sym,RT_sparse_vs_dense,its_1e-8,maxdiff_1e-8,its_1e-12,maxdiff_1e-12,compared,detail_1e-12,verdict
+prod_xmax_wA_BE_n4,392,49,0.0,0.001961741,10.73618,1.01828,7.042e-16,1.092e-16,0.0,4,8.07e-13,5,2.09e-15,"fields y,p,u nodal + J",d_state=2.1e-15 d_adjoint=1.1e-15 d_control_full=2.1e-15 d_J=0.0e+00,PASS
+prod_xmax_wA_CN_n4,392,49,0.0,0.000980902,21.49185,1.01942,6.839e-16,1.154e-16,0.0,4,1.89e-12,5,5.44e-15,"fields y,p,u nodal + J",d_state=5.4e-15 d_adjoint=3.5e-15 d_control_full=5.4e-15 d_J=1.3e-16,PASS
+prod_ymin_wB_CN_n4,392,49,0.0,0.0009803124,25.18494,1.22131,7.817e-16,2.091e-16,0.0,6,3.98e-11,8,2.37e-15,"fields y,p,u nodal + J",d_state=2.2e-15 d_adjoint=2.4e-15 d_control_full=2.2e-15 d_J=0.0e+00,PASS
+prod_zmax_heat_BE_n4,392,49,0.0,0.001961142,11.40791,1.090268,7.365e-16,3.138e-16,0.0,5,1.12e-11,7,4.02e-16,"fields y,p,u nodal + J",d_state=4.0e-16 d_adjoint=3.1e-16 d_control_full=4.0e-16 d_J=1.9e-16,PASS
+prod_nonunit_ymax_wA_CN,168,21,0.0,0.002643828,15.57919,1.018093,5.407e-16,1.372e-16,0.0,4,4.40e-12,5,1.35e-14,"fields y,p,u nodal + J",d_state=1.3e-14 d_adjoint=2.7e-15 d_control_full=1.3e-14 d_J=0.0e+00,PASS
+exact_heat_BE_n3,200,25,0.0,0.004185077,8.810672,1.01407,6.189e-16,0.0,0.0,3,0.00e+00,4,0.00e+00,J_track + y/p/u error norms,d_J_track=0.0e+00 d_y_L2L2=0.0e+00 d_p_L2L2=0.0e+00 d_u_L2L2=0.0e+00,PASS
+exact_wN_CN_n3,200,25,0.0,0.00209299,17.43062,1.00151,6.306e-16,0.0,0.0,3,0.00e+00,4,0.00e+00,J_track + y/p/u error norms,d_J_track=0.0e+00 d_y_L2L2=0.0e+00 d_p_L2L2=0.0e+00 d_u_L2L2=0.0e+00,PASS
+exact_wA_CN_n4,392,49,0.0,0.0009789309,21.37943,1.011415,7.029e-16,1.157e-16,0.0,3,1.57e-11,5,0.00e+00,J_track + y/p/u error norms,d_J_track=0.0e+00 d_y_L2L2=0.0e+00 d_p_L2L2=0.0e+00 d_u_L2L2=0.0e+00,PASS

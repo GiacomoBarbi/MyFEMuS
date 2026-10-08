@@ -1,0 +1,134 @@
+case,check,value,reference,verdict
+"G1D_zmin_w(1,0.5,-0.75)","C + C^T = (w.n) M_Gamma on I u C (w.n = 0.75), rel. to max|C|",2.5e-14,<=1e-13,PASS
+"G1D_zmin_w(1,0.5,-0.75)",NEG plain skew C + C^T = 0 on I u C: violated (Gamma_c term),1.1e+00,> 1e-6,PASS
+"G1D_xmax_w(1,0.5,-0.75)","C + C^T = (w.n) M_Gamma on I u C (w.n = 1), rel. to max|C|",2.8e-14,<=1e-13,PASS
+"G1D_xmax_w(1,0.5,-0.75)",NEG plain skew C + C^T = 0 on I u C: violated (Gamma_c term),1.5e+00,> 1e-6,PASS
+"G1D_ymin_w(-2,1,0.5)","C + C^T = (w.n) M_Gamma on I u C (w.n = -1), rel. to max|C|",2.8e-14,<=1e-13,PASS
+"G1D_ymin_w(-2,1,0.5)",NEG plain skew C + C^T = 0 on I u C: violated (Gamma_c term),7.5e-01,> 1e-6,PASS
+"G1D_zmin_w(1,0.5,0)","C + C^T = (w.n) M_Gamma on I u C (w.n = -0), rel. to max|C|",2.0e-14,<=1e-13,PASS
+zmin_be_heat_2x2x2,header: steps / dt / scheme,3/0.1/BE,3/0.1/BE,PASS
+zmin_be_heat_2x2x2,|C| = (2n_a-1)(2n_b-1),9,9,PASS
+zmin_be_heat_2x2x2,C = int(Gamma_c) node set (perimeter excluded),eq,eq,PASS
+zmin_be_heat_2x2x2,ApplyBDT uses L^T (transposes_L flag) iff convection,0,0,PASS
+zmin_be_heat_2x2x2,dumped B_D = formula B_D (rel.),1.7e-16,<=1e-13,PASS
+zmin_be_heat_2x2x2,dumped B_D columns off C are zero,0,0,PASS
+zmin_be_heat_2x2x2,dumped B_D rows on C u D are zero (P_I),0,0,PASS
+zmin_be_heat_2x2x2,B_D nonzero (lifting couples C to I),490,> 0,PASS
+zmin_be_heat_2x2x2,dumped B_D^T = (formula B_D)^T (rel.),1.7e-16,<=1e-13,PASS
+zmin_be_heat_2x2x2,dumped B_D^T = (dumped B_D)^T (rel.),0.0e+00,<=1e-13,PASS
+zmin_be_heat_2x2x2,"<B_D u, p> = <u, B_D^T p> (rel.)",0.0e+00,<=1e-13,PASS
+zmin_be_heat_2x2x2,"NEG forward-L B_D^T: equals (L symmetric, heat)",1.7e-16,<=1e-13,PASS
+zmin_be_wind_2x2x2,header: steps / dt / scheme,3/0.1/BE,3/0.1/BE,PASS
+zmin_be_wind_2x2x2,|C| = (2n_a-1)(2n_b-1),9,9,PASS
+zmin_be_wind_2x2x2,C = int(Gamma_c) node set (perimeter excluded),eq,eq,PASS
+zmin_be_wind_2x2x2,ApplyBDT uses L^T (transposes_L flag) iff convection,1,1,PASS
+zmin_be_wind_2x2x2,dumped B_D = formula B_D (rel.),2.1e-16,<=1e-13,PASS
+zmin_be_wind_2x2x2,dumped B_D columns off C are zero,0,0,PASS
+zmin_be_wind_2x2x2,dumped B_D rows on C u D are zero (P_I),0,0,PASS
+zmin_be_wind_2x2x2,B_D nonzero (lifting couples C to I),490,> 0,PASS
+zmin_be_wind_2x2x2,dumped B_D^T = (formula B_D)^T (rel.),2.1e-16,<=1e-13,PASS
+zmin_be_wind_2x2x2,dumped B_D^T = (dumped B_D)^T (rel.),0.0e+00,<=1e-13,PASS
+zmin_be_wind_2x2x2,"<B_D u, p> = <u, B_D^T p> (rel.)",1.7e-16,<=1e-13,PASS
+zmin_be_wind_2x2x2,NEG forward-L B_D^T: detected,3.5e-01,> 1e-6,PASS
+zmin_cn_heat_2x2x2,header: steps / dt / scheme,3/0.1/CN,3/0.1/CN,PASS
+zmin_cn_heat_2x2x2,|C| = (2n_a-1)(2n_b-1),9,9,PASS
+zmin_cn_heat_2x2x2,C = int(Gamma_c) node set (perimeter excluded),eq,eq,PASS
+zmin_cn_heat_2x2x2,ApplyBDT uses L^T (transposes_L flag) iff convection,0,0,PASS
+zmin_cn_heat_2x2x2,dumped B_D = formula B_D (rel.),1.2e-16,<=1e-13,PASS
+zmin_cn_heat_2x2x2,dumped B_D columns off C are zero,0,0,PASS
+zmin_cn_heat_2x2x2,dumped B_D rows on C u D are zero (P_I),0,0,PASS
+zmin_cn_heat_2x2x2,B_D nonzero (lifting couples C to I),490,> 0,PASS
+zmin_cn_heat_2x2x2,dumped B_D^T = (formula B_D)^T (rel.),1.2e-16,<=1e-13,PASS
+zmin_cn_heat_2x2x2,dumped B_D^T = (dumped B_D)^T (rel.),0.0e+00,<=1e-13,PASS
+zmin_cn_heat_2x2x2,"<B_D u, p> = <u, B_D^T p> (rel.)",1.8e-16,<=1e-13,PASS
+zmin_cn_heat_2x2x2,"NEG forward-L B_D^T: equals (L symmetric, heat)",1.2e-16,<=1e-13,PASS
+zmin_cn_heat_2x2x2,NEG CN coupling p_{n-1} instead of p_{n+1}: detected,1.0e+00,> 1e-6,PASS
+zmin_cn_wind_2x2x2,header: steps / dt / scheme,3/0.1/CN,3/0.1/CN,PASS
+zmin_cn_wind_2x2x2,|C| = (2n_a-1)(2n_b-1),9,9,PASS
+zmin_cn_wind_2x2x2,C = int(Gamma_c) node set (perimeter excluded),eq,eq,PASS
+zmin_cn_wind_2x2x2,ApplyBDT uses L^T (transposes_L flag) iff convection,1,1,PASS
+zmin_cn_wind_2x2x2,dumped B_D = formula B_D (rel.),6.9e-17,<=1e-13,PASS
+zmin_cn_wind_2x2x2,dumped B_D columns off C are zero,0,0,PASS
+zmin_cn_wind_2x2x2,dumped B_D rows on C u D are zero (P_I),0,0,PASS
+zmin_cn_wind_2x2x2,B_D nonzero (lifting couples C to I),490,> 0,PASS
+zmin_cn_wind_2x2x2,dumped B_D^T = (formula B_D)^T (rel.),6.9e-17,<=1e-13,PASS
+zmin_cn_wind_2x2x2,dumped B_D^T = (dumped B_D)^T (rel.),0.0e+00,<=1e-13,PASS
+zmin_cn_wind_2x2x2,"<B_D u, p> = <u, B_D^T p> (rel.)",0.0e+00,<=1e-13,PASS
+zmin_cn_wind_2x2x2,NEG forward-L B_D^T: detected,2.6e-01,> 1e-6,PASS
+zmin_cn_wind_2x2x2,NEG CN coupling p_{n-1} instead of p_{n+1}: detected,1.0e+00,> 1e-6,PASS
+xmax_be_heat_2x2x2,header: steps / dt / scheme,3/0.1/BE,3/0.1/BE,PASS
+xmax_be_heat_2x2x2,|C| = (2n_a-1)(2n_b-1),9,9,PASS
+xmax_be_heat_2x2x2,C = int(Gamma_c) node set (perimeter excluded),eq,eq,PASS
+xmax_be_heat_2x2x2,ApplyBDT uses L^T (transposes_L flag) iff convection,0,0,PASS
+xmax_be_heat_2x2x2,dumped B_D = formula B_D (rel.),4.2e-17,<=1e-13,PASS
+xmax_be_heat_2x2x2,dumped B_D columns off C are zero,0,0,PASS
+xmax_be_heat_2x2x2,dumped B_D rows on C u D are zero (P_I),0,0,PASS
+xmax_be_heat_2x2x2,B_D nonzero (lifting couples C to I),490,> 0,PASS
+xmax_be_heat_2x2x2,dumped B_D^T = (formula B_D)^T (rel.),4.2e-17,<=1e-13,PASS
+xmax_be_heat_2x2x2,dumped B_D^T = (dumped B_D)^T (rel.),0.0e+00,<=1e-13,PASS
+xmax_be_heat_2x2x2,"<B_D u, p> = <u, B_D^T p> (rel.)",2.0e-16,<=1e-13,PASS
+xmax_be_heat_2x2x2,"NEG forward-L B_D^T: equals (L symmetric, heat)",4.2e-17,<=1e-13,PASS
+xmax_be_wind_2x2x2,header: steps / dt / scheme,3/0.1/BE,3/0.1/BE,PASS
+xmax_be_wind_2x2x2,|C| = (2n_a-1)(2n_b-1),9,9,PASS
+xmax_be_wind_2x2x2,C = int(Gamma_c) node set (perimeter excluded),eq,eq,PASS
+xmax_be_wind_2x2x2,ApplyBDT uses L^T (transposes_L flag) iff convection,1,1,PASS
+xmax_be_wind_2x2x2,dumped B_D = formula B_D (rel.),5.9e-17,<=1e-13,PASS
+xmax_be_wind_2x2x2,dumped B_D columns off C are zero,0,0,PASS
+xmax_be_wind_2x2x2,dumped B_D rows on C u D are zero (P_I),0,0,PASS
+xmax_be_wind_2x2x2,B_D nonzero (lifting couples C to I),490,> 0,PASS
+xmax_be_wind_2x2x2,dumped B_D^T = (formula B_D)^T (rel.),5.9e-17,<=1e-13,PASS
+xmax_be_wind_2x2x2,dumped B_D^T = (dumped B_D)^T (rel.),0.0e+00,<=1e-13,PASS
+xmax_be_wind_2x2x2,"<B_D u, p> = <u, B_D^T p> (rel.)",1.6e-16,<=1e-13,PASS
+xmax_be_wind_2x2x2,NEG forward-L B_D^T: detected,4.4e-01,> 1e-6,PASS
+xmax_cn_heat_2x2x2,header: steps / dt / scheme,3/0.1/CN,3/0.1/CN,PASS
+xmax_cn_heat_2x2x2,|C| = (2n_a-1)(2n_b-1),9,9,PASS
+xmax_cn_heat_2x2x2,C = int(Gamma_c) node set (perimeter excluded),eq,eq,PASS
+xmax_cn_heat_2x2x2,ApplyBDT uses L^T (transposes_L flag) iff convection,0,0,PASS
+xmax_cn_heat_2x2x2,dumped B_D = formula B_D (rel.),5.9e-17,<=1e-13,PASS
+xmax_cn_heat_2x2x2,dumped B_D columns off C are zero,0,0,PASS
+xmax_cn_heat_2x2x2,dumped B_D rows on C u D are zero (P_I),0,0,PASS
+xmax_cn_heat_2x2x2,B_D nonzero (lifting couples C to I),490,> 0,PASS
+xmax_cn_heat_2x2x2,dumped B_D^T = (formula B_D)^T (rel.),3.7e-18,<=1e-13,PASS
+xmax_cn_heat_2x2x2,dumped B_D^T = (dumped B_D)^T (rel.),5.9e-17,<=1e-13,PASS
+xmax_cn_heat_2x2x2,"<B_D u, p> = <u, B_D^T p> (rel.)",3.9e-16,<=1e-13,PASS
+xmax_cn_heat_2x2x2,"NEG forward-L B_D^T: equals (L symmetric, heat)",3.7e-18,<=1e-13,PASS
+xmax_cn_heat_2x2x2,NEG CN coupling p_{n-1} instead of p_{n+1}: detected,1.0e+00,> 1e-6,PASS
+xmax_cn_wind_2x2x2,header: steps / dt / scheme,3/0.1/CN,3/0.1/CN,PASS
+xmax_cn_wind_2x2x2,|C| = (2n_a-1)(2n_b-1),9,9,PASS
+xmax_cn_wind_2x2x2,C = int(Gamma_c) node set (perimeter excluded),eq,eq,PASS
+xmax_cn_wind_2x2x2,ApplyBDT uses L^T (transposes_L flag) iff convection,1,1,PASS
+xmax_cn_wind_2x2x2,dumped B_D = formula B_D (rel.),7.3e-17,<=1e-13,PASS
+xmax_cn_wind_2x2x2,dumped B_D columns off C are zero,0,0,PASS
+xmax_cn_wind_2x2x2,dumped B_D rows on C u D are zero (P_I),0,0,PASS
+xmax_cn_wind_2x2x2,B_D nonzero (lifting couples C to I),490,> 0,PASS
+xmax_cn_wind_2x2x2,dumped B_D^T = (formula B_D)^T (rel.),7.3e-17,<=1e-13,PASS
+xmax_cn_wind_2x2x2,dumped B_D^T = (dumped B_D)^T (rel.),1.8e-17,<=1e-13,PASS
+xmax_cn_wind_2x2x2,"<B_D u, p> = <u, B_D^T p> (rel.)",3.4e-16,<=1e-13,PASS
+xmax_cn_wind_2x2x2,NEG forward-L B_D^T: detected,3.3e-01,> 1e-6,PASS
+xmax_cn_wind_2x2x2,NEG CN coupling p_{n-1} instead of p_{n+1}: detected,1.0e+00,> 1e-6,PASS
+ymax_cn_wind_2x3x3,header: steps / dt / scheme,4/0.1/CN,4/0.1/CN,PASS
+ymax_cn_wind_2x3x3,|C| = (2n_a-1)(2n_b-1),15,15,PASS
+ymax_cn_wind_2x3x3,C = int(Gamma_c) node set (perimeter excluded),eq,eq,PASS
+ymax_cn_wind_2x3x3,ApplyBDT uses L^T (transposes_L flag) iff convection,1,1,PASS
+ymax_cn_wind_2x3x3,dumped B_D = formula B_D (rel.),6.0e-17,<=1e-13,PASS
+ymax_cn_wind_2x3x3,dumped B_D columns off C are zero,0,0,PASS
+ymax_cn_wind_2x3x3,dumped B_D rows on C u D are zero (P_I),0,0,PASS
+ymax_cn_wind_2x3x3,B_D nonzero (lifting couples C to I),1470,> 0,PASS
+ymax_cn_wind_2x3x3,dumped B_D^T = (formula B_D)^T (rel.),6.0e-17,<=1e-13,PASS
+ymax_cn_wind_2x3x3,dumped B_D^T = (dumped B_D)^T (rel.),3.0e-17,<=1e-13,PASS
+ymax_cn_wind_2x3x3,"<B_D u, p> = <u, B_D^T p> (rel.)",3.6e-16,<=1e-13,PASS
+ymax_cn_wind_2x3x3,NEG forward-L B_D^T: detected,2.1e-01,> 1e-6,PASS
+ymax_cn_wind_2x3x3,NEG CN coupling p_{n-1} instead of p_{n+1}: detected,1.0e+00,> 1e-6,PASS
+zmax_cn_wind_2x3x3,header: steps / dt / scheme,4/0.1/CN,4/0.1/CN,PASS
+zmax_cn_wind_2x3x3,|C| = (2n_a-1)(2n_b-1),15,15,PASS
+zmax_cn_wind_2x3x3,C = int(Gamma_c) node set (perimeter excluded),eq,eq,PASS
+zmax_cn_wind_2x3x3,ApplyBDT uses L^T (transposes_L flag) iff convection,1,1,PASS
+zmax_cn_wind_2x3x3,dumped B_D = formula B_D (rel.),2.8e-17,<=1e-13,PASS
+zmax_cn_wind_2x3x3,dumped B_D columns off C are zero,0,0,PASS
+zmax_cn_wind_2x3x3,dumped B_D rows on C u D are zero (P_I),0,0,PASS
+zmax_cn_wind_2x3x3,B_D nonzero (lifting couples C to I),1470,> 0,PASS
+zmax_cn_wind_2x3x3,dumped B_D^T = (formula B_D)^T (rel.),2.8e-17,<=1e-13,PASS
+zmax_cn_wind_2x3x3,dumped B_D^T = (dumped B_D)^T (rel.),0.0e+00,<=1e-13,PASS
+zmax_cn_wind_2x3x3,"<B_D u, p> = <u, B_D^T p> (rel.)",1.7e-16,<=1e-13,PASS
+zmax_cn_wind_2x3x3,NEG forward-L B_D^T: detected,1.1e-01,> 1e-6,PASS
+zmax_cn_wind_2x3x3,NEG CN coupling p_{n-1} instead of p_{n+1}: detected,1.0e+00,> 1e-6,PASS

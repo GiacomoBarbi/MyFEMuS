@@ -1,0 +1,170 @@
+case,check,value,reference,verdict
+zmin_3x3x3_unit,|C| = (2n_a-1)(2n_b-1),25,25,PASS
+zmin_3x3x3_unit,C = support diag(M_Gamma),eq,eq,PASS
+zmin_3x3x3_unit,C on the face plane,25,25,PASS
+zmin_3x3x3_unit,C excludes the perimeter dGamma_c (edge policy),0,0,PASS
+zmin_3x3x3_unit,C = int(Gamma_c) exactly,eq,eq,PASS
+zmin_3x3x3_unit,"D (unhatted M,L) = boundary \ int(Gamma_c) (incl. dGamma_c)",193,193,PASS
+zmin_3x3x3_unit,C and D disjoint,0,0,PASS
+zmin_3x3x3_unit,"hatted K, M eliminated set = D u C (y = P_I y_I + Q_C eta u)",218,218,PASS
+zmin_3x3x3_unit,M_Gamma rows off C zero,0,0,PASS
+zmin_3x3x3_unit,R symmetric max|R - R^T|,0.0e+00,0,PASS
+zmin_3x3x3_unit,R SPD: min eigenvalue,4.183e-03,> 0,PASS
+zmin_3x3x3_unit,R = [M1(a) (x) M1(b)]|_int (rel. max entrywise),6.26e-15,<= 1e-14,PASS
+zmin_3x3x3_unit,v^T R v = int bubble^2 dS,0.00111111111111111,0.00111111111111111,PASS
+ymin_3x3x3_unit,|C| = (2n_a-1)(2n_b-1),25,25,PASS
+ymin_3x3x3_unit,C = support diag(M_Gamma),eq,eq,PASS
+ymin_3x3x3_unit,C on the face plane,25,25,PASS
+ymin_3x3x3_unit,C excludes the perimeter dGamma_c (edge policy),0,0,PASS
+ymin_3x3x3_unit,C = int(Gamma_c) exactly,eq,eq,PASS
+ymin_3x3x3_unit,"D (unhatted M,L) = boundary \ int(Gamma_c) (incl. dGamma_c)",193,193,PASS
+ymin_3x3x3_unit,C and D disjoint,0,0,PASS
+ymin_3x3x3_unit,"hatted K, M eliminated set = D u C (y = P_I y_I + Q_C eta u)",218,218,PASS
+ymin_3x3x3_unit,M_Gamma rows off C zero,0,0,PASS
+ymin_3x3x3_unit,R symmetric max|R - R^T|,0.0e+00,0,PASS
+ymin_3x3x3_unit,R SPD: min eigenvalue,4.183e-03,> 0,PASS
+ymin_3x3x3_unit,R = [M1(a) (x) M1(b)]|_int (rel. max entrywise),6.26e-15,<= 1e-14,PASS
+ymin_3x3x3_unit,v^T R v = int bubble^2 dS,0.00111111111111111,0.00111111111111111,PASS
+xmax_3x3x3_unit,|C| = (2n_a-1)(2n_b-1),25,25,PASS
+xmax_3x3x3_unit,C = support diag(M_Gamma),eq,eq,PASS
+xmax_3x3x3_unit,C on the face plane,25,25,PASS
+xmax_3x3x3_unit,C excludes the perimeter dGamma_c (edge policy),0,0,PASS
+xmax_3x3x3_unit,C = int(Gamma_c) exactly,eq,eq,PASS
+xmax_3x3x3_unit,"D (unhatted M,L) = boundary \ int(Gamma_c) (incl. dGamma_c)",193,193,PASS
+xmax_3x3x3_unit,C and D disjoint,0,0,PASS
+xmax_3x3x3_unit,"hatted K, M eliminated set = D u C (y = P_I y_I + Q_C eta u)",218,218,PASS
+xmax_3x3x3_unit,M_Gamma rows off C zero,0,0,PASS
+xmax_3x3x3_unit,R symmetric max|R - R^T|,0.0e+00,0,PASS
+xmax_3x3x3_unit,R SPD: min eigenvalue,4.183e-03,> 0,PASS
+xmax_3x3x3_unit,R = [M1(a) (x) M1(b)]|_int (rel. max entrywise),6.26e-15,<= 1e-14,PASS
+xmax_3x3x3_unit,v^T R v = int bubble^2 dS,0.00111111111111111,0.00111111111111111,PASS
+ymax_3x3x3_unit,|C| = (2n_a-1)(2n_b-1),25,25,PASS
+ymax_3x3x3_unit,C = support diag(M_Gamma),eq,eq,PASS
+ymax_3x3x3_unit,C on the face plane,25,25,PASS
+ymax_3x3x3_unit,C excludes the perimeter dGamma_c (edge policy),0,0,PASS
+ymax_3x3x3_unit,C = int(Gamma_c) exactly,eq,eq,PASS
+ymax_3x3x3_unit,"D (unhatted M,L) = boundary \ int(Gamma_c) (incl. dGamma_c)",193,193,PASS
+ymax_3x3x3_unit,C and D disjoint,0,0,PASS
+ymax_3x3x3_unit,"hatted K, M eliminated set = D u C (y = P_I y_I + Q_C eta u)",218,218,PASS
+ymax_3x3x3_unit,M_Gamma rows off C zero,0,0,PASS
+ymax_3x3x3_unit,R symmetric max|R - R^T|,0.0e+00,0,PASS
+ymax_3x3x3_unit,R SPD: min eigenvalue,4.183e-03,> 0,PASS
+ymax_3x3x3_unit,R = [M1(a) (x) M1(b)]|_int (rel. max entrywise),6.15e-15,<= 1e-14,PASS
+ymax_3x3x3_unit,v^T R v = int bubble^2 dS,0.00111111111111111,0.00111111111111111,PASS
+xmin_3x3x3_unit,|C| = (2n_a-1)(2n_b-1),25,25,PASS
+xmin_3x3x3_unit,C = support diag(M_Gamma),eq,eq,PASS
+xmin_3x3x3_unit,C on the face plane,25,25,PASS
+xmin_3x3x3_unit,C excludes the perimeter dGamma_c (edge policy),0,0,PASS
+xmin_3x3x3_unit,C = int(Gamma_c) exactly,eq,eq,PASS
+xmin_3x3x3_unit,"D (unhatted M,L) = boundary \ int(Gamma_c) (incl. dGamma_c)",193,193,PASS
+xmin_3x3x3_unit,C and D disjoint,0,0,PASS
+xmin_3x3x3_unit,"hatted K, M eliminated set = D u C (y = P_I y_I + Q_C eta u)",218,218,PASS
+xmin_3x3x3_unit,M_Gamma rows off C zero,0,0,PASS
+xmin_3x3x3_unit,R symmetric max|R - R^T|,0.0e+00,0,PASS
+xmin_3x3x3_unit,R SPD: min eigenvalue,4.183e-03,> 0,PASS
+xmin_3x3x3_unit,R = [M1(a) (x) M1(b)]|_int (rel. max entrywise),6.15e-15,<= 1e-14,PASS
+xmin_3x3x3_unit,v^T R v = int bubble^2 dS,0.00111111111111111,0.00111111111111111,PASS
+zmax_3x3x3_unit,|C| = (2n_a-1)(2n_b-1),25,25,PASS
+zmax_3x3x3_unit,C = support diag(M_Gamma),eq,eq,PASS
+zmax_3x3x3_unit,C on the face plane,25,25,PASS
+zmax_3x3x3_unit,C excludes the perimeter dGamma_c (edge policy),0,0,PASS
+zmax_3x3x3_unit,C = int(Gamma_c) exactly,eq,eq,PASS
+zmax_3x3x3_unit,"D (unhatted M,L) = boundary \ int(Gamma_c) (incl. dGamma_c)",193,193,PASS
+zmax_3x3x3_unit,C and D disjoint,0,0,PASS
+zmax_3x3x3_unit,"hatted K, M eliminated set = D u C (y = P_I y_I + Q_C eta u)",218,218,PASS
+zmax_3x3x3_unit,M_Gamma rows off C zero,0,0,PASS
+zmax_3x3x3_unit,R symmetric max|R - R^T|,0.0e+00,0,PASS
+zmax_3x3x3_unit,R SPD: min eigenvalue,4.183e-03,> 0,PASS
+zmax_3x3x3_unit,R = [M1(a) (x) M1(b)]|_int (rel. max entrywise),6.26e-15,<= 1e-14,PASS
+zmax_3x3x3_unit,v^T R v = int bubble^2 dS,0.00111111111111111,0.00111111111111111,PASS
+zmin_2x3x4_unit,|C| = (2n_a-1)(2n_b-1),15,15,PASS
+zmin_2x3x4_unit,C = support diag(M_Gamma),eq,eq,PASS
+zmin_2x3x4_unit,C on the face plane,15,15,PASS
+zmin_2x3x4_unit,C excludes the perimeter dGamma_c (edge policy),0,0,PASS
+zmin_2x3x4_unit,C = int(Gamma_c) exactly,eq,eq,PASS
+zmin_2x3x4_unit,"D (unhatted M,L) = boundary \ int(Gamma_c) (incl. dGamma_c)",195,195,PASS
+zmin_2x3x4_unit,C and D disjoint,0,0,PASS
+zmin_2x3x4_unit,"hatted K, M eliminated set = D u C (y = P_I y_I + Q_C eta u)",210,210,PASS
+zmin_2x3x4_unit,M_Gamma rows off C zero,0,0,PASS
+zmin_2x3x4_unit,R symmetric max|R - R^T|,0.0e+00,0,PASS
+zmin_2x3x4_unit,R SPD: min eigenvalue,7.655e-03,> 0,PASS
+zmin_2x3x4_unit,R = [M1(a) (x) M1(b)]|_int (rel. max entrywise),6.37e-15,<= 1e-14,PASS
+zmin_2x3x4_unit,v^T R v = int bubble^2 dS,0.00111111111111111,0.00111111111111111,PASS
+xmax_2x3x4_unit,|C| = (2n_a-1)(2n_b-1),35,35,PASS
+xmax_2x3x4_unit,C = support diag(M_Gamma),eq,eq,PASS
+xmax_2x3x4_unit,C on the face plane,35,35,PASS
+xmax_2x3x4_unit,C excludes the perimeter dGamma_c (edge policy),0,0,PASS
+xmax_2x3x4_unit,C = int(Gamma_c) exactly,eq,eq,PASS
+xmax_2x3x4_unit,"D (unhatted M,L) = boundary \ int(Gamma_c) (incl. dGamma_c)",175,175,PASS
+xmax_2x3x4_unit,C and D disjoint,0,0,PASS
+xmax_2x3x4_unit,"hatted K, M eliminated set = D u C (y = P_I y_I + Q_C eta u)",210,210,PASS
+xmax_2x3x4_unit,M_Gamma rows off C zero,0,0,PASS
+xmax_2x3x4_unit,R symmetric max|R - R^T|,0.0e+00,0,PASS
+xmax_2x3x4_unit,R SPD: min eigenvalue,2.861e-03,> 0,PASS
+xmax_2x3x4_unit,R = [M1(a) (x) M1(b)]|_int (rel. max entrywise),6.59e-15,<= 1e-14,PASS
+xmax_2x3x4_unit,v^T R v = int bubble^2 dS,0.00111111111111111,0.00111111111111111,PASS
+ymax_2x3x4_unit,|C| = (2n_a-1)(2n_b-1),21,21,PASS
+ymax_2x3x4_unit,C = support diag(M_Gamma),eq,eq,PASS
+ymax_2x3x4_unit,C on the face plane,21,21,PASS
+ymax_2x3x4_unit,C excludes the perimeter dGamma_c (edge policy),0,0,PASS
+ymax_2x3x4_unit,C = int(Gamma_c) exactly,eq,eq,PASS
+ymax_2x3x4_unit,"D (unhatted M,L) = boundary \ int(Gamma_c) (incl. dGamma_c)",189,189,PASS
+ymax_2x3x4_unit,C and D disjoint,0,0,PASS
+ymax_2x3x4_unit,"hatted K, M eliminated set = D u C (y = P_I y_I + Q_C eta u)",210,210,PASS
+ymax_2x3x4_unit,M_Gamma rows off C zero,0,0,PASS
+ymax_2x3x4_unit,R symmetric max|R - R^T|,0.0e+00,0,PASS
+ymax_2x3x4_unit,R SPD: min eigenvalue,5.235e-03,> 0,PASS
+ymax_2x3x4_unit,R = [M1(a) (x) M1(b)]|_int (rel. max entrywise),6.54e-15,<= 1e-14,PASS
+ymax_2x3x4_unit,v^T R v = int bubble^2 dS,0.00111111111111111,0.00111111111111111,PASS
+zmin_4x4x2_nonunit,|C| = (2n_a-1)(2n_b-1),49,49,PASS
+zmin_4x4x2_nonunit,C = support diag(M_Gamma),eq,eq,PASS
+zmin_4x4x2_nonunit,C on the face plane,49,49,PASS
+zmin_4x4x2_nonunit,C excludes the perimeter dGamma_c (edge policy),0,0,PASS
+zmin_4x4x2_nonunit,C = int(Gamma_c) exactly,eq,eq,PASS
+zmin_4x4x2_nonunit,"D (unhatted M,L) = boundary \ int(Gamma_c) (incl. dGamma_c)",209,209,PASS
+zmin_4x4x2_nonunit,C and D disjoint,0,0,PASS
+zmin_4x4x2_nonunit,"hatted K, M eliminated set = D u C (y = P_I y_I + Q_C eta u)",258,258,PASS
+zmin_4x4x2_nonunit,M_Gamma rows off C zero,0,0,PASS
+zmin_4x4x2_nonunit,R symmetric max|R - R^T|,0.0e+00,0,PASS
+zmin_4x4x2_nonunit,R SPD: min eigenvalue,7.828e-03,> 0,PASS
+zmin_4x4x2_nonunit,R = [M1(a) (x) M1(b)]|_int (rel. max entrywise),6.54e-15,<= 1e-14,PASS
+zmin_4x4x2_nonunit,v^T R v = int bubble^2 dS,1.13777777777778,1.13777777777778,PASS
+xmin_4x4x2_nonunit,|C| = (2n_a-1)(2n_b-1),21,21,PASS
+xmin_4x4x2_nonunit,C = support diag(M_Gamma),eq,eq,PASS
+xmin_4x4x2_nonunit,C on the face plane,21,21,PASS
+xmin_4x4x2_nonunit,C excludes the perimeter dGamma_c (edge policy),0,0,PASS
+xmin_4x4x2_nonunit,C = int(Gamma_c) exactly,eq,eq,PASS
+xmin_4x4x2_nonunit,"D (unhatted M,L) = boundary \ int(Gamma_c) (incl. dGamma_c)",237,237,PASS
+xmin_4x4x2_nonunit,C and D disjoint,0,0,PASS
+xmin_4x4x2_nonunit,"hatted K, M eliminated set = D u C (y = P_I y_I + Q_C eta u)",258,258,PASS
+xmin_4x4x2_nonunit,M_Gamma rows off C zero,0,0,PASS
+xmin_4x4x2_nonunit,R symmetric max|R - R^T|,0.0e+00,0,PASS
+xmin_4x4x2_nonunit,R SPD: min eigenvalue,5.235e-03,> 0,PASS
+xmin_4x4x2_nonunit,R = [M1(a) (x) M1(b)]|_int (rel. max entrywise),6.34e-15,<= 1e-14,PASS
+xmin_4x4x2_nonunit,v^T R v = int bubble^2 dS,0.00111111111111111,0.00111111111111111,PASS
+ymax_4x4x2_nonunit,|C| = (2n_a-1)(2n_b-1),21,21,PASS
+ymax_4x4x2_nonunit,C = support diag(M_Gamma),eq,eq,PASS
+ymax_4x4x2_nonunit,C on the face plane,21,21,PASS
+ymax_4x4x2_nonunit,C excludes the perimeter dGamma_c (edge policy),0,0,PASS
+ymax_4x4x2_nonunit,C = int(Gamma_c) exactly,eq,eq,PASS
+ymax_4x4x2_nonunit,"D (unhatted M,L) = boundary \ int(Gamma_c) (incl. dGamma_c)",237,237,PASS
+ymax_4x4x2_nonunit,C and D disjoint,0,0,PASS
+ymax_4x4x2_nonunit,"hatted K, M eliminated set = D u C (y = P_I y_I + Q_C eta u)",258,258,PASS
+ymax_4x4x2_nonunit,M_Gamma rows off C zero,0,0,PASS
+ymax_4x4x2_nonunit,R symmetric max|R - R^T|,0.0e+00,0,PASS
+ymax_4x4x2_nonunit,R SPD: min eigenvalue,5.235e-03,> 0,PASS
+ymax_4x4x2_nonunit,R = [M1(a) (x) M1(b)]|_int (rel. max entrywise),6.34e-15,<= 1e-14,PASS
+ymax_4x4x2_nonunit,v^T R v = int bubble^2 dS,0.00111111111111111,0.00111111111111111,PASS
+zmax_4x4x2_nonunit,|C| = (2n_a-1)(2n_b-1),49,49,PASS
+zmax_4x4x2_nonunit,C = support diag(M_Gamma),eq,eq,PASS
+zmax_4x4x2_nonunit,C on the face plane,49,49,PASS
+zmax_4x4x2_nonunit,C excludes the perimeter dGamma_c (edge policy),0,0,PASS
+zmax_4x4x2_nonunit,C = int(Gamma_c) exactly,eq,eq,PASS
+zmax_4x4x2_nonunit,"D (unhatted M,L) = boundary \ int(Gamma_c) (incl. dGamma_c)",209,209,PASS
+zmax_4x4x2_nonunit,C and D disjoint,0,0,PASS
+zmax_4x4x2_nonunit,"hatted K, M eliminated set = D u C (y = P_I y_I + Q_C eta u)",258,258,PASS
+zmax_4x4x2_nonunit,M_Gamma rows off C zero,0,0,PASS
+zmax_4x4x2_nonunit,R symmetric max|R - R^T|,0.0e+00,0,PASS
+zmax_4x4x2_nonunit,R SPD: min eigenvalue,7.828e-03,> 0,PASS
+zmax_4x4x2_nonunit,R = [M1(a) (x) M1(b)]|_int (rel. max entrywise),6.34e-15,<= 1e-14,PASS
+zmax_4x4x2_nonunit,v^T R v = int bubble^2 dS,1.13777777777778,1.13777777777778,PASS

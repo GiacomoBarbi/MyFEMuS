@@ -392,8 +392,10 @@ struct ProblemConfig {
         control.type == ControlType::NEUMANN)
       throw std::invalid_argument(
           "homogeneous Dirichlet state BC is incompatible with Neumann control");
+    // T11D: in 3D the controlled face is excluded from the constrained set
+    // (y = eta u on Gamma_c, y = 0 on the other five faces); 2D unchanged.
     if (state_bc == StateBoundaryCondition::HOMOGENEOUS_DIRICHLET &&
-        control.type == ControlType::DIRICHLET)
+        control.type == ControlType::DIRICHLET && dimension != 3u)
       throw std::invalid_argument(
           "homogeneous Dirichlet state BC is incompatible with Dirichlet control");
     // T8D: the core options act on Dirichlet control only; refuse rather than ignore.
@@ -453,9 +455,17 @@ struct ProblemConfig {
     auto refuse = [](const char* what) {
       throw std::invalid_argument(std::string("3D: ") + what);
     };
-    // T11N: Neumann boundary control on ONE whole face is ported; Dirichlet is not.
-    if (control.type == ControlType::DIRICHLET)
-      refuse("Dirichlet boundary control is not ported (T11D)");
+    // T11N / T11D-L2: Neumann and Dirichlet boundary control on ONE whole face.
+    if (control.type == ControlType::DIRICHLET) {
+      BoxFace3D face;
+      if (!LookupBoxFace3D(neumann_control_face, face))
+        refuse("Dirichlet control needs one whole box face (--dirichlet-face3d xmin|xmax|ymin|ymax|zmin|zmax)");
+      if (state_bc != StateBoundaryCondition::HOMOGENEOUS_DIRICHLET)
+        refuse("Dirichlet control needs --state-bc dirichlet (y = eta u on the face,"
+               " y = 0 on the other five faces; the 2D natural-elsewhere variant is not ported)");
+      if (!additional_control_regions.empty())
+        refuse("control boxes are distributed-control regions; Dirichlet control acts on one face");
+    }
     if (control.type == ControlType::NEUMANN) {
       BoxFace3D face;
       if (!LookupBoxFace3D(neumann_control_face, face))
@@ -712,14 +722,23 @@ inline const char* TrackingTargetName(const ProblemConfig& config) {
 inline bool OwnedDofIsControlled(const ProblemConfig& config, double x, double z,
                                  double axis2 = 0.0) {
   const double tolerance = 1.0e-12;
-  // T11N: 3D Neumann control -- the nodes on the selected face plane
-  if (config.dimension == 3u && config.control.type == ProblemConfig::ControlType::NEUMANN) {
+  // T11N: 3D Neumann control -- the nodes on the selected face plane.
+  // T11D: 3D Dirichlet control -- the same plane MINUS its perimeter (the
+  // perimeter is on the homogeneous faces: u = 0 there).
+  if (config.dimension == 3u && (config.control.type == ProblemConfig::ControlType::NEUMANN ||
+                                 config.control.type == ProblemConfig::ControlType::DIRICHLET)) {
     BoxFace3D face;
     if (!LookupBoxFace3D(config.neumann_control_face, face)) return false;
     const double c[3] = {x, z, axis2};
     const double lo[3] = {config.domain.xmin, config.domain.ymin, config.domain.zmin};
     const double hi[3] = {config.domain.xmax, config.domain.ymax, config.domain.zmax};
-    return std::fabs(c[face.axis] - (face.at_max ? hi[face.axis] : lo[face.axis])) <= tolerance;
+    if (std::fabs(c[face.axis] - (face.at_max ? hi[face.axis] : lo[face.axis])) > tolerance)
+      return false;
+    if (config.control.type == ProblemConfig::ControlType::NEUMANN) return true;
+    for (unsigned a = 0; a < 3u; ++a)
+      if (a != face.axis &&
+          (c[a] <= lo[a] + tolerance || c[a] >= hi[a] - tolerance)) return false;
+    return true;
   }
   if (config.control.type == ProblemConfig::ControlType::NEUMANN ||
       config.control.type == ProblemConfig::ControlType::DIRICHLET)
