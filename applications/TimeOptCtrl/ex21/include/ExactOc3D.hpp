@@ -44,7 +44,13 @@ class Mesh;
  *  u = -(eta nu/alpha_u) X X dQs/dz(0,t) (= eta nu dn p / alpha_u);
  *  y = cos(2t) sin^3 sin^3 sin^3 + eta u (1 - z)^3.  u is nodal in time (BE and
  *  CN) and its error is the surface L2 norm on Gamma_c.  Verified by
- *  aux/investigation/3d_boundary/t11d/scripts/t11d_symbolic.py.  `alpha_u` <= 0:
+ *  aux/investigation/3d_boundary/t11d/scripts/t11d_symbolic.py.
+ *  T11H1: dirichlet-h1-3d -- the same p and Gamma_c, the control u = S(x,y) U(t),
+ *  S = X X (= sin sin when ell > 0, i.e. no tangential wind: -Lap_Gamma S = 2 pi^2 S),
+ *  U solving alpha_u (1 + 2 pi^2 ell^2) U - gamma_u U_tt = -eta nu dQs/dz(0,t) with
+ *  the natural u_t(T) = 0 (closed form in erfc, the member with u(T) = 0; u(0) is
+ *  data through y_0); ell = --control-h1-length, gamma_u = --control-h1-time-weight.
+ *  Verified by aux/investigation/3d_boundary/t11h1/scripts/t11h1_symbolic.py.  `alpha_u` <= 0:
  *  1e-2; `final_time` <= 0: 1; `nu` <= 0: 1/4.  The wind is NOT set here:
  *  it is --convection on/off with --vx --vy --vz. */
 void ApplyExactOptimalControl3D(ProblemConfig& config, const std::string& name,

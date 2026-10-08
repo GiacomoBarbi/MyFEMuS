@@ -288,6 +288,21 @@ SpatialFieldIntegrals IntegrateBoundaryField(
     femus::Mesh* mesh, unsigned solution_type, unsigned face_id,
     const double* global_values, SpatialScalarFunction exact, void* context);
 
+/** T11H1: surface H1-seminorm error of a nodal field on the face `face_id`
+ *  (tangential gradients; see Discretization.cpp). */
+SpatialFieldIntegrals IntegrateBoundaryGradient3D(
+    femus::Mesh* mesh, unsigned solution_type, unsigned face_id, const double* global_values,
+    void (*exact_gradient)(double, double, double, void*, double*), void* context);
+
+/** T11H1: max |n . grad_Gamma phi| / |grad_Gamma phi| over the last 3D K_Gamma
+ *  assembly (before the explicit tangential projection); collective. */
+double SurfaceGradientNormalLeak();
+
+/** T11H1 (operator dump only): request / read copies of the whole-face M_Gamma
+ *  (which = 0) and K_Gamma (which = 1) taken before the homogeneous elimination. */
+void KeepFaceOperatorsBeforeElimination(bool keep);
+Mat FaceOperatorBeforeElimination(int which);
+
 /** T11N: 3D counterpart of IntegrateBoundaryField -- the same JacobianSur face
  *  quadrature that assembles the 3D M_Gamma, exact field of (x, y, z). */
 SpatialFieldIntegrals IntegrateBoundaryField3D(

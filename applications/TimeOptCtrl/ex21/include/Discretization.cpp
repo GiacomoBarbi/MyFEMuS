@@ -156,6 +156,63 @@ static void ElementCentroid3D(Mesh* mesh, unsigned element, double c[3]) {
   for (unsigned axis = 0; axis < 3u; ++axis) c[axis] /= coordinate_dofs;
 }
 
+/** T11H1: surface gradients of the face shape functions at one face Gauss point
+ *  of a 2D face element embedded in 3D (QUAD9 here), geometry-robust: with the
+ *  tangents t1 = dx/dxi, t2 = dx/deta (the Jacobian columns JacobianSur uses for
+ *  the weight and the normal) and the metric G = [ti . tj],
+ *      grad_Gamma phi = sum_ij ti (G^-1)_ij d_j phi,
+ *  which equals (I - n n) grad(phi~) for any extension phi~ of phi, followed by
+ *  the explicit tangential projection grad_Gamma phi -= (grad_Gamma phi . n) n
+ *  (a no-op in exact arithmetic).  NOT the 2D arc-length formula.  `grad` is
+ *  3 x face_dofs (row-major by DOF); `leak` returns max |n . g| / |g| before
+ *  the projection (a diagnostic of the construction). */
+static void FaceSurfaceGradients(const elem_type* face_element, unsigned gauss,
+                                 const std::vector<std::vector<double> >& xc,
+                                 const std::vector<double>& normal, unsigned face_dofs,
+                                 std::vector<double>& grad, double& leak) {
+  const double* dxi = face_element->GetDPhiDXi(gauss);
+  const double* deta = face_element->GetDPhiDEta(gauss);
+  double t1[3] = {0.0, 0.0, 0.0}, t2[3] = {0.0, 0.0, 0.0};
+  for (unsigned a = 0; a < face_dofs; ++a)
+    for (unsigned k = 0; k < 3u; ++k) {
+      t1[k] += dxi[a] * xc[k][a];
+      t2[k] += deta[a] * xc[k][a];
+    }
+  const double g11 = t1[0] * t1[0] + t1[1] * t1[1] + t1[2] * t1[2];
+  const double g12 = t1[0] * t2[0] + t1[1] * t2[1] + t1[2] * t2[2];
+  const double g22 = t2[0] * t2[0] + t2[1] * t2[1] + t2[2] * t2[2];
+  const double det = g11 * g22 - g12 * g12;
+  const double i11 = g22 / det, i12 = -g12 / det, i22 = g11 / det;
+  grad.assign(3u * face_dofs, 0.0);
+  for (unsigned a = 0; a < face_dofs; ++a) {
+    const double c1 = i11 * dxi[a] + i12 * deta[a], c2 = i12 * dxi[a] + i22 * deta[a];
+    double* g = &grad[3u * a];
+    double gn = 0.0, gg = 0.0;
+    for (unsigned k = 0; k < 3u; ++k) {
+      g[k] = c1 * t1[k] + c2 * t2[k];
+      gn += g[k] * normal[k];
+      gg += g[k] * g[k];
+    }
+    if (gg > 0.0) leak = std::max(leak, std::fabs(gn) / std::sqrt(gg));
+    for (unsigned k = 0; k < 3u; ++k) g[k] -= gn * normal[k];
+  }
+}
+
+/** T11H1 (operator dump only): keep copies of the whole-face M_Gamma and K_Gamma
+ *  taken just before the homogeneous elimination. */
+static bool g_keep_face_operators = false;
+static Mat g_face_operators[2] = {nullptr, nullptr};
+void KeepFaceOperatorsBeforeElimination(bool keep) { g_keep_face_operators = keep; }
+Mat FaceOperatorBeforeElimination(int which) { return g_face_operators[which]; }
+
+/** T11H1: diagnostics of the last 3D K_Gamma assembly (rank-local maxima). */
+static double g_kgamma_leak = 0.0;
+double SurfaceGradientNormalLeak() {
+  double g = 0.0;
+  MPI_Allreduce(&g_kgamma_leak, &g, 1, MPI_DOUBLE, MPI_MAX, PETSC_COMM_WORLD);
+  return g;
+}
+
 /** T10: strict 3D centroid-in-box test, box = [xmin,xmax] x [ymin,ymax] x
  *  [zmin,zmax] over storage axes (0, 1, 2); a centroid on a face is outside. */
 static bool CentroidIsInBox3D(const double c[3], const ProblemConfig::Box& box) {
@@ -491,6 +548,8 @@ NativeSpatialOperators BuildNativeSpatialOperators(
   const bool neumann3d = config.dimension == 3u &&
                          (config.control.type == ProblemConfig::ControlType::NEUMANN ||
                           config.control.type == ProblemConfig::ControlType::DIRICHLET);
+  const bool dirichlet3d = config.dimension == 3u &&
+                           config.control.type == ProblemConfig::ControlType::DIRICHLET;
   double face_area_normal[4] = {0.0, 0.0, 0.0, 0.0};   // area, int n_x, n_y, n_z
   for (unsigned element = mesh->_elementOffset[rank];
        element < mesh->_elementOffset[rank + 1u]; ++element) {
@@ -573,7 +632,8 @@ NativeSpatialOperators BuildNativeSpatialOperators(
     // A 1D mesh has point faces and no control face (Validate allows only
     // DISTRIBUTED control there), so M_Gamma and K_Gamma stay empty.
     // T9: skipped in 3D too -- no boundary control in phase 1, and the
-  // tangential stiffness below assumes one-dimensional faces.
+  // tangential stiffness below assumes one-dimensional faces (T11H1: the 3D
+  // surface stiffness is assembled in the 3D face loop further down).
   for (unsigned face = 0;
          config.dimension == 2u && face < mesh->GetElementFaceNumber(element);
          ++face) {
@@ -634,9 +694,10 @@ NativeSpatialOperators BuildNativeSpatialOperators(
                                             face_system_dofs);
     }
     // T11N: 3D Neumann control -- the QUAD9 trace mass of the selected whole
-    // face, (M_Gamma)_ij = int_Gamma_c phi_i phi_j dS by JacobianSur.  No
-    // tangential stiffness: H1 regularisation is refused in 3D (K_Gamma stays
-    // empty).  Interior faces have a non-negative neighbour index.
+    // face, (M_Gamma)_ij = int_Gamma_c phi_i phi_j dS by JacobianSur.  T11H1:
+    // for Dirichlet control also the surface stiffness K_Gamma (FaceSurfaceGradients);
+    // Neumann control has no H1 regularisation (K_Gamma stays empty).  Interior
+    // faces have a non-negative neighbour index.
     for (unsigned face = 0; neumann3d && face < mesh->GetElementFaceNumber(element); ++face) {
       const int index = mesh->el->GetFaceElementIndex(element, face);
       if (index >= 0 || static_cast<unsigned>(-(index + 1)) != config.neumann_control_face)
@@ -655,7 +716,10 @@ NativeSpatialOperators BuildNativeSpatialOperators(
           face_coordinates[axis][a] = (*mesh->_topology->_Sol[axis])(coordinate_dof);
       }
       std::vector<double> local_boundary(face_dofs * face_dofs, 0.0);
-      std::vector<double> normal;
+      // T11H1: the surface stiffness (K_Gamma)_ab = int grad_G phi_a . grad_G phi_b dS
+      // (Dirichlet control only; R_Gamma = M_Gamma + ell^2 K_Gamma, ell = 0 for L2).
+      std::vector<double> local_tangential(dirichlet3d ? face_dofs * face_dofs : 0u, 0.0);
+      std::vector<double> normal, surface_gradient;
       const elem_type* face_element = mesh->_finiteElement[face_geometry][solution_type];
       for (unsigned gauss = 0; gauss < face_element->GetGaussPointNumber(); ++gauss) {
         face_element->JacobianSur(face_coordinates, gauss, weight, phi, gradient, normal);
@@ -665,9 +729,23 @@ NativeSpatialOperators BuildNativeSpatialOperators(
         for (unsigned a = 0; a < face_dofs; ++a)
           for (unsigned b = 0; b < face_dofs; ++b)
             local_boundary[a * face_dofs + b] += phi[a] * phi[b] * weight;
+        if (dirichlet3d) {
+          FaceSurfaceGradients(face_element, gauss, face_coordinates, normal, face_dofs,
+                               surface_gradient, g_kgamma_leak);
+          for (unsigned a = 0; a < face_dofs; ++a)
+            for (unsigned b = 0; b < face_dofs; ++b) {
+              const double* ga = &surface_gradient[3u * a];
+              const double* gb = &surface_gradient[3u * b];
+              local_tangential[a * face_dofs + b] +=
+                  (ga[0] * gb[0] + ga[1] * gb[1] + ga[2] * gb[2]) * weight;
+            }
+        }
       }
       operators.M_Gamma->add_matrix_blocked(local_boundary, face_system_dofs,
                                             face_system_dofs);
+      if (dirichlet3d)
+        operators.K_Gamma->add_matrix_blocked(local_tangential, face_system_dofs,
+                                              face_system_dofs);
     }
   }
   if (neumann3d) {
@@ -796,6 +874,18 @@ NativeSpatialOperators BuildNativeSpatialOperators(
     // nor control support.  See the note above BuildNativeSpatialOperators.
     // Exactly one elimination per physical matrix: M serves both as the mass
     // matrix and as the whole-domain control operator and is eliminated once.
+    // T11H1 (operator dump only): the whole-face M_Gamma / K_Gamma before the
+    // elimination, for the surface-stiffness battery (K_Gamma 1 = 0 on the face).
+    if (g_keep_face_operators && config.dimension == 3u) {
+      for (Mat* m : {&g_face_operators[0], &g_face_operators[1]})
+        PetscCallAbort(PETSC_COMM_WORLD, MatDestroy(m));
+      PetscCallAbort(PETSC_COMM_WORLD,
+                     MatDuplicate(static_cast<PetscMatrix*>(operators.M_Gamma.get())->mat(),
+                                  MAT_COPY_VALUES, &g_face_operators[0]));
+      PetscCallAbort(PETSC_COMM_WORLD,
+                     MatDuplicate(static_cast<PetscMatrix*>(operators.K_Gamma.get())->mat(),
+                                  MAT_COPY_VALUES, &g_face_operators[1]));
+    }
     EliminateConstrainedDofs(operators.M.get(), rows, 0.0);
     EliminateConstrainedDofs(operators.K.get(), rows, 1.0);
     EliminateConstrainedDofs(operators.M_track.get(), rows, 0.0);
@@ -1085,6 +1175,60 @@ SpatialFieldIntegrals IntegrateBoundaryField3D(
         totals.error_squared += difference * difference * weight;
         totals.exact_squared += analytic * analytic * weight;
         totals.field_squared += discrete * discrete * weight;
+      }
+    }
+  }
+  return totals;
+}
+
+/** T11H1: surface H1-seminorm integrals on the face `face_id`: the error of the
+ *  discrete surface gradient grad_Gamma u_h (FaceSurfaceGradients) against the
+ *  exact tangential gradient `exact_gradient` (3 components), with the face
+ *  quadrature that assembles M_Gamma and K_Gamma. */
+SpatialFieldIntegrals IntegrateBoundaryGradient3D(
+    Mesh* mesh, unsigned solution_type, unsigned face_id, const double* global_values,
+    void (*exact_gradient)(double, double, double, void*, double*), void* context) {
+  SpatialFieldIntegrals totals;
+  const unsigned rank = mesh->processor_id();
+  const unsigned dimension = mesh->GetDimension();
+  std::vector<double> phi, gradient, normal, surface_gradient;
+  double weight = 0.0, leak = 0.0;
+  for (unsigned element = mesh->_elementOffset[rank];
+       element < mesh->_elementOffset[rank + 1u]; ++element) {
+    for (unsigned face = 0; face < mesh->GetElementFaceNumber(element); ++face) {
+      const int index = mesh->el->GetFaceElementIndex(element, face);
+      if (index >= 0 || static_cast<unsigned>(-(index + 1)) != face_id) continue;
+      const unsigned face_dofs = mesh->GetElementFaceDofNumber(element, face, solution_type);
+      const unsigned face_geometry = mesh->GetElementFaceType(element, face);
+      std::vector<std::vector<double> > face_coordinates(
+          dimension, std::vector<double>(face_dofs, 0.0));
+      std::vector<double> nodal(face_dofs, 0.0);
+      for (unsigned a = 0; a < face_dofs; ++a) {
+        const unsigned local_node = mesh->GetLocalFaceVertexIndex(element, face, a);
+        nodal[a] = global_values[mesh->GetSolutionDof(local_node, element, solution_type)];
+        const unsigned coordinate_dof = mesh->GetSolutionDof(local_node, element, 2);
+        for (unsigned axis = 0; axis < dimension; ++axis)
+          face_coordinates[axis][a] = (*mesh->_topology->_Sol[axis])(coordinate_dof);
+      }
+      const elem_type* face_element = mesh->_finiteElement[face_geometry][solution_type];
+      for (unsigned gauss = 0; gauss < face_element->GetGaussPointNumber(); ++gauss) {
+        face_element->JacobianSur(face_coordinates, gauss, weight, phi, gradient, normal);
+        FaceSurfaceGradients(face_element, gauss, face_coordinates, normal, face_dofs,
+                             surface_gradient, leak);
+        double c[3] = {0.0, 0.0, 0.0}, gh[3] = {0.0, 0.0, 0.0}, ge[3] = {0.0, 0.0, 0.0};
+        for (unsigned a = 0; a < face_dofs; ++a)
+          for (unsigned k = 0; k < 3u; ++k) {
+            c[k] += phi[a] * face_coordinates[k][a];
+            gh[k] += surface_gradient[3u * a + k] * nodal[a];
+          }
+        exact_gradient(c[0], c[1], c[2], context, ge);
+        const double gen = ge[0] * normal[0] + ge[1] * normal[1] + ge[2] * normal[2];
+        for (unsigned k = 0; k < 3u; ++k) {
+          const double e_tan = ge[k] - gen * normal[k];   // tangential part of the exact gradient
+          totals.error_squared += (gh[k] - e_tan) * (gh[k] - e_tan) * weight;
+          totals.exact_squared += e_tan * e_tan * weight;
+          totals.field_squared += gh[k] * gh[k] * weight;
+        }
       }
     }
   }

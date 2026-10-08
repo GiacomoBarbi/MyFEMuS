@@ -85,7 +85,8 @@ static ProblemConfig::Box ReadBox3D(char** argv, int& argument);
  *  natural-conv-3d, T11N neumann-conv-3d, T11D dirichlet-conv-3d. */
 static bool IsExact3DCase(const std::string& name) {
   return name == "conv-sin-3d" || name == "conv-sin3-3d" || name == "natural-conv-3d" ||
-         name == "neumann-conv-3d" || name == "dirichlet-conv-3d";   // T11D
+         name == "neumann-conv-3d" || name == "dirichlet-conv-3d" ||   // T11D
+         name == "dirichlet-h1-3d";                                    // T11H1
 }
 
 /** T10: the 3D domain and regions, after every preset / exact case has run

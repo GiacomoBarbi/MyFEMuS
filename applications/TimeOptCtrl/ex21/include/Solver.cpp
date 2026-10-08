@@ -1034,6 +1034,18 @@ DistributedOptimalControlSolve SolveOptimalControlOwnershipDistributed(
   if (dirichlet)
     PetscCallAbort(PETSC_COMM_WORLD,
                    dirichlet->ZeroControlledRows(rhs_data.rhs_y));
+  // T11H1: the PHYSICAL state right-hand side g, kept for the KKT residual report.
+  // The affine correction below belongs to the reduced (Y, P) system only; the
+  // report evaluates E_I Y + eta B_D U - g with the FULL control U (which already
+  // carries the affine part), so it must see g, not the corrected right-hand side
+  // (before T11H1 it saw the corrected one and double-counted eta B_D Q_u^{-1}
+  // (gamma_u/dt) q_0 -- zero, and therefore invisible, whenever u_0 = 0, i.e. in
+  // every 2D H1-time run).  The solve itself never used this report.
+  Vec rhs_y_physical = nullptr;
+  if (dirichlet && dirichlet->has_time_regularization()) {
+    PetscCallAbort(PETSC_COMM_WORLD, VecDuplicate(rhs_data.rhs_y, &rhs_y_physical));
+    PetscCallAbort(PETSC_COMM_WORLD, VecCopy(rhs_data.rhs_y, rhs_y_physical));
+  }
   if (dirichlet && dirichlet->has_time_regularization()) {
     // Eliminating U from the affine control stationarity
     //     Q_u U - eta B_D^T P = (gamma_u/dt) q_0
@@ -1250,10 +1262,12 @@ DistributedOptimalControlSolve SolveOptimalControlOwnershipDistributed(
       dirichlet, lift);
 
   result.kkt = ComputeKktResiduals(
-      config, layout, tracking, control, operators, rhs_data.rhs_y,
+      config, layout, tracking, control, operators,
+      rhs_y_physical ? rhs_y_physical : rhs_data.rhs_y,
       rhs_data.rhs_p, solution_y, solution_p, result.fields.control,
       dirichlet, lift);
   PrintKktResiduals(result.kkt);
+  if (rhs_y_physical) PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(&rhs_y_physical));
 
   PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(&residual));
   PetscCallAbort(PETSC_COMM_WORLD, KSPDestroy(&outer));

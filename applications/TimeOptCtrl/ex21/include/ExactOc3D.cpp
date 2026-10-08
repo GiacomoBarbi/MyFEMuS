@@ -71,6 +71,10 @@ bool g_neumann = false;
 //   at h^{5/2}.  The convergence studies use w = (0, 0, w_z).)
 //   f = y_t - nu Lap y + w.grad y;  y_d = y - r/alpha_t  (r = -p_t - nu Lap p - w.grad p).
 bool g_dirichlet = false;
+// T11H1 dirichlet-h1-3d: the same p, the control u = S(x,y) U(t) with S = X X and
+// the temporal factor U solving the H1 stationarity (ExactOc3D.hpp); data reads ell
+// and gamma_u from the config.  g_dirichlet stays true (shared Dirichlet driver).
+bool g_dir_h1 = false;
 
 struct F1 { double v, d, dd; };   // 1D factor and its first two derivatives
 F1 Factor(double xi) {
@@ -195,6 +199,52 @@ ZQ DirQ3(const ProblemConfig& c, double z, double t) {
   DirStep3(z, f, f1, f2);
   return {(1.0 - f) * q.v, -f1 * q.v + (1.0 - f) * q.z,
           -f2 * q.v - 2.0 * f1 * q.z + (1.0 - f) * q.zz, -(1.0 - f) * q.tau};
+}
+
+/** T11H1: the temporal factor U(t) of u = S(x,y) U(t) (S = X_cx(x) X_cy(y)), and
+ *  U_t, for dirichlet-h1-3d.  Stationarity on Gamma_c (n = -e_z, dn p = -S dQs/dz(0)):
+ *      a U - gamma_u U_tt = F(tau) := -eta nu dQs/dz(0, tau),   a = alpha_u (1 + ell^2 lambda),
+ *  lambda = 2 pi^2 (-Delta_Gamma S = lambda S; ell > 0 needs w_x = w_y = 0 so that X = sin).
+ *  gamma_u = 0: U = F/a.  gamma_u > 0 (k = sqrt(a/gamma_u), tau = T - t): the natural
+ *  condition u_t(T) = 0 is U_tau(0) = 0; u(0) = u_0 is DATA (y_0 is built from U(T)), so
+ *  any U = U_p + A cosh(k tau) is admissible -- the benchmark takes A = 0:
+ *      U(tau) = -(1/(gamma k)) int_0^tau sinh(k(tau - s)) F(s) ds,
+ *  in closed form with dQs/dz(0,s) = C0 s^{-3/2} exp(-A0/s - cc s), C0 = z1/(nu sqrt(4 pi nu)),
+ *  A0 = z1^2/(4 nu) and
+ *      E(b,tau) = int_0^tau s^{-3/2} e^{-A0/s - b s} ds
+ *               = sqrt(pi)/(2 sqrt(A0)) [e^{2 sqrt(A0 b)} erfc(sqrt(A0/tau) + sqrt(b tau))
+ *                                        + e^{-2 sqrt(A0 b)} erfc(sqrt(A0/tau) - sqrt(b tau))]  (b > 0):
+ *      U = (eta nu C0/(2 gamma k)) [e^{k tau} E(cc+k) - e^{-k tau} E(cc-k)],
+ *      U_tau = (eta nu C0/(2 gamma)) [e^{k tau} E(cc+k) + e^{-k tau} E(cc-k)].
+ *  cc > k is required (refused otherwise).  Verified by t11h1_symbolic.py. */
+struct DirTime { double U, Ut; };
+double DirCC(const ProblemConfig& c) {
+  const double nu = c.diffusivity, wz = HasConvection(c) ? c.convection.vz : 0.0;
+  const double cx = DirC(c, 0), cy = DirC(c, 1);
+  return wz * wz / (4.0 * nu) + 2.0 * nu * kPi * kPi + nu * (cx * cx + cy * cy);
+}
+double DirH1A(const ProblemConfig& c) {   // alpha_u (1 + ell^2 lambda), lambda = 2 pi^2
+  return c.alpha_u * (1.0 + c.control_h1_length * c.control_h1_length * 2.0 * kPi * kPi);
+}
+DirTime DirH1Time(const ProblemConfig& c, double t) {
+  const double tau = c.final_time() - t;
+  if (tau <= 1e-14) return {0.0, 0.0};
+  const double nu = c.diffusivity, a = DirH1A(c), g = c.control_h1_time_weight;
+  if (g <= 0.0) {
+    const Heat3 q = DirQs3(c, 0.0, t);
+    return {-c.eta * nu * q.z / a, c.eta * nu * q.ztau / a};
+  }
+  const double k = std::sqrt(a / g), cc = DirCC(c);
+  const double A0 = kDir3Z1 * kDir3Z1 / (4.0 * nu);
+  const double C0 = kDir3Z1 / (nu * std::sqrt(4.0 * kPi * nu));
+  auto E = [&](double b) {
+    const double sa = std::sqrt(A0 * b), r = std::sqrt(A0 / tau), q = std::sqrt(b * tau);
+    return std::sqrt(kPi) / (2.0 * std::sqrt(A0)) *
+           (std::exp(2.0 * sa) * std::erfc(r + q) + std::exp(-2.0 * sa) * std::erfc(r - q));
+  };
+  const double ep = std::exp(k * tau) * E(cc + k), em = std::exp(-k * tau) * E(cc - k);
+  const double s = c.eta * nu * C0 / (2.0 * g);
+  return {s / k * (ep - em), -s * (ep + em)};   // U, U_t = -U_tau
 }
 
 /** T11N: neumann-conv-3d factors. */
@@ -332,8 +382,21 @@ double DirExactP(const ProblemConfig& c, double x, double y, double z, double t)
 }
 /** the exact control on Gamma_c: -(eta nu/alpha_u) X(x) X(y) dQs/dz(0, t) */
 double DirExactUxy(const ProblemConfig& c, double x, double y, double t) {
+  if (g_dir_h1)   // T11H1: u = S U(t)
+    return DirX(DirC(c, 0), x).v * DirX(DirC(c, 1), y).v * DirH1Time(c, t).U;
   return -c.eta * c.diffusivity / c.alpha_u * DirX(DirC(c, 0), x).v * DirX(DirC(c, 1), y).v *
          DirQs3(c, 0.0, t).z;
+}
+/** T11H1: the exact surface gradient of u on Gamma_c = {z = 0}: U (X' Y, X Y', 0). */
+void DirExactUGrad(double x, double y, double, void* raw, double* g) {
+  const Context3D* e = static_cast<const Context3D*>(raw);
+  const ProblemConfig& c = *e->config;
+  const F1 X = DirX(DirC(c, 0), x), Y = DirX(DirC(c, 1), y);
+  const double U = g_dir_h1 ? DirH1Time(c, e->time).U
+                            : -c.eta * c.diffusivity / c.alpha_u * DirQs3(c, 0.0, e->time).z;
+  g[0] = U * X.d * Y.v;
+  g[1] = U * X.v * Y.d;
+  g[2] = 0.0;
 }
 double DirExactU(const ProblemConfig& c, double x, double y, double, double t) {
   return DirExactUxy(c, x, y, t);
@@ -349,8 +412,13 @@ YParts DirY(const ProblemConfig& c, double x, double y, double z, double t) {
   const double wx = HasConvection(c) ? c.convection.vx : 0.0, wy = HasConvection(c) ? c.convection.vy : 0.0,
                wz = HasConvection(c) ? c.convection.vz : 0.0;
   const F1 X = DirX(DirC(c, 0), x), Y = DirX(DirC(c, 1), y);
-  const double k = -c.eta * c.eta * c.diffusivity / c.alpha_u * DirQs3(c, 0.0, t).z;   // eta u = k X Y
-  const double kd = c.eta * c.eta * c.diffusivity / c.alpha_u * DirQs3(c, 0.0, t).ztau;
+  double k = -c.eta * c.eta * c.diffusivity / c.alpha_u * DirQs3(c, 0.0, t).z;   // eta u = k X Y
+  double kd = c.eta * c.eta * c.diffusivity / c.alpha_u * DirQs3(c, 0.0, t).ztau;
+  if (g_dir_h1) {   // T11H1: eta u = eta U(t) X Y
+    const DirTime ht = DirH1Time(c, t);
+    k = c.eta * ht.U;
+    kd = c.eta * ht.Ut;
+  }
   const double g = (1.0 - z) * (1.0 - z) * (1.0 - z), g1 = -3.0 * (1.0 - z) * (1.0 - z),
                g2 = 6.0 * (1.0 - z);
   YParts r;
@@ -422,14 +490,19 @@ double RelDiff(Vec x, Vec b) {
 void ApplyExactOptimalControl3D(ProblemConfig& config, const std::string& name,
                                 double alpha_u, double final_time, double nu) {
   if (name != "conv-sin-3d" && name != "conv-sin3-3d" && name != "natural-conv-3d" &&
-      name != "neumann-conv-3d" && name != "dirichlet-conv-3d")
+      name != "neumann-conv-3d" && name != "dirichlet-conv-3d" && name != "dirichlet-h1-3d")
     throw std::invalid_argument(
-        "the 3D exact OC cases are conv-sin-3d, conv-sin3-3d, natural-conv-3d, neumann-conv-3d"
-        " and dirichlet-conv-3d");
+        "the 3D exact OC cases are conv-sin-3d, conv-sin3-3d, natural-conv-3d, neumann-conv-3d,"
+        " dirichlet-conv-3d and dirichlet-h1-3d");
   g_cubic = name == "conv-sin3-3d";
   g_natural = name == "natural-conv-3d";
   g_neumann = name == "neumann-conv-3d";
-  g_dirichlet = name == "dirichlet-conv-3d";
+  g_dir_h1 = name == "dirichlet-h1-3d";   // T11H1
+  g_dirichlet = name == "dirichlet-conv-3d" || g_dir_h1;
+  if (name == "dirichlet-conv-3d" &&
+      (config.control_h1_length != 0.0 || config.control_h1_time_weight != 0.0))
+    throw std::invalid_argument(
+        "dirichlet-conv-3d is the L2 benchmark; use --exact-oc dirichlet-h1-3d for H1-space / H1-time");
   config.dimension = 3u;
   config.domain = ProblemConfig::Domain();   // unit cube
   config.state_bc = (g_natural || g_neumann)
@@ -462,6 +535,20 @@ void ApplyExactOptimalControl3D(ProblemConfig& config, const std::string& name,
   config.alpha_u = alpha_u > 0.0 ? alpha_u : 1.0e-2;
   const double T = final_time > 0.0 ? final_time : 1.0;
   config.time.dt = T / config.time.steps;
+  if (g_dir_h1) {
+    // T11H1: S = X X must be a surface-Laplacian eigenfunction when ell > 0, i.e. X = sin
+    // (no tangential wind); gamma_u > 0 needs cc > k for the closed form (DirH1Time).
+    if (config.control_h1_length > 0.0 && HasConvection(config) &&
+        (config.convection.vx != 0.0 || config.convection.vy != 0.0))
+      throw std::invalid_argument(
+          "dirichlet-h1-3d with ell > 0 needs a wind normal to Gamma_c (--vx 0 --vy 0): the control"
+          " shape must be an eigenfunction of the surface Laplacian");
+    if (config.control_h1_time_weight > 0.0 &&
+        !(DirCC(config) > std::sqrt(DirH1A(config) / config.control_h1_time_weight)))
+      throw std::invalid_argument(
+          "dirichlet-h1-3d: gamma_u too small for the closed form (needs cc > sqrt(alpha_u (1 + 2 pi^2"
+          " ell^2) / gamma_u)); increase --control-h1-time-weight");
+  }
   config.data_overrides.source3d =
       g_dirichlet ? DirSource3D : (g_neumann ? NeuSource3D : (g_natural ? NatSource3D : Source3D));
   config.data_overrides.target3d =
@@ -492,7 +579,7 @@ int RunExactOptimalControl3D(const ProblemConfig& config,
   std::printf("EX21_EXACT3D_CONFIG case=%s nx=%u ny=%u nz=%u steps=%u T=%.6g dt=%.10e"
               " scheme=%s nu=%.6g convection=%s vx=%.6g vy=%.6g vz=%.6g alpha_u=%.6e"
               " h=%.6e Pe_cell=%.6e dofs=%d spacetime_unknowns=%lld pc=%d\n",
-              g_dirichlet ? "dirichlet-conv-3d" : g_neumann ? "neumann-conv-3d"
+              g_dir_h1 ? "dirichlet-h1-3d" : g_dirichlet ? "dirichlet-conv-3d" : g_neumann ? "neumann-conv-3d"
                         : (g_natural ? "natural-conv-3d" : (g_cubic ? "conv-sin3-3d" : "conv-sin-3d")),
               config.mesh.nx, config.mesh.ny, config.mesh.nz, steps, T, dt,
               TimeSchemeName(config), config.diffusivity, HasConvection(config) ? "on" : "off",
@@ -608,6 +695,24 @@ int RunExactOptimalControl3D(const ProblemConfig& config,
     PetscCallAbort(PETSC_COMM_WORLD, VecNorm(ru, NORM_2, &ru_norm));
     PetscCallAbort(PETSC_COMM_WORLD, VecScale(bp, config.eta));   // eta B_D^T P
     PetscCallAbort(PETSC_COMM_WORLD, VecAXPY(bp, -1.0, ru));
+    if (dc.has_time_regularization()) {
+      // T11H1: alpha_u R_H1t U - eta B_D^T P = (gamma_u/dt) q_0, q_0 = (1/dt)[M_G u_0; 0; ..]
+      Vec trace = nullptr, q0 = nullptr;
+      PetscCallAbort(PETSC_COMM_WORLD, MatCreateVecs(dc.regularization(), &trace, nullptr));
+      PetscScalar* a = nullptr;
+      PetscCallAbort(PETSC_COMM_WORLD, VecGetArray(trace, &a));
+      for (PetscInt i = 0; i < local; ++i)
+        a[i] = dc.control_mask()[static_cast<std::size_t>(i)]
+                   ? EvaluateInitialState(config, spatial.layout.x[i], spatial.layout.z[i],
+                                          spatial.layout.Axis2(i)) / config.eta
+                   : 0.0;
+      PetscCallAbort(PETSC_COMM_WORLD, VecRestoreArray(trace, &a));
+      PetscCallAbort(PETSC_COMM_WORLD, VecDuplicate(f.control, &q0));
+      PetscCallAbort(PETSC_COMM_WORLD, dc.ApplyAffineData(trace, q0));
+      PetscCallAbort(PETSC_COMM_WORLD, VecAXPY(bp, ControlTimeSourceWeight(config), q0));
+      PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(&q0));
+      PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(&trace));
+    }
     PetscCallAbort(PETSC_COMM_WORLD, VecNorm(bp, NORM_2, &diff_norm));
     stat_rel = diff_norm / (ru_norm > 0 ? ru_norm : 1.0);
     const std::vector<unsigned char>& m = dc.control_mask();
@@ -684,7 +789,8 @@ int RunExactOptimalControl3D(const ProblemConfig& config,
   }
 
   // ---- FEM-integrated space-time L2 errors
-  struct Acc { double e = 0, x = 0, last_e = 0, last_x = 0, max_e = 0; } ey, ep, eu;
+  struct Acc { double e = 0, x = 0, last_e = 0, last_x = 0, max_e = 0; } ey, ep, eu, eg;
+  double eg_h = 0.0;   // T11H1: int |grad_G u_h|^2
   for (unsigned slot = 0; slot < steps; ++slot) {
     const double tn = (slot + 1u) * dt, tm = (slot + 0.5) * dt;
     const double tp = cn ? tm : tn;
@@ -712,6 +818,18 @@ int RunExactOptimalControl3D(const ProblemConfig& config,
     const SpatialFieldIntegrals Ip = integrate(f.adjoint, 1, tp);
     // T11D: the Dirichlet control is NODAL in time (u_n at t_n, both schemes; T7D)
     const SpatialFieldIntegrals Iu = integrate(f.control, 2, g_dirichlet ? tn : tp);
+    if (g_dir_h1) {   // T11H1: surface H1 seminorm error of u at t_n (nodal)
+      CopyDataSideSliceToSpatial(f.control, slot, local, r);
+      const PetscScalar* a = nullptr;
+      PetscCallAbort(PETSC_COMM_WORLD, VecGetArrayRead(r, &a));
+      Context3D ctx{&config, tn, 2};
+      const SpatialFieldIntegrals Ig = IntegrateBoundaryGradient3D(
+          mesh, solution_type, config.neumann_control_face, a, DirExactUGrad, &ctx);
+      PetscCallAbort(PETSC_COMM_WORLD, VecRestoreArrayRead(r, &a));
+      eg.e += dt * Ig.error_squared;
+      eg.x += dt * Ig.exact_squared;
+      eg_h += dt * Ig.field_squared;
+    }
     for (auto pr : {std::make_pair(&ey, &Iy), std::make_pair(&ep, &Ip), std::make_pair(&eu, &Iu)}) {
       pr.first->e += dt * pr.second->error_squared;
       pr.first->x += dt * pr.second->exact_squared;
@@ -749,6 +867,11 @@ int RunExactOptimalControl3D(const ProblemConfig& config,
               std::sqrt(ep.e), rel(ep.e, ep.x), std::sqrt(ep.last_e), ep.max_e,
               std::sqrt(eu.e), rel(eu.e, eu.x), std::sqrt(eu.last_e), eu.max_e,
               solve_wall, MPI_Wtime() - t0);
+  if (g_dir_h1)
+    std::printf("EX21_DIRICHLET3D_H1 ell=%.6g gamma_u=%.6g u_H1s_L2L2=%.10e u_H1s_L2L2_rel=%.10e"
+                " gradG_u_h_L2L2=%.10e J_reg_time=%.12e surface_gradient_normal_leak=%.3e\n",
+                config.control_h1_length, config.control_h1_time_weight, std::sqrt(eg.e),
+                rel(eg.e, eg.x), std::sqrt(eg_h), f.J_reg_time, SurfaceGradientNormalLeak());
   for (Vec* v : {&r, &y, &prev, &tmp, &u, &marched, &stat})
     PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(v));
   PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(&bdu));   // T11D (null otherwise)

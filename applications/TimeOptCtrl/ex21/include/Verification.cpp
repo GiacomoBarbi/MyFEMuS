@@ -372,7 +372,10 @@ int RunSpatialOperatorDump(const ProblemConfig& config,
                            MultiLevelSolution& solution, Mesh* mesh,
                            unsigned solution_type,
                            const std::string& prefix) {
+  KeepFaceOperatorsBeforeElimination(config.dimension == 3u &&
+                                     config.control.type == ProblemConfig::ControlType::DIRICHLET);
   SpatialOperators spatial(config, mesh, solution_type, solution);
+  KeepFaceOperatorsBeforeElimination(false);
   DumpSpatialOperatorsSerial(prefix, spatial.assembled, spatial.control,
                              spatial.layout);
   // T7F: the source-region mass, only when source regions exist (so every
@@ -437,11 +440,25 @@ int RunSpatialOperatorDump(const ProblemConfig& config,
     };
     write_mat(d.unhatted_mass(), prefix + "_D_Mfull.coo");
     write_mat(d.unhatted_stiffness(), prefix + "_D_Lfull.coo");
+    // T11H1: the surface stiffness K_Gamma (D eliminated, as M_Gamma) and the sparse
+    // reduced R_H1t = What (x) (M_G + ell^2 K_G) + (gamma_u/(alpha_u dt^2)) T (x) M_G
+    // that the matrix-free core factors (serial layout: index n |C| + rank of the C
+    // DOF in the sorted C list).
+    write_mat(static_cast<femus::PetscMatrix*>(spatial.assembled.K_Gamma.get())->mat(),
+              prefix + "_K_Gamma.coo");
+    write_mat(d.ReducedRegularization(), prefix + "_RT.coo");
+    if (FaceOperatorBeforeElimination(0)) {
+      write_mat(FaceOperatorBeforeElimination(0), prefix + "_M_Gamma_face.coo");
+      write_mat(FaceOperatorBeforeElimination(1), prefix + "_K_Gamma_face.coo");
+    }
     {
       std::ofstream out((prefix + "_D_C.txt").c_str());
       out << "# controlled DOFs C (global), steps dt scheme transposes_L\n"
           << config.time.steps << ' ' << std::setprecision(17) << config.time.dt << ' '
           << (IsCrankNicolson(config) ? "CN" : "BE") << ' ' << (d.transposes_stiffness() ? 1 : 0) << '\n';
+      if (config.control_h1_length != 0.0 || config.control_h1_time_weight != 0.0)   // T11H1
+        out << "# h1 ell gamma_u alpha_u " << config.control_h1_length << ' '
+            << config.control_h1_time_weight << ' ' << config.alpha_u << '\n';
       for (PetscInt g : d.owned_control_dofs()) out << g << '\n';
     }
     const PetscInt N = spatial.layout.local_size, T = static_cast<PetscInt>(config.time.steps);

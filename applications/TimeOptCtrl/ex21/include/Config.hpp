@@ -481,8 +481,12 @@ struct ProblemConfig {
       refuse("invalid --domain3d (need xmin < xmax, ymin < ymax, zmin < zmax)");
     if (mesh.nx == 0 || mesh.ny == 0 || mesh.nz == 0)
       refuse("--nx, --ny, --nz must be positive");
-    if (control_h1_length != 0.0 || control_h1_time_weight != 0.0)
-      refuse("only L2 control regularisation (no H1-space / H1-time)");
+    // T11H1: H1-space / H1-time / combined only for Dirichlet boundary control
+    // (surface stiffness of the one whole QUAD9 face; R_H1t of T8D).
+    if ((control_h1_length != 0.0 || control_h1_time_weight != 0.0) &&
+        control.type != ControlType::DIRICHLET)
+      refuse("H1-space / H1-time control regularisation is validated for Dirichlet boundary"
+             " control only (Neumann and distributed control: L2 only)");
     if (data_overrides.dirichlet_state) refuse("inhomogeneous Dirichlet lifting is not ported");
     if (convection.field) refuse("only a constant wind (named/variable winds are not ported)");
     if (convection.stabilization != ConvectionConfig::Stabilization::NONE)
