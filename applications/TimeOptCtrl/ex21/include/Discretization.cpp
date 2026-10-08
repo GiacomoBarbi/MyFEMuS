@@ -134,6 +134,51 @@ static void ElementCentroid(Mesh* mesh, unsigned element, double& x_centroid,
   z_centroid /= coordinate_dofs;
 }
 
+/** T10: the 3D centroid (storage axes 0, 1, 2), mean of the 27 HEX27
+ *  coordinate nodes.  The 2D function above is untouched. */
+static void ElementCentroid3D(Mesh* mesh, unsigned element, double c[3]) {
+  const unsigned coordinate_dofs = mesh->GetElementDofNumber(element, 2);
+  c[0] = c[1] = c[2] = 0.0;
+  for (unsigned a = 0; a < coordinate_dofs; ++a) {
+    const unsigned coordinate_dof = mesh->GetSolutionDof(a, element, 2);
+    for (unsigned axis = 0; axis < 3u; ++axis)
+      c[axis] += (*mesh->_topology->_Sol[axis])(coordinate_dof);
+  }
+  for (unsigned axis = 0; axis < 3u; ++axis) c[axis] /= coordinate_dofs;
+}
+
+/** T10: strict 3D centroid-in-box test, box = [xmin,xmax] x [ymin,ymax] x
+ *  [zmin,zmax] over storage axes (0, 1, 2); a centroid on a face is outside. */
+static bool CentroidIsInBox3D(const double c[3], const ProblemConfig::Box& box) {
+  return c[0] > box.xmin && c[0] < box.xmax && c[1] > box.ymin && c[1] < box.ymax &&
+         c[2] > box.zmin && c[2] < box.zmax;
+}
+
+/** T10: lowest 1-based index of the box (primary first, then the additional
+ *  ones in order) whose interior contains the element centroid; 0 if none. */
+static unsigned RegionIndex3D(Mesh* mesh, unsigned element,
+                              const ProblemConfig::Box& primary,
+                              const std::vector<ProblemConfig::Box>& additional) {
+  double c[3];
+  ElementCentroid3D(mesh, element, c);
+  if (CentroidIsInBox3D(c, primary)) return 1u;
+  for (std::size_t k = 0; k < additional.size(); ++k)
+    if (CentroidIsInBox3D(c, additional[k])) return static_cast<unsigned>(k + 2u);
+  return 0u;
+}
+
+unsigned SourceRegionIndex3D(const ProblemConfig& config, Mesh* mesh,
+                             unsigned element) {
+  if (config.source_regions.empty()) return 0u;
+  return RegionIndex3D(mesh, element, config.source_regions.front(),
+                       std::vector<ProblemConfig::Box>(config.source_regions.begin() + 1,
+                                                       config.source_regions.end()));
+}
+
+void ElementCentroid3DOf(Mesh* mesh, unsigned element, double centroid[3]) {
+  ElementCentroid3D(mesh, element, centroid);
+}
+
 /** Strict centroid-in-box test: a centroid exactly on a face is outside.
  *  `dimension == 1` tests x only (every z is 0 on a line mesh). */
 static bool CentroidIsInBox(double x_centroid, double z_centroid, double xmin,
@@ -155,8 +200,11 @@ static bool CentroidIsInBox(double x_centroid, double z_centroid, double xmin,
  *  The centroid is computed once per element and reused for every box. */
 unsigned TrackingRegionIndex(const ProblemConfig& config, Mesh* mesh,
                              unsigned element) {
-  // T9: 3D phase 1 tracks the whole domain (Validate refuses boxes).
-  if (config.dimension == 3u) return 1u;
+  // T10: 3D boxes (T9 returned 1 = whole domain; a full-domain box selects
+  // every element, so phase-1 operators are unchanged)
+  if (config.dimension == 3u)
+    return RegionIndex3D(mesh, element, config.tracking_box,
+                         config.additional_tracking_regions);
   double x_centroid = 0.0;
   double z_centroid = 0.0;
   ElementCentroid(mesh, element, x_centroid, z_centroid);
@@ -175,8 +223,9 @@ unsigned TrackingRegionIndex(const ProblemConfig& config, Mesh* mesh,
 
 unsigned ControlRegionIndex(const ProblemConfig& config, Mesh* mesh,
                             unsigned element) {
-  // T9: 3D phase 1 controls the whole domain (Validate refuses boxes).
-  if (config.dimension == 3u) return 1u;
+  if (config.dimension == 3u)   // T10: 3D boxes
+    return RegionIndex3D(mesh, element, config.control.region,
+                         config.additional_control_regions);
   double x_centroid = 0.0;
   double z_centroid = 0.0;
   ElementCentroid(mesh, element, x_centroid, z_centroid);
@@ -487,7 +536,12 @@ NativeSpatialOperators BuildNativeSpatialOperators(
       operators.M_ctrl_box->add_matrix_blocked(local_mass, system_dofs,
                                                system_dofs);
     // ex21: the source-region union (empty list: nothing is assembled).
-    if (!config.source_regions.empty()) {
+    if (!config.source_regions.empty() && config.dimension == 3u) {
+      // T10: 3D centroid test, the union assembled once (first match breaks)
+      if (SourceRegionIndex3D(config, mesh, element) != 0u)
+        operators.M_source->add_matrix_blocked(local_mass, system_dofs,
+                                               system_dofs);
+    } else if (!config.source_regions.empty()) {
       double xc = 0.0, zc = 0.0;
       ElementCentroid(mesh, element, xc, zc);
       for (const ProblemConfig::Box& box : config.source_regions)
@@ -916,6 +970,71 @@ SpatialFieldIntegrals IntegrateBoundaryField(
     }
   }
   return totals;
+}
+
+std::unique_ptr<SparseMatrix> BuildBoundaryConvectionMatrix(
+    const ProblemConfig& config, Mesh* mesh, unsigned solution_type,
+    BoundaryFaceStats* stats) {
+  const unsigned rank = mesh->processor_id();
+  const unsigned dimension = mesh->GetDimension();
+  const int global_rows = mesh->GetTotalNumberOfDofs(solution_type);
+  const int local_rows = mesh->_dofOffset[solution_type][rank + 1u] -
+                         mesh->_dofOffset[solution_type][rank];
+  std::unique_ptr<SparseMatrix> B = SparseMatrix::build();
+  const int row_nonzeros = dimension == 3u ? 125 : 64;
+  B->init(global_rows, global_rows, local_rows, local_rows, row_nonzeros, row_nonzeros);
+  const double w[3] = {config.convection.vx, config.convection.vy, config.convection.vz};
+  BoundaryFaceStats local;
+  std::vector<double> phi, gradient, normal;
+  double weight = 0.0;
+  for (unsigned element = mesh->_elementOffset[rank];
+       element < mesh->_elementOffset[rank + 1u]; ++element) {
+    for (unsigned face = 0; face < mesh->GetElementFaceNumber(element); ++face) {
+      const int index = mesh->el->GetFaceElementIndex(element, face);
+      if (index >= 0) continue;                      // interior face
+      const unsigned face_id = static_cast<unsigned>(-(index + 1));
+      const unsigned slot = face_id <= BoundaryFaceStats::kMaxFaces ? face_id : 0u;
+      const unsigned face_dofs = mesh->GetElementFaceDofNumber(element, face, solution_type);
+      const unsigned face_geometry = mesh->GetElementFaceType(element, face);
+      std::vector<int> face_system_dofs(face_dofs);
+      std::vector<std::vector<double> > face_coordinates(
+          dimension, std::vector<double>(face_dofs, 0.0));
+      for (unsigned a = 0; a < face_dofs; ++a) {
+        const unsigned local_node = mesh->GetLocalFaceVertexIndex(element, face, a);
+        face_system_dofs[a] = static_cast<int>(
+            mesh->GetSolutionDof(local_node, element, solution_type));
+        const unsigned coordinate_dof = mesh->GetSolutionDof(local_node, element, 2);
+        for (unsigned axis = 0; axis < dimension; ++axis)
+          face_coordinates[axis][a] = (*mesh->_topology->_Sol[axis])(coordinate_dof);
+      }
+      std::vector<double> local_matrix(face_dofs * face_dofs, 0.0);
+      const elem_type* face_element = mesh->_finiteElement[face_geometry][solution_type];
+      for (unsigned gauss = 0; gauss < face_element->GetGaussPointNumber(); ++gauss) {
+        face_element->JacobianSur(face_coordinates, gauss, weight, phi, gradient, normal);
+        double wn = 0.0;
+        for (unsigned axis = 0; axis < dimension; ++axis) wn += w[axis] * normal[axis];
+        local.area[slot] += weight;
+        for (unsigned axis = 0; axis < dimension; ++axis)
+          local.normal[slot][axis] += normal[axis] * weight;
+        local.wn[slot] += wn * weight;
+        local.wn_abs_max[slot] = std::max(local.wn_abs_max[slot], std::fabs(wn));
+        for (unsigned a = 0; a < face_dofs; ++a)
+          for (unsigned b = 0; b < face_dofs; ++b)
+            local_matrix[a * face_dofs + b] += wn * phi[a] * phi[b] * weight;
+      }
+      B->add_matrix_blocked(local_matrix, face_system_dofs, face_system_dofs);
+    }
+  }
+  B->close();
+  if (stats) {
+    const int n = BoundaryFaceStats::kMaxFaces + 1;
+    MPI_Allreduce(local.area, stats->area, n, MPI_DOUBLE, MPI_SUM, PETSC_COMM_WORLD);
+    MPI_Allreduce(&local.normal[0][0], &stats->normal[0][0], 3 * n, MPI_DOUBLE, MPI_SUM,
+                  PETSC_COMM_WORLD);
+    MPI_Allreduce(local.wn, stats->wn, n, MPI_DOUBLE, MPI_SUM, PETSC_COMM_WORLD);
+    MPI_Allreduce(local.wn_abs_max, stats->wn_abs_max, n, MPI_DOUBLE, MPI_MAX, PETSC_COMM_WORLD);
+  }
+  return B;
 }
 
 // ---------------------------------------------------------------------------

@@ -724,7 +724,7 @@ static KktResidualReport ComputeKktResiduals(
   long long local_offactive = 0, local_active = 0, local_mask = 0;
   for (PetscInt i = 0; i < layout.local_size; ++i) {
     const bool masked =
-        OwnedDofIsControlled(config, layout.x[i], layout.z[i]);
+        OwnedDofIsControlled(config, layout.x[i], layout.z[i], layout.Axis2(i));
     if (active[i]) ++local_active;
     if (masked) ++local_mask;
     if (active[i]) continue;

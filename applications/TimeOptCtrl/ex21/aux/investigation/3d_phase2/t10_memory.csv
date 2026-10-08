@@ -1,0 +1,93 @@
+source,tag,features,n,N,spatial_dofs,spacetime_unknowns,maxrss_MB,bytes_per_unknown,ratio_to_T9_law,outer_its,note
+exact ladder (natural-conv-3d),natA_cn_n10_nt64,"natural BC, full domain",10,64,9261,1778112,3860,2276,0.95,2,
+exact ladder (natural-conv-3d),natA_cn_n12_nt64,"natural BC, full domain",12,64,15625,3000000,6682,2336,0.98,2,
+exact ladder (natural-conv-3d),natA_cn_n2_nt64,"natural BC, full domain",2,64,125,24000,69,3003,1.26,2,start-up dominated (U < 1e5)
+exact ladder (natural-conv-3d),natA_cn_n4_nt64,"natural BC, full domain",4,64,729,139968,287,2148,0.90,2,
+exact ladder (natural-conv-3d),natA_cn_n6_nt64,"natural BC, full domain",6,64,2197,421824,864,2148,0.90,2,
+exact ladder (natural-conv-3d),natA_cn_n8_nt64,"natural BC, full domain",8,64,4913,943296,1987,2209,0.93,2,
+exact ladder (natural-conv-3d),natB_cn_n10_nt64,"natural BC, full domain",10,64,9261,1778112,3860,2276,0.95,2,
+exact ladder (natural-conv-3d),natB_cn_n2_nt64,"natural BC, full domain",2,64,125,24000,69,2993,1.26,2,start-up dominated (U < 1e5)
+exact ladder (natural-conv-3d),natB_cn_n4_nt64,"natural BC, full domain",4,64,729,139968,287,2147,0.90,2,
+exact ladder (natural-conv-3d),natB_cn_n6_nt64,"natural BC, full domain",6,64,2197,421824,864,2149,0.90,2,
+exact ladder (natural-conv-3d),natB_cn_n8_nt64,"natural BC, full domain",8,64,4913,943296,1988,2209,0.93,2,
+exact ladder (natural-conv-3d),natH_cn_n10_nt64,"natural BC, full domain",10,64,9261,1778112,3853,2272,0.95,2,
+exact ladder (natural-conv-3d),natH_cn_n2_nt64,"natural BC, full domain",2,64,125,24000,68,2984,1.25,2,start-up dominated (U < 1e5)
+exact ladder (natural-conv-3d),natH_cn_n4_nt64,"natural BC, full domain",4,64,729,139968,286,2145,0.90,2,
+exact ladder (natural-conv-3d),natH_cn_n6_nt64,"natural BC, full domain",6,64,2197,421824,863,2144,0.90,2,
+exact ladder (natural-conv-3d),natH_cn_n8_nt64,"natural BC, full domain",8,64,4913,943296,1983,2205,0.92,2,
+production run,S0_be_n4_nt16,multi-zone + source boxes (sources study),4,16,729,34992,107,3212,1.35,3,start-up dominated (U < 1e5)
+production run,S0_cn_n4_nt16,multi-zone + source boxes (sources study),4,16,729,34992,110,3285,1.38,3,start-up dominated (U < 1e5)
+production run,SAB2_be_n4_nt16,multi-zone + source boxes (sources study),4,16,729,34992,104,3104,1.30,2,start-up dominated (U < 1e5)
+production run,SAB2_cn_n4_nt16,multi-zone + source boxes (sources study),4,16,729,34992,106,3180,1.33,2,start-up dominated (U < 1e5)
+production run,SAB_be_n4_nt16,multi-zone + source boxes (sources study),4,16,729,34992,104,3104,1.30,2,start-up dominated (U < 1e5)
+production run,SAB_cn_n4_nt16,multi-zone + source boxes (sources study),4,16,729,34992,106,3180,1.33,2,start-up dominated (U < 1e5)
+production run,SA_be_n4_nt16,multi-zone + source boxes (sources study),4,16,729,34992,104,3105,1.30,2,start-up dominated (U < 1e5)
+production run,SA_cn_n4_nt16,multi-zone + source boxes (sources study),4,16,729,34992,106,3174,1.33,2,start-up dominated (U < 1e5)
+production run,SB_be_n4_nt16,multi-zone + source boxes (sources study),4,16,729,34992,103,3096,1.30,2,start-up dominated (U < 1e5)
+production run,SB_cn_n4_nt16,multi-zone + source boxes (sources study),4,16,729,34992,106,3174,1.33,2,start-up dominated (U < 1e5)
+production run,SFB_be_n4_nt16,multi-zone + source boxes (sources study),4,16,729,34992,104,3106,1.30,2,start-up dominated (U < 1e5)
+production run,SFB_cn_n4_nt16,multi-zone + source boxes (sources study),4,16,729,34992,106,3178,1.33,2,start-up dominated (U < 1e5)
+production run,SOV_be_n4_nt16,multi-zone + source boxes (sources study),4,16,729,34992,104,3105,1.30,2,start-up dominated (U < 1e5)
+production run,SOV_cn_n4_nt16,multi-zone + source boxes (sources study),4,16,729,34992,106,3174,1.33,2,start-up dominated (U < 1e5)
+production run,SUN_be_n4_nt16,multi-zone + source boxes (sources study),4,16,729,34992,104,3102,1.30,2,start-up dominated (U < 1e5)
+production run,SUN_cn_n4_nt16,multi-zone + source boxes (sources study),4,16,729,34992,106,3175,1.33,2,start-up dominated (U < 1e5)
+production run,SWH_be_n4_nt16,multi-zone + source boxes (sources study),4,16,729,34992,103,3100,1.30,2,start-up dominated (U < 1e5)
+production run,SWH_cn_n4_nt16,multi-zone + source boxes (sources study),4,16,729,34992,106,3169,1.33,2,start-up dominated (U < 1e5)
+production run,bk_asm_be_n8_nt16,"octant multi-zone, GMRES+ASM/ILU spatial",8,16,4913,235824,733,3259,1.37,2,
+production run,bk_asm_cn_n8_nt16,"octant multi-zone, GMRES+ASM/ILU spatial",8,16,4913,235824,811,3607,1.51,2,
+production run,bk_gamg_be_n8_nt16,"octant multi-zone, GMRES+GAMG spatial",8,16,4913,235824,529,2351,0.99,2,
+production run,bk_gamg_cn_n8_nt16,"octant multi-zone, GMRES+GAMG spatial",8,16,4913,235824,540,2400,1.01,2,
+production run,bk_lu_be_n8_nt16,"octant multi-zone, LU spatial",8,16,4913,235824,596,2652,1.11,2,
+production run,bk_lu_cn_n8_nt16,"octant multi-zone, LU spatial",8,16,4913,235824,622,2767,1.16,2,
+production run,mzs_cn_n16_nt8,"octant multi-zone 2+2 boxes, 2 sources, natural",16,8,35937,862488,3768,4581,1.92,2,
+production run,mzs_cn_n2_nt8,"octant multi-zone 2+2 boxes, 2 sources, natural",2,8,125,3000,42,14552,6.10,2,start-up dominated (U < 1e5)
+production run,mzs_cn_n4_nt8,"octant multi-zone 2+2 boxes, 2 sources, natural",4,8,729,17496,77,4597,1.93,2,start-up dominated (U < 1e5)
+production run,mzs_cn_n8_nt8,"octant multi-zone 2+2 boxes, 2 sources, natural",8,8,4913,117912,401,3565,1.49,2,
+production run,mzt_be_n4_nt128,"octant multi-zone 2+2 boxes, 2 sources, natural",4,128,729,279936,518,1939,0.81,2,
+production run,mzt_be_n4_nt16,"octant multi-zone 2+2 boxes, 2 sources, natural",4,16,729,34992,104,3107,1.30,2,start-up dominated (U < 1e5)
+production run,mzt_be_n4_nt32,"octant multi-zone 2+2 boxes, 2 sources, natural",4,32,729,69984,163,2439,1.02,2,start-up dominated (U < 1e5)
+production run,mzt_be_n4_nt4,"octant multi-zone 2+2 boxes, 2 sources, natural",4,4,729,8748,59,7088,2.97,2,start-up dominated (U < 1e5)
+production run,mzt_be_n4_nt512,"octant multi-zone 2+2 boxes, 2 sources, natural",4,512,729,1119744,1943,1819,0.76,2,
+production run,mzt_be_n4_nt64,"octant multi-zone 2+2 boxes, 2 sources, natural",4,64,729,139968,281,2105,0.88,2,
+production run,mzt_be_n4_nt8,"octant multi-zone 2+2 boxes, 2 sources, natural",4,8,729,17496,74,4436,1.86,2,start-up dominated (U < 1e5)
+production run,mzt_cn_n4_nt128,"octant multi-zone 2+2 boxes, 2 sources, natural",4,128,729,279936,520,1949,0.82,2,
+production run,mzt_cn_n4_nt16,"octant multi-zone 2+2 boxes, 2 sources, natural",4,16,729,34992,106,3180,1.33,2,start-up dominated (U < 1e5)
+production run,mzt_cn_n4_nt32,"octant multi-zone 2+2 boxes, 2 sources, natural",4,32,729,69984,165,2479,1.04,2,start-up dominated (U < 1e5)
+production run,mzt_cn_n4_nt4,"octant multi-zone 2+2 boxes, 2 sources, natural",4,4,729,8748,64,7648,3.21,2,start-up dominated (U < 1e5)
+production run,mzt_cn_n4_nt512,"octant multi-zone 2+2 boxes, 2 sources, natural",4,512,729,1119744,1945,1821,0.76,2,
+production run,mzt_cn_n4_nt64,"octant multi-zone 2+2 boxes, 2 sources, natural",4,64,729,139968,284,2125,0.89,2,
+production run,mzt_cn_n4_nt8,"octant multi-zone 2+2 boxes, 2 sources, natural",4,8,729,17496,77,4604,1.93,2,start-up dominated (U < 1e5)
+production run,natsA_be_n16_nt16,"natural BC exact data, wind A (fixed-dt self-conv)",16,16,35937,1724976,5271,3204,1.34,3,
+production run,natsA_be_n2_nt16,"natural BC exact data, wind A (fixed-dt self-conv)",2,16,125,6000,45,7879,3.30,2,start-up dominated (U < 1e5)
+production run,natsA_be_n4_nt16,"natural BC exact data, wind A (fixed-dt self-conv)",4,16,729,34992,104,3103,1.30,2,start-up dominated (U < 1e5)
+production run,natsA_be_n8_nt16,"natural BC exact data, wind A (fixed-dt self-conv)",8,16,4913,235824,596,2648,1.11,2,
+production run,natsA_cn_n16_nt16,"natural BC exact data, wind A (fixed-dt self-conv)",16,16,35937,1724976,5666,3445,1.44,3,
+production run,natsA_cn_n2_nt16,"natural BC exact data, wind A (fixed-dt self-conv)",2,16,125,6000,46,7965,3.34,2,start-up dominated (U < 1e5)
+production run,natsA_cn_n4_nt16,"natural BC exact data, wind A (fixed-dt self-conv)",4,16,729,34992,106,3183,1.33,2,start-up dominated (U < 1e5)
+production run,natsA_cn_n8_nt16,"natural BC exact data, wind A (fixed-dt self-conv)",8,16,4913,235824,623,2771,1.16,2,
+production run,natsH_be_n16_nt16,"natural BC exact data, heat (fixed-dt self-conv)",16,16,35937,1724976,5094,3097,1.30,2,
+production run,natsH_be_n2_nt16,"natural BC exact data, heat (fixed-dt self-conv)",2,16,125,6000,45,7905,3.31,2,start-up dominated (U < 1e5)
+production run,natsH_be_n4_nt16,"natural BC exact data, heat (fixed-dt self-conv)",4,16,729,34992,103,3101,1.30,2,start-up dominated (U < 1e5)
+production run,natsH_be_n8_nt16,"natural BC exact data, heat (fixed-dt self-conv)",8,16,4913,235824,595,2646,1.11,2,
+production run,natsH_cn_n16_nt16,"natural BC exact data, heat (fixed-dt self-conv)",16,16,35937,1724976,5463,3321,1.39,2,
+production run,natsH_cn_n2_nt16,"natural BC exact data, heat (fixed-dt self-conv)",2,16,125,6000,45,7944,3.33,2,start-up dominated (U < 1e5)
+production run,natsH_cn_n4_nt16,"natural BC exact data, heat (fixed-dt self-conv)",4,16,729,34992,106,3163,1.33,2,start-up dominated (U < 1e5)
+production run,natsH_cn_n8_nt16,"natural BC exact data, heat (fixed-dt self-conv)",8,16,4913,235824,620,2756,1.16,2,
+production run,natt_be_n6_nt128,natural BC exact data (solve-only),6,128,2197,843648,1613,2005,0.84,2,
+production run,natt_be_n6_nt16,natural BC exact data (solve-only),6,16,2197,105456,267,2654,1.11,2,
+production run,natt_be_n6_nt256,natural BC exact data (solve-only),6,256,2197,1687296,3148,1956,0.82,2,
+production run,natt_be_n6_nt32,natural BC exact data (solve-only),6,32,2197,210912,481,2392,1.00,3,
+production run,natt_be_n6_nt4,natural BC exact data (solve-only),6,4,2197,26364,122,4869,2.04,2,start-up dominated (U < 1e5)
+production run,natt_be_n6_nt512,natural BC exact data (solve-only),6,512,2197,3374592,6234,1937,0.81,2,
+production run,natt_be_n6_nt64,natural BC exact data (solve-only),6,64,2197,421824,844,2098,0.88,2,
+production run,natt_be_n6_nt8,natural BC exact data (solve-only),6,8,2197,52728,171,3408,1.43,2,start-up dominated (U < 1e5)
+production run,natt_cn_n6_nt128,natural BC exact data (solve-only),6,128,2197,843648,1623,2017,0.85,2,
+production run,natt_cn_n6_nt16,natural BC exact data (solve-only),6,16,2197,105456,277,2753,1.15,2,
+production run,natt_cn_n6_nt256,natural BC exact data (solve-only),6,256,2197,1687296,3160,1964,0.82,2,
+production run,natt_cn_n6_nt32,natural BC exact data (solve-only),6,32,2197,210912,491,2440,1.02,3,
+production run,natt_cn_n6_nt4,natural BC exact data (solve-only),6,4,2197,26364,133,5278,2.21,2,start-up dominated (U < 1e5)
+production run,natt_cn_n6_nt512,natural BC exact data (solve-only),6,512,2197,3374592,6242,1939,0.81,2,
+production run,natt_cn_n6_nt64,natural BC exact data (solve-only),6,64,2197,421824,854,2122,0.89,2,
+production run,natt_cn_n6_nt8,natural BC exact data (solve-only),6,8,2197,52728,181,3600,1.51,2,start-up dominated (U < 1e5)
+production run,t9ctl_cn_n16_nt16,"CONTROL: T9-type Dirichlet, full domain, no regions",16,16,35937,1724976,5491,3338,1.40,2,
+production run,t9ctl_cn_n16_nt8,"CONTROL: T9-type Dirichlet, full domain, no regions",16,8,35937,862488,3753,4563,1.91,2,

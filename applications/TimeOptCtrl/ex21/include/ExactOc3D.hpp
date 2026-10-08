@@ -28,7 +28,10 @@ class Mesh;
 
 /** --exact-oc conv-sin-3d (shape sin) or conv-sin3-3d (shape sin^3, data
  *  vanishing on dOmega; the 3D analogue of the 2D conv-sin3): dimension 3, distributed full-domain control and
- *  tracking, homogeneous Dirichlet state, the data above.  `alpha_u` <= 0:
+ *  tracking, homogeneous Dirichlet state, the data above.
+ *  T10: natural-conv-3d -- natural state BC on all six faces, y = A cos(pi x)
+ *  cos(pi y) cos(pi z), p = alpha_u B R_kx(x) R_ky(y) R_kz(z) with
+ *  R_k = exp(-k s)(2 + cos(pi s)), k_i = w_i/nu (ExactOc3D.cpp).  `alpha_u` <= 0:
  *  1e-2; `final_time` <= 0: 1; `nu` <= 0: 1/4.  The wind is NOT set here:
  *  it is --convection on/off with --vx --vy --vz. */
 void ApplyExactOptimalControl3D(ProblemConfig& config, const std::string& name,

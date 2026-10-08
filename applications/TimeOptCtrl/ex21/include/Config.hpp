@@ -147,6 +147,11 @@ struct ProblemConfig {
     double xmax = 1.0;
     double zmin = 0.0;
     double zmax = 1.0;
+    // T10: 3D only, storage axis 1 (as Domain): in 3D the box is
+    // [xmin,xmax] x [ymin,ymax] x [zmin,zmax] over storage axes (0, 1, 2).
+    // Never read in 1D/2D, so the 4-value aggregate initialisers keep working.
+    double ymin = 0.0;
+    double ymax = 1.0;
   };
 
   Box tracking_box{0.25, 0.75, 0.25, 0.75};
@@ -300,12 +305,19 @@ struct ProblemConfig {
    *  messages: a non-empty extent, then containment in the domain. */
   static void ValidateBox(const Box& box, const Domain& domain,
                           const char* invalid_message,
-                          const char* outside_message) {
+                          const char* outside_message,
+                          unsigned dimension = 2u) {
     if (!(box.xmin < box.xmax && box.zmin < box.zmax))
       throw std::invalid_argument(invalid_message);
     if (box.xmin < domain.xmin || box.xmax > domain.xmax ||
         box.zmin < domain.zmin || box.zmax > domain.zmax)
       throw std::invalid_argument(outside_message);
+    // T10: the third extent (storage axis 1) in 3D
+    if (dimension == 3u) {
+      if (!(box.ymin < box.ymax)) throw std::invalid_argument(invalid_message);
+      if (box.ymin < domain.ymin || box.ymax > domain.ymax)
+        throw std::invalid_argument(outside_message);
+    }
   }
   // In 1D the z extents are inert: every z coordinate is 0 and the box tests
   // ignore z, so the default z ranges of the domain and boxes are left alone.
@@ -315,7 +327,7 @@ struct ProblemConfig {
       throw std::invalid_argument("dimension must be 1, 2 or 3");
     if (dimension != 3u && convection.vz != 0.0)
       throw std::invalid_argument("--vz is a 3D wind component (--dimension 3)");
-    if (dimension == 3u) Validate3DPhase1();
+    if (dimension == 3u) Validate3D();
     if (dimension == 1u && control.type != ControlType::DISTRIBUTED)
       throw std::invalid_argument(
           "1D meshes support DISTRIBUTED control only (no control face)");
@@ -385,18 +397,18 @@ struct ProblemConfig {
     if (time.steps == 0 || time.dt <= 0.0)
       throw std::invalid_argument("invalid time discretization");
     ValidateBox(tracking_box, domain, "invalid tracking box",
-                "tracking box lies outside the domain");
+                "tracking box lies outside the domain", dimension);
     ValidateBox(control.region, domain, "invalid distributed-control box",
-                "distributed-control box lies outside the domain");
+                "distributed-control box lies outside the domain", dimension);
     for (const Box& box : additional_tracking_regions)
       ValidateBox(box, domain, "invalid additional tracking region",
-                  "additional tracking region lies outside the domain");
+                  "additional tracking region lies outside the domain", dimension);
     for (const Box& box : additional_control_regions)
       ValidateBox(box, domain, "invalid additional control region",
-                  "additional control region lies outside the domain");
+                  "additional control region lies outside the domain", dimension);
     for (const Box& box : source_regions)
       ValidateBox(box, domain, "invalid source region",
-                  "source region lies outside the domain");
+                  "source region lies outside the domain", dimension);
     if (diffusivity <= 0.0 || alpha_u <= 0.0 || alpha_track < 0.0 ||
         eta == 0.0 || !std::isfinite(tracking.parameter))
       throw std::invalid_argument("invalid physical/control coefficient");
@@ -405,34 +417,26 @@ struct ProblemConfig {
     // (stage 3) with nodal controls and u_0 = y_0|_Gamma_c / eta as data.
   }
 
-  /** T9 phase-1 whitelist for dimension 3: distributed full-domain control and
-   *  tracking, homogeneous Dirichlet state, constant wind (or none), BE/CN, L2
-   *  regularisation, unit cube.  Everything else is REFUSED, never
-   *  reinterpreted.  (Solver and run-mode restrictions: CommandLine.cpp.) */
-  void Validate3DPhase1() const {
+  /** 3D whitelist.  T9 (phase 1): distributed control, homogeneous Dirichlet
+   *  state, constant wind (or none), BE/CN, L2 regularisation.  T10 (phase 2)
+   *  adds: rectangular boxes (xmin,xmax)x(ymin,ymax)x(zmin,zmax), control and
+   *  tracking boxes with multi-zone unions, source regions, and the natural
+   *  homogeneous state BC.  Everything else is REFUSED, never reinterpreted.
+   *  (Solver, run-mode and CLI restrictions: CommandLine.cpp.) */
+  void Validate3D() const {
     auto refuse = [](const char* what) {
-      throw std::invalid_argument(std::string("3D phase 1: ") + what);
+      throw std::invalid_argument(std::string("3D: ") + what);
     };
     if (control.type != ControlType::DISTRIBUTED)
       refuse("only distributed control (Neumann/Dirichlet boundary control are not ported)");
-    if (state_bc != StateBoundaryCondition::HOMOGENEOUS_DIRICHLET)
-      refuse("only the homogeneous Dirichlet state BC (--state-bc dirichlet)");
-    if (domain.xmin != 0.0 || domain.xmax != 1.0 || domain.ymin != 0.0 ||
-        domain.ymax != 1.0 || domain.zmin != 0.0 || domain.zmax != 1.0)
-      refuse("only the unit cube (0,1)^3 (--domain is not ported)");
+    if (!(domain.xmin < domain.xmax && domain.ymin < domain.ymax &&
+          domain.zmin < domain.zmax) ||
+        !std::isfinite(domain.xmin) || !std::isfinite(domain.xmax) ||
+        !std::isfinite(domain.ymin) || !std::isfinite(domain.ymax) ||
+        !std::isfinite(domain.zmin) || !std::isfinite(domain.zmax))
+      refuse("invalid --domain3d (need xmin < xmax, ymin < ymax, zmin < zmax)");
     if (mesh.nx == 0 || mesh.ny == 0 || mesh.nz == 0)
       refuse("--nx, --ny, --nz must be positive");
-    auto full = [&](const Box& b) {
-      return b.xmin == domain.xmin && b.xmax == domain.xmax &&
-             b.zmin == domain.zmin && b.zmax == domain.zmax;
-    };
-    if (!full(control.region))
-      refuse("only full-domain control (--control-full-domain); boxes are not ported");
-    if (!full(tracking_box))
-      refuse("only full-domain tracking (--tracking-box 0 1 0 1); boxes are not ported");
-    if (!additional_tracking_regions.empty() || !additional_control_regions.empty())
-      refuse("multi-zone control/tracking is not ported");
-    if (!source_regions.empty()) refuse("source regions are not ported");
     if (control_h1_length != 0.0 || control_h1_time_weight != 0.0)
       refuse("only L2 control regularisation (no H1-space / H1-time)");
     if (data_overrides.dirichlet_state) refuse("inhomogeneous Dirichlet lifting is not ported");
@@ -489,7 +493,12 @@ inline bool ControlRegionIsWholeDomain(const ProblemConfig& config) {
          std::fabs(config.control.region.zmin - config.domain.zmin) <=
              tolerance &&
          std::fabs(config.control.region.zmax - config.domain.zmax) <=
-             tolerance;
+             tolerance &&
+         // T10: in 3D the box must also span the y extent (storage axis 1);
+         // otherwise the full mass M would silently replace the box operator.
+         (config.dimension != 3u ||
+          (std::fabs(config.control.region.ymin - config.domain.ymin) <= tolerance &&
+           std::fabs(config.control.region.ymax - config.domain.ymax) <= tolerance));
 }
 
 /** True when the run uses the Crank-Nicolson state discretisation.  Every
@@ -666,11 +675,20 @@ inline const char* TrackingTargetName(const ProblemConfig& config) {
  *  the assembled operator N whenever the mesh is not aligned with the control
  *  box, in both directions.  The production active set is ActiveControlDofs();
  *  this one is kept so the verification driver can report the difference. */
-inline bool OwnedDofIsControlled(const ProblemConfig& config, double x, double z) {
+inline bool OwnedDofIsControlled(const ProblemConfig& config, double x, double z,
+                                 double axis2 = 0.0) {
   const double tolerance = 1.0e-12;
   if (config.control.type == ProblemConfig::ControlType::NEUMANN ||
       config.control.type == ProblemConfig::ControlType::DIRICHLET)
     return std::fabs(z - config.domain.zmin) <= tolerance;
+  // T10: in 3D (x, z, axis2) are storage axes (0, 1, 2) = box (x, y, z) extents
+  if (config.dimension == 3u)
+    return x >= config.control.region.xmin - tolerance &&
+           x <= config.control.region.xmax + tolerance &&
+           z >= config.control.region.ymin - tolerance &&
+           z <= config.control.region.ymax + tolerance &&
+           axis2 >= config.control.region.zmin - tolerance &&
+           axis2 <= config.control.region.zmax + tolerance;
   return x >= config.control.region.xmin - tolerance &&
          x <= config.control.region.xmax + tolerance &&
          z >= config.control.region.zmin - tolerance &&

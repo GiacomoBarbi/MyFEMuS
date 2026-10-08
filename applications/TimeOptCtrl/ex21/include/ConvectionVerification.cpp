@@ -788,7 +788,7 @@ int RunConvectionVerification(const ProblemConfig& config,
       config.state_bc == ProblemConfig::StateBoundaryCondition::NATURAL &&
       HasConvection(config) && !config.convection.field &&
       config.convection.stabilization == ProblemConfig::ConvectionConfig::Stabilization::NONE &&
-      config.dimension == 2u;
+      (config.dimension == 2u || config.dimension == 3u);   // T10: 3D (six faces)
   AssembledSpaceTimeOperators wrong_bc_ops;
   KSP adjoint_wrong_bc = nullptr;
   Mat wrong_bc_spatial = nullptr;
@@ -796,6 +796,7 @@ int RunConvectionVerification(const ProblemConfig& config,
     ProblemConfig without = config;
     without.convection.enabled = false;
     without.convection.vx = without.convection.vy = 0.0;
+    without.convection.vz = 0.0;   // T10 (3D wind component; 0 in 2D)
     SpatialOperators K(without, mesh, solution_type, solution);
     Mat C = nullptr, Ct = nullptr, Bw = nullptr;
     PetscCallAbort(PETSC_COMM_WORLD, MatDuplicate(spatial.stiffness, MAT_COPY_VALUES, &C));
@@ -808,7 +809,28 @@ int RunConvectionVerification(const ProblemConfig& config,
     PetscCallAbort(PETSC_COMM_WORLD, MatDuplicate(Ct, MAT_COPY_VALUES, &Bw));
     PetscCallAbort(PETSC_COMM_WORLD, MatZeroEntries(Bw));
     std::string faces;
-    for (unsigned face = 1; face <= 4u; ++face) {
+    if (config.dimension == 3u) {
+      // T10: B_w = sum over the six faces of int_f (w.n) phi_i phi_j, assembled
+      // directly with the JacobianSur outward normals; per-face report of the
+      // normal, w.n and its maximum modulus (it must be nonzero on every face
+      // for the wrong-BC control G8b to be detectable).
+      BoundaryFaceStats st;
+      std::unique_ptr<SparseMatrix> B3 =
+          BuildBoundaryConvectionMatrix(config, mesh, solution_type, &st);
+      PetscCallAbort(PETSC_COMM_WORLD,
+                     MatAXPY(Bw, 1.0, static_cast<PetscMatrix*>(B3.get())->mat(),
+                             DIFFERENT_NONZERO_PATTERN));
+      for (unsigned f = 1; f <= BoundaryFaceStats::kMaxFaces; ++f) {
+        if (st.area[f] <= 0.0) continue;
+        char buf[160];
+        std::snprintf(buf, sizeof buf, "%s%u:n=(%+.0f,%+.0f,%+.0f),area=%.6g,w.n=%+.4g,max|w.n|=%.4g",
+                      faces.empty() ? "" : ";", f, st.normal[f][0] / st.area[f],
+                      st.normal[f][1] / st.area[f], st.normal[f][2] / st.area[f], st.area[f],
+                      st.wn[f] / st.area[f], st.wn_abs_max[f]);
+        faces += buf;
+      }
+    }
+    for (unsigned face = 1; config.dimension == 2u && face <= 4u; ++face) {
       ProblemConfig fc = config;
       fc.control.type = ProblemConfig::ControlType::NEUMANN;
       fc.neumann_control_face = face;

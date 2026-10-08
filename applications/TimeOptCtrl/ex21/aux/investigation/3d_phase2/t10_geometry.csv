@@ -1,0 +1,225 @@
+case,check,value,reference,verdict,note
+one_box,element centroids = analytic grid,64,64,PASS,
+one_box,tracking index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+one_box,control index = independent centroid rule,0,0,PASS,selected=8 by_index=[8]
+one_box,source index = independent centroid rule,0,0,PASS,selected=0 by_index=[]
+one_box,1^T M 1 = domain volume,0.999999999999997,1,PASS,
+one_box,1^T M_track 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+one_box,1^T M_track 1 = geometric union volume,0.999999999999997,1,PASS,
+one_box,1^T M_ctrl_box 1 = n_sel hx hy hz,0.125,0.125,PASS,n_sel=8
+one_box,1^T M_ctrl_box 1 = geometric union volume,0.125,0.125,PASS,
+box_A,element centroids = analytic grid,64,64,PASS,
+box_A,tracking index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+box_A,control index = independent centroid rule,0,0,PASS,selected=8 by_index=[8]
+box_A,source index = independent centroid rule,0,0,PASS,selected=0 by_index=[]
+box_A,1^T M 1 = domain volume,0.999999999999997,1,PASS,
+box_A,1^T M_track 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+box_A,1^T M_ctrl_box 1 = n_sel hx hy hz,0.125,0.125,PASS,n_sel=8
+box_B,element centroids = analytic grid,64,64,PASS,
+box_B,tracking index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+box_B,control index = independent centroid rule,0,0,PASS,selected=8 by_index=[8]
+box_B,source index = independent centroid rule,0,0,PASS,selected=0 by_index=[]
+box_B,1^T M 1 = domain volume,0.999999999999997,1,PASS,
+box_B,1^T M_track 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+box_B,1^T M_ctrl_box 1 = n_sel hx hy hz,0.125,0.125,PASS,n_sel=8
+disjoint_AB,element centroids = analytic grid,64,64,PASS,
+disjoint_AB,tracking index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+disjoint_AB,control index = independent centroid rule,0,0,PASS,"selected=16 by_index=[8, 8]"
+disjoint_AB,source index = independent centroid rule,0,0,PASS,selected=0 by_index=[]
+disjoint_AB,1^T M 1 = domain volume,0.999999999999997,1,PASS,
+disjoint_AB,1^T M_track 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+disjoint_AB,1^T M_ctrl_box 1 = n_sel hx hy hz,0.249999999999999,0.25,PASS,n_sel=16
+disjoint_AB,1^T M_ctrl_box 1 = geometric union volume,0.249999999999999,0.25,PASS,
+disjoint_AB,M_ctrl(A u B) - M_ctrl(A) - M_ctrl(B) (max),0.000e+00,0,PASS,
+overlap_CD,element centroids = analytic grid,64,64,PASS,
+overlap_CD,tracking index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+overlap_CD,control index = independent centroid rule,0,0,PASS,"selected=16 by_index=[12, 4]"
+overlap_CD,source index = independent centroid rule,0,0,PASS,selected=0 by_index=[]
+overlap_CD,1^T M 1 = domain volume,0.999999999999997,1,PASS,
+overlap_CD,1^T M_track 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+overlap_CD,1^T M_ctrl_box 1 = n_sel hx hy hz,0.249999999999999,0.25,PASS,n_sel=16
+overlap_CD,1^T M_ctrl_box 1 = geometric union volume,0.249999999999999,0.25,PASS,
+box_C,element centroids = analytic grid,64,64,PASS,
+box_C,tracking index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+box_C,control index = independent centroid rule,0,0,PASS,selected=12 by_index=[12]
+box_C,source index = independent centroid rule,0,0,PASS,selected=0 by_index=[]
+box_C,1^T M 1 = domain volume,0.999999999999997,1,PASS,
+box_C,1^T M_track 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+box_C,1^T M_ctrl_box 1 = n_sel hx hy hz,0.187499999999999,0.1875,PASS,n_sel=12
+box_D,element centroids = analytic grid,64,64,PASS,
+box_D,tracking index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+box_D,control index = independent centroid rule,0,0,PASS,selected=12 by_index=[12]
+box_D,source index = independent centroid rule,0,0,PASS,selected=0 by_index=[]
+box_D,1^T M 1 = domain volume,0.999999999999997,1,PASS,
+box_D,1^T M_track 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+box_D,1^T M_ctrl_box 1 = n_sel hx hy hz,0.187499999999999,0.1875,PASS,n_sel=12
+union_box_CD,element centroids = analytic grid,64,64,PASS,
+union_box_CD,tracking index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+union_box_CD,control index = independent centroid rule,0,0,PASS,selected=16 by_index=[16]
+union_box_CD,source index = independent centroid rule,0,0,PASS,selected=0 by_index=[]
+union_box_CD,1^T M 1 = domain volume,0.999999999999997,1,PASS,
+union_box_CD,1^T M_track 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+union_box_CD,1^T M_ctrl_box 1 = n_sel hx hy hz,0.249999999999999,0.25,PASS,n_sel=16
+overlap_CD,vol(C u D) < vol(C) + vol(D),0.249999999999999,0.374999999999999,PASS,overlap counted once
+overlap_CD,M_ctrl(C u D) = M_ctrl(explicit union box),0.000e+00,0,PASS,
+overlap_CD,"lowest-index precedence: (#idx1, #idx2)","(12, 4)","(12, 4)",PASS,C has 3x2x2=12 elements; D adds only x-centroid 0.875 (4)
+full_domain_box,element centroids = analytic grid,64,64,PASS,
+full_domain_box,tracking index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+full_domain_box,control index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+full_domain_box,source index = independent centroid rule,0,0,PASS,selected=0 by_index=[]
+full_domain_box,1^T M 1 = domain volume,0.999999999999997,1,PASS,
+full_domain_box,1^T M_track 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+full_domain_box,1^T M_ctrl_box 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+full_domain_box,N_selected = M ; M_ctrl_box = M (max),0.0e+00;0.0e+00,0,PASS,
+partial_y_box,element centroids = analytic grid,64,64,PASS,
+partial_y_box,tracking index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+partial_y_box,control index = independent centroid rule,0,0,PASS,selected=32 by_index=[32]
+partial_y_box,source index = independent centroid rule,0,0,PASS,selected=0 by_index=[]
+partial_y_box,1^T M 1 = domain volume,0.999999999999997,1,PASS,
+partial_y_box,1^T M_track 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+partial_y_box,1^T M_ctrl_box 1 = n_sel hx hy hz,0.499999999999998,0.5,PASS,n_sel=32
+partial_y_box,1^T M_ctrl_box 1 = geometric union volume,0.499999999999998,0.5,PASS,
+partial_y_box,N_selected = M_ctrl_box != M (3D whole-domain fix),0.0e+00;2.370e-03,0;>0,PASS,
+nonaligned_box,element centroids = analytic grid,64,64,PASS,
+nonaligned_box,tracking index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+nonaligned_box,control index = independent centroid rule,0,0,PASS,selected=12 by_index=[12]
+nonaligned_box,source index = independent centroid rule,0,0,PASS,selected=0 by_index=[]
+nonaligned_box,1^T M 1 = domain volume,0.999999999999997,1,PASS,
+nonaligned_box,1^T M_track 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+nonaligned_box,1^T M_ctrl_box 1 = n_sel hx hy hz,0.187499999999999,0.1875,PASS,n_sel=12
+centroid_on_face,element centroids = analytic grid,64,64,PASS,
+centroid_on_face,tracking index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+centroid_on_face,control index = independent centroid rule,0,0,PASS,selected=16 by_index=[16]
+centroid_on_face,source index = independent centroid rule,0,0,PASS,selected=0 by_index=[]
+centroid_on_face,1^T M 1 = domain volume,0.999999999999997,1,PASS,
+centroid_on_face,1^T M_track 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+centroid_on_face,1^T M_ctrl_box 1 = n_sel hx hy hz,0.249999999999999,0.25,PASS,n_sel=16
+centroid_on_face,box x<0.375: centroids x=0.375 excluded,16,16,PASS,only the x-centroid 0.125 layer (4x4) is selected
+track_two_disjoint,element centroids = analytic grid,64,64,PASS,
+track_two_disjoint,tracking index = independent centroid rule,0,0,PASS,"selected=32 by_index=[16, 16]"
+track_two_disjoint,control index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+track_two_disjoint,source index = independent centroid rule,0,0,PASS,selected=0 by_index=[]
+track_two_disjoint,1^T M 1 = domain volume,0.999999999999997,1,PASS,
+track_two_disjoint,1^T M_track 1 = n_sel hx hy hz,0.499999999999998,0.5,PASS,n_sel=32
+track_two_disjoint,1^T M_track 1 = geometric union volume,0.499999999999998,0.5,PASS,
+track_two_disjoint,1^T M_ctrl_box 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+track_overlap,element centroids = analytic grid,64,64,PASS,
+track_overlap,tracking index = independent centroid rule,0,0,PASS,"selected=28 by_index=[16, 12]"
+track_overlap,control index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+track_overlap,source index = independent centroid rule,0,0,PASS,selected=0 by_index=[]
+track_overlap,1^T M 1 = domain volume,0.999999999999997,1,PASS,
+track_overlap,1^T M_track 1 = n_sel hx hy hz,0.437499999999999,0.4375,PASS,n_sel=28
+track_overlap,1^T M_ctrl_box 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+track_union_explicit,element centroids = analytic grid,64,64,PASS,
+track_union_explicit,tracking index = independent centroid rule,0,0,PASS,"selected=28 by_index=[16, 12]"
+track_union_explicit,control index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+track_union_explicit,source index = independent centroid rule,0,0,PASS,selected=0 by_index=[]
+track_union_explicit,1^T M 1 = domain volume,0.999999999999997,1,PASS,
+track_union_explicit,1^T M_track 1 = n_sel hx hy hz,0.437499999999999,0.4375,PASS,n_sel=28
+track_union_explicit,1^T M_ctrl_box 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+track_overlap,M_track(overlapping) = M_track(disjoint partition of same union),0.000e+00,0,PASS,
+noncolocated_2x2,element centroids = analytic grid,64,64,PASS,
+noncolocated_2x2,tracking index = independent centroid rule,0,0,PASS,"selected=16 by_index=[8, 8]"
+noncolocated_2x2,control index = independent centroid rule,0,0,PASS,"selected=16 by_index=[8, 8]"
+noncolocated_2x2,source index = independent centroid rule,0,0,PASS,selected=0 by_index=[]
+noncolocated_2x2,1^T M 1 = domain volume,0.999999999999997,1,PASS,
+noncolocated_2x2,1^T M_track 1 = n_sel hx hy hz,0.249999999999999,0.25,PASS,n_sel=16
+noncolocated_2x2,1^T M_track 1 = geometric union volume,0.249999999999999,0.25,PASS,
+noncolocated_2x2,1^T M_ctrl_box 1 = n_sel hx hy hz,0.249999999999999,0.25,PASS,n_sel=16
+noncolocated_2x2,1^T M_ctrl_box 1 = geometric union volume,0.249999999999999,0.25,PASS,
+noncolocated_2x2,elements in tracking AND control,0,0,PASS,
+noncolocated_2x2,"shared DOFs (box-face nodes only), info",57,-,PASS,sum|M_track o M_ctrl|=4.555e-06 (interface entries)
+source_one,element centroids = analytic grid,64,64,PASS,
+source_one,tracking index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+source_one,control index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+source_one,source index = independent centroid rule,0,0,PASS,selected=1 by_index=[1]
+source_one,1^T M 1 = domain volume,0.999999999999997,1,PASS,
+source_one,1^T M_track 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+source_one,1^T M_ctrl_box 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+source_one,1^T M_source 1 = n_sel hx hy hz,0.015625,0.015625,PASS,n_sel=1
+source_one,1^T M_source 1 = geometric union volume,0.015625,0.015625,PASS,
+source_two,element centroids = analytic grid,64,64,PASS,
+source_two,tracking index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+source_two,control index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+source_two,source index = independent centroid rule,0,0,PASS,"selected=2 by_index=[1, 1]"
+source_two,1^T M 1 = domain volume,0.999999999999997,1,PASS,
+source_two,1^T M_track 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+source_two,1^T M_ctrl_box 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+source_two,1^T M_source 1 = n_sel hx hy hz,0.0312499999999999,0.03125,PASS,n_sel=2
+source_two,1^T M_source 1 = geometric union volume,0.0312499999999999,0.03125,PASS,
+source_overlap,element centroids = analytic grid,64,64,PASS,
+source_overlap,tracking index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+source_overlap,control index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+source_overlap,source index = independent centroid rule,0,0,PASS,"selected=3 by_index=[2, 1]"
+source_overlap,1^T M 1 = domain volume,0.999999999999997,1,PASS,
+source_overlap,1^T M_track 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+source_overlap,1^T M_ctrl_box 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+source_overlap,1^T M_source 1 = n_sel hx hy hz,0.0468749999999999,0.046875,PASS,n_sel=3
+source_overlap,1^T M_source 1 = geometric union volume,0.0468749999999999,0.046875,PASS,
+source_overlap_union,element centroids = analytic grid,64,64,PASS,
+source_overlap_union,tracking index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+source_overlap_union,control index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+source_overlap_union,source index = independent centroid rule,0,0,PASS,selected=3 by_index=[3]
+source_overlap_union,1^T M 1 = domain volume,0.999999999999997,1,PASS,
+source_overlap_union,1^T M_track 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+source_overlap_union,1^T M_ctrl_box 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+source_overlap_union,1^T M_source 1 = n_sel hx hy hz,0.0468749999999999,0.046875,PASS,n_sel=3
+source_overlap,M_source(overlap) = M_source(explicit union),0.000e+00,0,PASS,
+source_whole,element centroids = analytic grid,64,64,PASS,
+source_whole,tracking index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+source_whole,control index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+source_whole,source index = independent centroid rule,0,0,PASS,selected=64 by_index=[64]
+source_whole,1^T M 1 = domain volume,0.999999999999997,1,PASS,
+source_whole,1^T M_track 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+source_whole,1^T M_ctrl_box 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+source_whole,1^T M_source 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=64
+source_whole,M_source(full-domain box) = M,0.000e+00,0,PASS,
+natural_bc_wind,element centroids = analytic grid,27,27,PASS,
+natural_bc_wind,tracking index = independent centroid rule,0,0,PASS,selected=27 by_index=[27]
+natural_bc_wind,control index = independent centroid rule,0,0,PASS,selected=27 by_index=[27]
+natural_bc_wind,source index = independent centroid rule,0,0,PASS,selected=0 by_index=[]
+natural_bc_wind,1^T M 1 = domain volume,0.999999999999997,1,PASS,
+natural_bc_wind,1^T M_track 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=27
+natural_bc_wind,1^T M_ctrl_box 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=27
+natural_bc_wind,(K + C) 1 = 0 (no row constrained),6.661e-16,0,PASS,
+dirichlet_bc_wind,element centroids = analytic grid,27,27,PASS,
+dirichlet_bc_wind,tracking index = independent centroid rule,0,0,PASS,selected=27 by_index=[27]
+dirichlet_bc_wind,control index = independent centroid rule,0,0,PASS,selected=27 by_index=[27]
+dirichlet_bc_wind,source index = independent centroid rule,0,0,PASS,selected=0 by_index=[]
+dirichlet_bc_wind,constrained rows (K=e_i) = boundary nodes,218,218,PASS,
+nonunit_A,element centroids = analytic grid,32,32,PASS,
+nonunit_A,tracking index = independent centroid rule,0,0,PASS,selected=16 by_index=[16]
+nonunit_A,control index = independent centroid rule,0,0,PASS,selected=16 by_index=[16]
+nonunit_A,source index = independent centroid rule,0,0,PASS,selected=16 by_index=[16]
+nonunit_A,1^T M 1 = domain volume,1.99999999999999,2,PASS,
+nonunit_A,1^T M_track 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=16
+nonunit_A,1^T M_track 1 = geometric union volume,0.999999999999997,1,PASS,
+nonunit_A,1^T M_ctrl_box 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=16
+nonunit_A,1^T M_ctrl_box 1 = geometric union volume,0.999999999999997,1,PASS,
+nonunit_A,1^T M_source 1 = n_sel hx hy hz,0.999999999999997,1,PASS,n_sel=16
+nonunit_A,1^T M_source 1 = geometric union volume,0.999999999999997,1,PASS,
+nonunit_A,coordinate extents = domain,"[0.0, -1.0, 0.0]..[2.0, 1.0, 0.5]","(0, 2, -1, 1, 0, 0.5)",PASS,
+nonunit_A,spatial DOFs = prod(2n+1),405,405,PASS,
+nonunit_A_dirichlet,element centroids = analytic grid,32,32,PASS,
+nonunit_A_dirichlet,tracking index = independent centroid rule,0,0,PASS,selected=32 by_index=[32]
+nonunit_A_dirichlet,control index = independent centroid rule,0,0,PASS,selected=32 by_index=[32]
+nonunit_A_dirichlet,source index = independent centroid rule,0,0,PASS,selected=0 by_index=[]
+nonunit_A,Dirichlet constrained rows = boundary nodes,258,258,PASS,
+nonunit_B,element centroids = analytic grid,32,32,PASS,
+nonunit_B,tracking index = independent centroid rule,0,0,PASS,selected=16 by_index=[16]
+nonunit_B,control index = independent centroid rule,0,0,PASS,selected=16 by_index=[16]
+nonunit_B,source index = independent centroid rule,0,0,PASS,selected=16 by_index=[16]
+nonunit_B,1^T M 1 = domain volume,3.99999999999999,4,PASS,
+nonunit_B,1^T M_track 1 = n_sel hx hy hz,1.99999999999999,2,PASS,n_sel=16
+nonunit_B,1^T M_track 1 = geometric union volume,1.99999999999999,2,PASS,
+nonunit_B,1^T M_ctrl_box 1 = n_sel hx hy hz,1.99999999999999,2,PASS,n_sel=16
+nonunit_B,1^T M_ctrl_box 1 = geometric union volume,1.99999999999999,2,PASS,
+nonunit_B,1^T M_source 1 = n_sel hx hy hz,1.99999999999999,2,PASS,n_sel=16
+nonunit_B,1^T M_source 1 = geometric union volume,1.99999999999999,2,PASS,
+nonunit_B,coordinate extents = domain,"[-1.5, 2.0, -0.25]..[0.5, 3.0, 1.75]","(-1.5, 0.5, 2, 3, -0.25, 1.75)",PASS,
+nonunit_B,spatial DOFs = prod(2n+1),405,405,PASS,
+nonunit_B_dirichlet,element centroids = analytic grid,32,32,PASS,
+nonunit_B_dirichlet,tracking index = independent centroid rule,0,0,PASS,selected=32 by_index=[32]
+nonunit_B_dirichlet,control index = independent centroid rule,0,0,PASS,selected=32 by_index=[32]
+nonunit_B_dirichlet,source index = independent centroid rule,0,0,PASS,selected=0 by_index=[]
+nonunit_B,Dirichlet constrained rows = boundary nodes,258,258,PASS,

@@ -28,6 +28,15 @@ namespace {
 // has a nonzero boundary trace, which the inherited load M_elim I_h f drops,
 // limiting y to h^{5/2}).
 bool g_cubic = false;
+// T10: natural-conv-3d (3D extension of the T7F natural-conv, t10_symbolic.py):
+//   natural state BC on all six faces, constant wind w = (vx, vy, vz),
+//   R_k(s) = exp(-k s) (2 + cos(pi s)),  R_k' = -k R_k at s = 0 and s = 1,
+//   p = alpha_u B(t) R_kx(x) R_ky(y) R_kz(z),  k_i = w_i/nu  (0 with convection
+//   off), so nu dn p + (w.n) p = 0 on every face with p != 0 there; p(T) = 0;
+//   y = A(t) cos(pi x) cos(pi y) cos(pi z)  (nu dn y = 0 on every face);
+//   u = -(eta/alpha_u) p;  f = y_t - nu Lap y + w.grad y - eta u;
+//   y_d = y + (p_t + nu Lap p + w.grad p)/alpha_t.
+bool g_natural = false;
 
 struct F1 { double v, d, dd; };   // 1D factor and its first two derivatives
 F1 Factor(double xi) {
@@ -60,6 +69,38 @@ double MinusLapS(double x, double y, double z) {
   const F1 X = Factor(x), Y = Factor(y), Z = Factor(z);
   return -(X.dd * Y.v * Z.v + X.v * Y.dd * Z.v + X.v * Y.v * Z.dd);
 }
+/** T10: natural-conv-3d 1D factors.  NatR: R_k and its derivatives; NatC:
+ *  cos(pi s) and its derivatives. */
+F1 NatR(double k, double s) {
+  const double e = std::exp(-k * s);
+  const double g = 2.0 + std::cos(kPi * s), dg = -kPi * std::sin(kPi * s),
+               ddg = -kPi * kPi * std::cos(kPi * s);
+  return {e * g, e * (dg - k * g), e * (ddg - 2.0 * k * dg + k * k * g)};
+}
+F1 NatC(double s) {
+  return {std::cos(kPi * s), -kPi * std::sin(kPi * s), -kPi * kPi * std::cos(kPi * s)};
+}
+/** value, w.grad and Laplacian of the product X(x) Y(y) Z(z) */
+struct Prod { double v, wgrad, lap; };
+Prod Product(const ProblemConfig& c, const F1& X, const F1& Y, const F1& Z) {
+  const double w[3] = {HasConvection(c) ? c.convection.vx : 0.0,
+                       HasConvection(c) ? c.convection.vy : 0.0,
+                       HasConvection(c) ? c.convection.vz : 0.0};
+  return {X.v * Y.v * Z.v,
+          w[0] * X.d * Y.v * Z.v + w[1] * X.v * Y.d * Z.v + w[2] * X.v * Y.v * Z.d,
+          X.dd * Y.v * Z.v + X.v * Y.dd * Z.v + X.v * Y.v * Z.dd};
+}
+Prod NatYShape(const ProblemConfig& c, double x, double y, double z) {
+  return Product(c, NatC(x), NatC(y), NatC(z));
+}
+Prod NatPShape(const ProblemConfig& c, double x, double y, double z) {
+  const double nu = c.diffusivity;
+  const double kx = HasConvection(c) ? c.convection.vx / nu : 0.0,
+               ky = HasConvection(c) ? c.convection.vy / nu : 0.0,
+               kz = HasConvection(c) ? c.convection.vz / nu : 0.0;
+  return Product(c, NatR(kx, x), NatR(ky, y), NatR(kz, z));
+}
+
 double A(double t) { return std::cos(2.0 * t); }
 double dA(double t) { return -2.0 * std::sin(2.0 * t); }
 double B(const ProblemConfig& c, double t) { return std::sin(c.final_time() - t); }
@@ -98,6 +139,34 @@ double Initial3D(const ProblemConfig& c, double x, double y, double z) {
   return ExactY(c, x, y, z, 0.0);
 }
 
+// T10 natural-conv-3d: separate functions (the T9 bodies above stay unchanged,
+// so the phase-1 cases compile -- and round -- exactly as before).
+double NatExactY(const ProblemConfig& c, double x, double y, double z, double t) {
+  return A(t) * NatYShape(c, x, y, z).v;
+}
+double NatExactP(const ProblemConfig& c, double x, double y, double z, double t) {
+  return c.alpha_u * B(c, t) * NatPShape(c, x, y, z).v;
+}
+double NatExactU(const ProblemConfig& c, double x, double y, double z, double t) {
+  return -c.eta * NatExactP(c, x, y, z, t) / c.alpha_u;
+}
+double NatSource3D(const ProblemConfig& c, double x, double y, double z, double t) {
+  // f = A' Y - nu A Lap Y + A w.grad Y - eta u
+  const Prod Y = NatYShape(c, x, y, z);
+  return dA(t) * Y.v - c.diffusivity * A(t) * Y.lap + A(t) * Y.wgrad -
+         c.eta * NatExactU(c, x, y, z, t);
+}
+double NatTarget3D(const ProblemConfig& c, double x, double y, double z, double t) {
+  // y_d = y + alpha_u (B' P + nu B Lap P + B w.grad P)/alpha_t
+  const Prod P = NatPShape(c, x, y, z);
+  const double q = c.alpha_u * (dB(c, t) * P.v + c.diffusivity * B(c, t) * P.lap +
+                                B(c, t) * P.wgrad);
+  return NatExactY(c, x, y, z, t) + q / c.alpha_track;
+}
+double NatInitial3D(const ProblemConfig& c, double x, double y, double z) {
+  return NatExactY(c, x, y, z, 0.0);
+}
+
 struct Context3D {
   const ProblemConfig* config;
   double time;
@@ -109,6 +178,14 @@ double ExactAt3D(double x, double y, double z, void* raw) {
     case 0: return ExactY(*e->config, x, y, z, e->time);
     case 1: return ExactP(*e->config, x, y, z, e->time);
     default: return ExactU(*e->config, x, y, z, e->time);
+  }
+}
+double NatExactAt3D(double x, double y, double z, void* raw) {   // T10
+  const Context3D* e = static_cast<const Context3D*>(raw);
+  switch (e->field) {
+    case 0: return NatExactY(*e->config, x, y, z, e->time);
+    case 1: return NatExactP(*e->config, x, y, z, e->time);
+    default: return NatExactU(*e->config, x, y, z, e->time);
   }
 }
 
@@ -127,12 +204,15 @@ double RelDiff(Vec x, Vec b) {
 
 void ApplyExactOptimalControl3D(ProblemConfig& config, const std::string& name,
                                 double alpha_u, double final_time, double nu) {
-  if (name != "conv-sin-3d" && name != "conv-sin3-3d")
-    throw std::invalid_argument("the 3D exact OC cases are conv-sin-3d and conv-sin3-3d");
+  if (name != "conv-sin-3d" && name != "conv-sin3-3d" && name != "natural-conv-3d")
+    throw std::invalid_argument(
+        "the 3D exact OC cases are conv-sin-3d, conv-sin3-3d and natural-conv-3d");
   g_cubic = name == "conv-sin3-3d";
+  g_natural = name == "natural-conv-3d";
   config.dimension = 3u;
   config.domain = ProblemConfig::Domain();   // unit cube
-  config.state_bc = ProblemConfig::StateBoundaryCondition::HOMOGENEOUS_DIRICHLET;
+  config.state_bc = g_natural ? ProblemConfig::StateBoundaryCondition::NATURAL
+                              : ProblemConfig::StateBoundaryCondition::HOMOGENEOUS_DIRICHLET;
   config.control.type = ProblemConfig::ControlType::DISTRIBUTED;
   config.control.region = {0.0, 1.0, 0.0, 1.0};
   config.tracking_box = {0.0, 1.0, 0.0, 1.0};
@@ -145,9 +225,9 @@ void ApplyExactOptimalControl3D(ProblemConfig& config, const std::string& name,
   config.alpha_u = alpha_u > 0.0 ? alpha_u : 1.0e-2;
   const double T = final_time > 0.0 ? final_time : 1.0;
   config.time.dt = T / config.time.steps;
-  config.data_overrides.source3d = Source3D;
-  config.data_overrides.target3d = Target3D;
-  config.data_overrides.initial3d = Initial3D;
+  config.data_overrides.source3d = g_natural ? NatSource3D : Source3D;
+  config.data_overrides.target3d = g_natural ? NatTarget3D : Target3D;
+  config.data_overrides.initial3d = g_natural ? NatInitial3D : Initial3D;
 }
 
 int RunExactOptimalControl3D(const ProblemConfig& config,
@@ -172,7 +252,7 @@ int RunExactOptimalControl3D(const ProblemConfig& config,
   std::printf("EX21_EXACT3D_CONFIG case=%s nx=%u ny=%u nz=%u steps=%u T=%.6g dt=%.10e"
               " scheme=%s nu=%.6g convection=%s vx=%.6g vy=%.6g vz=%.6g alpha_u=%.6e"
               " h=%.6e Pe_cell=%.6e dofs=%d spacetime_unknowns=%lld pc=%d\n",
-              g_cubic ? "conv-sin3-3d" : "conv-sin-3d",
+              g_natural ? "natural-conv-3d" : (g_cubic ? "conv-sin3-3d" : "conv-sin-3d"),
               config.mesh.nx, config.mesh.ny, config.mesh.nz, steps, T, dt,
               TimeSchemeName(config), config.diffusivity, HasConvection(config) ? "on" : "off",
               config.convection.vx, config.convection.vy, config.convection.vz,
@@ -253,7 +333,7 @@ int RunExactOptimalControl3D(const ProblemConfig& config,
       PetscCallAbort(PETSC_COMM_WORLD, VecGetArrayRead(r, &a));
       Context3D ctx{&config, time, which};
       const SpatialFieldIntegrals I =
-          IntegrateSpatialField3D(mesh, solution_type, a, ExactAt3D, &ctx);
+          IntegrateSpatialField3D(mesh, solution_type, a, g_natural ? NatExactAt3D : ExactAt3D, &ctx);
       PetscCallAbort(PETSC_COMM_WORLD, VecRestoreArrayRead(r, &a));
       return I;
     };

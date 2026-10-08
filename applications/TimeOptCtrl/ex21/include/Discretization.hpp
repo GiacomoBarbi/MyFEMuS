@@ -138,6 +138,13 @@ unsigned TrackingRegionIndex(const ProblemConfig& config, femus::Mesh* mesh,
                              unsigned element);
 unsigned ControlRegionIndex(const ProblemConfig& config, femus::Mesh* mesh,
                             unsigned element);
+/** T10 (3D only): lowest 1-based index of the source box whose interior
+ *  contains the element centroid, 0 if none (the source union is assembled
+ *  once per element), and the 3D element centroid (mean of the 27 HEX27
+ *  coordinate nodes, storage axes 0, 1, 2). */
+unsigned SourceRegionIndex3D(const ProblemConfig& config, femus::Mesh* mesh,
+                             unsigned element);
+void ElementCentroid3DOf(femus::Mesh* mesh, unsigned element, double centroid[3]);
 
 // ---------------------------------------------------------------------------
 // Spatial finite-element operators, DOF layout and active control set
@@ -245,12 +252,6 @@ SpatialFieldIntegrals IntegrateSpatialField(
     femus::Mesh* mesh, unsigned solution_type, const double* global_values,
     SpatialScalarFunction exact, void* context);
 
-/** The same integrals over one boundary face set instead of the volume.
- *
- *  `face_id` selects the boundary the way the operator assembly does, so
- *  config.neumann_control_face integrates over exactly the faces carrying
- *  M_Gamma.  The quadrature is the same JacobianSur rule that assembled
- *  M_Gamma, so the error is consistent with the operator the solver used. */
 /** T9: 3D counterpart of IntegrateSpatialField with an exact field of the
  *  three storage coordinates (x, y, z).  Same quadrature, same conventions. */
 typedef double (*SpatialScalarFunction3D)(double x, double y, double z, void* context);
@@ -258,6 +259,30 @@ SpatialFieldIntegrals IntegrateSpatialField3D(
     femus::Mesh* mesh, unsigned solution_type, const double* global_values,
     SpatialScalarFunction3D exact, void* context);
 
+/** T10: the boundary convection matrix of the strong-form Galerkin term,
+ *    (B_w)_ij = sum over boundary faces f of int_f (w . n_f) phi_i phi_j ,
+ *  with the outward unit normal of JacobianSur and the CONSTANT wind of the
+ *  config (vx, vy, vz on storage axes 0, 1, 2).  For divergence-free w,
+ *  C + C^T = B_w (integration by parts), the identity the G1N gate checks.
+ *  Per-face sums (face id 1..kMaxFaces of the FEMuS box numbering) are
+ *  returned for the report: area, int n, int w.n.  Collective. */
+struct BoundaryFaceStats {
+  static constexpr unsigned kMaxFaces = 8;
+  double area[kMaxFaces + 1] = {0};
+  double normal[kMaxFaces + 1][3] = {{0}};
+  double wn[kMaxFaces + 1] = {0};       // int_f w.n
+  double wn_abs_max[kMaxFaces + 1] = {0};  // max |w.n| at the face Gauss points
+};
+std::unique_ptr<femus::SparseMatrix> BuildBoundaryConvectionMatrix(
+    const ProblemConfig& config, femus::Mesh* mesh, unsigned solution_type,
+    BoundaryFaceStats* stats);
+
+/** The same integrals over one boundary face set instead of the volume.
+ *
+ *  `face_id` selects the boundary the way the operator assembly does, so
+ *  config.neumann_control_face integrates over exactly the faces carrying
+ *  M_Gamma.  The quadrature is the same JacobianSur rule that assembled
+ *  M_Gamma, so the error is consistent with the operator the solver used. */
 SpatialFieldIntegrals IntegrateBoundaryField(
     femus::Mesh* mesh, unsigned solution_type, unsigned face_id,
     const double* global_values, SpatialScalarFunction exact, void* context);

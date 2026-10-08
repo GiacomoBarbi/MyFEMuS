@@ -27,6 +27,7 @@
 
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 #include "Benchmarks.hpp"
 #include "Config.hpp"
@@ -54,12 +55,117 @@ struct RawCommandLineOptions {
   bool math2025_ex5 = false;        // ex21
   int errorfeedback = 0;            // ex21: 95 or 96
   bool solve_only = false;          // ex21: 2D preset data, production path
-  bool domain_given = false;        // T9: --domain (refused in 3D phase 1)
+  bool domain_given = false;        // T9: --domain (2D syntax, refused in 3D)
   bool dimension3_requested = false;  // T9: --dimension 3 (presets may not override it)
   bool ny_given = false;            // T9: --ny is 3D-only
+  // T10: the 4-number (x, storage-axis-1) region syntax, recorded so 3D can
+  // refuse it rather than reinterpret it ...
+  bool tracking_box_2d = false;     // --tracking-box
+  bool control_box_2d = false;      // --control-box
+  bool control_full_domain = false; // --control-full-domain (re-applied in 3D)
+  bool region_add_2d = false;       // --tracking-box-add / --control-box-add
+  bool source_add_2d = false;       // --source-box-add
+  // ... and the 3D-only 6-number syntax (x0 x1 y0 y1 z0 z1), applied after
+  // parsing (CommandLine: ApplyRegions3D) and refused outside 3D.
+  bool domain3d_given = false;
+  ProblemConfig::Domain domain3d;
+  bool tracking_box3d_given = false, control_box3d_given = false;
+  ProblemConfig::Box tracking_box3d, control_box3d;
+  std::vector<ProblemConfig::Box> tracking_add3d, control_add3d, source_add3d;
   bool final_time_was_set = false;
   double requested_final_time = 0.0;
 };
+
+/** T10: six numbers x0 x1 y0 y1 z0 z1 (storage axes 0, 1, 2) into a 3D box. */
+static ProblemConfig::Box ReadBox3D(char** argv, int& argument);
+
+/** T10: the 3D domain and regions, after every preset / exact case has run
+ *  (so the final dimension is known).  The 4-number (x, axis-1) syntax is not
+ *  reinterpreted in 3D: it is refused, except the full-domain box whose second
+ *  pair equals BOTH the y and the z extents (the T9 command lines) -- that box
+ *  is the full domain under either reading.  The 3D defaults are not implied:
+ *  the tracking region and the control region must be given. */
+static void ApplyRegions3D(ProblemConfig& config, const RawCommandLineOptions& raw,
+                           bool exact3d) {
+  const bool any3d = raw.domain3d_given || raw.tracking_box3d_given ||
+                     raw.control_box3d_given || !raw.tracking_add3d.empty() ||
+                     !raw.control_add3d.empty() || !raw.source_add3d.empty();
+  if (config.dimension != 3u) {
+    if (any3d)
+      throw std::invalid_argument(
+          "--domain3d / --tracking-box3d* / --control-box3d* / --source-box3d-add"
+          " are 3D-only (--dimension 3)");
+    return;
+  }
+  auto refuse = [](const std::string& what) {
+    throw std::invalid_argument("3D: " + what);
+  };
+  if (exact3d) {
+    if (any3d || raw.domain_given || raw.tracking_box_2d || raw.control_box_2d ||
+        raw.region_add_2d || raw.source_add_2d)
+      refuse("the 3D exact OC cases own their domain and regions (no region options)");
+    return;
+  }
+  if (raw.domain_given)
+    refuse("--domain is the 2D (x, z) syntax; use --domain3d x0 x1 y0 y1 z0 z1");
+  if (raw.region_add_2d)
+    refuse("--tracking-box-add / --control-box-add are 2D; use --tracking-box3d-add /"
+           " --control-box3d-add x0 x1 y0 y1 z0 z1");
+  if (raw.source_add_2d)
+    refuse("--source-box-add is 2D; use --source-box3d-add x0 x1 y0 y1 z0 z1");
+  if (raw.domain3d_given) config.domain = raw.domain3d;
+  const ProblemConfig::Domain& d = config.domain;
+  ProblemConfig::Box full;
+  full.xmin = d.xmin; full.xmax = d.xmax;
+  full.ymin = d.ymin; full.ymax = d.ymax;
+  full.zmin = d.zmin; full.zmax = d.zmax;
+  // a 4-number box is interpretation-free iff it is the full domain under both
+  // readings of its second pair (y or z)
+  auto unambiguous_full = [&](const ProblemConfig::Box& b) {
+    return b.xmin == d.xmin && b.xmax == d.xmax && b.zmin == d.ymin && b.zmax == d.ymax &&
+           b.zmin == d.zmin && b.zmax == d.zmax;
+  };
+  if (raw.tracking_box3d_given && raw.tracking_box_2d)
+    refuse("give the tracking box once (--tracking-box3d or the full-domain --tracking-box)");
+  if (raw.tracking_box3d_given)
+    config.tracking_box = raw.tracking_box3d;
+  else if (raw.tracking_box_2d) {
+    if (!unambiguous_full(config.tracking_box))
+      refuse("--tracking-box (4 numbers) is ambiguous in 3D; use --tracking-box3d"
+             " x0 x1 y0 y1 z0 z1");
+    config.tracking_box = full;
+  } else
+    refuse("an explicit tracking region is required (--tracking-box3d x0 x1 y0 y1 z0 z1);"
+           " the 2D default box has no 3D meaning");
+  if (raw.control_box3d_given)
+    config.control.region = raw.control_box3d;
+  else if (raw.control_full_domain)
+    config.control.region = full;
+  else if (raw.control_box_2d) {
+    if (!unambiguous_full(config.control.region))
+      refuse("--control-box (4 numbers) is ambiguous in 3D; use --control-box3d"
+             " x0 x1 y0 y1 z0 z1");
+    config.control.region = full;
+  } else
+    refuse("an explicit control region is required (--control-full-domain or"
+           " --control-box3d x0 x1 y0 y1 z0 z1); the 2D default box has no 3D meaning");
+  for (const ProblemConfig::Box& b : raw.tracking_add3d)
+    config.additional_tracking_regions.push_back(b);
+  for (const ProblemConfig::Box& b : raw.control_add3d)
+    config.additional_control_regions.push_back(b);
+  for (const ProblemConfig::Box& b : raw.source_add3d) config.source_regions.push_back(b);
+}
+
+static ProblemConfig::Box ReadBox3D(char** argv, int& argument) {
+  ProblemConfig::Box box;
+  box.xmin = std::stod(argv[++argument]);
+  box.xmax = std::stod(argv[++argument]);
+  box.ymin = std::stod(argv[++argument]);
+  box.ymax = std::stod(argv[++argument]);
+  box.zmin = std::stod(argv[++argument]);
+  box.zmax = std::stod(argv[++argument]);
+  return box;
+}
 
 /** Option order decides the winner for duplicates and for --control-box /
  *  --control-full-domain, so the else-if chain must stay ordered. */
@@ -135,11 +241,17 @@ static void ParseArguments(int argc, char** argv, ProblemConfig& config,
     } else if (option == "--nz" && argument + 1 < argc) {
       config.mesh.nz = static_cast<unsigned>(std::stoul(argv[++argument]));
     } else if (option == "--control-box" && argument + 4 < argc) {
+      raw.control_box_2d = true;
+      raw.control_full_domain = false;
+      raw.control_box3d_given = false;
       config.control.region.xmin = std::stod(argv[++argument]);
       config.control.region.xmax = std::stod(argv[++argument]);
       config.control.region.zmin = std::stod(argv[++argument]);
       config.control.region.zmax = std::stod(argv[++argument]);
     } else if (option == "--control-full-domain") {
+      raw.control_full_domain = true;
+      raw.control_box_2d = false;
+      raw.control_box3d_given = false;
       config.control.region.xmin = config.domain.xmin;
       config.control.region.xmax = config.domain.xmax;
       config.control.region.zmin = config.domain.zmin;
@@ -147,11 +259,13 @@ static void ParseArguments(int argc, char** argv, ProblemConfig& config,
     } else if (option == "--write-region-fields") {
       options.region_fields = true;
     } else if (option == "--tracking-box" && argument + 4 < argc) {
+      raw.tracking_box_2d = true;
       config.tracking_box.xmin = std::stod(argv[++argument]);
       config.tracking_box.xmax = std::stod(argv[++argument]);
       config.tracking_box.zmin = std::stod(argv[++argument]);
       config.tracking_box.zmax = std::stod(argv[++argument]);
     } else if (option == "--tracking-box-add" && argument + 4 < argc) {
+      raw.region_add_2d = true;
       ProblemConfig::Box box;
       box.xmin = std::stod(argv[++argument]);
       box.xmax = std::stod(argv[++argument]);
@@ -159,6 +273,7 @@ static void ParseArguments(int argc, char** argv, ProblemConfig& config,
       box.zmax = std::stod(argv[++argument]);
       config.additional_tracking_regions.push_back(box);
     } else if (option == "--control-box-add" && argument + 4 < argc) {
+      raw.region_add_2d = true;
       ProblemConfig::Box box;
       box.xmin = std::stod(argv[++argument]);
       box.xmax = std::stod(argv[++argument]);
@@ -194,6 +309,7 @@ static void ParseArguments(int argc, char** argv, ProblemConfig& config,
     } else if (option == "--verify-dirichlet-core") {
       config.dirichlet_core.verify = true;
     } else if (option == "--source-box-add" && argument + 4 < argc) {
+      raw.source_add_2d = true;
       // T7F: one more box of the source-region union (ProblemConfig::
       // source_regions; previously preset-only).  The source data are the
       // usual ones (--source amplitude), loaded as M_source I_h f.
@@ -261,6 +377,27 @@ static void ParseArguments(int argc, char** argv, ProblemConfig& config,
         throw std::invalid_argument("--dimension must be 1, 2 or 3");
       config.dimension = value == "1" ? 1u : (value == "3" ? 3u : 2u);
       raw.dimension3_requested = value == "3";
+    // ---- T10: 3D-only region syntax (x0 x1 y0 y1 z0 z1), see ApplyRegions3D
+    } else if (option == "--domain3d" && argument + 6 < argc) {
+      const ProblemConfig::Box b = ReadBox3D(argv, argument);
+      raw.domain3d_given = true;
+      raw.domain3d.xmin = b.xmin; raw.domain3d.xmax = b.xmax;
+      raw.domain3d.ymin = b.ymin; raw.domain3d.ymax = b.ymax;
+      raw.domain3d.zmin = b.zmin; raw.domain3d.zmax = b.zmax;
+    } else if (option == "--tracking-box3d" && argument + 6 < argc) {
+      raw.tracking_box3d = ReadBox3D(argv, argument);
+      raw.tracking_box3d_given = true;
+    } else if (option == "--tracking-box3d-add" && argument + 6 < argc) {
+      raw.tracking_add3d.push_back(ReadBox3D(argv, argument));
+    } else if (option == "--control-box3d" && argument + 6 < argc) {
+      raw.control_box3d = ReadBox3D(argv, argument);
+      raw.control_box3d_given = true;
+      raw.control_full_domain = false;
+      raw.control_box_2d = false;
+    } else if (option == "--control-box3d-add" && argument + 6 < argc) {
+      raw.control_add3d.push_back(ReadBox3D(argv, argument));
+    } else if (option == "--source-box3d-add" && argument + 6 < argc) {
+      raw.source_add3d.push_back(ReadBox3D(argv, argument));
     } else if (option == "--domain" && argument + 4 < argc) {
       raw.domain_given = true;
       config.domain.xmin = std::stod(argv[++argument]);
@@ -484,7 +621,8 @@ static void ResolveProblemData(const RawCommandLineOptions& raw,
     if (raw.math2025_ex3 || raw.math2025_ex4 || raw.math2025_ex5 ||
         raw.errorfeedback != 0)
       throw std::invalid_argument("--exact-oc excludes the literature presets");
-    if (options.exact_oc == "conv-sin-3d" || options.exact_oc == "conv-sin3-3d") {
+    if (options.exact_oc == "conv-sin-3d" || options.exact_oc == "conv-sin3-3d" ||
+        options.exact_oc == "natural-conv-3d") {
       // T9: the 3D exact case (ExactOc3D.hpp); the wind stays the CLI one
       if (options.exact_oc_velocity_set)
         throw std::invalid_argument(
@@ -501,6 +639,9 @@ static void ResolveProblemData(const RawCommandLineOptions& raw,
                                                            : nullptr);
   }
 
+  ApplyRegions3D(config, raw,
+                 options.exact_oc == "conv-sin-3d" || options.exact_oc == "conv-sin3-3d" ||
+                     options.exact_oc == "natural-conv-3d");   // T10
   config.Validate();
   // ex21: a nonzero velocity without --convection on would be silently
   // ignored, and the ex20 batteries encode a symmetric diffusion operator.
@@ -508,21 +649,20 @@ static void ResolveProblemData(const RawCommandLineOptions& raw,
       (config.convection.vx != 0.0 || config.convection.vy != 0.0 ||
        config.convection.vz != 0.0))
     throw std::invalid_argument("--vx/--vy/--vz require --convection on");
-  // T9: 3D phase-1 run modes and solvers (the feature whitelist is
-  // ProblemConfig::Validate3DPhase1).  Refuse, never reinterpret: the 1D/2D
+  // T9/T10: 3D run modes and solvers (the feature whitelist is
+  // ProblemConfig::Validate3D; the 3D region syntax is ApplyRegions3D).  Refuse, never reinterpret: the 1D/2D
   // presets and exact cases above overwrite config.dimension, so the test is on
   // what the command line REQUESTED, not on the (possibly reset) config.
   if (raw.dimension3_requested && config.dimension != 3u)
     throw std::invalid_argument(
-        "3D phase 1: --dimension 3 requested, but the selected preset / exact case"
+        "3D: --dimension 3 requested, but the selected preset / exact case"
         " is 1D/2D (refused, not reinterpreted)");
   if (raw.ny_given && config.dimension != 3u)
     throw std::invalid_argument("--ny is 3D-only (in 2D the second axis is --nz)");
   if (config.dimension == 3u) {
     auto refuse = [](const std::string& what) {
-      throw std::invalid_argument("3D phase 1: " + what);
+      throw std::invalid_argument("3D: " + what);
     };
-    if (raw.domain_given) refuse("--domain is not ported (unit cube only)");
     if (raw.math2025_ex3 || raw.math2025_ex4 || raw.math2025_ex5 || raw.errorfeedback != 0)
       refuse("the Math2025 / ErrorFeedback presets are 1D/2D");
     if (options.benchmark != LiteratureBenchmark::NONE ||
@@ -532,8 +672,8 @@ static void ResolveProblemData(const RawCommandLineOptions& raw,
     if (raw.verify_stage1 || raw.verify_sweeps || raw.verify_boundary_reduced)
       refuse("the ex20 verification batteries are 2D");
     if (!options.exact_oc.empty() && options.exact_oc != "conv-sin-3d" &&
-        options.exact_oc != "conv-sin3-3d")
-      refuse("the only 3D exact OC cases are conv-sin-3d and conv-sin3-3d");
+        options.exact_oc != "conv-sin3-3d" && options.exact_oc != "natural-conv-3d")
+      refuse("the only 3D exact OC cases are conv-sin-3d, conv-sin3-3d and natural-conv-3d");
     if (raw.pc_schur_matching || raw.pc_schur_boundary_reduced || raw.pc_schur_dirichlet_reduced)
       refuse("only SCHUR_SWEEP (--pc-schur-sweep) or ADDITIVE_GAMG (BE) are validated");
     if (options.pc_time_blocks > 0 || options.pc_sweep_depth > 0)

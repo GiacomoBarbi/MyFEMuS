@@ -394,6 +394,24 @@ int RunSpatialOperatorDump(const ProblemConfig& config,
       PetscCallAbort(PETSC_COMM_WORLD, MatRestoreRow(matrix, r, &count, &cols, &vals));
     }
   }
+  // T10: 3D only -- per element the centroid and the tracking / control /
+  // source region indices (lowest matching box, 0 = none), so the centroid
+  // rule and the precedence can be checked independently of the assembly.
+  if (config.dimension == 3u) {
+    std::ofstream stream((prefix + "_regions3d.txt").c_str());
+    stream << std::setprecision(17)
+           << "# element xc yc zc tracking_index control_index source_index\n";
+    const unsigned rank = mesh->processor_id();
+    for (unsigned element = mesh->_elementOffset[rank];
+         element < mesh->_elementOffset[rank + 1u]; ++element) {
+      double c[3];
+      ElementCentroid3DOf(mesh, element, c);
+      stream << element << ' ' << c[0] << ' ' << c[1] << ' ' << c[2] << ' '
+             << TrackingRegionIndex(config, mesh, element) << ' '
+             << ControlRegionIndex(config, mesh, element) << ' '
+             << SourceRegionIndex3D(config, mesh, element) << '\n';
+    }
+  }
   return 0;
 }
 
@@ -761,7 +779,7 @@ int RunVerificationStage1(const ProblemConfig& config,
     double sample_x = -1.0, sample_z = -1.0;
     for (PetscInt i = 0; i < layout.local_size; ++i) {
       const bool masked =
-          OwnedDofIsControlled(config, layout.x[i], layout.z[i]);
+          OwnedDofIsControlled(config, layout.x[i], layout.z[i], layout.Axis2(i));
       if (active[i]) ++in_active;
       if (support[i]) ++in_support;
       if (masked) ++in_mask;

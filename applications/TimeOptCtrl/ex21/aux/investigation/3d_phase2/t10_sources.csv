@@ -1,0 +1,45 @@
+scheme,check,value,tolerance,verdict,note
+BE,superposition d(SAB) = d(SA) + d(SB),1.399e-12,1e-09,PASS,
+BE,remove-one SAB - SA = SB - S0,7.469e-12,1e-09,PASS,
+BE,remove-one SAB - SB = SA - S0,1.721e-12,1e-09,PASS,
+BE,amplitude d(SAB2) = 2 d(SAB),5.291e-13,1e-09,PASS,
+BE,overlap: SOV = SUN (union counted once),0.000e+00,1e-09,PASS,
+BE,whole domain: SWH = SFB,0.000e+00,1e-09,PASS,
+BE,|d(SA)| > 0 and |d(SB)| > 0 (each contributes),7.275e-01/2.609e-01,,PASS,
+BE,d(SA) != d(SB) (distinguishable): rel diff,9.954e-01,,PASS,
+BE,centroid of |d(SA).y| (x<0.5),"[0.386, 0.701, 0.637]",x<0.5,PASS,
+BE,centroid of |d(SB).y| (x>0.5),"[0.762, 0.318, 0.26]",x>0.5,PASS,
+BE,S0 production true residual / outer its,6.798e-17/3,,INFO,J=1.671694566577e-03
+BE,SA production true residual / outer its,4.588e-15/2,,INFO,J=2.047780174535e-03
+BE,SB production true residual / outer its,1.056e-15/2,,INFO,J=1.627929822490e-03
+BE,SAB production true residual / outer its,5.319e-15/2,,INFO,J=2.024272632255e-03
+BE,SAB2 production true residual / outer its,8.920e-15/2,,INFO,J=2.609840069968e-03
+BE,SOV production true residual / outer its,4.522e-15/2,,INFO,J=2.054843480098e-03
+BE,SUN production true residual / outer its,4.522e-15/2,,INFO,J=2.054843480098e-03
+BE,SWH production true residual / outer its,1.031e-14/2,,INFO,J=4.789657641876e-03
+BE,SFB production true residual / outer its,1.031e-14/2,,INFO,J=4.789657641876e-03
+CN,superposition d(SAB) = d(SA) + d(SB),1.144e-12,1e-09,PASS,
+CN,remove-one SAB - SA = SB - S0,5.927e-12,1e-09,PASS,
+CN,remove-one SAB - SB = SA - S0,1.417e-12,1e-09,PASS,
+CN,amplitude d(SAB2) = 2 d(SAB),1.857e-12,1e-09,PASS,
+CN,overlap: SOV = SUN (union counted once),0.000e+00,1e-09,PASS,
+CN,whole domain: SWH = SFB,0.000e+00,1e-09,PASS,
+CN,|d(SA)| > 0 and |d(SB)| > 0 (each contributes),6.772e-01/2.634e-01,,PASS,
+CN,d(SA) != d(SB) (distinguishable): rel diff,9.959e-01,,PASS,
+CN,centroid of |d(SA).y| (x<0.5),"[0.382, 0.704, 0.639]",x<0.5,PASS,
+CN,centroid of |d(SB).y| (x>0.5),"[0.762, 0.317, 0.259]",x>0.5,PASS,
+CN,S0 production true residual / outer its,4.602e-17/3,,INFO,J=1.727150671961e-03
+CN,SA production true residual / outer its,8.972e-15/2,,INFO,J=2.069133398698e-03
+CN,SB production true residual / outer its,1.027e-15/2,,INFO,J=1.678790859691e-03
+CN,SAB production true residual / outer its,6.623e-15/2,,INFO,J=2.039012645196e-03
+CN,SAB2 production true residual / outer its,5.852e-15/2,,INFO,J=2.566039330027e-03
+CN,SOV production true residual / outer its,7.678e-15/2,,INFO,J=2.070328824436e-03
+CN,SUN production true residual / outer its,7.678e-15/2,,INFO,J=2.070328824436e-03
+CN,SWH production true residual / outer its,7.774e-15/2,,INFO,J=4.463112430199e-03
+CN,SFB production true residual / outer its,7.774e-15/2,,INFO,J=4.463112430199e-03
+BE,verify SAB_be: true_res / gradJ / march,4.705e-16/3.055e-13/6.279e-16,1e-10/1e-9/1e-12,PASS,
+CN,verify SAB_cn: true_res / gradJ / march,8.780e-17/5.202e-14/8.599e-16,1e-10/1e-9/1e-12,PASS,
+BE,verify SA_be: true_res / gradJ / march,4.823e-16/3.100e-13/6.957e-16,1e-10/1e-9/1e-12,PASS,
+CN,verify SA_cn: true_res / gradJ / march,8.658e-17/5.339e-14/8.256e-16,1e-10/1e-9/1e-12,PASS,
+BE,verify SB_be: true_res / gradJ / march,4.760e-16/3.094e-13/5.547e-16,1e-10/1e-9/1e-12,PASS,
+CN,verify SB_cn: true_res / gradJ / march,9.128e-17/5.591e-14/6.906e-16,1e-10/1e-9/1e-12,PASS,
