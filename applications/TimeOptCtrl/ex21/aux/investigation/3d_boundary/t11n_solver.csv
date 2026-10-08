@@ -1,0 +1,12 @@
+scheme,solver,reason,outer_its,true_residual,sweep_failures,rejected,y_solves,y_its,y_its_max,right_solves,right_its,right_its_max,left_solves,left_its,left_its_max,wall_s,maxrss_MB,fields_maxrel_vs_lu,J_rel_vs_lu,J_total
+BE,sweep_lu,2,2,5.0604655572795925e-13,0,,1280,1280,1,1216,1216,1,1216,1216,1,42.98,1054,0.00e+00,0.00e+00,3.9045559011e-01
+BE,sweep_gamg,2,2,5.0617864053568872e-13,0,,1280,13206,11,1216,12394,11,1216,12645,11,119.25,987,2.50e-15,2.42e-15,3.9045559011e-01
+BE,sweep_asmilu,2,2,5.0608424053643889e-13,0,,1280,10933,9,1216,10860,9,1216,9720,8,422.19,1193,1.40e-14,1.42e-15,3.9045559011e-01
+BE,additive,2,46,4.790904234755073e-08,0,,46,937,22,0,0,0,0,0,0,347.14,2546,1.95e-06,1.25e-09,3.9045558962e-01
+CN,sweep_lu,2,2,5.1038181487024659e-13,0,,1664,1664,1,1600,1600,1,1600,1600,1,49.36,1094,0.00e+00,0.00e+00,4.0960199731e-01
+CN,sweep_gamg,2,2,5.1046087671565148e-13,0,,1664,17092,11,1600,15999,10,1600,16305,11,112.68,1009,5.86e-15,5.01e-15,4.0960199731e-01
+CN,sweep_asmilu,2,2,5.1047323056240116e-13,0,,1664,10486,7,1600,11189,7,1600,9630,7,289.40,1280,1.79e-14,1.10e-14,4.0960199731e-01
+CN,cn_additive,"REFUSED: 3D: Crank-Nicolson needs --pc-schur-sweep (ADDITIVE_GAMG is not robust under CN, T7F/T8D finalisation)",,,,,,,,,,,,,,,,,,
+BE,be_matching,REFUSED: 3D: only SCHUR_SWEEP (--pc-schur-sweep) or ADDITIVE_GAMG (BE) are validated,,,,,,,,,,,,,,,,,,
+BE,be_boundary_reduced,REFUSED: 3D: only SCHUR_SWEEP (--pc-schur-sweep) or ADDITIVE_GAMG (BE) are validated,,,,,,,,,,,,,,,,,,
+HEAT,heat_boundary_reduced,REFUSED: 3D: only SCHUR_SWEEP (--pc-schur-sweep) or ADDITIVE_GAMG (BE) are validated,,,,,,,,,,,,,,,,,,

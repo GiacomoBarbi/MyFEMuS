@@ -31,7 +31,11 @@ class Mesh;
  *  tracking, homogeneous Dirichlet state, the data above.
  *  T10: natural-conv-3d -- natural state BC on all six faces, y = A cos(pi x)
  *  cos(pi y) cos(pi z), p = alpha_u B R_kx(x) R_ky(y) R_kz(z) with
- *  R_k = exp(-k s)(2 + cos(pi s)), k_i = w_i/nu (ExactOc3D.cpp).  `alpha_u` <= 0:
+ *  R_k = exp(-k s)(2 + cos(pi s)), k_i = w_i/nu (ExactOc3D.cpp).
+ *  T11N: neumann-conv-3d -- Neumann boundary control on Gamma_c = {z = 0}
+ *  (FEMuS face 1), natural state BC elsewhere; p = alpha_u B X(x) X(y) R_kz(z),
+ *  X = 1 - cos(2 pi s), u = -(eta/alpha_u) p|_{z=0}; the u error is the surface
+ *  L2 norm on Gamma_c (ExactOc3D.cpp).  `alpha_u` <= 0:
  *  1e-2; `final_time` <= 0: 1; `nu` <= 0: 1/4.  The wind is NOT set here:
  *  it is --convection on/off with --vx --vy --vz. */
 void ApplyExactOptimalControl3D(ProblemConfig& config, const std::string& name,

@@ -1,0 +1,118 @@
+case,check,value,reference,verdict
+zmin_3x3x3_unit,support = face-plane nodes,49,49,PASS
+zmin_3x3x3_unit,trace node count = (2 n_a + 1)(2 n_b + 1),49,49,PASS
+zmin_3x3x3_unit,symmetry max|M - M^T|,0.0e+00,0,PASS
+zmin_3x3x3_unit,SPD on the trace support: min eigenvalue,1.194e-03,> 0,PASS
+zmin_3x3x3_unit,1^T M_Gamma 1 = |Gamma_c|,1,1,PASS
+zmin_3x3x3_unit,v^T M_Gamma v = int (x+2y-3z)^2 dS,2.66666666666667,2.66666666666667,PASS
+zmin_3x3x3_unit,M_Gamma = M1(a) (x) M1(b) (rel. max entrywise),6.26e-15,<= 1e-14,PASS
+zmin_3x3x3_unit,N_selected = M_Gamma,0.0e+00,0,PASS
+zmin_3x3x3_unit,off-face rows of N zero,0,0,PASS
+ymin_3x3x3_unit,support = face-plane nodes,49,49,PASS
+ymin_3x3x3_unit,trace node count = (2 n_a + 1)(2 n_b + 1),49,49,PASS
+ymin_3x3x3_unit,symmetry max|M - M^T|,0.0e+00,0,PASS
+ymin_3x3x3_unit,SPD on the trace support: min eigenvalue,1.194e-03,> 0,PASS
+ymin_3x3x3_unit,1^T M_Gamma 1 = |Gamma_c|,1,1,PASS
+ymin_3x3x3_unit,v^T M_Gamma v = int (x+2y-3z)^2 dS,1.83333333333333,1.83333333333333,PASS
+ymin_3x3x3_unit,M_Gamma = M1(a) (x) M1(b) (rel. max entrywise),6.26e-15,<= 1e-14,PASS
+ymin_3x3x3_unit,N_selected = M_Gamma,0.0e+00,0,PASS
+ymin_3x3x3_unit,off-face rows of N zero,0,0,PASS
+xmax_3x3x3_unit,support = face-plane nodes,49,49,PASS
+xmax_3x3x3_unit,trace node count = (2 n_a + 1)(2 n_b + 1),49,49,PASS
+xmax_3x3x3_unit,symmetry max|M - M^T|,0.0e+00,0,PASS
+xmax_3x3x3_unit,SPD on the trace support: min eigenvalue,1.194e-03,> 0,PASS
+xmax_3x3x3_unit,1^T M_Gamma 1 = |Gamma_c|,1,1,PASS
+xmax_3x3x3_unit,v^T M_Gamma v = int (x+2y-3z)^2 dS,1.33333333333333,1.33333333333333,PASS
+xmax_3x3x3_unit,M_Gamma = M1(a) (x) M1(b) (rel. max entrywise),6.26e-15,<= 1e-14,PASS
+xmax_3x3x3_unit,N_selected = M_Gamma,0.0e+00,0,PASS
+xmax_3x3x3_unit,off-face rows of N zero,0,0,PASS
+ymax_3x3x3_unit,support = face-plane nodes,49,49,PASS
+ymax_3x3x3_unit,trace node count = (2 n_a + 1)(2 n_b + 1),49,49,PASS
+ymax_3x3x3_unit,symmetry max|M - M^T|,0.0e+00,0,PASS
+ymax_3x3x3_unit,SPD on the trace support: min eigenvalue,1.194e-03,> 0,PASS
+ymax_3x3x3_unit,1^T M_Gamma 1 = |Gamma_c|,1,1,PASS
+ymax_3x3x3_unit,v^T M_Gamma v = int (x+2y-3z)^2 dS,1.83333333333333,1.83333333333333,PASS
+ymax_3x3x3_unit,M_Gamma = M1(a) (x) M1(b) (rel. max entrywise),6.15e-15,<= 1e-14,PASS
+ymax_3x3x3_unit,N_selected = M_Gamma,0.0e+00,0,PASS
+ymax_3x3x3_unit,off-face rows of N zero,0,0,PASS
+xmin_3x3x3_unit,support = face-plane nodes,49,49,PASS
+xmin_3x3x3_unit,trace node count = (2 n_a + 1)(2 n_b + 1),49,49,PASS
+xmin_3x3x3_unit,symmetry max|M - M^T|,0.0e+00,0,PASS
+xmin_3x3x3_unit,SPD on the trace support: min eigenvalue,1.194e-03,> 0,PASS
+xmin_3x3x3_unit,1^T M_Gamma 1 = |Gamma_c|,1,1,PASS
+xmin_3x3x3_unit,v^T M_Gamma v = int (x+2y-3z)^2 dS,1.33333333333333,1.33333333333333,PASS
+xmin_3x3x3_unit,M_Gamma = M1(a) (x) M1(b) (rel. max entrywise),6.15e-15,<= 1e-14,PASS
+xmin_3x3x3_unit,N_selected = M_Gamma,0.0e+00,0,PASS
+xmin_3x3x3_unit,off-face rows of N zero,0,0,PASS
+zmax_3x3x3_unit,support = face-plane nodes,49,49,PASS
+zmax_3x3x3_unit,trace node count = (2 n_a + 1)(2 n_b + 1),49,49,PASS
+zmax_3x3x3_unit,symmetry max|M - M^T|,0.0e+00,0,PASS
+zmax_3x3x3_unit,SPD on the trace support: min eigenvalue,1.194e-03,> 0,PASS
+zmax_3x3x3_unit,1^T M_Gamma 1 = |Gamma_c|,1,1,PASS
+zmax_3x3x3_unit,v^T M_Gamma v = int (x+2y-3z)^2 dS,2.66666666666667,2.66666666666667,PASS
+zmax_3x3x3_unit,M_Gamma = M1(a) (x) M1(b) (rel. max entrywise),6.26e-15,<= 1e-14,PASS
+zmax_3x3x3_unit,N_selected = M_Gamma,0.0e+00,0,PASS
+zmax_3x3x3_unit,off-face rows of N zero,0,0,PASS
+zmin_2x3x4_unit,support = face-plane nodes,35,35,PASS
+zmin_2x3x4_unit,trace node count = (2 n_a + 1)(2 n_b + 1),35,35,PASS
+zmin_2x3x4_unit,symmetry max|M - M^T|,0.0e+00,0,PASS
+zmin_2x3x4_unit,SPD on the trace support: min eigenvalue,1.687e-03,> 0,PASS
+zmin_2x3x4_unit,1^T M_Gamma 1 = |Gamma_c|,1,1,PASS
+zmin_2x3x4_unit,v^T M_Gamma v = int (x+2y-3z)^2 dS,2.66666666666667,2.66666666666667,PASS
+zmin_2x3x4_unit,M_Gamma = M1(a) (x) M1(b) (rel. max entrywise),6.37e-15,<= 1e-14,PASS
+zmin_2x3x4_unit,N_selected = M_Gamma,0.0e+00,0,PASS
+zmin_2x3x4_unit,off-face rows of N zero,0,0,PASS
+xmax_2x3x4_unit,support = face-plane nodes,63,63,PASS
+xmax_2x3x4_unit,trace node count = (2 n_a + 1)(2 n_b + 1),63,63,PASS
+xmax_2x3x4_unit,symmetry max|M - M^T|,0.0e+00,0,PASS
+xmax_2x3x4_unit,SPD on the trace support: min eigenvalue,9.151e-04,> 0,PASS
+xmax_2x3x4_unit,1^T M_Gamma 1 = |Gamma_c|,1,1,PASS
+xmax_2x3x4_unit,v^T M_Gamma v = int (x+2y-3z)^2 dS,1.33333333333333,1.33333333333333,PASS
+xmax_2x3x4_unit,M_Gamma = M1(a) (x) M1(b) (rel. max entrywise),6.59e-15,<= 1e-14,PASS
+xmax_2x3x4_unit,N_selected = M_Gamma,0.0e+00,0,PASS
+xmax_2x3x4_unit,off-face rows of N zero,0,0,PASS
+ymax_2x3x4_unit,support = face-plane nodes,45,45,PASS
+ymax_2x3x4_unit,trace node count = (2 n_a + 1)(2 n_b + 1),45,45,PASS
+ymax_2x3x4_unit,symmetry max|M - M^T|,0.0e+00,0,PASS
+ymax_2x3x4_unit,SPD on the trace support: min eigenvalue,1.293e-03,> 0,PASS
+ymax_2x3x4_unit,1^T M_Gamma 1 = |Gamma_c|,1,1,PASS
+ymax_2x3x4_unit,v^T M_Gamma v = int (x+2y-3z)^2 dS,1.83333333333333,1.83333333333333,PASS
+ymax_2x3x4_unit,M_Gamma = M1(a) (x) M1(b) (rel. max entrywise),6.54e-15,<= 1e-14,PASS
+ymax_2x3x4_unit,N_selected = M_Gamma,0.0e+00,0,PASS
+ymax_2x3x4_unit,off-face rows of N zero,0,0,PASS
+zmin_4x4x2_nonunit,support = face-plane nodes,81,81,PASS
+zmin_4x4x2_nonunit,trace node count = (2 n_a + 1)(2 n_b + 1),81,81,PASS
+zmin_4x4x2_nonunit,symmetry max|M - M^T|,0.0e+00,0,PASS
+zmin_4x4x2_nonunit,SPD on the trace support: min eigenvalue,2.806e-03,> 0,PASS
+zmin_4x4x2_nonunit,1^T M_Gamma 1 = |Gamma_c|,4,4,PASS
+zmin_4x4x2_nonunit,v^T M_Gamma v = int (x+2y-3z)^2 dS,10.6666666666667,10.6666666666667,PASS
+zmin_4x4x2_nonunit,M_Gamma = M1(a) (x) M1(b) (rel. max entrywise),6.54e-15,<= 1e-14,PASS
+zmin_4x4x2_nonunit,N_selected = M_Gamma,0.0e+00,0,PASS
+zmin_4x4x2_nonunit,off-face rows of N zero,0,0,PASS
+xmin_4x4x2_nonunit,support = face-plane nodes,45,45,PASS
+xmin_4x4x2_nonunit,trace node count = (2 n_a + 1)(2 n_b + 1),45,45,PASS
+xmin_4x4x2_nonunit,symmetry max|M - M^T|,0.0e+00,0,PASS
+xmin_4x4x2_nonunit,SPD on the trace support: min eigenvalue,1.293e-03,> 0,PASS
+xmin_4x4x2_nonunit,1^T M_Gamma 1 = |Gamma_c|,1,1,PASS
+xmin_4x4x2_nonunit,v^T M_Gamma v = int (x+2y-3z)^2 dS,2.08333333333333,2.08333333333333,PASS
+xmin_4x4x2_nonunit,M_Gamma = M1(a) (x) M1(b) (rel. max entrywise),6.34e-15,<= 1e-14,PASS
+xmin_4x4x2_nonunit,N_selected = M_Gamma,0.0e+00,0,PASS
+xmin_4x4x2_nonunit,off-face rows of N zero,0,0,PASS
+ymax_4x4x2_nonunit,support = face-plane nodes,45,45,PASS
+ymax_4x4x2_nonunit,trace node count = (2 n_a + 1)(2 n_b + 1),45,45,PASS
+ymax_4x4x2_nonunit,symmetry max|M - M^T|,0.0e+00,0,PASS
+ymax_4x4x2_nonunit,SPD on the trace support: min eigenvalue,1.293e-03,> 0,PASS
+ymax_4x4x2_nonunit,1^T M_Gamma 1 = |Gamma_c|,1,1,PASS
+ymax_4x4x2_nonunit,v^T M_Gamma v = int (x+2y-3z)^2 dS,5.58333333333333,5.58333333333333,PASS
+ymax_4x4x2_nonunit,M_Gamma = M1(a) (x) M1(b) (rel. max entrywise),6.34e-15,<= 1e-14,PASS
+ymax_4x4x2_nonunit,N_selected = M_Gamma,0.0e+00,0,PASS
+ymax_4x4x2_nonunit,off-face rows of N zero,0,0,PASS
+zmax_4x4x2_nonunit,support = face-plane nodes,81,81,PASS
+zmax_4x4x2_nonunit,trace node count = (2 n_a + 1)(2 n_b + 1),81,81,PASS
+zmax_4x4x2_nonunit,symmetry max|M - M^T|,0.0e+00,0,PASS
+zmax_4x4x2_nonunit,SPD on the trace support: min eigenvalue,2.806e-03,> 0,PASS
+zmax_4x4x2_nonunit,1^T M_Gamma 1 = |Gamma_c|,4,4,PASS
+zmax_4x4x2_nonunit,v^T M_Gamma v = int (x+2y-3z)^2 dS,7.66666666666666,7.66666666666666,PASS
+zmax_4x4x2_nonunit,M_Gamma = M1(a) (x) M1(b) (rel. max entrywise),6.34e-15,<= 1e-14,PASS
+zmax_4x4x2_nonunit,N_selected = M_Gamma,0.0e+00,0,PASS
+zmax_4x4x2_nonunit,off-face rows of N zero,0,0,PASS

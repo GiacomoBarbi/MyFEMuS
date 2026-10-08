@@ -286,3 +286,9 @@ std::unique_ptr<femus::SparseMatrix> BuildBoundaryConvectionMatrix(
 SpatialFieldIntegrals IntegrateBoundaryField(
     femus::Mesh* mesh, unsigned solution_type, unsigned face_id,
     const double* global_values, SpatialScalarFunction exact, void* context);
+
+/** T11N: 3D counterpart of IntegrateBoundaryField -- the same JacobianSur face
+ *  quadrature that assembles the 3D M_Gamma, exact field of (x, y, z). */
+SpatialFieldIntegrals IntegrateBoundaryField3D(
+    femus::Mesh* mesh, unsigned solution_type, unsigned face_id,
+    const double* global_values, SpatialScalarFunction3D exact, void* context);

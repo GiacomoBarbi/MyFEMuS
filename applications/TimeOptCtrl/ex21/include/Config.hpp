@@ -15,6 +15,32 @@
  *  guarantee M_PI in a standard-conforming mode. */
 constexpr double kPi = 3.14159265358979323846;
 
+/** T11N: the six faces of the 3D HEX27 box in the FEMuS face numbering, as
+ *  measured from the JacobianSur outward normals in T10 (G1N face report):
+ *    1 zmin (0,0,-1)   2 ymin (0,-1,0)   3 xmax (+1,0,0)
+ *    4 ymax (0,+1,0)   5 xmin (-1,0,0)   6 zmax (0,0,+1)
+ *  (storage axes 0, 1, 2 = x, y, z).  The assembly re-verifies the normal and
+ *  the area of the selected face at run time (Discretization.cpp). */
+struct BoxFace3D {
+  unsigned id;      // FEMuS face id
+  unsigned axis;    // storage axis normal to the face
+  bool at_max;      // outward normal +e_axis (true) or -e_axis (false)
+  const char* name;
+};
+inline bool LookupBoxFace3D(unsigned id, BoxFace3D& face) {
+  static const BoxFace3D faces[6] = {{1u, 2u, false, "zmin"}, {2u, 1u, false, "ymin"},
+                                     {3u, 0u, true, "xmax"},  {4u, 1u, true, "ymax"},
+                                     {5u, 0u, false, "xmin"}, {6u, 2u, true, "zmax"}};
+  for (const BoxFace3D& f : faces)
+    if (f.id == id) { face = f; return true; }
+  return false;
+}
+inline bool LookupBoxFace3D(const std::string& name, BoxFace3D& face) {
+  for (unsigned id = 1; id <= 6u; ++id)
+    if (LookupBoxFace3D(id, face) && name == face.name) return true;
+  return false;
+}
+
 struct ProblemConfig {
   // NEUMANN and DIRICHLET act on the boundary face `neumann_control_face`
   // (the flux, respectively the trace, of the state); DISTRIBUTED acts on a
@@ -427,8 +453,16 @@ struct ProblemConfig {
     auto refuse = [](const char* what) {
       throw std::invalid_argument(std::string("3D: ") + what);
     };
-    if (control.type != ControlType::DISTRIBUTED)
-      refuse("only distributed control (Neumann/Dirichlet boundary control are not ported)");
+    // T11N: Neumann boundary control on ONE whole face is ported; Dirichlet is not.
+    if (control.type == ControlType::DIRICHLET)
+      refuse("Dirichlet boundary control is not ported (T11D)");
+    if (control.type == ControlType::NEUMANN) {
+      BoxFace3D face;
+      if (!LookupBoxFace3D(neumann_control_face, face))
+        refuse("Neumann control needs one whole box face (--neumann-face3d xmin|xmax|ymin|ymax|zmin|zmax)");
+      if (!additional_control_regions.empty())
+        refuse("control boxes are distributed-control regions; Neumann control acts on one face");
+    }
     if (!(domain.xmin < domain.xmax && domain.ymin < domain.ymax &&
           domain.zmin < domain.zmax) ||
         !std::isfinite(domain.xmin) || !std::isfinite(domain.xmax) ||
@@ -678,6 +712,15 @@ inline const char* TrackingTargetName(const ProblemConfig& config) {
 inline bool OwnedDofIsControlled(const ProblemConfig& config, double x, double z,
                                  double axis2 = 0.0) {
   const double tolerance = 1.0e-12;
+  // T11N: 3D Neumann control -- the nodes on the selected face plane
+  if (config.dimension == 3u && config.control.type == ProblemConfig::ControlType::NEUMANN) {
+    BoxFace3D face;
+    if (!LookupBoxFace3D(config.neumann_control_face, face)) return false;
+    const double c[3] = {x, z, axis2};
+    const double lo[3] = {config.domain.xmin, config.domain.ymin, config.domain.zmin};
+    const double hi[3] = {config.domain.xmax, config.domain.ymax, config.domain.zmax};
+    return std::fabs(c[face.axis] - (face.at_max ? hi[face.axis] : lo[face.axis])) <= tolerance;
+  }
   if (config.control.type == ProblemConfig::ControlType::NEUMANN ||
       config.control.type == ProblemConfig::ControlType::DIRICHLET)
     return std::fabs(z - config.domain.zmin) <= tolerance;

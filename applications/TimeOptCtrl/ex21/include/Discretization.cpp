@@ -475,6 +475,11 @@ NativeSpatialOperators BuildNativeSpatialOperators(
   std::vector<double> phi;
   std::vector<double> gradient;
   double weight = 0.0;
+  // T11N: 3D Neumann control face -- area and integrated outward normal, to
+  // verify the face selector against the geometry after assembly.
+  const bool neumann3d = config.dimension == 3u &&
+                         config.control.type == ProblemConfig::ControlType::NEUMANN;
+  double face_area_normal[4] = {0.0, 0.0, 0.0, 0.0};   // area, int n_x, n_y, n_z
   for (unsigned element = mesh->_elementOffset[rank];
        element < mesh->_elementOffset[rank + 1u]; ++element) {
     const ElementData data = GatherElementData(mesh, solution_type, element);
@@ -616,6 +621,63 @@ NativeSpatialOperators BuildNativeSpatialOperators(
       operators.K_Gamma->add_matrix_blocked(local_tangential, face_system_dofs,
                                             face_system_dofs);
     }
+    // T11N: 3D Neumann control -- the QUAD9 trace mass of the selected whole
+    // face, (M_Gamma)_ij = int_Gamma_c phi_i phi_j dS by JacobianSur.  No
+    // tangential stiffness: H1 regularisation is refused in 3D (K_Gamma stays
+    // empty).  Interior faces have a non-negative neighbour index.
+    for (unsigned face = 0; neumann3d && face < mesh->GetElementFaceNumber(element); ++face) {
+      const int index = mesh->el->GetFaceElementIndex(element, face);
+      if (index >= 0 || static_cast<unsigned>(-(index + 1)) != config.neumann_control_face)
+        continue;
+      const unsigned face_dofs = mesh->GetElementFaceDofNumber(element, face, solution_type);
+      const unsigned face_geometry = mesh->GetElementFaceType(element, face);
+      std::vector<int> face_system_dofs(face_dofs);
+      std::vector<std::vector<double> > face_coordinates(
+          dimension, std::vector<double>(face_dofs, 0.0));
+      for (unsigned a = 0; a < face_dofs; ++a) {
+        const unsigned local_node = mesh->GetLocalFaceVertexIndex(element, face, a);
+        face_system_dofs[a] =
+            static_cast<int>(mesh->GetSolutionDof(local_node, element, solution_type));
+        const unsigned coordinate_dof = mesh->GetSolutionDof(local_node, element, 2);
+        for (unsigned axis = 0; axis < dimension; ++axis)
+          face_coordinates[axis][a] = (*mesh->_topology->_Sol[axis])(coordinate_dof);
+      }
+      std::vector<double> local_boundary(face_dofs * face_dofs, 0.0);
+      std::vector<double> normal;
+      const elem_type* face_element = mesh->_finiteElement[face_geometry][solution_type];
+      for (unsigned gauss = 0; gauss < face_element->GetGaussPointNumber(); ++gauss) {
+        face_element->JacobianSur(face_coordinates, gauss, weight, phi, gradient, normal);
+        face_area_normal[0] += weight;
+        for (unsigned axis = 0; axis < 3u; ++axis)
+          face_area_normal[1 + axis] += normal[axis] * weight;
+        for (unsigned a = 0; a < face_dofs; ++a)
+          for (unsigned b = 0; b < face_dofs; ++b)
+            local_boundary[a * face_dofs + b] += phi[a] * phi[b] * weight;
+      }
+      operators.M_Gamma->add_matrix_blocked(local_boundary, face_system_dofs,
+                                            face_system_dofs);
+    }
+  }
+  if (neumann3d) {
+    // T11N: the selected face must be the requested one -- outward unit
+    // normal +-e_axis and area = the product of the two other extents.
+    double g[4] = {0.0, 0.0, 0.0, 0.0};
+    MPI_Allreduce(face_area_normal, g, 4, MPI_DOUBLE, MPI_SUM, PETSC_COMM_WORLD);
+    BoxFace3D face;
+    LookupBoxFace3D(config.neumann_control_face, face);
+    const double extent[3] = {config.domain.xmax - config.domain.xmin,
+                              config.domain.ymax - config.domain.ymin,
+                              config.domain.zmax - config.domain.zmin};
+    const double area = extent[(face.axis + 1u) % 3u] * extent[(face.axis + 2u) % 3u];
+    double mismatch = std::fabs(g[0] - area) / area;
+    for (unsigned axis = 0; axis < 3u; ++axis) {
+      const double expected = axis == face.axis ? (face.at_max ? 1.0 : -1.0) : 0.0;
+      mismatch = std::max(mismatch, std::fabs(g[1 + axis] / (g[0] > 0.0 ? g[0] : 1.0) - expected));
+    }
+    if (!(g[0] > 0.0) || mismatch > 1.0e-10)
+      throw std::runtime_error(
+          std::string("3D Neumann control face ") + face.name + " (FEMuS id " +
+          std::to_string(face.id) + "): assembled area/normal do not match the box face");
   }
   operators.M->close();
   operators.K->close();
@@ -962,6 +1024,51 @@ SpatialFieldIntegrals IntegrateBoundaryField(
           discrete += phi[a] * nodal[a];
         }
         const double analytic = exact(x, z, context);
+        const double difference = discrete - analytic;
+        totals.error_squared += difference * difference * weight;
+        totals.exact_squared += analytic * analytic * weight;
+        totals.field_squared += discrete * discrete * weight;
+      }
+    }
+  }
+  return totals;
+}
+
+SpatialFieldIntegrals IntegrateBoundaryField3D(
+    Mesh* mesh, unsigned solution_type, unsigned face_id,
+    const double* global_values, SpatialScalarFunction3D exact, void* context) {
+  SpatialFieldIntegrals totals;
+  const unsigned rank = mesh->processor_id();
+  const unsigned dimension = mesh->GetDimension();
+  std::vector<double> phi, gradient, normal;
+  double weight = 0.0;
+  for (unsigned element = mesh->_elementOffset[rank];
+       element < mesh->_elementOffset[rank + 1u]; ++element) {
+    for (unsigned face = 0; face < mesh->GetElementFaceNumber(element); ++face) {
+      const int index = mesh->el->GetFaceElementIndex(element, face);
+      if (index >= 0 || static_cast<unsigned>(-(index + 1)) != face_id) continue;
+      const unsigned face_dofs = mesh->GetElementFaceDofNumber(element, face, solution_type);
+      const unsigned face_geometry = mesh->GetElementFaceType(element, face);
+      std::vector<std::vector<double> > face_coordinates(
+          dimension, std::vector<double>(face_dofs, 0.0));
+      std::vector<double> nodal(face_dofs, 0.0);
+      for (unsigned a = 0; a < face_dofs; ++a) {
+        const unsigned local_node = mesh->GetLocalFaceVertexIndex(element, face, a);
+        nodal[a] = global_values[mesh->GetSolutionDof(local_node, element, solution_type)];
+        const unsigned coordinate_dof = mesh->GetSolutionDof(local_node, element, 2);
+        for (unsigned axis = 0; axis < dimension; ++axis)
+          face_coordinates[axis][a] = (*mesh->_topology->_Sol[axis])(coordinate_dof);
+      }
+      const elem_type* face_element = mesh->_finiteElement[face_geometry][solution_type];
+      for (unsigned gauss = 0; gauss < face_element->GetGaussPointNumber(); ++gauss) {
+        face_element->JacobianSur(face_coordinates, gauss, weight, phi, gradient, normal);
+        double c[3] = {0.0, 0.0, 0.0}, discrete = 0.0;
+        for (unsigned a = 0; a < face_dofs; ++a) {
+          for (unsigned axis = 0; axis < dimension && axis < 3u; ++axis)
+            c[axis] += phi[a] * face_coordinates[axis][a];
+          discrete += phi[a] * nodal[a];
+        }
+        const double analytic = exact(c[0], c[1], c[2], context);
         const double difference = discrete - analytic;
         totals.error_squared += difference * difference * weight;
         totals.exact_squared += analytic * analytic * weight;

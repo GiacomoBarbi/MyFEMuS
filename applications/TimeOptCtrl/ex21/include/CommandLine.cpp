@@ -72,12 +72,20 @@ struct RawCommandLineOptions {
   bool tracking_box3d_given = false, control_box3d_given = false;
   ProblemConfig::Box tracking_box3d, control_box3d;
   std::vector<ProblemConfig::Box> tracking_add3d, control_add3d, source_add3d;
+  std::string neumann_face3d;       // T11N: --neumann-face3d xmin|xmax|ymin|ymax|zmin|zmax
   bool final_time_was_set = false;
   double requested_final_time = 0.0;
 };
 
 /** T10: six numbers x0 x1 y0 y1 z0 z1 (storage axes 0, 1, 2) into a 3D box. */
 static ProblemConfig::Box ReadBox3D(char** argv, int& argument);
+
+/** The 3D exact OC cases (ExactOc3D): T9 conv-sin-3d / conv-sin3-3d, T10
+ *  natural-conv-3d, T11N neumann-conv-3d. */
+static bool IsExact3DCase(const std::string& name) {
+  return name == "conv-sin-3d" || name == "conv-sin3-3d" || name == "natural-conv-3d" ||
+         name == "neumann-conv-3d";
+}
 
 /** T10: the 3D domain and regions, after every preset / exact case has run
  *  (so the final dimension is known).  The 4-number (x, axis-1) syntax is not
@@ -91,15 +99,33 @@ static void ApplyRegions3D(ProblemConfig& config, const RawCommandLineOptions& r
                      raw.control_box3d_given || !raw.tracking_add3d.empty() ||
                      !raw.control_add3d.empty() || !raw.source_add3d.empty();
   if (config.dimension != 3u) {
-    if (any3d)
+    if (any3d || !raw.neumann_face3d.empty())
       throw std::invalid_argument(
-          "--domain3d / --tracking-box3d* / --control-box3d* / --source-box3d-add"
-          " are 3D-only (--dimension 3)");
+          "--domain3d / --tracking-box3d* / --control-box3d* / --source-box3d-add /"
+          " --neumann-face3d are 3D-only (--dimension 3)");
     return;
   }
   auto refuse = [](const std::string& what) {
     throw std::invalid_argument("3D: " + what);
   };
+  // T11N: the Neumann control face, explicit (no silent default): ex21's
+  // default control type is NEUMANN, so a 3D run must say --neumann-solve and
+  // name the face; the exact cases set their own face.
+  const bool neumann = config.control.type == ProblemConfig::ControlType::NEUMANN;
+  if (!raw.neumann_face3d.empty() && (!neumann || exact3d))
+    refuse(exact3d ? "the 3D exact OC cases own their control face (no --neumann-face3d)"
+                   : "--neumann-face3d needs Neumann boundary control (--neumann-solve)");
+  if (neumann && !exact3d) {
+    if (!raw.neumann_control)
+      refuse("give the control type explicitly (--distributed-solve or --neumann-solve);"
+             " the 2D default (Neumann on the bottom edge) has no 3D meaning");
+    BoxFace3D face;
+    if (raw.neumann_face3d.empty() || !LookupBoxFace3D(raw.neumann_face3d, face))
+      refuse("Neumann control needs one whole face: --neumann-face3d"
+             " xmin|xmax|ymin|ymax|zmin|zmax");
+    config.neumann_control_face = face.id;
+    config.neumann_control_boundary = face.name;
+  }
   if (exact3d) {
     if (any3d || raw.domain_given || raw.tracking_box_2d || raw.control_box_2d ||
         raw.region_add_2d || raw.source_add_2d)
@@ -137,7 +163,14 @@ static void ApplyRegions3D(ProblemConfig& config, const RawCommandLineOptions& r
   } else
     refuse("an explicit tracking region is required (--tracking-box3d x0 x1 y0 y1 z0 z1);"
            " the 2D default box has no 3D meaning");
-  if (raw.control_box3d_given)
+  if (neumann) {   // T11N: the control lives on the face, not in volume boxes
+    if (raw.control_box3d_given || raw.control_full_domain || raw.control_box_2d ||
+        !raw.control_add3d.empty())
+      refuse("control regions (--control-box3d*, --control-full-domain) are for distributed"
+             " control; Neumann control acts on the face --neumann-face3d");
+
+    config.control.region = full;   // inert for Neumann (N = M_Gamma); keeps ValidateBox valid
+  } else if (raw.control_box3d_given)
     config.control.region = raw.control_box3d;
   else if (raw.control_full_domain)
     config.control.region = full;
@@ -146,7 +179,7 @@ static void ApplyRegions3D(ProblemConfig& config, const RawCommandLineOptions& r
       refuse("--control-box (4 numbers) is ambiguous in 3D; use --control-box3d"
              " x0 x1 y0 y1 z0 z1");
     config.control.region = full;
-  } else
+  } else if (!neumann)
     refuse("an explicit control region is required (--control-full-domain or"
            " --control-box3d x0 x1 y0 y1 z0 z1); the 2D default box has no 3D meaning");
   for (const ProblemConfig::Box& b : raw.tracking_add3d)
@@ -396,6 +429,8 @@ static void ParseArguments(int argc, char** argv, ProblemConfig& config,
       raw.control_box_2d = false;
     } else if (option == "--control-box3d-add" && argument + 6 < argc) {
       raw.control_add3d.push_back(ReadBox3D(argv, argument));
+    } else if (option == "--neumann-face3d" && argument + 1 < argc) {
+      raw.neumann_face3d = argv[++argument];   // T11N, resolved in ApplyRegions3D
     } else if (option == "--source-box3d-add" && argument + 6 < argc) {
       raw.source_add3d.push_back(ReadBox3D(argv, argument));
     } else if (option == "--domain" && argument + 4 < argc) {
@@ -621,8 +656,7 @@ static void ResolveProblemData(const RawCommandLineOptions& raw,
     if (raw.math2025_ex3 || raw.math2025_ex4 || raw.math2025_ex5 ||
         raw.errorfeedback != 0)
       throw std::invalid_argument("--exact-oc excludes the literature presets");
-    if (options.exact_oc == "conv-sin-3d" || options.exact_oc == "conv-sin3-3d" ||
-        options.exact_oc == "natural-conv-3d") {
+    if (IsExact3DCase(options.exact_oc)) {
       // T9: the 3D exact case (ExactOc3D.hpp); the wind stays the CLI one
       if (options.exact_oc_velocity_set)
         throw std::invalid_argument(
@@ -639,9 +673,7 @@ static void ResolveProblemData(const RawCommandLineOptions& raw,
                                                            : nullptr);
   }
 
-  ApplyRegions3D(config, raw,
-                 options.exact_oc == "conv-sin-3d" || options.exact_oc == "conv-sin3-3d" ||
-                     options.exact_oc == "natural-conv-3d");   // T10
+  ApplyRegions3D(config, raw, IsExact3DCase(options.exact_oc));   // T10/T11N
   config.Validate();
   // ex21: a nonzero velocity without --convection on would be silently
   // ignored, and the ex20 batteries encode a symmetric diffusion operator.
@@ -671,9 +703,9 @@ static void ResolveProblemData(const RawCommandLineOptions& raw,
     if (raw.convection_mms) refuse("--convection-mms is 2D");
     if (raw.verify_stage1 || raw.verify_sweeps || raw.verify_boundary_reduced)
       refuse("the ex20 verification batteries are 2D");
-    if (!options.exact_oc.empty() && options.exact_oc != "conv-sin-3d" &&
-        options.exact_oc != "conv-sin3-3d" && options.exact_oc != "natural-conv-3d")
-      refuse("the only 3D exact OC cases are conv-sin-3d, conv-sin3-3d and natural-conv-3d");
+    if (!options.exact_oc.empty() && !IsExact3DCase(options.exact_oc))
+      refuse("the only 3D exact OC cases are conv-sin-3d, conv-sin3-3d, natural-conv-3d and"
+             " neumann-conv-3d");
     if (raw.pc_schur_matching || raw.pc_schur_boundary_reduced || raw.pc_schur_dirichlet_reduced)
       refuse("only SCHUR_SWEEP (--pc-schur-sweep) or ADDITIVE_GAMG (BE) are validated");
     if (options.pc_time_blocks > 0 || options.pc_sweep_depth > 0)

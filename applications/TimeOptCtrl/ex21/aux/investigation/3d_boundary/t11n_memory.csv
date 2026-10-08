@@ -1,0 +1,24 @@
+source,tag,n,N,spatial_dofs,trace_dofs,spacetime_unknowns,maxrss_MB,bytes_per_unknown,ratio_to_T9_law,outer_its,T9_same_size_MB,T10_same_size_MB
+Neumann exact ladder,neuA_cn_n10_nt64,10,64,9261,441,1778112,3903,2302,0.97,2,3883,3860
+Neumann exact ladder,neuA_cn_n12_nt64,12,64,15625,625,3000000,6755,2361,0.99,2,6705,6682
+Neumann exact ladder,neuA_cn_n2_nt64,2,64,125,25,24000,70,3047,1.28,2,90,69
+Neumann exact ladder,neuA_cn_n4_nt64,4,64,729,81,139968,291,2177,0.91,2,306,287
+Neumann exact ladder,neuA_cn_n6_nt64,6,64,2197,169,421824,874,2173,0.91,2,887,864
+Neumann exact ladder,neuA_cn_n8_nt64,8,64,4913,289,943296,2011,2235,0.94,2,2010,1987
+Neumann exact ladder,neuB_cn_n10_nt64,10,64,9261,441,1778112,3903,2302,0.97,2,3883,3860
+Neumann exact ladder,neuB_cn_n2_nt64,2,64,125,25,24000,70,3043,1.28,2,90,69
+Neumann exact ladder,neuB_cn_n4_nt64,4,64,729,81,139968,291,2177,0.91,2,306,287
+Neumann exact ladder,neuB_cn_n6_nt64,6,64,2197,169,421824,874,2174,0.91,2,887,864
+Neumann exact ladder,neuB_cn_n8_nt64,8,64,4913,289,943296,2009,2233,0.94,2,2010,1987
+Neumann exact ladder,neuH_cn_n10_nt64,10,64,9261,441,1778112,3896,2298,0.96,2,3883,3860
+Neumann exact ladder,neuH_cn_n2_nt64,2,64,125,25,24000,69,3030,1.27,2,90,69
+Neumann exact ladder,neuH_cn_n4_nt64,4,64,729,81,139968,290,2171,0.91,2,306,287
+Neumann exact ladder,neuH_cn_n6_nt64,6,64,2197,169,421824,872,2168,0.91,2,887,864
+Neumann exact ladder,neuH_cn_n8_nt64,8,64,4913,289,943296,2007,2231,0.94,2,2010,1987
+Neumann solver audit,be_sweep_asmilu,8,32,4913,289,471648,1193,2653,1.11,2,,
+Neumann solver audit,be_sweep_gamg,8,32,4913,289,471648,987,2195,0.92,2,,
+Neumann solver audit,be_sweep_lu,8,32,4913,289,471648,1054,2343,0.98,2,,
+Neumann solver audit,cn_sweep_asmilu,8,32,4913,289,471648,1280,2846,1.19,2,,
+Neumann solver audit,cn_sweep_gamg,8,32,4913,289,471648,1009,2244,0.94,2,,
+Neumann solver audit,cn_sweep_lu,8,32,4913,289,471648,1094,2433,1.02,2,,
+Neumann solver audit,be_additive,8,32,4913,289,471648,2546,5660,2.37,46,,

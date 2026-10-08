@@ -37,6 +37,19 @@ bool g_cubic = false;
 //   u = -(eta/alpha_u) p;  f = y_t - nu Lap y + w.grad y - eta u;
 //   y_d = y + (p_t + nu Lap p + w.grad p)/alpha_t.
 bool g_natural = false;
+// T11N: neumann-conv-3d (3D extension of the T7N neumann-conv, t11n_symbolic.py):
+//   Gamma_c = {z = 0} (FEMuS face 1), Neumann control nu dn y = eta u there,
+//   natural state BC on the other five faces, constant wind w = (vx, vy, vz);
+//   X(s) = 1 - cos(2 pi s) (X = X' = 0 at s = 0, 1),  Z = R_kz, kz = vz/nu;
+//   p = alpha_u B(t) X(x) X(y) Z(z): nu dn p + (w.n) p = 0 on all six faces
+//     (trivially on the four lateral faces, where p = dn p = 0 -- smooth
+//     compatibility at the edges of Gamma_c forces this; through w_z on z = 0, 1);
+//   u = -(eta/alpha_u) p|_{z=0} = -eta B X(x) X(y) Z(0);
+//   y = A cos(pi x) cos(pi y) cos(pi z) + kappa(t) X(x) X(y) H(z),
+//     H = z - z^2/2 (H'(0) = 1, H'(1) = 0), kappa = eta^2 B Z(0)/nu, so that
+//     -nu dz y = eta u on z = 0 and nu dn y = 0 on the other faces;
+//   f = y_t - nu Lap y + w.grad y;  y_d = y + (p_t + nu Lap p + w.grad p)/alpha_t.
+bool g_neumann = false;
 
 struct F1 { double v, d, dd; };   // 1D factor and its first two derivatives
 F1 Factor(double xi) {
@@ -99,6 +112,22 @@ Prod NatPShape(const ProblemConfig& c, double x, double y, double z) {
                ky = HasConvection(c) ? c.convection.vy / nu : 0.0,
                kz = HasConvection(c) ? c.convection.vz / nu : 0.0;
   return Product(c, NatR(kx, x), NatR(ky, y), NatR(kz, z));
+}
+
+/** T11N: neumann-conv-3d factors. */
+F1 NeuX(double s) {
+  return {1.0 - std::cos(2.0 * kPi * s), 2.0 * kPi * std::sin(2.0 * kPi * s),
+          4.0 * kPi * kPi * std::cos(2.0 * kPi * s)};
+}
+F1 NeuH(double z) { return {z - 0.5 * z * z, 1.0 - z, -1.0}; }
+double NeuKz(const ProblemConfig& c) {
+  return HasConvection(c) ? c.convection.vz / c.diffusivity : 0.0;
+}
+Prod NeuPShape(const ProblemConfig& c, double x, double y, double z) {
+  return Product(c, NeuX(x), NeuX(y), NatR(NeuKz(c), z));
+}
+Prod NeuGShape(const ProblemConfig& c, double x, double y, double z) {   // X(x) X(y) H(z)
+  return Product(c, NeuX(x), NeuX(y), NeuH(z));
 }
 
 double A(double t) { return std::cos(2.0 * t); }
@@ -167,6 +196,40 @@ double NatInitial3D(const ProblemConfig& c, double x, double y, double z) {
   return NatExactY(c, x, y, z, 0.0);
 }
 
+// T11N neumann-conv-3d
+double NeuKappa(const ProblemConfig& c, double t) {
+  return c.eta * c.eta * B(c, t) * NatR(NeuKz(c), 0.0).v / c.diffusivity;
+}
+double NeuKappaDot(const ProblemConfig& c, double t) {
+  return c.eta * c.eta * dB(c, t) * NatR(NeuKz(c), 0.0).v / c.diffusivity;
+}
+double NeuExactY(const ProblemConfig& c, double x, double y, double z, double t) {
+  return A(t) * NatYShape(c, x, y, z).v + NeuKappa(c, t) * NeuGShape(c, x, y, z).v;
+}
+double NeuExactP(const ProblemConfig& c, double x, double y, double z, double t) {
+  return c.alpha_u * B(c, t) * NeuPShape(c, x, y, z).v;
+}
+/** the exact control on Gamma_c = {z = 0}: -(eta/alpha_u) p(x, y, 0, t) */
+double NeuExactU(const ProblemConfig& c, double x, double y, double, double t) {
+  return -c.eta * NeuExactP(c, x, y, 0.0, t) / c.alpha_u;
+}
+double NeuSource3D(const ProblemConfig& c, double x, double y, double z, double t) {
+  // f = y_t - nu Lap y + w.grad y  (the control enters through the boundary)
+  const Prod Y = NatYShape(c, x, y, z), G = NeuGShape(c, x, y, z);
+  const double k = NeuKappa(c, t);
+  return dA(t) * Y.v + NeuKappaDot(c, t) * G.v - c.diffusivity * (A(t) * Y.lap + k * G.lap) +
+         A(t) * Y.wgrad + k * G.wgrad;
+}
+double NeuTarget3D(const ProblemConfig& c, double x, double y, double z, double t) {
+  const Prod P = NeuPShape(c, x, y, z);
+  const double q = c.alpha_u * (dB(c, t) * P.v + c.diffusivity * B(c, t) * P.lap +
+                                B(c, t) * P.wgrad);
+  return NeuExactY(c, x, y, z, t) + q / c.alpha_track;
+}
+double NeuInitial3D(const ProblemConfig& c, double x, double y, double z) {
+  return NeuExactY(c, x, y, z, 0.0);
+}
+
 struct Context3D {
   const ProblemConfig* config;
   double time;
@@ -178,6 +241,14 @@ double ExactAt3D(double x, double y, double z, void* raw) {
     case 0: return ExactY(*e->config, x, y, z, e->time);
     case 1: return ExactP(*e->config, x, y, z, e->time);
     default: return ExactU(*e->config, x, y, z, e->time);
+  }
+}
+double NeuExactAt3D(double x, double y, double z, void* raw) {   // T11N
+  const Context3D* e = static_cast<const Context3D*>(raw);
+  switch (e->field) {
+    case 0: return NeuExactY(*e->config, x, y, z, e->time);
+    case 1: return NeuExactP(*e->config, x, y, z, e->time);
+    default: return NeuExactU(*e->config, x, y, z, e->time);
   }
 }
 double NatExactAt3D(double x, double y, double z, void* raw) {   // T10
@@ -204,16 +275,24 @@ double RelDiff(Vec x, Vec b) {
 
 void ApplyExactOptimalControl3D(ProblemConfig& config, const std::string& name,
                                 double alpha_u, double final_time, double nu) {
-  if (name != "conv-sin-3d" && name != "conv-sin3-3d" && name != "natural-conv-3d")
+  if (name != "conv-sin-3d" && name != "conv-sin3-3d" && name != "natural-conv-3d" &&
+      name != "neumann-conv-3d")
     throw std::invalid_argument(
-        "the 3D exact OC cases are conv-sin-3d, conv-sin3-3d and natural-conv-3d");
+        "the 3D exact OC cases are conv-sin-3d, conv-sin3-3d, natural-conv-3d and neumann-conv-3d");
   g_cubic = name == "conv-sin3-3d";
   g_natural = name == "natural-conv-3d";
+  g_neumann = name == "neumann-conv-3d";
   config.dimension = 3u;
   config.domain = ProblemConfig::Domain();   // unit cube
-  config.state_bc = g_natural ? ProblemConfig::StateBoundaryCondition::NATURAL
-                              : ProblemConfig::StateBoundaryCondition::HOMOGENEOUS_DIRICHLET;
-  config.control.type = ProblemConfig::ControlType::DISTRIBUTED;
+  config.state_bc = (g_natural || g_neumann)
+                        ? ProblemConfig::StateBoundaryCondition::NATURAL
+                        : ProblemConfig::StateBoundaryCondition::HOMOGENEOUS_DIRICHLET;
+  config.control.type = g_neumann ? ProblemConfig::ControlType::NEUMANN
+                                  : ProblemConfig::ControlType::DISTRIBUTED;
+  if (g_neumann) {   // T11N: Gamma_c = {z = 0}, FEMuS face 1
+    config.neumann_control_face = 1u;
+    config.neumann_control_boundary = "zmin";
+  }
   config.control.region = {0.0, 1.0, 0.0, 1.0};
   config.tracking_box = {0.0, 1.0, 0.0, 1.0};
   config.additional_control_regions.clear();
@@ -225,9 +304,10 @@ void ApplyExactOptimalControl3D(ProblemConfig& config, const std::string& name,
   config.alpha_u = alpha_u > 0.0 ? alpha_u : 1.0e-2;
   const double T = final_time > 0.0 ? final_time : 1.0;
   config.time.dt = T / config.time.steps;
-  config.data_overrides.source3d = g_natural ? NatSource3D : Source3D;
-  config.data_overrides.target3d = g_natural ? NatTarget3D : Target3D;
-  config.data_overrides.initial3d = g_natural ? NatInitial3D : Initial3D;
+  config.data_overrides.source3d = g_neumann ? NeuSource3D : (g_natural ? NatSource3D : Source3D);
+  config.data_overrides.target3d = g_neumann ? NeuTarget3D : (g_natural ? NatTarget3D : Target3D);
+  config.data_overrides.initial3d =
+      g_neumann ? NeuInitial3D : (g_natural ? NatInitial3D : Initial3D);
 }
 
 int RunExactOptimalControl3D(const ProblemConfig& config,
@@ -252,7 +332,8 @@ int RunExactOptimalControl3D(const ProblemConfig& config,
   std::printf("EX21_EXACT3D_CONFIG case=%s nx=%u ny=%u nz=%u steps=%u T=%.6g dt=%.10e"
               " scheme=%s nu=%.6g convection=%s vx=%.6g vy=%.6g vz=%.6g alpha_u=%.6e"
               " h=%.6e Pe_cell=%.6e dofs=%d spacetime_unknowns=%lld pc=%d\n",
-              g_natural ? "natural-conv-3d" : (g_cubic ? "conv-sin3-3d" : "conv-sin-3d"),
+              g_neumann ? "neumann-conv-3d"
+                        : (g_natural ? "natural-conv-3d" : (g_cubic ? "conv-sin3-3d" : "conv-sin-3d")),
               config.mesh.nx, config.mesh.ny, config.mesh.nz, steps, T, dt,
               TimeSchemeName(config), config.diffusivity, HasConvection(config) ? "on" : "off",
               config.convection.vx, config.convection.vy, config.convection.vz,
@@ -320,7 +401,48 @@ int RunExactOptimalControl3D(const ProblemConfig& config,
   PetscReal stat_norm = 0.0, au_norm = 0.0;
   PetscCallAbort(PETSC_COMM_WORLD, VecNorm(stat, NORM_2, &stat_norm));
   PetscCallAbort(PETSC_COMM_WORLD, VecNorm(f.control, NORM_2, &au_norm));
-  const double stat_rel = stat_norm / (config.alpha_u * (au_norm > 0 ? au_norm : 1.0));
+  double stat_rel = stat_norm / (config.alpha_u * (au_norm > 0 ? au_norm : 1.0));
+  if (g_neumann) {
+    // T11N: stationarity on Gamma_c in the control metric,
+    //   |M_Gamma (alpha_u u + eta p)| / |alpha_u M_Gamma u|,
+    // the control off the face (must be exactly 0) and the active set: its
+    // size and that every active node lies on the plane z = 0.
+    const std::vector<unsigned char> active = ActiveControlDofs(spatial.control, spatial.layout);
+    Vec v = nullptr, w = nullptr;
+    PetscCallAbort(PETSC_COMM_WORLD, VecDuplicate(r, &v));
+    PetscCallAbort(PETSC_COMM_WORLD, VecDuplicate(r, &w));
+    double num = 0.0, den = 0.0, off_max = 0.0;
+    for (unsigned slot = 0; slot < steps; ++slot) {
+      CopyDataSideSliceToSpatial(f.control, slot, local, u);
+      CopyDataSideSliceToSpatial(f.adjoint, slot, local, v);
+      PetscCallAbort(PETSC_COMM_WORLD, VecAXPBY(v, config.alpha_u, config.eta, u));
+      PetscCallAbort(PETSC_COMM_WORLD, MatMult(spatial.control, v, w));
+      PetscReal a = 0.0;
+      PetscCallAbort(PETSC_COMM_WORLD, VecNorm(w, NORM_2, &a));
+      num += a * a;
+      PetscCallAbort(PETSC_COMM_WORLD, MatMult(spatial.control, u, w));
+      PetscCallAbort(PETSC_COMM_WORLD, VecNorm(w, NORM_2, &a));
+      den += config.alpha_u * config.alpha_u * a * a;
+      const PetscScalar* uu = nullptr;
+      PetscCallAbort(PETSC_COMM_WORLD, VecGetArrayRead(u, &uu));
+      for (PetscInt i = 0; i < local; ++i)
+        if (!active[i]) off_max = std::max(off_max, std::fabs(PetscRealPart(uu[i])));
+      PetscCallAbort(PETSC_COMM_WORLD, VecRestoreArrayRead(u, &uu));
+    }
+    long long n_active = 0, off_plane = 0;
+    for (PetscInt i = 0; i < local; ++i)
+      if (active[i]) {
+        ++n_active;
+        if (std::fabs(spatial.layout.Axis2(i) - config.domain.zmin) > 1e-12) ++off_plane;
+      }
+    stat_rel = std::sqrt(num / (den > 0.0 ? den : 1.0));
+    std::printf("EX21_NEUMANN3D_STATIONARITY face=%s(id %u) |M_G(alpha_u u + eta p)|/|alpha_u M_G u|=%.3e"
+                " max|u|_off_face=%.3e active_nodes=%lld expected=%d active_off_plane=%lld\n",
+                config.neumann_control_boundary.c_str(), config.neumann_control_face, stat_rel, off_max,
+                n_active, (2 * (int)config.mesh.nx + 1) * (2 * (int)config.mesh.ny + 1), off_plane);
+    PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(&v));
+    PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(&w));
+  }
 
   // ---- FEM-integrated space-time L2 errors
   struct Acc { double e = 0, x = 0, last_e = 0, last_x = 0, max_e = 0; } ey, ep, eu;
@@ -332,8 +454,14 @@ int RunExactOptimalControl3D(const ProblemConfig& config,
       const PetscScalar* a = nullptr;
       PetscCallAbort(PETSC_COMM_WORLD, VecGetArrayRead(r, &a));
       Context3D ctx{&config, time, which};
+      // T11N: the Neumann control lives on Gamma_c -- its error is the surface L2
+      // norm on the face (the face quadrature that assembled M_Gamma)
       const SpatialFieldIntegrals I =
-          IntegrateSpatialField3D(mesh, solution_type, a, g_natural ? NatExactAt3D : ExactAt3D, &ctx);
+          g_neumann ? (which == 2 ? IntegrateBoundaryField3D(mesh, solution_type,
+                                                             config.neumann_control_face, a,
+                                                             NeuExactAt3D, &ctx)
+                                  : IntegrateSpatialField3D(mesh, solution_type, a, NeuExactAt3D, &ctx))
+                    : IntegrateSpatialField3D(mesh, solution_type, a, g_natural ? NatExactAt3D : ExactAt3D, &ctx);
       PetscCallAbort(PETSC_COMM_WORLD, VecRestoreArrayRead(r, &a));
       return I;
     };
