@@ -69,6 +69,9 @@ struct LpsStats {
   double delta_min = 0.0;    // over active patches (0 if none)
   double delta_max = 0.0;
   double pe_max = 0.0;       // over all patches
+  double pe_min = 0.0;       // T15: over all patches
+  double h_min = 0.0;        // T15: chord h_k over active patches (0 if none)
+  double h_max = 0.0;
 };
 
 /** The assembled spatial operators, one FEMuS SparseMatrix each. */

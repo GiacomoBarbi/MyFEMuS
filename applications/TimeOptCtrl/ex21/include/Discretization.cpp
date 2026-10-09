@@ -544,14 +544,19 @@ std::unique_ptr<SparseMatrix> BuildLpsMatrix(
   const int local_rows = mesh->_dofOffset[solution_type][rank + 1u] -
                          mesh->_dofOffset[solution_type][rank];
   std::unique_ptr<SparseMatrix> W = SparseMatrix::build();
-  W->init(global_rows, global_rows, local_rows, local_rows, 64, 64);
   const unsigned dimension = mesh->GetDimension();
+  // T15: 3D (HEX27) uses its own geometry/wind branch below; 1D/2D unchanged.
+  const bool three = dimension == 3u;
+  const unsigned axes = three ? 3u : std::min(dimension, 2u);
+  const int row_nonzeros = three ? 125 : 64;
+  W->init(global_rows, global_rows, local_rows, local_rows, row_nonzeros, row_nonzeros);
   const unsigned nq =
       config.convection.lps_projection == CC::LpsProjection::P1 ? 1u + dimension : 1u;
   const double nu = config.diffusivity;
   long long patches = 0, active = 0;
   double delta_min = std::numeric_limits<double>::infinity(), delta_max = 0.0,
-         pe_max = 0.0;
+         pe_max = 0.0, pe_min = std::numeric_limits<double>::infinity(),
+         h_min = std::numeric_limits<double>::infinity(), h_max = 0.0;
   std::vector<double> phi, gradient, f, q(nq), A, C, G, local;
   double weight = 0.0;
   for (unsigned element = mesh->_elementOffset[rank];
@@ -560,33 +565,42 @@ std::unique_ptr<SparseMatrix> BuildLpsMatrix(
     const unsigned n = data.dofs.size();
     ++patches;
     // Patch centroid, extents and the wind at the centroid (LP: w_k).
-    double xc = 0.0, zc = 0.0;
-    ElementCentroid(mesh, element, xc, zc);
-    double extent[2] = {0.0, 0.0};
-    for (unsigned axis = 0; axis < dimension && axis < 2u; ++axis) {
+    // 2D: centre = (x, z) on storage axes 0, 1; T15 3D: (x, y, z), w_k from
+    // the constant (vx, vy, vz) or the field3d wind at the centroid.
+    double centre[3] = {0.0, 0.0, 0.0};
+    if (three) ElementCentroid3D(mesh, element, centre);
+    else ElementCentroid(mesh, element, centre[0], centre[1]);
+    double extent[3] = {0.0, 0.0, 0.0};
+    for (unsigned axis = 0; axis < axes; ++axis) {
       const std::vector<double>& c = data.coordinates[axis];
       extent[axis] = *std::max_element(c.begin(), c.end()) -
                      *std::min_element(c.begin(), c.end());
     }
-    double wk[2] = {config.convection.vx, config.convection.vy};
-    if (config.convection.field) config.convection.field(config, xc, zc, wk);
-    wk[0] *= wind_sign;
-    wk[1] *= wind_sign;
+    double wk[3] = {config.convection.vx, config.convection.vy, 0.0};
+    if (three) EvaluateVelocity3D(config, centre[0], centre[1], centre[2], wk);
+    else if (config.convection.field) config.convection.field(config, centre[0], centre[1], wk);
+    for (unsigned axis = 0; axis < 3u; ++axis) wk[axis] *= wind_sign;
     if (dimension == 1u) wk[1] = 0.0;
-    const double speed = std::hypot(wk[0], wk[1]);
+    const double speed = three ? std::sqrt(wk[0] * wk[0] + wk[1] * wk[1] + wk[2] * wk[2])
+                               : std::hypot(wk[0], wk[1]);
     // h_k: length of the chord of the (rectangular) patch through its
     // centroid in the direction of w_k (LP: "a measure of the patch length in
     // the direction of the wind"); for a square of side H this is
     // H / max(|cos|, |sin|), as in t3/lp52_patch_peclet.py.
     double hk = std::numeric_limits<double>::infinity();
-    for (unsigned axis = 0; axis < dimension && axis < 2u; ++axis)
+    // (3D: the box chord, min over the axes with w_k,axis != 0; |w_k| = 0
+    // gives Pe_k = 0, an inactive patch.)
+    for (unsigned axis = 0; axis < axes; ++axis)
       if (wk[axis] != 0.0)
         hk = std::min(hk, extent[axis] * speed / std::fabs(wk[axis]));
     const double pe = speed > 0.0 ? speed * hk / (2.0 * nu) : 0.0;
     pe_max = std::max(pe_max, pe);
+    pe_min = std::min(pe_min, pe);
     if (!(pe > 1.0)) continue;                     // delta_k = 0
     const double delta = hk / (2.0 * speed) * (1.0 - 1.0 / pe);
     ++active;
+    h_min = std::min(h_min, hk);
+    h_max = std::max(h_max, hk);
     delta_min = std::min(delta_min, delta);
     delta_max = std::max(delta_max, delta);
     A.assign(n * n, 0.0);
@@ -596,25 +610,24 @@ std::unique_ptr<SparseMatrix> BuildLpsMatrix(
     const elem_type* fe = mesh->_finiteElement[data.geometry][solution_type];
     for (unsigned gauss = 0; gauss < fe->GetGaussPointNumber(); ++gauss) {
       fe->Jacobian(data.coordinates, gauss, weight, phi, gradient);
-      double x = 0.0, z = 0.0;
-      for (unsigned a = 0; a < n; ++a) {
-        x += phi[a] * data.coordinates[0][a];
-        if (dimension > 1u) z += phi[a] * data.coordinates[1][a];
-      }
+      double xq[3] = {0.0, 0.0, 0.0};
+      for (unsigned a = 0; a < n; ++a)
+        for (unsigned axis = 0; axis < axes; ++axis)
+          xq[axis] += phi[a] * data.coordinates[axis][a];
       // The integrand of (7) uses the wind itself (variable), the parameter
       // delta_k its centroid value.
-      double w[2] = {config.convection.vx, config.convection.vy};
-      if (config.convection.field) config.convection.field(config, x, z, w);
-      w[0] *= wind_sign;
-      w[1] *= wind_sign;
+      double w[3] = {config.convection.vx, config.convection.vy, 0.0};
+      if (three) EvaluateVelocity3D(config, xq[0], xq[1], xq[2], w);
+      else if (config.convection.field) config.convection.field(config, xq[0], xq[1], w);
+      for (unsigned axis = 0; axis < 3u; ++axis) w[axis] *= wind_sign;
       for (unsigned a = 0; a < n; ++a) {
         f[a] = 0.0;
-        for (unsigned axis = 0; axis < dimension && axis < 2u; ++axis)
+        for (unsigned axis = 0; axis < axes; ++axis)
           f[a] += w[axis] * gradient[a * dimension + axis];
       }
+      // P1 (diagnostic): {1, (x_i - c_i) / H_i}, i over the axes.
       q[0] = 1.0;
-      if (nq > 1u) q[1] = (x - xc) / extent[0];
-      if (nq > 2u) q[2] = (z - zc) / extent[1];
+      for (unsigned m = 1; m < nq; ++m) q[m] = (xq[m - 1] - centre[m - 1]) / extent[m - 1];
       for (unsigned a = 0; a < n; ++a)
         for (unsigned b = 0; b < n; ++b) A[a * n + b] += weight * f[a] * f[b];
       for (unsigned m = 0; m < nq; ++m) {
@@ -622,7 +635,7 @@ std::unique_ptr<SparseMatrix> BuildLpsMatrix(
         for (unsigned l = 0; l < nq; ++l) G[m * nq + l] += weight * q[m] * q[l];
       }
     }
-    // D = G^{-1} C by Gauss-Jordan on the (at most 3x3, SPD) patch Gram matrix.
+    // D = G^{-1} C by Gauss-Jordan on the (at most 4x4, SPD) patch Gram matrix.
     std::vector<double> D = C;
     for (unsigned p = 0; p < nq; ++p) {
       const double pivot = G[p * nq + p];
@@ -656,15 +669,18 @@ std::unique_ptr<SparseMatrix> BuildLpsMatrix(
   if (stats) {
     long long counts[2] = {patches, active}, gcounts[2] = {0, 0};
     MPI_Allreduce(counts, gcounts, 2, MPI_LONG_LONG, MPI_SUM, PETSC_COMM_WORLD);
-    double mins[1] = {delta_min}, gmins[1] = {0.0};
-    double maxs[2] = {delta_max, pe_max}, gmaxs[2] = {0.0, 0.0};
-    MPI_Allreduce(mins, gmins, 1, MPI_DOUBLE, MPI_MIN, PETSC_COMM_WORLD);
-    MPI_Allreduce(maxs, gmaxs, 2, MPI_DOUBLE, MPI_MAX, PETSC_COMM_WORLD);
+    double mins[3] = {delta_min, pe_min, h_min}, gmins[3] = {0.0, 0.0, 0.0};
+    double maxs[3] = {delta_max, pe_max, h_max}, gmaxs[3] = {0.0, 0.0, 0.0};
+    MPI_Allreduce(mins, gmins, 3, MPI_DOUBLE, MPI_MIN, PETSC_COMM_WORLD);
+    MPI_Allreduce(maxs, gmaxs, 3, MPI_DOUBLE, MPI_MAX, PETSC_COMM_WORLD);
     stats->patches = gcounts[0];
     stats->active = gcounts[1];
     stats->delta_min = gcounts[1] > 0 ? gmins[0] : 0.0;
     stats->delta_max = gmaxs[0];
     stats->pe_max = gmaxs[1];
+    stats->pe_min = gcounts[0] > 0 ? gmins[1] : 0.0;
+    stats->h_min = gcounts[1] > 0 ? gmins[2] : 0.0;
+    stats->h_max = gmaxs[2];
   }
   return W;
 }
@@ -985,6 +1001,19 @@ NativeSpatialOperators BuildNativeSpatialOperators(
                   operators.lps.pe_max, w_norm, w_norm > 0 ? asym / w_norm : asym,
                   l_sym, l_skew, l_sym > 0 ? w_norm / l_sym : 0.0,
                   l_skew > 0 ? w_norm / l_skew : 0.0);
+    // T15: the 3D activity report (the 2D EX21_LPS line above is unchanged).
+    if (config.dimension == 3u) {
+      MatInfo info;
+      PetscCallAbort(PETSC_COMM_WORLD, MatGetInfo(w, MAT_GLOBAL_SUM, &info));
+      if (rank == 0)
+        std::printf("EX21_LPS3D active_fraction=%.6f pe_min=%.6e pe_max=%.6e h_min=%.6e h_max=%.6e"
+                    " delta_min=%.6e delta_max=%.6e ||W||_F=%.6e nnz_W=%.0f\n",
+                    operators.lps.patches > 0
+                        ? static_cast<double>(operators.lps.active) / operators.lps.patches : 0.0,
+                    operators.lps.pe_min, operators.lps.pe_max, operators.lps.h_min,
+                    operators.lps.h_max, operators.lps.delta_min, operators.lps.delta_max,
+                    w_norm, info.nz_used);
+    }
   }
 
   if (config.state_bc ==

@@ -574,8 +574,8 @@ struct ProblemConfig {
     if (convection.field3d && convection.field3d_reads_vz &&
         (convection.vx != 0.0 || convection.vy != 0.0))
       refuse("this case's wind takes only its normal component from --vz (--vx --vy must be 0)");
-    if (convection.stabilization != ConvectionConfig::Stabilization::NONE)
-      refuse("no convection stabilisation (LPS is not ported)");
+    // T15: LPS (P0 production, P1 diagnostic) is ported to HEX27; simplices keep refusing it
+    // (ValidateSimplex).
     if (!std::isfinite(convection.vz)) refuse("invalid --vz");
     if (!convection.enabled && (convection.vx != 0.0 || convection.vy != 0.0))
       refuse("--vx/--vy/--vz need --convection on");

@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
+#include <memory>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -320,7 +321,8 @@ struct DirichletReducedProblem {
     for (Vec* v : {&Y, &MY, &RU, &Uc, &s_in, &s_out}) PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(v));
     return j;
   }
-  int Gradient(Vec U, KSP adjoint, Vec g, bool legacy) const {
+  int Gradient(Vec U, KSP adjoint, Vec g, bool legacy,
+               DirichletControlOperators* bdt = nullptr) const {   // T15: a wrong B_D^T owner
     const double dt = config->time.dt;
     Vec Y = NewLike(rhs_y), G = NewLike(rhs_y), L = NewLike(rhs_y), Uc = NewLike(rhs_y);
     State(U, Y);
@@ -331,7 +333,7 @@ struct DirichletReducedProblem {
     d->ZeroControlledRows(G);   // the C rows of E_I^T are identity rows: Lambda_C = 0
     const int its = Solve(adjoint, G, L);
     if (legacy) PetscCallAbort(PETSC_COMM_WORLD, d->ApplyBDTLegacy(L, g));
-    else PetscCallAbort(PETSC_COMM_WORLD, d->ApplyBDT(L, g));
+    else PetscCallAbort(PETSC_COMM_WORLD, (bdt ? bdt : d)->ApplyBDT(L, g));
     PetscCallAbort(PETSC_COMM_WORLD, VecScale(g, -config->eta));
     PetscCallAbort(PETSC_COMM_WORLD, VecCopy(U, Uc));
     MaskC(Uc);
@@ -434,19 +436,62 @@ static void RunDirichletConvectionGates(const ProblemConfig& config,
   BuildAssembledSpaceTimeOperators(wrong_ops, spatial.mass, stiffness_t, steps,
                                    config.time.dt, config.time.scheme);
   KSP adj_wrong = MakeDirect(wrong_ops.ap, "vcd_adjoint_wrong_");
-  struct Variant { const char* name; KSP ksp; bool legacy; };
-  const Variant variants[] = {{"exact_LU(E^T)", adj_exact, false},
-                              {"production_shell(E^T)", adj_shell, false},
-                              {"legacy_B_D^T", adj_exact, true},
-                              {"ex20_style_untransposed_E", adj_wrong, false}};
+  struct Variant { const char* name; KSP ksp; bool legacy; DirichletControlOperators* bdt; };
+  std::vector<Variant> variants{{"exact_LU(E^T)", adj_exact, false, nullptr},
+                                {"production_shell(E^T)", adj_shell, false, nullptr},
+                                {"legacy_B_D^T", adj_exact, true, nullptr},
+                                {"ex20_style_untransposed_E", adj_wrong, false, nullptr}};
+  // T15: LPS negatives.  B_D / B_D^T consume the unhatted L = nu K + C + W; the wrong owners
+  // build B_D^T from L - W (W omitted) and L - 2 W (W with the wrong sign); the interior adjoint
+  // negative uses nu K + C^T - W on the free block (S = L_hat - 2 W_hat) with the correct B_D^T.
+  Mat lps_full[2] = {nullptr, nullptr}, lps_hat = nullptr, w_hat = nullptr;
+  std::unique_ptr<DirichletControlOperators> lps_d[2];
+  AssembledSpaceTimeOperators lps_ops;
+  KSP adj_lps = nullptr;
+  if (config.dimension == 3u && spatial.assembled.W_lps && spatial.assembled.lps.active > 0) {   // 3D only
+    Mat Wl = static_cast<PetscMatrix*>(spatial.assembled.W_lps.get())->mat();
+    const char* names[2] = {"lps_BDT_W_omitted", "lps_BDT_W_wrong_sign"};
+    for (unsigned v = 0; v < 2u; ++v) {
+      PetscCallAbort(PETSC_COMM_WORLD, MatDuplicate(spatial.stiffness_full, MAT_COPY_VALUES, &lps_full[v]));
+      PetscCallAbort(PETSC_COMM_WORLD, MatAXPY(lps_full[v], v == 0u ? -1.0 : -2.0, Wl, DIFFERENT_NONZERO_PATTERN));
+      lps_d[v].reset(new DirichletControlOperators(
+          config, spatial.mass_full, lps_full[v],
+          static_cast<PetscMatrix*>(spatial.assembled.M_Gamma.get())->mat(),
+          static_cast<PetscMatrix*>(spatial.assembled.K_Gamma.get())->mat()));
+      Vec BtW = NewLike(U);
+      PetscCallAbort(PETSC_COMM_WORLD, lps_d[v]->ApplyBDT(P, BtW));
+      std::printf("EX21_VC_G15D_BDT_NEGATIVE variant=%s |<B_D u,p>-<u,B_D^T_wrong p>|/(|B_D u||p|)=%.3e\n",
+                  names[v], std::fabs(lhs - Dot(U, BtW)) / sc);
+      PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(&BtW));
+      variants.push_back(Variant{names[v], adj_exact, false, lps_d[v].get()});
+    }
+    // W_hat: W with the controlled rows/columns removed (diagonal 0), as M_hat
+    PetscCallAbort(PETSC_COMM_WORLD, MatDuplicate(Wl, MAT_COPY_VALUES, &w_hat));
+    {
+      std::vector<PetscInt> rows;
+      PetscInt begin = 0, end = 0;
+      PetscCallAbort(PETSC_COMM_WORLD, MatGetOwnershipRange(w_hat, &begin, &end));
+      const std::vector<unsigned char>& m = d.control_mask();
+      for (PetscInt i = 0; i < end - begin; ++i)
+        if (m[static_cast<std::size_t>(i)]) rows.push_back(begin + i);
+      PetscCallAbort(PETSC_COMM_WORLD, MatSetOption(w_hat, MAT_KEEP_NONZERO_PATTERN, PETSC_TRUE));
+      PetscCallAbort(PETSC_COMM_WORLD, MatZeroRowsColumns(w_hat, static_cast<PetscInt>(rows.size()),
+                                                         rows.empty() ? nullptr : rows.data(), 0.0, nullptr, nullptr));
+    }
+    PetscCallAbort(PETSC_COMM_WORLD, MatDuplicate(spatial.stiffness, MAT_COPY_VALUES, &lps_hat));
+    PetscCallAbort(PETSC_COMM_WORLD, MatAXPY(lps_hat, -2.0, w_hat, DIFFERENT_NONZERO_PATTERN));
+    BuildAssembledSpaceTimeOperators(lps_ops, spatial.mass, lps_hat, steps, config.time.dt, config.time.scheme);
+    adj_lps = MakeDirect(lps_ops.ap, "vcd_adjoint_lps_");
+    variants.push_back(Variant{"lps_adj_CT_minus_W", adj_lps, false, nullptr});
+  }
   {
     Vec U1 = NewLike(U), U2 = NewLike(U), g0 = NewLike(U), h1 = NewLike(U), h2 = NewLike(U), z = NewLike(U);
     FillRandom(U1, 7u); FillRandom(U2, 77u);
     rp.MaskC(U1); rp.MaskC(U2);
     for (const Variant& v : variants) {
-      rp.Gradient(z, v.ksp, g0, v.legacy);
-      rp.Gradient(U1, v.ksp, h1, v.legacy);
-      rp.Gradient(U2, v.ksp, h2, v.legacy);
+      rp.Gradient(z, v.ksp, g0, v.legacy, v.bdt);
+      rp.Gradient(U1, v.ksp, h1, v.legacy, v.bdt);
+      rp.Gradient(U2, v.ksp, h2, v.legacy, v.bdt);
       PetscCallAbort(PETSC_COMM_WORLD, VecAXPY(h1, -1.0, g0));
       PetscCallAbort(PETSC_COMM_WORLD, VecAXPY(h2, -1.0, g0));
       const double a = Dot(h1, U2), b = Dot(U1, h2);
@@ -461,7 +506,7 @@ static void RunDirichletConvectionGates(const ProblemConfig& config,
     rp.MaskC(U0); rp.MaskC(D);
     const double step_scale = Norm(U0) / Norm(D);
     for (const Variant& v : variants) {
-      rp.Gradient(U0, v.ksp, g, v.legacy);
+      rp.Gradient(U0, v.ksp, g, v.legacy, v.bdt);
       const double directional = Dot(g, D);
       double best = 1e300;
       for (double eps : {1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6}) {
@@ -510,6 +555,13 @@ static void RunDirichletConvectionGates(const ProblemConfig& config,
                 solve.fields.J_reg);
     for (Vec* w : {&g, &Yref, &RU, &Uc}) PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(w));
   }
+  if (adj_lps) {   // T15
+    PetscCallAbort(PETSC_COMM_WORLD, KSPDestroy(&adj_lps));
+    DestroyAssembledSpaceTimeOperators(lps_ops);
+  }
+  for (unsigned v = 0; v < 2u; ++v) lps_d[v].reset();
+  for (Mat* m : {&lps_full[0], &lps_full[1], &lps_hat, &w_hat})
+    if (*m) PetscCallAbort(PETSC_COMM_WORLD, MatDestroy(m));
   for (KSP* k : {&rp.forward, &adj_exact, &adj_shell, &adj_wrong}) PetscCallAbort(PETSC_COMM_WORLD, KSPDestroy(k));
   DestroyAssembledSpaceTimeOperators(wrong_ops);
   PetscCallAbort(PETSC_COMM_WORLD, MatDestroy(&stiffness_t));
@@ -846,7 +898,8 @@ int RunConvectionVerification(const ProblemConfig& config,
   const bool natural_gate =
       config.state_bc == ProblemConfig::StateBoundaryCondition::NATURAL &&
       HasConvection(config) && !config.convection.field &&
-      config.convection.stabilization == ProblemConfig::ConvectionConfig::Stabilization::NONE &&
+      (config.convection.stabilization == ProblemConfig::ConvectionConfig::Stabilization::NONE ||
+       config.dimension == 3u) &&   // T15: 3D LPS (C = L - nu K - W below)
       (config.dimension == 2u || config.dimension == 3u);   // T10: 3D (six faces)
   AssembledSpaceTimeOperators wrong_bc_ops;
   KSP adjoint_wrong_bc = nullptr;
@@ -860,6 +913,31 @@ int RunConvectionVerification(const ProblemConfig& config,
     Mat C = nullptr, Ct = nullptr, Bw = nullptr;
     PetscCallAbort(PETSC_COMM_WORLD, MatDuplicate(spatial.stiffness, MAT_COPY_VALUES, &C));
     PetscCallAbort(PETSC_COMM_WORLD, MatAXPY(C, -1.0, K.stiffness, DIFFERENT_NONZERO_PATTERN));
+    Mat Wn = spatial.assembled.W_lps   // T15: L = nu K + C + W
+                 ? static_cast<PetscMatrix*>(spatial.assembled.W_lps.get())->mat() : nullptr;
+    if (Wn) {
+      PetscCallAbort(PETSC_COMM_WORLD, MatAXPY(C, -1.0, Wn, DIFFERENT_NONZERO_PATTERN));
+      // the full stabilised identity L + L^T - 2 nu K - 2 W = C + C^T (checked against B_w - D_w
+      // through the G1N / G1W lines that follow): report its symmetric-part pieces
+      Mat Ls = nullptr;
+      PetscReal w_norm = 0.0, ls_norm = 0.0, ls_defect = 0.0;
+      PetscCallAbort(PETSC_COMM_WORLD, MatTranspose(spatial.stiffness, MAT_INITIAL_MATRIX, &Ls));
+      PetscCallAbort(PETSC_COMM_WORLD, MatAXPY(Ls, 1.0, spatial.stiffness, DIFFERENT_NONZERO_PATTERN));
+      PetscCallAbort(PETSC_COMM_WORLD, MatNorm(Ls, NORM_FROBENIUS, &ls_norm));
+      PetscCallAbort(PETSC_COMM_WORLD, MatNorm(Wn, NORM_FROBENIUS, &w_norm));
+      PetscCallAbort(PETSC_COMM_WORLD, MatAXPY(Ls, -2.0, K.stiffness, DIFFERENT_NONZERO_PATTERN));
+      PetscCallAbort(PETSC_COMM_WORLD, MatAXPY(Ls, -2.0, Wn, DIFFERENT_NONZERO_PATTERN));
+      Mat Cs = nullptr;
+      PetscCallAbort(PETSC_COMM_WORLD, MatTranspose(C, MAT_INITIAL_MATRIX, &Cs));
+      PetscCallAbort(PETSC_COMM_WORLD, MatAXPY(Cs, 1.0, C, DIFFERENT_NONZERO_PATTERN));
+      PetscCallAbort(PETSC_COMM_WORLD, MatAXPY(Ls, -1.0, Cs, DIFFERENT_NONZERO_PATTERN));
+      PetscCallAbort(PETSC_COMM_WORLD, MatNorm(Ls, NORM_FROBENIUS, &ls_defect));
+      std::printf("EX21_VC_G15_NATURAL_SPLIT ||L+L^T-2nuK-2W-(C+C^T)||_F/||L+L^T||_F=%.3e"
+                  " ||L+L^T||_F=%.6e ||W||_F=%.6e\n", ls_norm > 0 ? ls_defect / ls_norm : ls_defect,
+                  ls_norm, w_norm);
+      PetscCallAbort(PETSC_COMM_WORLD, MatDestroy(&Ls));
+      PetscCallAbort(PETSC_COMM_WORLD, MatDestroy(&Cs));
+    }
     PetscCallAbort(PETSC_COMM_WORLD, MatTranspose(C, MAT_INITIAL_MATRIX, &Ct));
     PetscCallAbort(PETSC_COMM_WORLD, MatAXPY(Ct, 1.0, C, DIFFERENT_NONZERO_PATTERN));  // C + C^T
     PetscReal c_norm = 0.0, sym_norm = 0.0, defect = 0.0;
@@ -951,6 +1029,8 @@ int RunConvectionVerification(const ProblemConfig& config,
     PetscCallAbort(PETSC_COMM_WORLD, MatScale(wrong_bc_spatial, -1.0));
     PetscCallAbort(PETSC_COMM_WORLD,
                    MatAXPY(wrong_bc_spatial, 2.0, K.stiffness, DIFFERENT_NONZERO_PATTERN));
+    if (Wn)   // T15: S^T = nu K + W - C (the stabilised interior, nu dn p = 0)
+      PetscCallAbort(PETSC_COMM_WORLD, MatAXPY(wrong_bc_spatial, 2.0, Wn, DIFFERENT_NONZERO_PATTERN));
     BuildAssembledSpaceTimeOperators(wrong_bc_ops, spatial.mass, wrong_bc_spatial,
                                      config.time.steps, config.time.dt,
                                      config.time.scheme);
@@ -994,6 +1074,34 @@ int RunConvectionVerification(const ProblemConfig& config,
     PetscCallAbort(PETSC_COMM_WORLD, MatDestroy(&Dw));
   }
 
+  // T15: LPS adjoint NEGATIVES (only with --convection-stabilization lps).  The exact adjoint
+  // spatial operator is L^T = nu K + C^T + W (W symmetric); the wrong ones, as S with S^T the
+  // wrong adjoint operator (W = the eliminated W_lps, like M):
+  //   lps_CT_minus_W  nu K + C^T - W   S = L - 2 W
+  //   lps_CT_only     nu K + C^T       S = L - W   (stabilisation dropped in the adjoint)
+  // (C + W, the untransposed L, is the ex20_style_wrong variant above.)
+  AssembledSpaceTimeOperators lps_ops[2];
+  KSP adjoint_lps[2] = {nullptr, nullptr};
+  Mat lps_spatial[2] = {nullptr, nullptr};
+  const char* lps_names[2] = {"lps_CT_minus_W", "lps_CT_only"};
+  if (config.dimension == 3u && spatial.assembled.W_lps && spatial.assembled.lps.active > 0) {   // 3D only: 2D logs unchanged
+    Mat Wl = static_cast<PetscMatrix*>(spatial.assembled.W_lps.get())->mat();
+    for (unsigned v = 0; v < 2u; ++v) {
+      PetscCallAbort(PETSC_COMM_WORLD, MatDuplicate(spatial.stiffness, MAT_COPY_VALUES, &lps_spatial[v]));
+      PetscCallAbort(PETSC_COMM_WORLD,
+                     MatAXPY(lps_spatial[v], v == 0u ? -2.0 : -1.0, Wl, DIFFERENT_NONZERO_PATTERN));
+      BuildAssembledSpaceTimeOperators(lps_ops[v], spatial.mass, lps_spatial[v],
+                                       config.time.steps, config.time.dt, config.time.scheme);
+      adjoint_lps[v] = MakeDirect(lps_ops[v].ap, v == 0u ? "vc_adjoint_lps_m_" : "vc_adjoint_lps_o_");
+      Vec w5 = NewLike(X);
+      PetscCallAbort(PETSC_COMM_WORLD, MatMult(lps_ops[v].ap, Y, w5));
+      const double lhs5 = Dot(EX, Y), rhs5 = Dot(X, w5);
+      std::printf("EX21_VC_G15_LPS_ADJ_TRANSPOSE adjoint=%s |<E x,y>-<x,E_wrong^T y>|/(|Ex||y|)=%.3e\n",
+                  lps_names[v], std::fabs(lhs5 - rhs5) / scale);
+      PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(&w5));
+    }
+  }
+
   // Reduced Hessian symmetry: H U = grad J(U) - grad J(0) is linear in U.
   {
     Vec U1 = NewLike(X), U2 = NewLike(X), g0 = NewLike(X), h1 = NewLike(X),
@@ -1008,6 +1116,8 @@ int RunConvectionVerification(const ProblemConfig& config,
       variants.push_back(Variant{"wrong_bc_nuK_minus_C", adjoint_wrong_bc});
     if (adjoint_missing_div)   // T14
       variants.push_back(Variant{"missing_div_term", adjoint_missing_div});
+    for (unsigned v = 0; v < 2u; ++v)   // T15
+      if (adjoint_lps[v]) variants.push_back(Variant{lps_names[v], adjoint_lps[v]});
     for (const Variant& v : variants) {
       reduced.Gradient(zero, v.ksp, g0);
       reduced.Gradient(U1, v.ksp, h1);
@@ -1038,6 +1148,8 @@ int RunConvectionVerification(const ProblemConfig& config,
       variants.push_back(Variant{"wrong_bc_nuK_minus_C", adjoint_wrong_bc});
     if (adjoint_missing_div)   // T14
       variants.push_back(Variant{"missing_div_term", adjoint_missing_div});
+    for (unsigned v = 0; v < 2u; ++v)   // T15
+      if (adjoint_lps[v]) variants.push_back(Variant{lps_names[v], adjoint_lps[v]});
     for (const Variant& v : variants) {
       const int its = reduced.Gradient(U0, v.ksp, g);
       const double directional = Dot(g, D);
@@ -1199,6 +1311,12 @@ int RunConvectionVerification(const ProblemConfig& config,
     for (Vec* w : {&g, &Yref, &NU}) PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(w));
   }
 
+  for (unsigned v = 0; v < 2u; ++v)   // T15
+    if (adjoint_lps[v]) {
+      PetscCallAbort(PETSC_COMM_WORLD, KSPDestroy(&adjoint_lps[v]));
+      DestroyAssembledSpaceTimeOperators(lps_ops[v]);
+      PetscCallAbort(PETSC_COMM_WORLD, MatDestroy(&lps_spatial[v]));
+    }
   if (adjoint_missing_div) {   // T14
     PetscCallAbort(PETSC_COMM_WORLD, KSPDestroy(&adjoint_missing_div));
     DestroyAssembledSpaceTimeOperators(missing_div_ops);

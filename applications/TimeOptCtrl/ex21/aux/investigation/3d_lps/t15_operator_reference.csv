@@ -1,0 +1,160 @@
+case,check,value,reference,verdict
+"c(1,0.5,-0.75)_2x2x2_nu0.01_p0_natural",active patches binary = reference,8/8,"8/8 (Pe in [45.3,45.3])",PASS
+"c(1,0.5,-0.75)_2x2x2_nu0.01_p0_natural",W_dump = W_ref (rel. max entrywise),1.1e-14,<=1e-12,PASS
+"c(1,0.5,-0.75)_2x2x2_nu0.01_p0_natural",symmetry ||W-W^T||/||W||,5.5e-17,<=1e-14,PASS
+"c(1,0.5,-0.75)_2x2x2_nu0.01_p0_natural",PSD lambda_min/lambda_max,-1.6e-16,>= -1e-13,PASS
+"c(1,0.5,-0.75)_2x2x2_nu0.01_p0_natural",constants ||W 1||_inf/||W||_max,5.0e-16,<=1e-13,PASS
+"c(1,0.5,-0.75)_2x2x2_nu0.01_p0_natural",NEG h_K = max extent: differs,3.6e-01,> 1e-6,PASS
+"c(1,0.5,-0.75)_2x2x2_nu0.01_p0_natural",NEG integrand wind frozen at the centroid: coincides here by construction,1.1e-14,<=1e-12 (identical form),PASS
+"c(1,0.5,-0.75)_2x2x2_nu0.01_p0_natural",NEG no projection (delta A): differs,1.4e-01,> 1e-6,PASS
+"c(1,0.5,-0.75)_2x2x2_nu0.01_p0_natural",NEG wrong Pe threshold Pe > 2: coincides here by construction,1.1e-14,<=1e-12 (identical form),PASS
+"c(1,0.5,-0.75)_2x2x2_nu0.01_p0_natural",NEG wrong Pe threshold Pe > 1/2: coincides here by construction,1.1e-14,<=1e-12 (identical form),PASS
+"c(1,0.5,-0.75)_2x2x2_nu0.01_p1_natural",active patches binary = reference,8/8,"8/8 (Pe in [45.3,45.3])",PASS
+"c(1,0.5,-0.75)_2x2x2_nu0.01_p1_natural",W_dump = W_ref (rel. max entrywise),2.7e-14,<=1e-12,PASS
+"c(1,0.5,-0.75)_2x2x2_nu0.01_p1_natural",symmetry ||W-W^T||/||W||,6.9e-17,<=1e-14,PASS
+"c(1,0.5,-0.75)_2x2x2_nu0.01_p1_natural",PSD lambda_min/lambda_max,-2.5e-16,>= -1e-13,PASS
+"c(1,0.5,-0.75)_2x2x2_nu0.01_p1_natural",constants ||W 1||_inf/||W||_max,1.5e-15,<=1e-13,PASS
+"c(1,0.5,-0.75)_2x2x2_nu0.01_p1_natural",NEG h_K = max extent: differs,3.6e-01,> 1e-6,PASS
+"c(1,0.5,-0.75)_2x2x2_nu0.01_p1_natural",NEG integrand wind frozen at the centroid: coincides here by construction,2.7e-14,<=1e-12 (identical form),PASS
+"c(1,0.5,-0.75)_2x2x2_nu0.01_p1_natural",NEG no projection (delta A): differs,6.9e-01,> 1e-6,PASS
+"c(1,0.5,-0.75)_2x2x2_nu0.01_p1_natural",NEG wrong Pe threshold Pe > 2: coincides here by construction,2.7e-14,<=1e-12 (identical form),PASS
+"c(1,0.5,-0.75)_2x2x2_nu0.01_p1_natural",NEG wrong Pe threshold Pe > 1/2: coincides here by construction,2.7e-14,<=1e-12 (identical form),PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.01_p0_natural",active patches binary = reference,12/12,"12/12 (Pe in [30.2,30.2])",PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.01_p0_natural",W_dump = W_ref (rel. max entrywise),1.1e-14,<=1e-12,PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.01_p0_natural",symmetry ||W-W^T||/||W||,7.0e-17,<=1e-14,PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.01_p0_natural",PSD lambda_min/lambda_max,-1.8e-16,>= -1e-13,PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.01_p0_natural",constants ||W 1||_inf/||W||_max,7.1e-16,<=1e-13,PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.01_p0_natural",NEG h_K = max extent: differs,5.6e-01,> 1e-6,PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.01_p0_natural",NEG integrand wind frozen at the centroid: coincides here by construction,1.1e-14,<=1e-12 (identical form),PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.01_p0_natural",NEG no projection (delta A): differs,2.0e-01,> 1e-6,PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.01_p0_natural",NEG wrong Pe threshold Pe > 2: coincides here by construction,1.1e-14,<=1e-12 (identical form),PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.01_p0_natural",NEG wrong Pe threshold Pe > 1/2: coincides here by construction,1.1e-14,<=1e-12 (identical form),PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.01_p1_natural",active patches binary = reference,12/12,"12/12 (Pe in [30.2,30.2])",PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.01_p1_natural",W_dump = W_ref (rel. max entrywise),2.7e-14,<=1e-12,PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.01_p1_natural",symmetry ||W-W^T||/||W||,8.1e-17,<=1e-14,PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.01_p1_natural",PSD lambda_min/lambda_max,-2.1e-16,>= -1e-13,PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.01_p1_natural",constants ||W 1||_inf/||W||_max,2.2e-15,<=1e-13,PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.01_p1_natural",NEG h_K = max extent: differs,5.6e-01,> 1e-6,PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.01_p1_natural",NEG integrand wind frozen at the centroid: coincides here by construction,2.7e-14,<=1e-12 (identical form),PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.01_p1_natural",NEG no projection (delta A): differs,6.9e-01,> 1e-6,PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.01_p1_natural",NEG wrong Pe threshold Pe > 2: coincides here by construction,2.7e-14,<=1e-12 (identical form),PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.01_p1_natural",NEG wrong Pe threshold Pe > 1/2: coincides here by construction,2.7e-14,<=1e-12 (identical form),PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.2_p0_natural",active patches binary = reference,12/12,"12/12 (Pe in [1.51,1.51])",PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.2_p0_natural",W_dump = W_ref (rel. max entrywise),1.1e-14,<=1e-12,PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.2_p0_natural",symmetry ||W-W^T||/||W||,3.5e-16,<=1e-14,PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.2_p0_natural",PSD lambda_min/lambda_max,-1.5e-16,>= -1e-13,PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.2_p0_natural",constants ||W 1||_inf/||W||_max,1.0e-15,<=1e-13,PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.2_p0_natural",NEG h_K = max extent: differs,7.8e-01,> 1e-6,PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.2_p0_natural",NEG integrand wind frozen at the centroid: coincides here by construction,1.1e-14,<=1e-12 (identical form),PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.2_p0_natural",NEG no projection (delta A): differs,2.0e-01,> 1e-6,PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.2_p0_natural",NEG wrong Pe threshold Pe > 2: differs,1.0e+00,> 1e-6,PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.2_p0_natural",NEG wrong Pe threshold Pe > 1/2: coincides here by construction,1.1e-14,<=1e-12 (identical form),PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.5_p0_natural",active patches binary = reference,0/12,"0/12 (Pe in [0.604,0.604])",PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.5_p0_natural",W_dump = W_ref (rel. max entrywise),0.0e+00,<=1e-12,PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.5_p0_natural",W = 0 (no active patch),0.0e+00,0,PASS
+"c(1,0,0)_3x2x2_nonunit_nu0.01_p0_natural",active patches binary = reference,12/12,"12/12 (Pe in [33.3,33.3])",PASS
+"c(1,0,0)_3x2x2_nonunit_nu0.01_p0_natural",W_dump = W_ref (rel. max entrywise),1.1e-14,<=1e-12,PASS
+"c(1,0,0)_3x2x2_nonunit_nu0.01_p0_natural",symmetry ||W-W^T||/||W||,7.3e-17,<=1e-14,PASS
+"c(1,0,0)_3x2x2_nonunit_nu0.01_p0_natural",PSD lambda_min/lambda_max,-1.5e-16,>= -1e-13,PASS
+"c(1,0,0)_3x2x2_nonunit_nu0.01_p0_natural",constants ||W 1||_inf/||W||_max,9.1e-16,<=1e-13,PASS
+"c(1,0,0)_3x2x2_nonunit_nu0.01_p0_natural",NEG h_K = max extent: differs,3.4e-01,> 1e-6,PASS
+"c(1,0,0)_3x2x2_nonunit_nu0.01_p0_natural",NEG integrand wind frozen at the centroid: coincides here by construction,1.1e-14,<=1e-12 (identical form),PASS
+"c(1,0,0)_3x2x2_nonunit_nu0.01_p0_natural",NEG no projection (delta A): differs,2.6e-01,> 1e-6,PASS
+"c(1,0,0)_3x2x2_nonunit_nu0.01_p0_natural",NEG wrong Pe threshold Pe > 2: coincides here by construction,1.1e-14,<=1e-12 (identical form),PASS
+"c(1,0,0)_3x2x2_nonunit_nu0.01_p0_natural",NEG wrong Pe threshold Pe > 1/2: coincides here by construction,1.1e-14,<=1e-12 (identical form),PASS
+"c(0,0,-0.75)_2x3x4_nonunit_nu0.01_p0_natural",active patches binary = reference,24/24,"24/24 (Pe in [4.69,4.69])",PASS
+"c(0,0,-0.75)_2x3x4_nonunit_nu0.01_p0_natural",W_dump = W_ref (rel. max entrywise),1.1e-14,<=1e-12,PASS
+"c(0,0,-0.75)_2x3x4_nonunit_nu0.01_p0_natural",symmetry ||W-W^T||/||W||,8.8e-17,<=1e-14,PASS
+"c(0,0,-0.75)_2x3x4_nonunit_nu0.01_p0_natural",PSD lambda_min/lambda_max,-3.4e-16,>= -1e-13,PASS
+"c(0,0,-0.75)_2x3x4_nonunit_nu0.01_p0_natural",constants ||W 1||_inf/||W||_max,1.1e-15,<=1e-13,PASS
+"c(0,0,-0.75)_2x3x4_nonunit_nu0.01_p0_natural",NEG h_K = max extent: differs,9.0e-01,> 1e-6,PASS
+"c(0,0,-0.75)_2x3x4_nonunit_nu0.01_p0_natural",NEG integrand wind frozen at the centroid: coincides here by construction,1.1e-14,<=1e-12 (identical form),PASS
+"c(0,0,-0.75)_2x3x4_nonunit_nu0.01_p0_natural",NEG no projection (delta A): differs,2.6e-01,> 1e-6,PASS
+"c(0,0,-0.75)_2x3x4_nonunit_nu0.01_p0_natural",NEG wrong Pe threshold Pe > 2: coincides here by construction,1.1e-14,<=1e-12 (identical form),PASS
+"c(0,0,-0.75)_2x3x4_nonunit_nu0.01_p0_natural",NEG wrong Pe threshold Pe > 1/2: coincides here by construction,1.1e-14,<=1e-12 (identical form),PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.01_p0_dirichlet",active patches binary = reference,12/12,"12/12 (Pe in [30.2,30.2])",PASS
+"c(1,0.5,-0.75)_3x2x2_nonunit_nu0.01_p0_dirichlet","W_FF (eliminated) = W_ref[F,F]",1.1e-14,<=1e-12,PASS
+harmonic-3d_2x3x4_nonunit_nu0.181_p0_natural,active patches binary = reference,16/24,"16/24 (Pe in [0.391,2.32])",PASS
+harmonic-3d_2x3x4_nonunit_nu0.181_p0_natural,W_dump = W_ref (rel. max entrywise),1.5e-14,<=1e-12,PASS
+harmonic-3d_2x3x4_nonunit_nu0.181_p0_natural,symmetry ||W-W^T||/||W||,4.0e-16,<=1e-14,PASS
+harmonic-3d_2x3x4_nonunit_nu0.181_p0_natural,PSD lambda_min/lambda_max,-1.4e-16,>= -1e-13,PASS
+harmonic-3d_2x3x4_nonunit_nu0.181_p0_natural,constants ||W 1||_inf/||W||_max,8.7e-16,<=1e-13,PASS
+harmonic-3d_2x3x4_nonunit_nu0.181_p0_natural,NEG h_K = max extent: differs,9.7e-01,> 1e-6,PASS
+harmonic-3d_2x3x4_nonunit_nu0.181_p0_natural,NEG integrand wind frozen at the centroid: differs,3.3e-01,> 1e-6,PASS
+harmonic-3d_2x3x4_nonunit_nu0.181_p0_natural,NEG no projection (delta A): differs,2.2e-01,> 1e-6,PASS
+harmonic-3d_2x3x4_nonunit_nu0.181_p0_natural,NEG wrong Pe threshold Pe > 2: differs,1.9e+00,> 1e-6,PASS
+harmonic-3d_2x3x4_nonunit_nu0.181_p0_natural,NEG wrong Pe threshold Pe > 1/2: differs,9.5e-01,> 1e-6,PASS
+harmonic-3d_2x3x4_nonunit_nu0.181_p1_natural,active patches binary = reference,16/24,"16/24 (Pe in [0.391,2.32])",PASS
+harmonic-3d_2x3x4_nonunit_nu0.181_p1_natural,W_dump = W_ref (rel. max entrywise),3.1e-14,<=1e-12,PASS
+harmonic-3d_2x3x4_nonunit_nu0.181_p1_natural,symmetry ||W-W^T||/||W||,3.8e-16,<=1e-14,PASS
+harmonic-3d_2x3x4_nonunit_nu0.181_p1_natural,PSD lambda_min/lambda_max,-1.9e-16,>= -1e-13,PASS
+harmonic-3d_2x3x4_nonunit_nu0.181_p1_natural,constants ||W 1||_inf/||W||_max,2.0e-15,<=1e-13,PASS
+harmonic-3d_2x3x4_nonunit_nu0.181_p1_natural,NEG h_K = max extent: differs,9.7e-01,> 1e-6,PASS
+harmonic-3d_2x3x4_nonunit_nu0.181_p1_natural,NEG integrand wind frozen at the centroid: differs,9.9e-01,> 1e-6,PASS
+harmonic-3d_2x3x4_nonunit_nu0.181_p1_natural,NEG no projection (delta A): differs,6.9e-01,> 1e-6,PASS
+harmonic-3d_2x3x4_nonunit_nu0.181_p1_natural,NEG wrong Pe threshold Pe > 2: differs,8.5e-01,> 1e-6,PASS
+harmonic-3d_2x3x4_nonunit_nu0.181_p1_natural,NEG wrong Pe threshold Pe > 1/2: differs,9.7e-01,> 1e-6,PASS
+harmonic-3d_2x3x4_nonunit_nu0.001_p0_natural,active patches binary = reference,24/24,"24/24 (Pe in [70.8,419])",PASS
+harmonic-3d_2x3x4_nonunit_nu0.001_p0_natural,W_dump = W_ref (rel. max entrywise),1.1e-14,<=1e-12,PASS
+harmonic-3d_2x3x4_nonunit_nu0.001_p0_natural,symmetry ||W-W^T||/||W||,6.2e-17,<=1e-14,PASS
+harmonic-3d_2x3x4_nonunit_nu0.001_p0_natural,PSD lambda_min/lambda_max,-1.0e-17,>= -1e-13,PASS
+harmonic-3d_2x3x4_nonunit_nu0.001_p0_natural,constants ||W 1||_inf/||W||_max,7.1e-16,<=1e-13,PASS
+harmonic-3d_2x3x4_nonunit_nu0.001_p0_natural,NEG h_K = max extent: differs,8.1e-01,> 1e-6,PASS
+harmonic-3d_2x3x4_nonunit_nu0.001_p0_natural,NEG integrand wind frozen at the centroid: differs,1.8e-01,> 1e-6,PASS
+harmonic-3d_2x3x4_nonunit_nu0.001_p0_natural,NEG no projection (delta A): differs,2.4e-01,> 1e-6,PASS
+harmonic-3d_2x3x4_nonunit_nu0.001_p0_natural,NEG wrong Pe threshold Pe > 2: coincides here by construction,1.1e-14,<=1e-12 (identical form),PASS
+harmonic-3d_2x3x4_nonunit_nu0.001_p0_natural,NEG wrong Pe threshold Pe > 1/2: coincides here by construction,1.1e-14,<=1e-12 (identical form),PASS
+harmonic-3d_2x3x4_nonunit_nu0.001_p1_natural,active patches binary = reference,24/24,"24/24 (Pe in [70.8,419])",PASS
+harmonic-3d_2x3x4_nonunit_nu0.001_p1_natural,W_dump = W_ref (rel. max entrywise),3.2e-14,<=1e-12,PASS
+harmonic-3d_2x3x4_nonunit_nu0.001_p1_natural,symmetry ||W-W^T||/||W||,6.5e-17,<=1e-14,PASS
+harmonic-3d_2x3x4_nonunit_nu0.001_p1_natural,PSD lambda_min/lambda_max,-4.4e-17,>= -1e-13,PASS
+harmonic-3d_2x3x4_nonunit_nu0.001_p1_natural,constants ||W 1||_inf/||W||_max,2.1e-15,<=1e-13,PASS
+harmonic-3d_2x3x4_nonunit_nu0.001_p1_natural,NEG h_K = max extent: differs,8.0e-01,> 1e-6,PASS
+harmonic-3d_2x3x4_nonunit_nu0.001_p1_natural,NEG integrand wind frozen at the centroid: differs,4.9e-01,> 1e-6,PASS
+harmonic-3d_2x3x4_nonunit_nu0.001_p1_natural,NEG no projection (delta A): differs,6.9e-01,> 1e-6,PASS
+harmonic-3d_2x3x4_nonunit_nu0.001_p1_natural,NEG wrong Pe threshold Pe > 2: coincides here by construction,3.2e-14,<=1e-12 (identical form),PASS
+harmonic-3d_2x3x4_nonunit_nu0.001_p1_natural,NEG wrong Pe threshold Pe > 1/2: coincides here by construction,3.2e-14,<=1e-12 (identical form),PASS
+harmonic-3d_2x2x2_nu0.181_p0_dirichlet,active patches binary = reference,7/8,"7/8 (Pe in [0.547,1.91])",PASS
+harmonic-3d_2x2x2_nu0.181_p0_dirichlet,"W_FF (eliminated) = W_ref[F,F]",9.0e-15,<=1e-12,PASS
+affine-div-3d_2x3x4_nonunit_nu0.171_p0_natural,active patches binary = reference,15/24,"15/24 (Pe in [0.437,3.48])",PASS
+affine-div-3d_2x3x4_nonunit_nu0.171_p0_natural,W_dump = W_ref (rel. max entrywise),1.3e-14,<=1e-12,PASS
+affine-div-3d_2x3x4_nonunit_nu0.171_p0_natural,symmetry ||W-W^T||/||W||,2.0e-16,<=1e-14,PASS
+affine-div-3d_2x3x4_nonunit_nu0.171_p0_natural,PSD lambda_min/lambda_max,-1.5e-16,>= -1e-13,PASS
+affine-div-3d_2x3x4_nonunit_nu0.171_p0_natural,constants ||W 1||_inf/||W||_max,7.3e-16,<=1e-13,PASS
+affine-div-3d_2x3x4_nonunit_nu0.171_p0_natural,NEG h_K = max extent: differs,1.0e+00,> 1e-6,PASS
+affine-div-3d_2x3x4_nonunit_nu0.171_p0_natural,NEG integrand wind frozen at the centroid: differs,2.6e-01,> 1e-6,PASS
+affine-div-3d_2x3x4_nonunit_nu0.171_p0_natural,NEG no projection (delta A): differs,2.0e-01,> 1e-6,PASS
+affine-div-3d_2x3x4_nonunit_nu0.171_p0_natural,NEG wrong Pe threshold Pe > 2: differs,6.4e-01,> 1e-6,PASS
+affine-div-3d_2x3x4_nonunit_nu0.171_p0_natural,NEG wrong Pe threshold Pe > 1/2: differs,1.0e+00,> 1e-6,PASS
+affine-div-3d_2x3x4_nonunit_nu0.171_p1_natural,active patches binary = reference,15/24,"15/24 (Pe in [0.437,3.48])",PASS
+affine-div-3d_2x3x4_nonunit_nu0.171_p1_natural,W_dump = W_ref (rel. max entrywise),2.9e-14,<=1e-12,PASS
+affine-div-3d_2x3x4_nonunit_nu0.171_p1_natural,symmetry ||W-W^T||/||W||,2.1e-16,<=1e-14,PASS
+affine-div-3d_2x3x4_nonunit_nu0.171_p1_natural,PSD lambda_min/lambda_max,-2.0e-16,>= -1e-13,PASS
+affine-div-3d_2x3x4_nonunit_nu0.171_p1_natural,constants ||W 1||_inf/||W||_max,2.5e-15,<=1e-13,PASS
+affine-div-3d_2x3x4_nonunit_nu0.171_p1_natural,NEG h_K = max extent: differs,9.7e-01,> 1e-6,PASS
+affine-div-3d_2x3x4_nonunit_nu0.171_p1_natural,NEG integrand wind frozen at the centroid: differs,8.0e-01,> 1e-6,PASS
+affine-div-3d_2x3x4_nonunit_nu0.171_p1_natural,NEG no projection (delta A): differs,6.7e-01,> 1e-6,PASS
+affine-div-3d_2x3x4_nonunit_nu0.171_p1_natural,NEG wrong Pe threshold Pe > 2: differs,5.7e-01,> 1e-6,PASS
+affine-div-3d_2x3x4_nonunit_nu0.171_p1_natural,NEG wrong Pe threshold Pe > 1/2: differs,1.0e+00,> 1e-6,PASS
+affine-div-3d_2x3x4_nonunit_nu0.001_p0_natural,active patches binary = reference,24/24,"24/24 (Pe in [74.7,594])",PASS
+affine-div-3d_2x3x4_nonunit_nu0.001_p0_natural,W_dump = W_ref (rel. max entrywise),1.1e-14,<=1e-12,PASS
+affine-div-3d_2x3x4_nonunit_nu0.001_p0_natural,symmetry ||W-W^T||/||W||,6.3e-17,<=1e-14,PASS
+affine-div-3d_2x3x4_nonunit_nu0.001_p0_natural,PSD lambda_min/lambda_max,2.0e-17,>= -1e-13,PASS
+affine-div-3d_2x3x4_nonunit_nu0.001_p0_natural,constants ||W 1||_inf/||W||_max,5.9e-16,<=1e-13,PASS
+affine-div-3d_2x3x4_nonunit_nu0.001_p0_natural,NEG h_K = max extent: differs,8.3e-01,> 1e-6,PASS
+affine-div-3d_2x3x4_nonunit_nu0.001_p0_natural,NEG integrand wind frozen at the centroid: differs,1.4e-01,> 1e-6,PASS
+affine-div-3d_2x3x4_nonunit_nu0.001_p0_natural,NEG no projection (delta A): differs,2.5e-01,> 1e-6,PASS
+affine-div-3d_2x3x4_nonunit_nu0.001_p0_natural,NEG wrong Pe threshold Pe > 2: coincides here by construction,1.1e-14,<=1e-12 (identical form),PASS
+affine-div-3d_2x3x4_nonunit_nu0.001_p0_natural,NEG wrong Pe threshold Pe > 1/2: coincides here by construction,1.1e-14,<=1e-12 (identical form),PASS
+affine-div-3d_2x3x4_nonunit_nu0.001_p1_natural,active patches binary = reference,24/24,"24/24 (Pe in [74.7,594])",PASS
+affine-div-3d_2x3x4_nonunit_nu0.001_p1_natural,W_dump = W_ref (rel. max entrywise),2.7e-14,<=1e-12,PASS
+affine-div-3d_2x3x4_nonunit_nu0.001_p1_natural,symmetry ||W-W^T||/||W||,7.3e-17,<=1e-14,PASS
+affine-div-3d_2x3x4_nonunit_nu0.001_p1_natural,PSD lambda_min/lambda_max,-7.0e-17,>= -1e-13,PASS
+affine-div-3d_2x3x4_nonunit_nu0.001_p1_natural,constants ||W 1||_inf/||W||_max,1.6e-15,<=1e-13,PASS
+affine-div-3d_2x3x4_nonunit_nu0.001_p1_natural,NEG h_K = max extent: differs,8.3e-01,> 1e-6,PASS
+affine-div-3d_2x3x4_nonunit_nu0.001_p1_natural,NEG integrand wind frozen at the centroid: differs,3.8e-01,> 1e-6,PASS
+affine-div-3d_2x3x4_nonunit_nu0.001_p1_natural,NEG no projection (delta A): differs,6.9e-01,> 1e-6,PASS
+affine-div-3d_2x3x4_nonunit_nu0.001_p1_natural,NEG wrong Pe threshold Pe > 2: coincides here by construction,2.7e-14,<=1e-12 (identical form),PASS
+affine-div-3d_2x3x4_nonunit_nu0.001_p1_natural,NEG wrong Pe threshold Pe > 1/2: coincides here by construction,2.7e-14,<=1e-12 (identical form),PASS
+affine-div-3d_2x2x2_nu0.171_p0_dirichlet,active patches binary = reference,7/8,"7/8 (Pe in [0.757,2.78])",PASS
+affine-div-3d_2x2x2_nu0.171_p0_dirichlet,"W_FF (eliminated) = W_ref[F,F]",9.4e-15,<=1e-12,PASS

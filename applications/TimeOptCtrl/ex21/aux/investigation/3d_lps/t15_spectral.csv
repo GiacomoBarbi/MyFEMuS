@@ -1,0 +1,25 @@
+state,wind,nu,method,free_dofs,lambda_min_sym,lambda_max_sym,skew_over_sym,cond2_L,nonnormality
+dirichlet,A,1e-3,Galerkin,343,2.9624e-02,2.3844e+00,2.0230e+01,9.7820e+01,2.9379e-03
+dirichlet,A,1e-3,LPS-P0,343,8.2295e-02,2.0744e+02,2.5580e-01,5.1686e+01,2.0276e-02
+dirichlet,A,1e-3,LPS-P1,343,3.4472e-02,2.0432e+02,4.4161e-01,3.3389e+01,3.1149e-02
+dirichlet,A,1e-2,Galerkin,343,2.9624e-01,2.3844e+01,2.0230e+00,1.8477e+01,2.3668e-02
+dirichlet,A,1e-2,LPS-P0,343,3.7955e-01,2.1585e+02,2.4016e-01,4.3288e+01,1.8437e-02
+dirichlet,A,1e-2,LPS-P1,343,3.0575e-01,2.1356e+02,3.9197e-01,2.6878e+01,2.4392e-02
+dirichlet,harmonic-3d,1e-3,Galerkin,343,2.9624e-02,2.3844e+00,1.3864e+01,8.9059e+01,4.3730e-03
+dirichlet,harmonic-3d,1e-3,LPS-P0,343,9.6508e-02,1.4508e+02,2.8025e-01,1.0056e+02,2.8567e-02
+dirichlet,harmonic-3d,1e-3,LPS-P1,343,3.5132e-02,1.4051e+02,5.0300e-01,5.5888e+01,3.3310e-02
+dirichlet,harmonic-3d,1e-2,Galerkin,343,2.9624e-01,2.3844e+01,1.3864e+00,1.8501e+01,2.8914e-02
+dirichlet,harmonic-3d,1e-2,LPS-P0,343,3.8446e-01,1.5290e+02,2.5750e-01,6.0226e+01,2.4929e-02
+dirichlet,harmonic-3d,1e-2,LPS-P1,343,3.0463e-01,1.4944e+02,4.1774e-01,2.9963e+01,2.5220e-02
+natural,A,1e-3,Galerkin,729,-3.6724e+01,3.9700e+01,3.7772e+00,singular (L 1 = 0; numerical 4.2011e+17),2.2784e-02
+natural,A,1e-3,LPS-P0,729,-9.4612e+00,2.9959e+02,2.7608e-01,singular (L 1 = 0; numerical 1.2681e+17),2.2747e-02
+natural,A,1e-3,LPS-P1,729,-1.8414e+01,2.9942e+02,4.4657e-01,singular (L 1 = 0; numerical 3.5649e+16),3.1873e-02
+natural,A,1e-2,Galerkin,729,-2.6048e+01,5.5721e+01,1.9654e+00,singular (L 1 = 0; numerical 4.8395e+16),3.0440e-02
+natural,A,1e-2,LPS-P0,729,-8.6138e+00,3.0652e+02,2.6139e-01,singular (L 1 = 0; numerical 3.5657e+16),2.1071e-02
+natural,A,1e-2,LPS-P1,729,-1.5375e+01,3.0640e+02,4.0611e-01,singular (L 1 = 0; numerical 2.9695e+16),2.6635e-02
+natural,harmonic-3d,1e-3,Galerkin,729,-4.6382e+01,3.7845e+01,3.6848e+00,singular (L 1 = 0; numerical 6.5550e+16),3.2936e-02
+natural,harmonic-3d,1e-3,LPS-P0,729,-1.0955e+01,2.9348e+02,2.9965e-01,singular (L 1 = 0; numerical 1.1850e+18),3.1740e-02
+natural,harmonic-3d,1e-3,LPS-P1,729,-2.1409e+01,2.9259e+02,4.9914e-01,singular (L 1 = 0; numerical 6.5293e+16),3.5132e-02
+natural,harmonic-3d,1e-2,Galerkin,729,-3.5868e+01,5.3611e+01,1.4654e+00,singular (L 1 = 0; numerical 3.8125e+16),3.8019e-02
+natural,harmonic-3d,1e-2,LPS-P0,729,-1.0022e+01,2.9765e+02,2.7952e-01,singular (L 1 = 0; numerical 3.8108e+16),2.8493e-02
+natural,harmonic-3d,1e-2,LPS-P1,729,-1.8668e+01,2.9703e+02,4.3306e-01,singular (L 1 = 0; numerical 9.9440e+16),2.8851e-02
