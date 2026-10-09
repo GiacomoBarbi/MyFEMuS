@@ -746,6 +746,12 @@ NativeSpatialOperators BuildNativeSpatialOperators(
           if (data.coordinates.size() > 1u) z += phi[a] * data.coordinates[1][a];
         }
         config.convection.field(config, x, z, point_velocity);
+      } else if (convection && config.convection.field3d) {
+        // T14: 3D field at the physical quadrature point (isoparametric map, storage axes 0..2)
+        double xq[3] = {0.0, 0.0, 0.0};
+        for (unsigned a = 0; a < element_dofs; ++a)
+          for (unsigned axis = 0; axis < 3u; ++axis) xq[axis] += phi[a] * data.coordinates[axis][a];
+        config.convection.field3d(config, xq[0], xq[1], xq[2], point_velocity);
       }
       if (convection)
         for (unsigned a = 0; a < element_dofs; ++a)
@@ -1462,8 +1468,15 @@ std::unique_ptr<SparseMatrix> BuildBoundaryConvectionMatrix(
       const elem_type* face_element = mesh->_finiteElement[face_geometry][solution_type];
       for (unsigned gauss = 0; gauss < face_element->GetGaussPointNumber(); ++gauss) {
         face_element->JacobianSur(face_coordinates, gauss, weight, phi, gradient, normal);
+        double wq[3] = {w[0], w[1], w[2]};
+        if (config.convection.field3d && dimension == 3u) {   // T14: w(x) at the face quadrature point
+          double xq[3] = {0.0, 0.0, 0.0};
+          for (unsigned a = 0; a < face_dofs; ++a)
+            for (unsigned axis = 0; axis < 3u; ++axis) xq[axis] += phi[a] * face_coordinates[axis][a];
+          config.convection.field3d(config, xq[0], xq[1], xq[2], wq);
+        }
         double wn = 0.0;
-        for (unsigned axis = 0; axis < dimension; ++axis) wn += w[axis] * normal[axis];
+        for (unsigned axis = 0; axis < dimension; ++axis) wn += wq[axis] * normal[axis];
         local.area[slot] += weight;
         for (unsigned axis = 0; axis < dimension; ++axis)
           local.normal[slot][axis] += normal[axis] * weight;
@@ -1486,6 +1499,86 @@ std::unique_ptr<SparseMatrix> BuildBoundaryConvectionMatrix(
     MPI_Allreduce(local.wn_abs_max, stats->wn_abs_max, n, MPI_DOUBLE, MPI_MAX, PETSC_COMM_WORLD);
   }
   return B;
+}
+
+std::unique_ptr<SparseMatrix> BuildDivergenceMassMatrix(const ProblemConfig& config, Mesh* mesh,
+                                                        unsigned solution_type) {
+  const unsigned rank = mesh->processor_id();
+  const unsigned dimension = mesh->GetDimension();
+  const int global_rows = mesh->GetTotalNumberOfDofs(solution_type);
+  const int local_rows = mesh->_dofOffset[solution_type][rank + 1u] -
+                         mesh->_dofOffset[solution_type][rank];
+  std::unique_ptr<SparseMatrix> D = SparseMatrix::build();
+  const int row_nonzeros = dimension == 3u ? 125 : 64;
+  D->init(global_rows, global_rows, local_rows, local_rows, row_nonzeros, row_nonzeros);
+  std::vector<double> phi, gradient;
+  double weight = 0.0;
+  for (unsigned element = mesh->_elementOffset[rank];
+       element < mesh->_elementOffset[rank + 1u]; ++element) {
+    const ElementData data = GatherElementData(mesh, solution_type, element);
+    const unsigned n = data.dofs.size();
+    std::vector<int> system_dofs(n);
+    for (unsigned a = 0; a < n; ++a)
+      system_dofs[a] = static_cast<int>(mesh->GetSolutionDof(a, element, solution_type));
+    std::vector<double> local(n * n, 0.0);
+    const elem_type* fe = mesh->_finiteElement[data.geometry][solution_type];
+    for (unsigned gauss = 0; gauss < fe->GetGaussPointNumber(); ++gauss) {
+      fe->Jacobian(data.coordinates, gauss, weight, phi, gradient);
+      double xq[3] = {0.0, 0.0, 0.0};
+      for (unsigned a = 0; a < n; ++a)
+        for (unsigned axis = 0; axis < dimension && axis < 3u; ++axis)
+          xq[axis] += phi[a] * data.coordinates[axis][a];
+      const double div = EvaluateDivergence3D(config, xq[0], xq[1], xq[2]);
+      for (unsigned a = 0; a < n; ++a)
+        for (unsigned b = 0; b < n; ++b) local[a * n + b] += div * phi[a] * phi[b] * weight;
+    }
+    D->add_matrix_blocked(local, system_dofs, system_dofs);
+  }
+  D->close();
+  return D;
+}
+
+WindStats3D ComputeWindStats3D(const ProblemConfig& config, Mesh* mesh, unsigned solution_type) {
+  const unsigned rank = mesh->processor_id();
+  WindStats3D s;
+  double loc[4] = {0.0, -1.0e300, -1.0e300, -1.0e300};   // -min|w|, max|w|, max|div|, Pe_max
+  loc[0] = -1.0e300;
+  std::vector<double> phi, gradient;
+  double weight = 0.0;
+  for (unsigned element = mesh->_elementOffset[rank];
+       element < mesh->_elementOffset[rank + 1u]; ++element) {
+    const ElementData data = GatherElementData(mesh, solution_type, element);
+    const unsigned n = data.dofs.size();
+    double hk = 0.0;   // h_K: the largest bounding-box extent of the element
+    for (unsigned axis = 0; axis < data.coordinates.size(); ++axis) {
+      const std::vector<double>& c = data.coordinates[axis];
+      hk = std::max(hk, *std::max_element(c.begin(), c.end()) - *std::min_element(c.begin(), c.end()));
+    }
+    double wk = 0.0;
+    const elem_type* fe = mesh->_finiteElement[data.geometry][solution_type];
+    for (unsigned gauss = 0; gauss < fe->GetGaussPointNumber(); ++gauss) {
+      fe->Jacobian(data.coordinates, gauss, weight, phi, gradient);
+      double xq[3] = {0.0, 0.0, 0.0};
+      for (unsigned a = 0; a < n; ++a)
+        for (unsigned axis = 0; axis < data.coordinates.size() && axis < 3u; ++axis)
+          xq[axis] += phi[a] * data.coordinates[axis][a];
+      double w[3];
+      EvaluateVelocity3D(config, xq[0], xq[1], xq[2], w);
+      const double sp = std::sqrt(w[0] * w[0] + w[1] * w[1] + w[2] * w[2]);
+      wk = std::max(wk, sp);
+      loc[0] = std::max(loc[0], -sp);
+      loc[1] = std::max(loc[1], sp);
+      loc[2] = std::max(loc[2], std::fabs(EvaluateDivergence3D(config, xq[0], xq[1], xq[2])));
+    }
+    loc[3] = std::max(loc[3], hk * wk / (2.0 * config.diffusivity));
+  }
+  double g[4];
+  MPI_Allreduce(loc, g, 4, MPI_DOUBLE, MPI_MAX, PETSC_COMM_WORLD);
+  s.w_min = -g[0];
+  s.w_max = g[1];
+  s.div_max = g[2];
+  s.pe_h_max = g[3];
+  return s;
 }
 
 // ---------------------------------------------------------------------------

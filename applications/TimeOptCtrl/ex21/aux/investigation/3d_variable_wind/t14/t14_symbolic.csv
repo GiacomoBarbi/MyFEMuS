@@ -1,0 +1,147 @@
+check,value,verdict
+"W1 -div(w p) + w.grad p + (div w) p = 0 (symbolic H, symbolic p)",0.000e+00,PASS
+W2 harmonic-3d: w = grad Phi,0.000e+00,PASS
+W2 harmonic-3d: div w - 0,0.000e+00,PASS
+W2 harmonic-3d: w.n nonconstant on zmin,2.000e+00,PASS
+W2 harmonic-3d: w.n nonconstant on ymin,2.000e+00,PASS
+W2 harmonic-3d: w.n nonconstant on xmax,2.000e+00,PASS
+W2 harmonic-3d: w.n nonconstant on ymax,2.000e+00,PASS
+W2 harmonic-3d: w.n nonconstant on xmin,2.000e+00,PASS
+W2 harmonic-3d: w.n nonconstant on zmax,2.000e+00,PASS
+W2 affine-div-3d: w = grad Phi,0.000e+00,PASS
+W2 affine-div-3d: div w - 1,0.000e+00,PASS
+W2 affine-div-3d: w.n nonconstant on zmin,2.000e+00,PASS
+W2 affine-div-3d: w.n nonconstant on ymin,2.000e+00,PASS
+W2 affine-div-3d: w.n nonconstant on xmax,2.000e+00,PASS
+W2 affine-div-3d: w.n nonconstant on ymax,2.000e+00,PASS
+W2 affine-div-3d: w.n nonconstant on xmin,2.000e+00,PASS
+W2 affine-div-3d: w.n nonconstant on zmax,2.000e+00,PASS
+D1 harmonic-3d: state residual,0.000e+00,PASS
+D2 harmonic-3d: FULL adjoint residual -p_t - nu Lap p - div(w p) - alpha_t (y - y_d),0.000e+00,PASS
+"D3 harmonic-3d: y, p, grad y, grad p on zmin",0.000e+00,PASS
+"D3 harmonic-3d: y, p, grad y, grad p on ymin",0.000e+00,PASS
+"D3 harmonic-3d: y, p, grad y, grad p on xmax",0.000e+00,PASS
+"D3 harmonic-3d: y, p, grad y, grad p on ymax",0.000e+00,PASS
+"D3 harmonic-3d: y, p, grad y, grad p on xmin",0.000e+00,PASS
+"D3 harmonic-3d: y, p, grad y, grad p on zmax",0.000e+00,PASS
+D4 harmonic-3d: p(T),0.000e+00,PASS
+D5 harmonic-3d: stationarity alpha_u u + eta p,0.000e+00,PASS
+D6 harmonic-3d: target without (div w) p coincides (div w = 0),0.000e+00,PASS
+D1 affine-div-3d: state residual,0.000e+00,PASS
+D2 affine-div-3d: FULL adjoint residual -p_t - nu Lap p - div(w p) - alpha_t (y - y_d),0.000e+00,PASS
+"D3 affine-div-3d: y, p, grad y, grad p on zmin",0.000e+00,PASS
+"D3 affine-div-3d: y, p, grad y, grad p on ymin",0.000e+00,PASS
+"D3 affine-div-3d: y, p, grad y, grad p on xmax",0.000e+00,PASS
+"D3 affine-div-3d: y, p, grad y, grad p on ymax",0.000e+00,PASS
+"D3 affine-div-3d: y, p, grad y, grad p on xmin",0.000e+00,PASS
+"D3 affine-div-3d: y, p, grad y, grad p on zmax",0.000e+00,PASS
+D4 affine-div-3d: p(T),0.000e+00,PASS
+D5 affine-div-3d: stationarity alpha_u u + eta p,0.000e+00,PASS
+D6 affine-div-3d: NEG target without (div w) p: adjoint residual,4.767e-04,PASS
+N1 natural-var Robin nu dn p + (w.n) p on zmin (symbolic H),0.000e+00,PASS
+N1 natural-var Robin nu dn p + (w.n) p on ymin (symbolic H),0.000e+00,PASS
+N1 natural-var Robin nu dn p + (w.n) p on xmax (symbolic H),0.000e+00,PASS
+N1 natural-var Robin nu dn p + (w.n) p on ymax (symbolic H),0.000e+00,PASS
+N1 natural-var Robin nu dn p + (w.n) p on xmin (symbolic H),0.000e+00,PASS
+N1 natural-var Robin nu dn p + (w.n) p on zmax (symbolic H),0.000e+00,PASS
+N2 harmonic-3d: FULL adjoint residual,7.373e-18,PASS
+N3 harmonic-3d: p(T),0.000e+00,PASS
+N4 harmonic-3d: nu dn y on zmin,0.000e+00,PASS
+N4 harmonic-3d: nu dn y on ymin,0.000e+00,PASS
+N4 harmonic-3d: nu dn y on xmax,0.000e+00,PASS
+N4 harmonic-3d: nu dn y on ymax,0.000e+00,PASS
+N4 harmonic-3d: nu dn y on xmin,0.000e+00,PASS
+N4 harmonic-3d: nu dn y on zmax,0.000e+00,PASS
+N5 harmonic-3d: NEG Robin with the face-averaged w.n on xmin,2.592e-02,PASS
+P1 harmonic-3d: C++ PotShape Laplacian vs sympy,3.191e-16,PASS
+P1 harmonic-3d: C++ PotShape gradient vs sympy,7.327e-15,PASS
+N2 affine-div-3d: FULL adjoint residual,1.063e-17,PASS
+N3 affine-div-3d: p(T),0.000e+00,PASS
+N4 affine-div-3d: nu dn y on zmin,0.000e+00,PASS
+N4 affine-div-3d: nu dn y on ymin,0.000e+00,PASS
+N4 affine-div-3d: nu dn y on xmax,0.000e+00,PASS
+N4 affine-div-3d: nu dn y on ymax,0.000e+00,PASS
+N4 affine-div-3d: nu dn y on xmin,0.000e+00,PASS
+N4 affine-div-3d: nu dn y on zmax,0.000e+00,PASS
+N5 affine-div-3d: NEG Robin with the face-averaged w.n on xmin,2.397e-02,PASS
+P1 affine-div-3d: C++ PotShape Laplacian vs sympy,4.132e-16,PASS
+P1 affine-div-3d: C++ PotShape gradient vs sympy,3.109e-15,PASS
+M1 neumann-var-3d harmonic-3d: FULL adjoint residual,7.318e-18,PASS
+M2 neumann-var-3d harmonic-3d: nu dn y - eta u on zmin,0.000e+00,PASS
+M3 neumann-var-3d harmonic-3d: Robin on zmin,0.000e+00,PASS
+M2 neumann-var-3d harmonic-3d: nu dn y on ymin,0.000e+00,PASS
+M3 neumann-var-3d harmonic-3d: Robin on ymin,0.000e+00,PASS
+M2 neumann-var-3d harmonic-3d: nu dn y on xmax,0.000e+00,PASS
+M3 neumann-var-3d harmonic-3d: Robin on xmax,0.000e+00,PASS
+M2 neumann-var-3d harmonic-3d: nu dn y on ymax,0.000e+00,PASS
+M3 neumann-var-3d harmonic-3d: Robin on ymax,0.000e+00,PASS
+M2 neumann-var-3d harmonic-3d: nu dn y on xmin,0.000e+00,PASS
+M3 neumann-var-3d harmonic-3d: Robin on xmin,0.000e+00,PASS
+M2 neumann-var-3d harmonic-3d: nu dn y on zmax,0.000e+00,PASS
+M3 neumann-var-3d harmonic-3d: Robin on zmax,0.000e+00,PASS
+M4 neumann-var-3d harmonic-3d: p(T),0.000e+00,PASS
+M5 neumann-var-3d harmonic-3d: stationarity on Gamma_c,0.000e+00,PASS
+P2 neumann-var-3d harmonic-3d: C++ VarG Laplacian vs sympy,1.124e-16,PASS
+M1 neumann-var-3d affine-div-3d: FULL adjoint residual,1.681e-18,PASS
+M2 neumann-var-3d affine-div-3d: nu dn y - eta u on zmin,0.000e+00,PASS
+M3 neumann-var-3d affine-div-3d: Robin on zmin,0.000e+00,PASS
+M2 neumann-var-3d affine-div-3d: nu dn y on ymin,0.000e+00,PASS
+M3 neumann-var-3d affine-div-3d: Robin on ymin,0.000e+00,PASS
+M2 neumann-var-3d affine-div-3d: nu dn y on xmax,0.000e+00,PASS
+M3 neumann-var-3d affine-div-3d: Robin on xmax,0.000e+00,PASS
+M2 neumann-var-3d affine-div-3d: nu dn y on ymax,0.000e+00,PASS
+M3 neumann-var-3d affine-div-3d: Robin on ymax,0.000e+00,PASS
+M2 neumann-var-3d affine-div-3d: nu dn y on xmin,0.000e+00,PASS
+M3 neumann-var-3d affine-div-3d: Robin on xmin,0.000e+00,PASS
+M2 neumann-var-3d affine-div-3d: nu dn y on zmax,0.000e+00,PASS
+M3 neumann-var-3d affine-div-3d: Robin on zmax,0.000e+00,PASS
+M4 neumann-var-3d affine-div-3d: p(T),0.000e+00,PASS
+M5 neumann-var-3d affine-div-3d: stationarity on Gamma_c,0.000e+00,PASS
+P2 neumann-var-3d affine-div-3d: C++ VarG Laplacian vs sympy,3.650e-16,PASS
+M1 neumann-var-opp-3d harmonic-3d: FULL adjoint residual,7.318e-18,PASS
+M2 neumann-var-opp-3d harmonic-3d: nu dn y - eta u on zmin,0.000e+00,PASS
+M3 neumann-var-opp-3d harmonic-3d: Robin on zmin,0.000e+00,PASS
+M2 neumann-var-opp-3d harmonic-3d: nu dn y on ymin,0.000e+00,PASS
+M3 neumann-var-opp-3d harmonic-3d: Robin on ymin,0.000e+00,PASS
+M2 neumann-var-opp-3d harmonic-3d: nu dn y on xmax,0.000e+00,PASS
+M3 neumann-var-opp-3d harmonic-3d: Robin on xmax,0.000e+00,PASS
+M2 neumann-var-opp-3d harmonic-3d: nu dn y on ymax,0.000e+00,PASS
+M3 neumann-var-opp-3d harmonic-3d: Robin on ymax,0.000e+00,PASS
+M2 neumann-var-opp-3d harmonic-3d: nu dn y on xmin,0.000e+00,PASS
+M3 neumann-var-opp-3d harmonic-3d: Robin on xmin,0.000e+00,PASS
+M2 neumann-var-opp-3d harmonic-3d: nu dn y - eta u on zmax,0.000e+00,PASS
+M3 neumann-var-opp-3d harmonic-3d: Robin on zmax,0.000e+00,PASS
+M4 neumann-var-opp-3d harmonic-3d: p(T),0.000e+00,PASS
+M5 neumann-var-opp-3d harmonic-3d: stationarity on Gamma_c,0.000e+00,PASS
+P2 neumann-var-opp-3d harmonic-3d: C++ VarG Laplacian vs sympy,1.124e-16,PASS
+M1 neumann-var-opp-3d affine-div-3d: FULL adjoint residual,1.681e-18,PASS
+M2 neumann-var-opp-3d affine-div-3d: nu dn y - eta u on zmin,0.000e+00,PASS
+M3 neumann-var-opp-3d affine-div-3d: Robin on zmin,0.000e+00,PASS
+M2 neumann-var-opp-3d affine-div-3d: nu dn y on ymin,0.000e+00,PASS
+M3 neumann-var-opp-3d affine-div-3d: Robin on ymin,0.000e+00,PASS
+M2 neumann-var-opp-3d affine-div-3d: nu dn y on xmax,0.000e+00,PASS
+M3 neumann-var-opp-3d affine-div-3d: Robin on xmax,0.000e+00,PASS
+M2 neumann-var-opp-3d affine-div-3d: nu dn y on ymax,0.000e+00,PASS
+M3 neumann-var-opp-3d affine-div-3d: Robin on ymax,0.000e+00,PASS
+M2 neumann-var-opp-3d affine-div-3d: nu dn y on xmin,0.000e+00,PASS
+M3 neumann-var-opp-3d affine-div-3d: Robin on xmin,0.000e+00,PASS
+M2 neumann-var-opp-3d affine-div-3d: nu dn y - eta u on zmax,0.000e+00,PASS
+M3 neumann-var-opp-3d affine-div-3d: Robin on zmax,0.000e+00,PASS
+M4 neumann-var-opp-3d affine-div-3d: p(T),0.000e+00,PASS
+M5 neumann-var-opp-3d affine-div-3d: stationarity on Gamma_c,0.000e+00,PASS
+P2 neumann-var-opp-3d affine-div-3d: C++ VarG Laplacian vs sympy,3.650e-16,PASS
+S1 swirl div w = 0 (any g(z)),0.000e+00,PASS
+S1 swirl ds/dx = derivative of s (port: pi sin 2 pi x),0.000e+00,PASS
+S2 swirl tangential parts on xmin,0.000e+00,PASS
+S2 swirl tangential parts on xmax,0.000e+00,PASS
+S2 swirl tangential parts on ymin,0.000e+00,PASS
+S2 swirl tangential parts on ymax,0.000e+00,PASS
+"S3 septic step g(1/2) = 0, g'(1/2) = 0, g''(1/2) = 0 (w = (0,0,gamma) for z <= 1/2)",0.000e+00,PASS
+"S4 T11D adjoint homogeneous for the wind (0,0,gamma) (z <= 1/2, residual/p on a grid)",0.000e+00,PASS
+S5 dirichlet-var p = 0 on xmin,0.000e+00,PASS
+S5 dirichlet-var p = 0 on xmax,0.000e+00,PASS
+S5 dirichlet-var p = 0 on ymin,0.000e+00,PASS
+S5 dirichlet-var p = 0 on ymax,0.000e+00,PASS
+S5 dirichlet-var p = 0 on zmin,0.000e+00,PASS
+S6 dirichlet-var y - eta u on zmin,0.000e+00,PASS
+S6 dirichlet-var y on zmax,0.000e+00,PASS

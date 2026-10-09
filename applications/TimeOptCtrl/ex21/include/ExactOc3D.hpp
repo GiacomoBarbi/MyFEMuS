@@ -58,7 +58,14 @@ class Mesh;
  *  dirichlet-opp-3d -- Gamma_c = zmin u zmax, omega = (0,1)^2 x (1/4,3/4) (needs nz % 4 == 0),
  *  image kernels about z = 0 and z = 1 blended on [1/4, 3/4]; u_zmax = exp(-w_z/(2 nu)) u_zmin,
  *  L2 and H1-space / H1-time (the dirichlet-h1-3d temporal factor).  Verified by
- *  aux/investigation/3d_multiface/t13/scripts/t13_symbolic.py.  `alpha_u` <= 0:
+ *  aux/investigation/3d_multiface/t13/scripts/t13_symbolic.py.
+ *  T14 (variable 3D wind, --wind harmonic-3d | affine-div-3d; the full adjoint -div(w p)):
+ *  conv-sin3-3d accepts the field (y_d carries the (div w) p term);
+ *  natural-var-3d / neumann-var-3d (zmin) / neumann-var-opp-3d (zmin u zmax): potential winds w = grad Phi,
+ *  p = alpha_u B exp(-Phi/nu) Q with dn Q = 0, so nu dn p + (w.n) p = 0 exactly (nu default 1/2);
+ *  dirichlet-var-3d: owns the div-free swirl w = (s s' g, -s' s g, vz), constant (0, 0, vz) for z <= 1/2,
+ *  with the dirichlet-conv-3d adjoint.  Verified by aux/investigation/3d_variable_wind/t14/scripts/t14_symbolic.py.
+ *  `alpha_u` <= 0:
  *  1e-2; `final_time` <= 0: 1; `nu` <= 0: 1/4.  The wind is NOT set here:
  *  it is --convection on/off with --vx --vy --vz. */
 void ApplyExactOptimalControl3D(ProblemConfig& config, const std::string& name,

@@ -138,6 +138,18 @@ struct ProblemConfig {
      *  stays the exact transpose of the assembled operator. */
     void (*field)(const ProblemConfig&, double x, double z, double w[2]) = nullptr;
     const char* field_name = nullptr;   // for logs only
+    /** T14: optional VARIABLE, time-independent 3D velocity w(x, y, z) (storage axes 0, 1, 2),
+     *  evaluated at every quadrature point of the 3D convection assembly (volume C) and of the
+     *  boundary matrix B_w (face quadrature points).  Null (the default) is the constant
+     *  (vx, vy, vz), operation for operation.  `divergence3d` is used only by the verification
+     *  operator D_w = int (div w) phi_i phi_j and by the exact data.  The quadratic-potential
+     *  presets (--wind harmonic-3d | affine-div-3d) set `potential` and the symmetric Hessian
+     *  `hessian` (Phi = x^T H x / 2, w = H x, div w = tr H). */
+    void (*field3d)(const ProblemConfig&, double x, double y, double z, double w[3]) = nullptr;
+    double (*divergence3d)(const ProblemConfig&, double x, double y, double z) = nullptr;
+    bool potential = false;
+    double hessian[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    bool field3d_reads_vz = false;   // T14: dirichlet-var-3d's swirl takes its normal part from vz
     /** T6: optional convection stabilisation, OFF by default.  LPS is the
      *  ex21 Q2 version of Leveque-Pearson's (NLAA 2022, eqs. (7)-(8)) local
      *  projection stabilisation: L = nu K + N + W, with
@@ -392,6 +404,7 @@ struct ProblemConfig {
     if (!full(control.region) || !full(tracking_box))
       refuse("control and tracking must cover the whole domain");
     if (convection.field) refuse("only a constant wind (variable winds refused)");
+    if (convection.field3d) refuse("only a constant wind (3D variable winds are validated on HEX27 only)");
     if (convection.stabilization != ConvectionConfig::Stabilization::NONE)
       refuse("no convection stabilisation (LPS refused)");
     if (data_overrides.dirichlet_state) refuse("no inhomogeneous Dirichlet lifting");
@@ -420,6 +433,10 @@ struct ProblemConfig {
       throw std::invalid_argument("invalid convection velocity");
     if (convection.field && !convection.enabled)
       throw std::invalid_argument("a velocity field requires --convection on");
+    if (convection.field3d && !convection.enabled)   // T14
+      throw std::invalid_argument("a velocity field requires --convection on");
+    if (convection.field3d && dimension != 3u)
+      throw std::invalid_argument("--wind harmonic-3d / affine-div-3d are 3D fields (--dimension 3)");
     if (convection.stabilization != ConvectionConfig::Stabilization::NONE &&
         !convection.enabled)
       throw std::invalid_argument(
@@ -546,7 +563,17 @@ struct ProblemConfig {
       refuse("H1-space / H1-time control regularisation is validated for Dirichlet boundary"
              " control only (Neumann and distributed control: L2 only)");
     if (data_overrides.dirichlet_state) refuse("inhomogeneous Dirichlet lifting is not ported");
-    if (convection.field) refuse("only a constant wind (named/variable winds are not ported)");
+    if (convection.field)   // T14: the 2D presets read (x, z) only
+      refuse("--wind lp-recirculating / q2-divfree are 2D fields; the 3D variable winds are --wind harmonic-3d |"
+             " affine-div-3d");
+    // T14: 3D variable winds (--wind harmonic-3d | affine-div-3d); never together with an explicit
+    // constant vector (no silent precedence)
+    if (convection.field3d && !convection.field3d_reads_vz &&
+        (convection.vx != 0.0 || convection.vy != 0.0 || convection.vz != 0.0))
+      refuse("a variable wind (--wind) and a constant vector (--vx/--vy/--vz) conflict; give one");
+    if (convection.field3d && convection.field3d_reads_vz &&
+        (convection.vx != 0.0 || convection.vy != 0.0))
+      refuse("this case's wind takes only its normal component from --vz (--vx --vy must be 0)");
     if (convection.stabilization != ConvectionConfig::Stabilization::NONE)
       refuse("no convection stabilisation (LPS is not ported)");
     if (!std::isfinite(convection.vz)) refuse("invalid --vz");
@@ -643,6 +670,56 @@ inline void WindQ2Divfree(const ProblemConfig&, double x, double z,
                           double w[2]) {
   w[0] = 0.5 + x * x;
   w[1] = 0.25 - 2.0 * x * z;
+}
+
+/** T14: the 3D velocity at (x, y, z): the constant (vx, vy, vz) unless a 3D field is installed. */
+inline void EvaluateVelocity3D(const ProblemConfig& config, double x, double y, double z,
+                               double w[3]) {
+  w[0] = config.convection.vx;
+  w[1] = config.convection.vy;
+  w[2] = config.convection.vz;
+  if (config.convection.field3d) config.convection.field3d(config, x, y, z, w);
+}
+/** T14: div w at (x, y, z) (0 for the constant wind and for fields without a divergence). */
+inline double EvaluateDivergence3D(const ProblemConfig& config, double x, double y, double z) {
+  return config.convection.divergence3d ? config.convection.divergence3d(config, x, y, z) : 0.0;
+}
+/** T14 quadratic-potential presets: Phi = x^T H x / 2, w = grad Phi = H x, div w = tr H.
+ *  harmonic-3d:   H = [[0, 1, -3/4], [1, 0, 1/2], [-3/4, 1/2, 0]]  (div w = 0)
+ *  affine-div-3d: the same + diag(1/2, 1/4, 1/4)                   (div w = 1)
+ *  Affine w: exactly representable in Q2 (the orientation gate is exact). */
+inline void WindPotential3D(const ProblemConfig& c, double x, double y, double z, double w[3]) {
+  const double* H = c.convection.hessian;
+  w[0] = H[0] * x + H[1] * y + H[2] * z;
+  w[1] = H[3] * x + H[4] * y + H[5] * z;
+  w[2] = H[6] * x + H[7] * y + H[8] * z;
+}
+inline double DivPotential3D(const ProblemConfig& c, double, double, double) {
+  return c.convection.hessian[0] + c.convection.hessian[4] + c.convection.hessian[8];
+}
+inline double PotentialPhi3D(const ProblemConfig& c, double x, double y, double z) {
+  const double* H = c.convection.hessian;
+  const double p[3] = {x, y, z};
+  double s = 0.0;
+  for (unsigned i = 0; i < 3u; ++i)
+    for (unsigned j = 0; j < 3u; ++j) s += 0.5 * p[i] * H[3 * i + j] * p[j];
+  return s;
+}
+/** T14: install a named 3D preset; false if `name` is not one. */
+inline bool InstallWindPreset3D(ProblemConfig& c, const std::string& name) {
+  static const double harmonic[9] = {0.0, 1.0, -0.75, 1.0, 0.0, 0.5, -0.75, 0.5, 0.0};
+  if (name != "harmonic-3d" && name != "affine-div-3d") return false;
+  for (unsigned k = 0; k < 9u; ++k) c.convection.hessian[k] = harmonic[k];
+  if (name == "affine-div-3d") {
+    c.convection.hessian[0] += 0.5;
+    c.convection.hessian[4] += 0.25;
+    c.convection.hessian[8] += 0.25;
+  }
+  c.convection.field3d = WindPotential3D;
+  c.convection.divergence3d = DivPotential3D;
+  c.convection.potential = true;
+  c.convection.field_name = name == "harmonic-3d" ? "harmonic-3d" : "affine-div-3d";
+  return true;
 }
 
 inline bool IsCrankNicolson(const ProblemConfig& config) {

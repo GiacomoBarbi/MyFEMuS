@@ -1,0 +1,40 @@
+case,check,value,reference,verdict
+harmonic-3d_2x2x2_natural,C + C^T = B_w - D_w (before elimination),1.4e-14,<=1e-13,PASS
+harmonic-3d_2x2x2_natural,1^T D_w 1 = |Omega| div w,0,0,PASS
+harmonic-3d_2x2x2_natural,1^T B_w 1 = int_dOmega w.n = |Omega| div w,7.97972798949e-17,0,PASS
+harmonic-3d_2x2x2_natural,D_w = 0 (div-free),0.0e+00,0,PASS
+harmonic-3d_3x2x2_nonunit_natural,C + C^T = B_w - D_w (before elimination),1.4e-14,<=1e-13,PASS
+harmonic-3d_3x2x2_nonunit_natural,1^T D_w 1 = |Omega| div w,0,0,PASS
+harmonic-3d_3x2x2_nonunit_natural,1^T B_w 1 = int_dOmega w.n = |Omega| div w,-4.4408920985e-16,0,PASS
+harmonic-3d_3x2x2_nonunit_natural,D_w = 0 (div-free),0.0e+00,0,PASS
+harmonic-3d_2x3x4_nonunit_natural,C + C^T = B_w - D_w (before elimination),1.8e-14,<=1e-13,PASS
+harmonic-3d_2x3x4_nonunit_natural,1^T D_w 1 = |Omega| div w,0,0,PASS
+harmonic-3d_2x3x4_nonunit_natural,1^T B_w 1 = int_dOmega w.n = |Omega| div w,3.33066907388e-16,0,PASS
+harmonic-3d_2x3x4_nonunit_natural,D_w = 0 (div-free),0.0e+00,0,PASS
+harmonic-3d_2x2x2_dirichlet,(C + C^T)_FF = -(D_w)_FF (after elimination; rel. to max|C|),2.1e-14,<=1e-13,PASS
+harmonic-3d_2x2x2_dirichlet,eliminated (constrained) DOFs = boundary nodes,98,98,PASS
+harmonic-3d_3x2x2_nonunit_dirichlet,(C + C^T)_FF = -(D_w)_FF (after elimination; rel. to max|C|),2.0e-14,<=1e-13,PASS
+harmonic-3d_3x2x2_nonunit_dirichlet,eliminated (constrained) DOFs = boundary nodes,130,130,PASS
+harmonic-3d_2x3x4_nonunit_dirichlet,(C + C^T)_FF = -(D_w)_FF (after elimination; rel. to max|C|),2.8e-14,<=1e-13,PASS
+harmonic-3d_2x3x4_nonunit_dirichlet,eliminated (constrained) DOFs = boundary nodes,210,210,PASS
+affine-div-3d_2x2x2_natural,C + C^T = B_w - D_w (before elimination),1.4e-14,<=1e-13,PASS
+affine-div-3d_2x2x2_natural,1^T D_w 1 = |Omega| div w,1,1,PASS
+affine-div-3d_2x2x2_natural,1^T B_w 1 = int_dOmega w.n = |Omega| div w,1,1,PASS
+affine-div-3d_2x2x2_natural,NEG div-free identity C + C^T = B_w on the generic field: fails,1.9e-01,> 1e-4,PASS
+affine-div-3d_3x2x2_nonunit_natural,C + C^T = B_w - D_w (before elimination),1.4e-14,<=1e-13,PASS
+affine-div-3d_3x2x2_nonunit_natural,1^T D_w 1 = |Omega| div w,2,2,PASS
+affine-div-3d_3x2x2_nonunit_natural,1^T B_w 1 = int_dOmega w.n = |Omega| div w,2,2,PASS
+affine-div-3d_3x2x2_nonunit_natural,NEG div-free identity C + C^T = B_w on the generic field: fails,8.9e-02,> 1e-4,PASS
+affine-div-3d_2x3x4_nonunit_natural,C + C^T = B_w - D_w (before elimination),1.8e-14,<=1e-13,PASS
+affine-div-3d_2x3x4_nonunit_natural,1^T D_w 1 = |Omega| div w,2,2,PASS
+affine-div-3d_2x3x4_nonunit_natural,1^T B_w 1 = int_dOmega w.n = |Omega| div w,2,2,PASS
+affine-div-3d_2x3x4_nonunit_natural,NEG div-free identity C + C^T = B_w on the generic field: fails,4.6e-02,> 1e-4,PASS
+affine-div-3d_2x2x2_dirichlet,(C + C^T)_FF = -(D_w)_FF (after elimination; rel. to max|C|),2.0e-14,<=1e-13,PASS
+affine-div-3d_2x2x2_dirichlet,NEG skew C_FF (div-free identity) on the generic field: fails,3.1e-01,> 1e-4,PASS
+affine-div-3d_2x2x2_dirichlet,eliminated (constrained) DOFs = boundary nodes,98,98,PASS
+affine-div-3d_3x2x2_nonunit_dirichlet,(C + C^T)_FF = -(D_w)_FF (after elimination; rel. to max|C|),2.1e-14,<=1e-13,PASS
+affine-div-3d_3x2x2_nonunit_dirichlet,NEG skew C_FF (div-free identity) on the generic field: fails,1.4e-01,> 1e-4,PASS
+affine-div-3d_3x2x2_nonunit_dirichlet,eliminated (constrained) DOFs = boundary nodes,130,130,PASS
+affine-div-3d_2x3x4_nonunit_dirichlet,(C + C^T)_FF = -(D_w)_FF (after elimination; rel. to max|C|),2.7e-14,<=1e-13,PASS
+affine-div-3d_2x3x4_nonunit_dirichlet,NEG skew C_FF (div-free identity) on the generic field: fails,6.9e-02,> 1e-4,PASS
+affine-div-3d_2x3x4_nonunit_dirichlet,eliminated (constrained) DOFs = boundary nodes,210,210,PASS

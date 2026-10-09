@@ -1,0 +1,133 @@
+case,check,value,reference,verdict
+harmonic-3d_zmin_be,dumped C = geometric C,9,9,PASS
+harmonic-3d_zmin_be,dumped B_D = formula (rel.),1.1e-16,<=1e-13,PASS
+harmonic-3d_zmin_be,dumped B_D^T = (formula)^T = (dumped B_D)^T,1.1e-16,<=1e-13,PASS
+harmonic-3d_zmin_be,"<B_D u, p> = <u, B_D^T p>",1.8e-16,<=1e-13,PASS
+harmonic-3d_zmin_be,NEG L instead of L^T in B_D^T: detected,9.3e-01,> 1e-6,PASS
+harmonic-3d_zmin_be,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.1e-14,<=1e-13,PASS
+harmonic-3d_zmin_be,NEG plain skew C + C^T = 0 on I u C,5.8e-01,> 1e-6,PASS
+harmonic-3d_zmin_cn,dumped C = geometric C,9,9,PASS
+harmonic-3d_zmin_cn,dumped B_D = formula (rel.),1.3e-16,<=1e-13,PASS
+harmonic-3d_zmin_cn,dumped B_D^T = (formula)^T = (dumped B_D)^T,1.3e-16,<=1e-13,PASS
+harmonic-3d_zmin_cn,"<B_D u, p> = <u, B_D^T p>",8.5e-16,<=1e-13,PASS
+harmonic-3d_zmin_cn,NEG L instead of L^T in B_D^T: detected,3.6e-01,> 1e-6,PASS
+harmonic-3d_zmin_cn,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.1e-14,<=1e-13,PASS
+harmonic-3d_zmin_cn,NEG plain skew C + C^T = 0 on I u C,5.8e-01,> 1e-6,PASS
+harmonic-3d_zmin+zmax_be,dumped C = geometric C,18,18,PASS
+harmonic-3d_zmin+zmax_be,dumped B_D = formula (rel.),7.8e-17,<=1e-13,PASS
+harmonic-3d_zmin+zmax_be,dumped B_D^T = (formula)^T = (dumped B_D)^T,7.8e-17,<=1e-13,PASS
+harmonic-3d_zmin+zmax_be,"<B_D u, p> = <u, B_D^T p>",0.0e+00,<=1e-13,PASS
+harmonic-3d_zmin+zmax_be,NEG L instead of L^T in B_D^T: detected,9.3e-01,> 1e-6,PASS
+harmonic-3d_zmin+zmax_be,NEG wrong C (face zmax omitted): detected,1.4e+00,> 1e-6,PASS
+harmonic-3d_zmin+zmax_be,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.1e-14,<=1e-13,PASS
+harmonic-3d_zmin+zmax_be,NEG plain skew C + C^T = 0 on I u C,5.8e-01,> 1e-6,PASS
+harmonic-3d_zmin+zmax_cn,dumped C = geometric C,18,18,PASS
+harmonic-3d_zmin+zmax_cn,dumped B_D = formula (rel.),1.2e-16,<=1e-13,PASS
+harmonic-3d_zmin+zmax_cn,dumped B_D^T = (formula)^T = (dumped B_D)^T,1.2e-16,<=1e-13,PASS
+harmonic-3d_zmin+zmax_cn,"<B_D u, p> = <u, B_D^T p>",0.0e+00,<=1e-13,PASS
+harmonic-3d_zmin+zmax_cn,NEG L instead of L^T in B_D^T: detected,3.6e-01,> 1e-6,PASS
+harmonic-3d_zmin+zmax_cn,NEG wrong C (face zmax omitted): detected,1.1e+00,> 1e-6,PASS
+harmonic-3d_zmin+zmax_cn,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.1e-14,<=1e-13,PASS
+harmonic-3d_zmin+zmax_cn,NEG plain skew C + C^T = 0 on I u C,5.8e-01,> 1e-6,PASS
+harmonic-3d_zmin+xmin_be,dumped C = geometric C,21,21,PASS
+harmonic-3d_zmin+xmin_be,dumped B_D = formula (rel.),6.9e-17,<=1e-13,PASS
+harmonic-3d_zmin+xmin_be,dumped B_D^T = (formula)^T = (dumped B_D)^T,6.9e-17,<=1e-13,PASS
+harmonic-3d_zmin+xmin_be,"<B_D u, p> = <u, B_D^T p>",7.9e-16,<=1e-13,PASS
+harmonic-3d_zmin+xmin_be,NEG L instead of L^T in B_D^T: detected,1.2e+00,> 1e-6,PASS
+harmonic-3d_zmin+xmin_be,NEG wrong C (face xmin omitted): detected,1.5e+00,> 1e-6,PASS
+harmonic-3d_zmin+xmin_be,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.1e-14,<=1e-13,PASS
+harmonic-3d_zmin+xmin_be,NEG plain skew C + C^T = 0 on I u C,7.5e-01,> 1e-6,PASS
+harmonic-3d_zmin+xmin_cn,dumped C = geometric C,21,21,PASS
+harmonic-3d_zmin+xmin_cn,dumped B_D = formula (rel.),1.1e-16,<=1e-13,PASS
+harmonic-3d_zmin+xmin_cn,dumped B_D^T = (formula)^T = (dumped B_D)^T,1.1e-16,<=1e-13,PASS
+harmonic-3d_zmin+xmin_cn,"<B_D u, p> = <u, B_D^T p>",1.6e-15,<=1e-13,PASS
+harmonic-3d_zmin+xmin_cn,NEG L instead of L^T in B_D^T: detected,4.6e-01,> 1e-6,PASS
+harmonic-3d_zmin+xmin_cn,NEG wrong C (face xmin omitted): detected,1.2e+00,> 1e-6,PASS
+harmonic-3d_zmin+xmin_cn,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.1e-14,<=1e-13,PASS
+harmonic-3d_zmin+xmin_cn,NEG plain skew C + C^T = 0 on I u C,7.5e-01,> 1e-6,PASS
+harmonic-3d_zmin+ymin+xmin_be,dumped C = geometric C,37,37,PASS
+harmonic-3d_zmin+ymin+xmin_be,dumped B_D = formula (rel.),1.8e-16,<=1e-13,PASS
+harmonic-3d_zmin+ymin+xmin_be,dumped B_D^T = (formula)^T = (dumped B_D)^T,1.8e-16,<=1e-13,PASS
+harmonic-3d_zmin+ymin+xmin_be,"<B_D u, p> = <u, B_D^T p>",4.0e-16,<=1e-13,PASS
+harmonic-3d_zmin+ymin+xmin_be,NEG L instead of L^T in B_D^T: detected,2.4e+00,> 1e-6,PASS
+harmonic-3d_zmin+ymin+xmin_be,NEG wrong C (face xmin omitted): detected,6.5e-01,> 1e-6,PASS
+harmonic-3d_zmin+ymin+xmin_be,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.1e-14,<=1e-13,PASS
+harmonic-3d_zmin+ymin+xmin_be,NEG plain skew C + C^T = 0 on I u C,1.5e+00,> 1e-6,PASS
+harmonic-3d_zmin+ymin+xmin_cn,dumped C = geometric C,37,37,PASS
+harmonic-3d_zmin+ymin+xmin_cn,dumped B_D = formula (rel.),9.4e-17,<=1e-13,PASS
+harmonic-3d_zmin+ymin+xmin_cn,dumped B_D^T = (formula)^T = (dumped B_D)^T,9.4e-17,<=1e-13,PASS
+harmonic-3d_zmin+ymin+xmin_cn,"<B_D u, p> = <u, B_D^T p>",4.5e-16,<=1e-13,PASS
+harmonic-3d_zmin+ymin+xmin_cn,NEG L instead of L^T in B_D^T: detected,9.2e-01,> 1e-6,PASS
+harmonic-3d_zmin+ymin+xmin_cn,NEG wrong C (face xmin omitted): detected,8.2e-01,> 1e-6,PASS
+harmonic-3d_zmin+ymin+xmin_cn,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.1e-14,<=1e-13,PASS
+harmonic-3d_zmin+ymin+xmin_cn,NEG plain skew C + C^T = 0 on I u C,1.5e+00,> 1e-6,PASS
+affine-div-3d_zmin_be,dumped C = geometric C,9,9,PASS
+affine-div-3d_zmin_be,dumped B_D = formula (rel.),9.8e-17,<=1e-13,PASS
+affine-div-3d_zmin_be,dumped B_D^T = (formula)^T = (dumped B_D)^T,9.8e-17,<=1e-13,PASS
+affine-div-3d_zmin_be,"<B_D u, p> = <u, B_D^T p>",9.6e-16,<=1e-13,PASS
+affine-div-3d_zmin_be,NEG L instead of L^T in B_D^T: detected,8.7e-01,> 1e-6,PASS
+affine-div-3d_zmin_be,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.0e-14,<=1e-13,PASS
+affine-div-3d_zmin_be,NEG identity without D_w (div-free form) on the generic field,3.1e-01,> 1e-6,PASS
+affine-div-3d_zmin_be,NEG plain skew C + C^T = 0 on I u C,4.3e-01,> 1e-6,PASS
+affine-div-3d_zmin_cn,dumped C = geometric C,9,9,PASS
+affine-div-3d_zmin_cn,dumped B_D = formula (rel.),1.3e-16,<=1e-13,PASS
+affine-div-3d_zmin_cn,dumped B_D^T = (formula)^T = (dumped B_D)^T,1.3e-16,<=1e-13,PASS
+affine-div-3d_zmin_cn,"<B_D u, p> = <u, B_D^T p>",9.5e-16,<=1e-13,PASS
+affine-div-3d_zmin_cn,NEG L instead of L^T in B_D^T: detected,3.3e-01,> 1e-6,PASS
+affine-div-3d_zmin_cn,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.0e-14,<=1e-13,PASS
+affine-div-3d_zmin_cn,NEG identity without D_w (div-free form) on the generic field,3.1e-01,> 1e-6,PASS
+affine-div-3d_zmin_cn,NEG plain skew C + C^T = 0 on I u C,4.3e-01,> 1e-6,PASS
+affine-div-3d_zmin+zmax_be,dumped C = geometric C,18,18,PASS
+affine-div-3d_zmin+zmax_be,dumped B_D = formula (rel.),9.8e-17,<=1e-13,PASS
+affine-div-3d_zmin+zmax_be,dumped B_D^T = (formula)^T = (dumped B_D)^T,9.8e-17,<=1e-13,PASS
+affine-div-3d_zmin+zmax_be,"<B_D u, p> = <u, B_D^T p>",5.4e-16,<=1e-13,PASS
+affine-div-3d_zmin+zmax_be,NEG L instead of L^T in B_D^T: detected,8.7e-01,> 1e-6,PASS
+affine-div-3d_zmin+zmax_be,NEG wrong C (face zmax omitted): detected,1.0e+00,> 1e-6,PASS
+affine-div-3d_zmin+zmax_be,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.0e-14,<=1e-13,PASS
+affine-div-3d_zmin+zmax_be,NEG identity without D_w (div-free form) on the generic field,3.1e-01,> 1e-6,PASS
+affine-div-3d_zmin+zmax_be,NEG plain skew C + C^T = 0 on I u C,4.3e-01,> 1e-6,PASS
+affine-div-3d_zmin+zmax_cn,dumped C = geometric C,18,18,PASS
+affine-div-3d_zmin+zmax_cn,dumped B_D = formula (rel.),1.3e-16,<=1e-13,PASS
+affine-div-3d_zmin+zmax_cn,dumped B_D^T = (formula)^T = (dumped B_D)^T,1.3e-16,<=1e-13,PASS
+affine-div-3d_zmin+zmax_cn,"<B_D u, p> = <u, B_D^T p>",3.8e-16,<=1e-13,PASS
+affine-div-3d_zmin+zmax_cn,NEG L instead of L^T in B_D^T: detected,3.3e-01,> 1e-6,PASS
+affine-div-3d_zmin+zmax_cn,NEG wrong C (face zmax omitted): detected,1.0e+00,> 1e-6,PASS
+affine-div-3d_zmin+zmax_cn,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.0e-14,<=1e-13,PASS
+affine-div-3d_zmin+zmax_cn,NEG identity without D_w (div-free form) on the generic field,3.1e-01,> 1e-6,PASS
+affine-div-3d_zmin+zmax_cn,NEG plain skew C + C^T = 0 on I u C,4.3e-01,> 1e-6,PASS
+affine-div-3d_zmin+xmin_be,dumped C = geometric C,21,21,PASS
+affine-div-3d_zmin+xmin_be,dumped B_D = formula (rel.),6.4e-17,<=1e-13,PASS
+affine-div-3d_zmin+xmin_be,dumped B_D^T = (formula)^T = (dumped B_D)^T,6.4e-17,<=1e-13,PASS
+affine-div-3d_zmin+xmin_be,"<B_D u, p> = <u, B_D^T p>",4.9e-16,<=1e-13,PASS
+affine-div-3d_zmin+xmin_be,NEG L instead of L^T in B_D^T: detected,1.3e+00,> 1e-6,PASS
+affine-div-3d_zmin+xmin_be,NEG wrong C (face xmin omitted): detected,1.5e+00,> 1e-6,PASS
+affine-div-3d_zmin+xmin_be,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.0e-14,<=1e-13,PASS
+affine-div-3d_zmin+xmin_be,NEG identity without D_w (div-free form) on the generic field,3.1e-01,> 1e-6,PASS
+affine-div-3d_zmin+xmin_be,NEG plain skew C + C^T = 0 on I u C,7.2e-01,> 1e-6,PASS
+affine-div-3d_zmin+xmin_cn,dumped C = geometric C,21,21,PASS
+affine-div-3d_zmin+xmin_cn,dumped B_D = formula (rel.),1.1e-16,<=1e-13,PASS
+affine-div-3d_zmin+xmin_cn,dumped B_D^T = (formula)^T = (dumped B_D)^T,1.1e-16,<=1e-13,PASS
+affine-div-3d_zmin+xmin_cn,"<B_D u, p> = <u, B_D^T p>",1.2e-15,<=1e-13,PASS
+affine-div-3d_zmin+xmin_cn,NEG L instead of L^T in B_D^T: detected,5.1e-01,> 1e-6,PASS
+affine-div-3d_zmin+xmin_cn,NEG wrong C (face xmin omitted): detected,1.2e+00,> 1e-6,PASS
+affine-div-3d_zmin+xmin_cn,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.0e-14,<=1e-13,PASS
+affine-div-3d_zmin+xmin_cn,NEG identity without D_w (div-free form) on the generic field,3.1e-01,> 1e-6,PASS
+affine-div-3d_zmin+xmin_cn,NEG plain skew C + C^T = 0 on I u C,7.2e-01,> 1e-6,PASS
+affine-div-3d_zmin+ymin+xmin_be,dumped C = geometric C,37,37,PASS
+affine-div-3d_zmin+ymin+xmin_be,dumped B_D = formula (rel.),4.4e-17,<=1e-13,PASS
+affine-div-3d_zmin+ymin+xmin_be,dumped B_D^T = (formula)^T = (dumped B_D)^T,4.4e-17,<=1e-13,PASS
+affine-div-3d_zmin+ymin+xmin_be,"<B_D u, p> = <u, B_D^T p>",6.1e-16,<=1e-13,PASS
+affine-div-3d_zmin+ymin+xmin_be,NEG L instead of L^T in B_D^T: detected,2.5e+00,> 1e-6,PASS
+affine-div-3d_zmin+ymin+xmin_be,NEG wrong C (face xmin omitted): detected,6.8e-01,> 1e-6,PASS
+affine-div-3d_zmin+ymin+xmin_be,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.0e-14,<=1e-13,PASS
+affine-div-3d_zmin+ymin+xmin_be,NEG identity without D_w (div-free form) on the generic field,3.1e-01,> 1e-6,PASS
+affine-div-3d_zmin+ymin+xmin_be,NEG plain skew C + C^T = 0 on I u C,1.4e+00,> 1e-6,PASS
+affine-div-3d_zmin+ymin+xmin_cn,dumped C = geometric C,37,37,PASS
+affine-div-3d_zmin+ymin+xmin_cn,dumped B_D = formula (rel.),9.2e-17,<=1e-13,PASS
+affine-div-3d_zmin+ymin+xmin_cn,dumped B_D^T = (formula)^T = (dumped B_D)^T,9.2e-17,<=1e-13,PASS
+affine-div-3d_zmin+ymin+xmin_cn,"<B_D u, p> = <u, B_D^T p>",0.0e+00,<=1e-13,PASS
+affine-div-3d_zmin+ymin+xmin_cn,NEG L instead of L^T in B_D^T: detected,9.5e-01,> 1e-6,PASS
+affine-div-3d_zmin+ymin+xmin_cn,NEG wrong C (face xmin omitted): detected,8.3e-01,> 1e-6,PASS
+affine-div-3d_zmin+ymin+xmin_cn,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.0e-14,<=1e-13,PASS
+affine-div-3d_zmin+ymin+xmin_cn,NEG identity without D_w (div-free form) on the generic field,3.1e-01,> 1e-6,PASS
+affine-div-3d_zmin+ymin+xmin_cn,NEG plain skew C + C^T = 0 on I u C,1.4e+00,> 1e-6,PASS

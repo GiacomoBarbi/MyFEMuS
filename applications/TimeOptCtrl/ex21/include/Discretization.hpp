@@ -274,6 +274,15 @@ struct BoundaryFaceStats {
   double wn[kMaxFaces + 1] = {0};       // int_f w.n
   double wn_abs_max[kMaxFaces + 1] = {0};  // max |w.n| at the face Gauss points
 };
+/** T14: the verification operator D_w = int (div w) phi_i phi_j (unconstrained; zero for the
+ *  constant wind and for fields without a divergence). */
+std::unique_ptr<femus::SparseMatrix> BuildDivergenceMassMatrix(const ProblemConfig& config,
+                                                              femus::Mesh* mesh, unsigned solution_type);
+/** T14: wind diagnostics over the volume quadrature points: min / max |w|, max |div w| and the
+ *  local cell Peclet number Pe_h,max = max_K h_K max_{x_q in K} |w(x_q)| / (2 nu), h_K = the
+ *  largest bounding-box extent of K (diagnostic only; nothing switches on it). */
+struct WindStats3D { double w_min = 0, w_max = 0, div_max = 0, pe_h_max = 0; };
+WindStats3D ComputeWindStats3D(const ProblemConfig& config, femus::Mesh* mesh, unsigned solution_type);
 std::unique_ptr<femus::SparseMatrix> BuildBoundaryConvectionMatrix(
     const ProblemConfig& config, femus::Mesh* mesh, unsigned solution_type,
     BoundaryFaceStats* stats);

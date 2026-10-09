@@ -141,6 +141,34 @@ void RequireSerial(const char* mode) {
  *  is whichever KSP the caller passes, so the SAME gradient formula is
  *  evaluated with the exact transpose, the production shell and a deliberately
  *  wrong adjoint. */
+/** T14: D_w = int (div w) phi_i phi_j with the rows and columns of the constrained state DOFs
+ *  (zero diagonal of the eliminated mass) zeroed: the free-DOF block (D_w)_FF. */
+Mat ZeroConstrainedRowsColumns(Mat source, Mat eliminated_mass) {
+  Mat D = nullptr;
+  PetscCallAbort(PETSC_COMM_WORLD, MatDuplicate(source, MAT_COPY_VALUES, &D));
+  Vec d = nullptr;
+  PetscCallAbort(PETSC_COMM_WORLD, MatCreateVecs(eliminated_mass, &d, nullptr));
+  PetscCallAbort(PETSC_COMM_WORLD, MatGetDiagonal(eliminated_mass, d));
+  PetscInt lo = 0, hi = 0;
+  PetscCallAbort(PETSC_COMM_WORLD, VecGetOwnershipRange(d, &lo, &hi));
+  const PetscScalar* a = nullptr;
+  PetscCallAbort(PETSC_COMM_WORLD, VecGetArrayRead(d, &a));
+  std::vector<PetscInt> rows;
+  for (PetscInt i = 0; i < hi - lo; ++i)
+    if (PetscRealPart(a[i]) == 0.0) rows.push_back(lo + i);
+  PetscCallAbort(PETSC_COMM_WORLD, VecRestoreArrayRead(d, &a));
+  PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(&d));
+  PetscCallAbort(PETSC_COMM_WORLD, MatZeroRowsColumns(D, static_cast<PetscInt>(rows.size()),
+                                                      rows.empty() ? nullptr : rows.data(), 0.0,
+                                                      nullptr, nullptr));
+  return D;
+}
+Mat EliminatedDivergenceMass(const ProblemConfig& config, Mesh* mesh, unsigned solution_type,
+                             Mat eliminated_mass) {
+  std::unique_ptr<SparseMatrix> D3 = BuildDivergenceMassMatrix(config, mesh, solution_type);
+  return ZeroConstrainedRowsColumns(static_cast<PetscMatrix*>(D3.get())->mat(), eliminated_mass);
+}
+
 struct ReducedProblem {
   const ProblemConfig* config = nullptr;
   Mat control = nullptr, tracking = nullptr;
@@ -516,6 +544,12 @@ int RunConvectionVerification(const ProblemConfig& config,
     std::printf("EX21_VC_CONFIG3D nx=%u ny=%u nz=%u vx=%.6g vy=%.6g vz=%.6g\n",
                 config.mesh.nx, config.mesh.ny, config.mesh.nz, config.convection.vx,
                 config.convection.vy, config.convection.vz);
+  if (config.dimension == 3u && config.convection.field3d) {   // T14
+    const WindStats3D ws = ComputeWindStats3D(config, mesh, solution_type);
+    std::printf("EX21_VC_WIND3D field=%s min|w|=%.6e max|w|=%.6e max|div w|=%.6e Pe_h_max=%.6e\n",
+                config.convection.field_name ? config.convection.field_name : "?", ws.w_min, ws.w_max,
+                ws.div_max, ws.pe_h_max);
+  }
 
   // ---------------------------------------------------------------- G1
   // C = L - K with the convection term switched on and off on the SAME mesh.
@@ -567,11 +601,17 @@ int RunConvectionVerification(const ProblemConfig& config,
       for (PetscInt i = 0; i < L.layout.local_size; ++i)
         f[i] = axis == 0u ? L.layout.x[i] : axis == 1u ? L.layout.z[i] : L.layout.axis2[i];
       PetscCallAbort(PETSC_COMM_WORLD, VecRestoreArray(field, &f));
-      if (config.convection.field) {
+      if (config.convection.field || config.convection.field3d) {
         // Variable field: (C lin)_i = int w_axis phi_i = (M I_h w_axis)_i,
-        // exact when w_axis is in Q2 (both named fields are).
+        // exact when w_axis is in Q2 (both named fields are; T14: the affine 3D presets too).
         PetscCallAbort(PETSC_COMM_WORLD, VecGetArray(c_field, &f));
         for (PetscInt i = 0; i < L.layout.local_size; ++i) {
+          if (config.convection.field3d) {
+            double w[3];
+            EvaluateVelocity3D(config, L.layout.x[i], L.layout.z[i], L.layout.axis2[i], w);
+            f[i] = w[axis];
+            continue;
+          }
           double w[2];
           EvaluateVelocity(config, L.layout.x[i], L.layout.z[i], w);
           f[i] = w[axis];
@@ -642,6 +682,25 @@ int RunConvectionVerification(const ProblemConfig& config,
     std::printf("EX21_VC_G1_SKEW_DIRICHLET ||C+C^T||_F/||C||_F=%.3e"
                 " ||L-L^T||_F=%.6e ||C||_F=%.6e\n",
                 c_norm > 0 ? skew / c_norm : skew, asym, c_norm);
+    if (config.dimension == 3u && config.convection.field3d) {
+      // T14: on the free DOFs F, (C + C^T)_FF = (B_w)_FF - (D_w)_FF.  The boundary term survives only
+      // on the free boundary nodes (Dirichlet control: Gamma_c, left free by the BC callback; a
+      // homogeneous Dirichlet state everywhere: none, and C + C^T = -D_w).
+      Mat Dw = EliminatedDivergenceMass(config, mesh, solution_type, L.mass);
+      std::unique_ptr<SparseMatrix> B3 = BuildBoundaryConvectionMatrix(config, mesh, solution_type, nullptr);
+      Mat Bw = ZeroConstrainedRowsColumns(static_cast<PetscMatrix*>(B3.get())->mat(), L.mass);
+      PetscReal d_norm = 0.0, b_norm = 0.0, defect = 0.0;
+      PetscCallAbort(PETSC_COMM_WORLD, MatNorm(Dw, NORM_FROBENIUS, &d_norm));
+      PetscCallAbort(PETSC_COMM_WORLD, MatNorm(Bw, NORM_FROBENIUS, &b_norm));
+      PetscCallAbort(PETSC_COMM_WORLD, MatAXPY(Ct, 1.0, Dw, DIFFERENT_NONZERO_PATTERN));
+      PetscCallAbort(PETSC_COMM_WORLD, MatAXPY(Ct, -1.0, Bw, DIFFERENT_NONZERO_PATTERN));
+      PetscCallAbort(PETSC_COMM_WORLD, MatNorm(Ct, NORM_FROBENIUS, &defect));
+      std::printf("EX21_VC_G1W_DIRICHLET ||(C+C^T)_FF - (B_w)_FF + (D_w)_FF||_F/||C||_F=%.3e ||D_w,FF||_F=%.6e"
+                  " ||B_w,FF||_F=%.6e skew_only_negative ||C+C^T||_F/||C||_F=%.3e\n",
+                  c_norm > 0 ? defect / c_norm : defect, d_norm, b_norm, c_norm > 0 ? skew / c_norm : skew);
+      PetscCallAbort(PETSC_COMM_WORLD, MatDestroy(&Dw));
+      PetscCallAbort(PETSC_COMM_WORLD, MatDestroy(&Bw));
+    }
     for (Mat* m : {&C, &Ct, &Lt}) PetscCallAbort(PETSC_COMM_WORLD, MatDestroy(m));
   }
 
@@ -872,6 +931,20 @@ int RunConvectionVerification(const ProblemConfig& config,
                 " ||C+C^T||_F=%.6e ||sum (w.n) M_f||_F=%.6e ||C||_F=%.6e faces=%s\n",
                 sym_norm > 0 ? defect / sym_norm : defect, sym_norm, bw_norm, c_norm,
                 faces.c_str());
+    if (config.dimension == 3u && config.convection.field3d) {
+      // T14: the variable-wind identity C + C^T = B_w - D_w (B_w at face quadrature points, D_w the
+      // divergence mass); the G1N line above is the div-free identity, a NEGATIVE for div w != 0.
+      std::unique_ptr<SparseMatrix> D3 = BuildDivergenceMassMatrix(config, mesh, solution_type);
+      Mat Dw = static_cast<PetscMatrix*>(D3.get())->mat();
+      PetscReal d_norm = 0.0, defect_w = 0.0;
+      PetscCallAbort(PETSC_COMM_WORLD, MatNorm(Dw, NORM_FROBENIUS, &d_norm));
+      PetscCallAbort(PETSC_COMM_WORLD, MatAXPY(Bw, -1.0, Dw, DIFFERENT_NONZERO_PATTERN));   // B_w - D_w - (C+C^T)
+      PetscCallAbort(PETSC_COMM_WORLD, MatNorm(Bw, NORM_FROBENIUS, &defect_w));
+      std::printf("EX21_VC_G1W_IDENTITY ||C+C^T - (B_w - D_w)||_F/||C+C^T||_F=%.3e ||D_w||_F=%.6e"
+                  " ||B_w||_F=%.6e divfree_identity_negative=%.3e\n",
+                  sym_norm > 0 ? defect_w / sym_norm : defect_w, d_norm, bw_norm,
+                  sym_norm > 0 ? defect / sym_norm : defect);
+    }
     // G8b operator: S with S^T = nu K - C, i.e. S = 2 nu K - L^T (K symmetric)
     PetscCallAbort(PETSC_COMM_WORLD,
                    MatTranspose(spatial.stiffness, MAT_INITIAL_MATRIX, &wrong_bc_spatial));
@@ -893,6 +966,34 @@ int RunConvectionVerification(const ProblemConfig& config,
     for (Mat* m : {&C, &Ct, &Bw}) PetscCallAbort(PETSC_COMM_WORLD, MatDestroy(m));
   }
 
+  // T14: the MISSING-DIVERGENCE adjoint -- the strong -w.grad p WITHOUT -(div w) p, i.e. the
+  // spatial adjoint operator L^T + D_w (D_w restricted to the free DOFs): S = L + D_w (D_w
+  // symmetric).  It coincides with the exact adjoint for div w = 0 and must fail every adjoint
+  // gate for div w != 0.  3D variable winds only.
+  AssembledSpaceTimeOperators missing_div_ops;
+  KSP adjoint_missing_div = nullptr;
+  Mat missing_div_spatial = nullptr;
+  if (config.dimension == 3u && config.convection.field3d && HasConvection(config)) {
+    Mat Dw = EliminatedDivergenceMass(config, mesh, solution_type, spatial.mass);
+    PetscReal d_norm = 0.0;
+    PetscCallAbort(PETSC_COMM_WORLD, MatNorm(Dw, NORM_FROBENIUS, &d_norm));
+    PetscCallAbort(PETSC_COMM_WORLD,
+                   MatDuplicate(spatial.stiffness, MAT_COPY_VALUES, &missing_div_spatial));
+    PetscCallAbort(PETSC_COMM_WORLD,
+                   MatAXPY(missing_div_spatial, 1.0, Dw, DIFFERENT_NONZERO_PATTERN));
+    BuildAssembledSpaceTimeOperators(missing_div_ops, spatial.mass, missing_div_spatial,
+                                     config.time.steps, config.time.dt, config.time.scheme);
+    adjoint_missing_div = MakeDirect(missing_div_ops.ap, "vc_adjoint_missing_div_");
+    Vec w4 = NewLike(X);
+    PetscCallAbort(PETSC_COMM_WORLD, MatMult(missing_div_ops.ap, Y, w4));
+    const double lhs4 = Dot(EX, Y), rhs4 = Dot(X, w4);
+    std::printf("EX21_VC_G8D_MISSING_DIV_TRANSPOSE adjoint=L^T+D_w (no -(div w) p)"
+                " |<E x,y>-<x,E_missingdiv^T y>|/(|Ex||y|)=%.3e ||D_w,FF||_F=%.6e\n",
+                std::fabs(lhs4 - rhs4) / scale, d_norm);
+    PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(&w4));
+    PetscCallAbort(PETSC_COMM_WORLD, MatDestroy(&Dw));
+  }
+
   // Reduced Hessian symmetry: H U = grad J(U) - grad J(0) is linear in U.
   {
     Vec U1 = NewLike(X), U2 = NewLike(X), g0 = NewLike(X), h1 = NewLike(X),
@@ -905,6 +1006,8 @@ int RunConvectionVerification(const ProblemConfig& config,
                                   Variant{"ex20_style_wrong", adjoint_wrong}};
     if (adjoint_wrong_bc)   // T7N G8b
       variants.push_back(Variant{"wrong_bc_nuK_minus_C", adjoint_wrong_bc});
+    if (adjoint_missing_div)   // T14
+      variants.push_back(Variant{"missing_div_term", adjoint_missing_div});
     for (const Variant& v : variants) {
       reduced.Gradient(zero, v.ksp, g0);
       reduced.Gradient(U1, v.ksp, h1);
@@ -933,6 +1036,8 @@ int RunConvectionVerification(const ProblemConfig& config,
                                   Variant{"ex20_style_wrong", adjoint_wrong}};
     if (adjoint_wrong_bc)   // T7N G8b
       variants.push_back(Variant{"wrong_bc_nuK_minus_C", adjoint_wrong_bc});
+    if (adjoint_missing_div)   // T14
+      variants.push_back(Variant{"missing_div_term", adjoint_missing_div});
     for (const Variant& v : variants) {
       const int its = reduced.Gradient(U0, v.ksp, g);
       const double directional = Dot(g, D);
@@ -1094,6 +1199,11 @@ int RunConvectionVerification(const ProblemConfig& config,
     for (Vec* w : {&g, &Yref, &NU}) PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(w));
   }
 
+  if (adjoint_missing_div) {   // T14
+    PetscCallAbort(PETSC_COMM_WORLD, KSPDestroy(&adjoint_missing_div));
+    DestroyAssembledSpaceTimeOperators(missing_div_ops);
+    PetscCallAbort(PETSC_COMM_WORLD, MatDestroy(&missing_div_spatial));
+  }
   if (adjoint_wrong_bc) {
     PetscCallAbort(PETSC_COMM_WORLD, KSPDestroy(&adjoint_wrong_bc));
     DestroyAssembledSpaceTimeOperators(wrong_bc_ops);

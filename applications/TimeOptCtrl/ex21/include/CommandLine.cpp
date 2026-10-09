@@ -89,7 +89,9 @@ static bool IsExact3DCase(const std::string& name) {
          name == "neumann-conv-3d" || name == "dirichlet-conv-3d" ||   // T11D
          name == "dirichlet-h1-3d" ||                                  // T11H1
          name == "neumann-opp-3d" || name == "neumann-adj-3d" ||       // T13 (multi-face)
-         name == "dirichlet-opp-3d";
+         name == "dirichlet-opp-3d" ||
+         name == "natural-var-3d" || name == "neumann-var-3d" ||       // T14 (variable wind)
+         name == "neumann-var-opp-3d" || name == "dirichlet-var-3d";
 }
 
 /** T13: parse a 3D control face list "a[,b,...]" (names of LookupBoxFace3D) into the canonical
@@ -537,14 +539,21 @@ static void ParseArguments(int argc, char** argv, ProblemConfig& config,
       // ex21: a named variable velocity field (Config.hpp); requires
       // --convection on.  Absent: the constant (--vx, --vy).
       const std::string wind(argv[++argument]);
+      if (config.convection.field || config.convection.field3d)
+        throw std::invalid_argument("give --wind once");
+      if (InstallWindPreset3D(config, wind)) {
+        // T14: 3D quadratic-potential presets (Config.hpp); 3D only (Validate)
+      } else {
       if (wind == "lp-recirculating")
         config.convection.field = WindLpRecirculating;
       else if (wind == "q2-divfree")
         config.convection.field = WindQ2Divfree;
       else
-        throw std::invalid_argument("--wind takes lp-recirculating or q2-divfree");
+        throw std::invalid_argument(
+            "--wind takes lp-recirculating or q2-divfree (2D), harmonic-3d or affine-div-3d (3D)");
       config.convection.field_name =
           wind == "lp-recirculating" ? "lp-recirculating" : "q2-divfree";
+      }
     } else if (option == "--convection-stabilization" && argument + 1 < argc) {
       // T6: none (default) | lps (Leveque-Pearson LPS, ex21 Q2 version).
       const std::string s(argv[++argument]);

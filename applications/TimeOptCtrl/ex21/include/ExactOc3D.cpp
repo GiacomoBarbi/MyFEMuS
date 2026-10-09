@@ -75,6 +75,9 @@ bool g_dirichlet = false;
 // the temporal factor U solving the H1 stationarity (ExactOc3D.hpp); data reads ell
 // and gamma_u from the config.  g_dirichlet stays true (shared Dirichlet driver).
 bool g_dir_h1 = false;
+// T14 variable-wind exact cases: 1 natural-var-3d, 2 neumann-var-3d (zmin), 3 neumann-var-opp-3d
+// (zmin u zmax), 4 dirichlet-var-3d (zmin, owned swirl wind).  conv-sin3-3d also accepts a 3D field.
+int g_var = 0;
 
 struct F1 { double v, d, dd; };   // 1D factor and its first two derivatives
 F1 Factor(double xi) {
@@ -93,6 +96,11 @@ double WindGradS(const ProblemConfig& c, double x, double y, double z) {
   if (!HasConvection(c)) return 0.0;
   if (g_cubic) {
     const F1 X = Factor(x), Y = Factor(y), Z = Factor(z);
+    if (c.convection.field3d) {   // T14: w(x) . grad S
+      double w[3];
+      EvaluateVelocity3D(c, x, y, z, w);
+      return w[0] * X.d * Y.v * Z.v + w[1] * X.v * Y.d * Z.v + w[2] * X.v * Y.v * Z.d;
+    }
     return c.convection.vx * X.d * Y.v * Z.v + c.convection.vy * X.v * Y.d * Z.v +
            c.convection.vz * X.v * Y.v * Z.d;
   }
@@ -287,8 +295,10 @@ double Source3D(const ProblemConfig& c, double x, double y, double z, double t) 
 }
 double Target3D(const ProblemConfig& c, double x, double y, double z, double t) {
   if (g_cubic) {   // y_d = y + alpha_u (B' S + nu B Lap S + B w.grad S)/alpha_t
-    const double q = c.alpha_u * (dB(c, t) * S(x, y, z) - c.diffusivity * B(c, t) * MinusLapS(x, y, z) +
-                                  B(c, t) * WindGradS(c, x, y, z));
+    double q = c.alpha_u * (dB(c, t) * S(x, y, z) - c.diffusivity * B(c, t) * MinusLapS(x, y, z) +
+                            B(c, t) * WindGradS(c, x, y, z));
+    if (c.convection.field3d)   // T14: the FULL adjoint, div(w p) = w.grad p + (div w) p
+      q += c.alpha_u * B(c, t) * EvaluateDivergence3D(c, x, y, z) * S(x, y, z);
     return ExactY(c, x, y, z, t) + q / c.alpha_track;
   }
   const double s = S(x, y, z), lap = 3.0 * kPi * kPi;
@@ -407,7 +417,24 @@ F1 Sin3F(double s) {   // sin^3(pi s)
   const double sn = std::sin(kPi * s), cs = std::cos(kPi * s);
   return {sn * sn * sn, 3.0 * kPi * sn * sn * cs, 3.0 * kPi * kPi * sn * (2.0 * cs * cs - sn * sn)};
 }
+/** T14 dirichlet-var-3d: the owned swirl wind w = (a s(x) s'(y) g(z), -a s'(x) s(y) g(z), vz),
+ *  s = sin^2(pi .), g the T11D septic step on [1/2, 1], a = 1/2: div w = 0; w = (0, 0, vz) for
+ *  z <= 1/2 (where the T11D adjoint is the exact homogeneous solution); tangential parts vanish on
+ *  the lateral faces. */
+void WindSwirl3D(const ProblemConfig& c, double x, double y, double z, double w[3]) {
+  double g, g1, g2;
+  DirStep3(z, g, g1, g2);
+  const double sx = std::sin(kPi * x) * std::sin(kPi * x), sy = std::sin(kPi * y) * std::sin(kPi * y);
+  const double dsx = kPi * std::sin(2.0 * kPi * x), dsy = kPi * std::sin(2.0 * kPi * y);
+  w[0] = 0.5 * sx * dsy * g;
+  w[1] = -0.5 * dsx * sy * g;
+  w[2] = c.convection.vz;
+}
+struct YParts;
+YParts DirYVar(const ProblemConfig& c, double x, double y, double z, double t);
+
 YParts DirY(const ProblemConfig& c, double x, double y, double z, double t) {
+  if (g_var == 4) return DirYVar(c, x, y, z, t);   // T14
   const Prod S = Product(c, Sin3F(x), Sin3F(y), Sin3F(z));
   const double wx = HasConvection(c) ? c.convection.vx : 0.0, wy = HasConvection(c) ? c.convection.vy : 0.0,
                wz = HasConvection(c) ? c.convection.vz : 0.0;
@@ -435,7 +462,36 @@ double DirSource3D(const ProblemConfig& c, double x, double y, double z, double 
   const YParts Y = DirY(c, x, y, z, t);
   return Y.dt - c.diffusivity * Y.lap + Y.wgrad;
 }
+YParts DirYVar(const ProblemConfig& c, double x, double y, double z, double t) {
+  const F1 sx = Sin3F(x), sy = Sin3F(y), sz = Sin3F(z);
+  double w[3];
+  EvaluateVelocity3D(c, x, y, z, w);
+  const F1 X = DirX(DirC(c, 0), x), Y = DirX(DirC(c, 1), y);
+  const double k = -c.eta * c.eta * c.diffusivity / c.alpha_u * DirQs3(c, 0.0, t).z;
+  const double kd = c.eta * c.eta * c.diffusivity / c.alpha_u * DirQs3(c, 0.0, t).ztau;
+  const double g = (1.0 - z) * (1.0 - z) * (1.0 - z), g1 = -3.0 * (1.0 - z) * (1.0 - z),
+               g2 = 6.0 * (1.0 - z);
+  YParts r;
+  r.v = A(t) * sx.v * sy.v * sz.v + k * X.v * Y.v * g;
+  r.wgrad = A(t) * (w[0] * sx.d * sy.v * sz.v + w[1] * sx.v * sy.d * sz.v + w[2] * sx.v * sy.v * sz.d) +
+            k * (w[0] * X.d * Y.v * g + w[1] * X.v * Y.d * g + w[2] * X.v * Y.v * g1);
+  r.lap = A(t) * (sx.dd * sy.v * sz.v + sx.v * sy.dd * sz.v + sx.v * sy.v * sz.dd) +
+          k * ((X.dd * Y.v + X.v * Y.dd) * g + X.v * Y.v * g2);
+  r.dt = dA(t) * sx.v * sy.v * sz.v + kd * X.v * Y.v * g;
+  return r;
+}
+
 double DirTarget3D(const ProblemConfig& c, double x, double y, double z, double t) {
+  if (g_var == 4) {   // T14: r = -p_t - nu Lap p - w(x).grad p (div w = 0); 0 for z <= 1/2
+    const F1 X = DirX(DirC(c, 0), x), Y = DirX(DirC(c, 1), y);
+    const ZQ Q = DirQ3(c, z, t);
+    double w[3];
+    EvaluateVelocity3D(c, x, y, z, w);
+    const double r = -X.v * Y.v * Q.t -
+                     c.diffusivity * (X.dd * Y.v * Q.v + X.v * Y.dd * Q.v + X.v * Y.v * Q.zz) -
+                     (w[0] * X.d * Y.v * Q.v + w[1] * X.v * Y.d * Q.v + w[2] * X.v * Y.v * Q.z);
+    return DirExactY(c, x, y, z, t) - r / c.alpha_track;
+  }
   // r = -p_t - nu Lap p - w.grad p  (zero for z <= 1/2);  y_d = y - r/alpha_t
   const F1 X = DirX(DirC(c, 0), x), Y = DirX(DirC(c, 1), y);
   const ZQ Q = DirQ3(c, z, t);
@@ -721,6 +777,108 @@ long long ExpectedControlNodes3D(const ProblemConfig& c, bool dirichlet) {
   return count;
 }
 
+// ===========================================================================
+// T14: potential-wind exact cases (t14_symbolic.py).  w = grad Phi (quadratic preset), nu default 1/2.
+//   P = exp(-Phi/nu) Q  =>  nu dn P + (w.n) P = exp(-Phi/nu) nu dn Q, so dn Q = 0 gives the exact
+//   variable Robin adjoint condition (any div w).
+//   natural-var-3d:     Q = (2 + cos pi x)(2 + cos pi y)(2 + cos pi z); y = A cos cos cos;
+//                       distributed control u = -(eta/alpha_u) p everywhere.
+//   neumann-var-3d:     Q = X(x) X(y) (2 + cos pi z), X = 1 - cos 2 pi s; Gamma_c = zmin;
+//   neumann-var-opp-3d: the same on zmin u zmax;  u = -(eta/alpha_u) p on Gamma_c;
+//     y = A cos cos cos + kappa0 G0(x,y) H0(z) [+ kappa1 G1(x,y) H1(z)],
+//     G_k = exp(-Phi(x,y,z_k)/nu) X(x) X(y) (2 + cos pi z_k), kappa0 = eta^2 B/nu, kappa1 = -eta^2 B/nu.
+//   p = alpha_u B(t) P;  y_d = y + (p_t + nu Lap p + w.grad p + (div w) p)/alpha_t (the full adjoint).
+struct PotP { double v, gx, gy, gz, lap; };
+PotP PotShape(const ProblemConfig& c, double x, double y, double z) {
+  const double nu = c.diffusivity;
+  const F1 QX = g_var == 1 ? NatR(0.0, x) : NeuX(x), QY = g_var == 1 ? NatR(0.0, y) : NeuX(y),
+           QZ = NatR(0.0, z);
+  double w[3];
+  EvaluateVelocity3D(c, x, y, z, w);
+  const double div = EvaluateDivergence3D(c, x, y, z);
+  const double E = std::exp(-PotentialPhi3D(c, x, y, z) / nu);
+  const double Q = QX.v * QY.v * QZ.v, Qx = QX.d * QY.v * QZ.v, Qy = QX.v * QY.d * QZ.v,
+               Qz = QX.v * QY.v * QZ.d;
+  const double lapQ = QX.dd * QY.v * QZ.v + QX.v * QY.dd * QZ.v + QX.v * QY.v * QZ.dd;
+  const double wgQ = w[0] * Qx + w[1] * Qy + w[2] * Qz, ww = w[0] * w[0] + w[1] * w[1] + w[2] * w[2];
+  return {E * Q, E * (Qx - Q * w[0] / nu), E * (Qy - Q * w[1] / nu), E * (Qz - Q * w[2] / nu),
+          E * (lapQ - 2.0 * wgQ / nu - Q * div / nu + Q * ww / (nu * nu))};
+}
+double VarExactP(const ProblemConfig& c, double x, double y, double z, double t) {
+  return c.alpha_u * B(c, t) * PotShape(c, x, y, z).v;
+}
+double VarExactU(const ProblemConfig& c, double x, double y, double z, double t) {
+  return -c.eta * VarExactP(c, x, y, z, t) / c.alpha_u;
+}
+/** G_k(x, y) on the face z = zk and its x, y derivatives / Laplacian (Phi quadratic: Hessian H). */
+struct G2 { double v, gx, gy, lap; };
+G2 VarG(const ProblemConfig& c, double x, double y, double zk) {
+  const double nu = c.diffusivity;
+  const F1 X = NeuX(x), Y = NeuX(y);
+  const double zc = NatR(0.0, zk).v;
+  double w[3];
+  EvaluateVelocity3D(c, x, y, zk, w);
+  const double E = std::exp(-PotentialPhi3D(c, x, y, zk) / nu);
+  const double R = X.v * Y.v * zc, Rx = X.d * Y.v * zc, Ry = X.v * Y.d * zc,
+               lapR = (X.dd * Y.v + X.v * Y.dd) * zc;
+  const double* H = c.convection.hessian;
+  return {E * R, E * (Rx - R * w[0] / nu), E * (Ry - R * w[1] / nu),
+          E * (lapR - 2.0 * (w[0] * Rx + w[1] * Ry) / nu - R * (H[0] + H[4]) / nu +
+               R * (w[0] * w[0] + w[1] * w[1]) / (nu * nu))};
+}
+YParts VarY(const ProblemConfig& c, double x, double y, double z, double t) {
+  const F1 cx = NatC(x), cy = NatC(y), cz = NatC(z);
+  double w[3];
+  EvaluateVelocity3D(c, x, y, z, w);
+  const double Yc = cx.v * cy.v * cz.v;
+  YParts r;
+  r.v = A(t) * Yc;
+  r.wgrad = A(t) * (w[0] * cx.d * cy.v * cz.v + w[1] * cx.v * cy.d * cz.v + w[2] * cx.v * cy.v * cz.d);
+  r.lap = A(t) * (cx.dd * cy.v * cz.v + cx.v * cy.dd * cz.v + cx.v * cy.v * cz.dd);
+  r.dt = dA(t) * Yc;
+  if (g_var == 2 || g_var == 3) {
+    const double kap = c.eta * c.eta / c.diffusivity;
+    for (int face = 0; face < (g_var == 3 ? 2 : 1); ++face) {
+      const G2 G = VarG(c, x, y, face == 0 ? 0.0 : 1.0);
+      const F1 H = face == 0 ? NeuH(z) : F1{0.5 * z * z, z, 1.0};
+      const double k = (face == 0 ? 1.0 : -1.0) * kap * B(c, t),
+                   kd = (face == 0 ? 1.0 : -1.0) * kap * dB(c, t);
+      r.v += k * G.v * H.v;
+      r.wgrad += k * (w[0] * G.gx * H.v + w[1] * G.gy * H.v + w[2] * G.v * H.d);
+      r.lap += k * (G.lap * H.v + G.v * H.dd);
+      r.dt += kd * G.v * H.v;
+    }
+  }
+  return r;
+}
+double VarExactY(const ProblemConfig& c, double x, double y, double z, double t) {
+  return VarY(c, x, y, z, t).v;
+}
+double VarSource3D(const ProblemConfig& c, double x, double y, double z, double t) {
+  const YParts Y = VarY(c, x, y, z, t);
+  double f = Y.dt - c.diffusivity * Y.lap + Y.wgrad;
+  if (g_var == 1) f -= c.eta * VarExactU(c, x, y, z, t);   // distributed control
+  return f;
+}
+double VarTarget3D(const ProblemConfig& c, double x, double y, double z, double t) {
+  const PotP P = PotShape(c, x, y, z);
+  double w[3];
+  EvaluateVelocity3D(c, x, y, z, w);
+  const double div = EvaluateDivergence3D(c, x, y, z);
+  const double q = c.alpha_u * (dB(c, t) * P.v + c.diffusivity * B(c, t) * P.lap +
+                                B(c, t) * (w[0] * P.gx + w[1] * P.gy + w[2] * P.gz) + B(c, t) * div * P.v);
+  return VarExactY(c, x, y, z, t) + q / c.alpha_track;
+}
+double VarInitial3D(const ProblemConfig& c, double x, double y, double z) { return VarExactY(c, x, y, z, 0.0); }
+double VarExactAt3D(double x, double y, double z, void* raw) {
+  const Context3D* e = static_cast<const Context3D*>(raw);
+  switch (e->field) {
+    case 0: return VarExactY(*e->config, x, y, z, e->time);
+    case 1: return VarExactP(*e->config, x, y, z, e->time);
+    default: return VarExactU(*e->config, x, y, z, e->time);
+  }
+}
+
 double RelDiff(Vec x, Vec b) {
   Vec d = nullptr;
   PetscCallAbort(PETSC_COMM_WORLD, VecDuplicate(x, &d));
@@ -738,20 +896,44 @@ void ApplyExactOptimalControl3D(ProblemConfig& config, const std::string& name,
                                 double alpha_u, double final_time, double nu) {
   if (name != "conv-sin-3d" && name != "conv-sin3-3d" && name != "natural-conv-3d" &&
       name != "neumann-conv-3d" && name != "dirichlet-conv-3d" && name != "dirichlet-h1-3d" &&
-      name != "neumann-opp-3d" && name != "neumann-adj-3d" && name != "dirichlet-opp-3d")   // T13
+      name != "neumann-opp-3d" && name != "neumann-adj-3d" && name != "dirichlet-opp-3d" &&   // T13
+      name != "natural-var-3d" && name != "neumann-var-3d" && name != "neumann-var-opp-3d" &&
+      name != "dirichlet-var-3d")   // T14
     throw std::invalid_argument(
         "the 3D exact OC cases are conv-sin-3d, conv-sin3-3d, natural-conv-3d, neumann-conv-3d,"
-        " dirichlet-conv-3d, dirichlet-h1-3d, neumann-opp-3d, neumann-adj-3d and dirichlet-opp-3d");
+        " dirichlet-conv-3d, dirichlet-h1-3d, neumann-opp-3d, neumann-adj-3d, dirichlet-opp-3d,"
+        " natural-var-3d, neumann-var-3d, neumann-var-opp-3d and dirichlet-var-3d");
+  g_var = name == "natural-var-3d" ? 1 : name == "neumann-var-3d" ? 2 : name == "neumann-var-opp-3d" ? 3
+        : name == "dirichlet-var-3d" ? 4 : 0;
+  // T14: a 3D wind field is accepted only where the exact data read it; never silently ignored
+  if (config.convection.field3d && name != "conv-sin3-3d" && !(g_var >= 1 && g_var <= 3))
+    throw std::invalid_argument(
+        name + (g_var == 4 ? " owns its (swirl) wind: give --convection on and --vz only, no --wind"
+                           : " uses a constant wind; --wind is accepted by conv-sin3-3d, natural-var-3d,"
+                             " neumann-var-3d and neumann-var-opp-3d"));
+  if (g_var >= 1 && g_var <= 3 && !(config.convection.field3d && config.convection.potential))
+    throw std::invalid_argument(
+        name + " needs a potential wind: --convection on --wind harmonic-3d | affine-div-3d");
+  if (g_var == 4) {
+    if (!HasConvection(config) || config.convection.vx != 0.0 || config.convection.vy != 0.0)
+      throw std::invalid_argument(
+          "dirichlet-var-3d needs --convection on with --vx 0 --vy 0 (--vz = the normal part of the swirl)");
+    config.convection.field3d = WindSwirl3D;
+    config.convection.divergence3d = nullptr;   // div w = 0
+    config.convection.field3d_reads_vz = true;
+    config.convection.potential = false;
+    config.convection.field_name = "swirl-3d";
+  }
   g_multi = name == "neumann-opp-3d" ? 1 : name == "neumann-adj-3d" ? 2 : name == "dirichlet-opp-3d" ? 3 : 0;
   g_cubic = name == "conv-sin3-3d";
-  g_natural = name == "natural-conv-3d";
-  g_neumann = name == "neumann-conv-3d" || g_multi == 1 || g_multi == 2;
+  g_natural = name == "natural-conv-3d" || g_var == 1;
+  g_neumann = name == "neumann-conv-3d" || g_multi == 1 || g_multi == 2 || g_var == 2 || g_var == 3;
   g_dir_h1 = name == "dirichlet-h1-3d" || g_multi == 3;   // T11H1 (T13: dirichlet-opp-3d, L2 and H1)
-  g_dirichlet = name == "dirichlet-conv-3d" || g_dir_h1;
-  if (name == "dirichlet-conv-3d" &&
+  g_dirichlet = name == "dirichlet-conv-3d" || g_dir_h1 || g_var == 4;
+  if ((name == "dirichlet-conv-3d" || g_var == 4) &&
       (config.control_h1_length != 0.0 || config.control_h1_time_weight != 0.0))
     throw std::invalid_argument(
-        "dirichlet-conv-3d is the L2 benchmark; use --exact-oc dirichlet-h1-3d for H1-space / H1-time");
+        name + " is the L2 benchmark; use --exact-oc dirichlet-h1-3d for H1-space / H1-time");
   config.dimension = 3u;
   config.domain = ProblemConfig::Domain();   // unit cube
   config.state_bc = (g_natural || g_neumann)
@@ -794,12 +976,18 @@ void ApplyExactOptimalControl3D(ProblemConfig& config, const std::string& name,
           " x = z = 0 requires p_x = p_z there, and the adjoint Robin conditions give"
           " p_x - p_z = -(w_x - w_z) p/nu");
   }
+  if (g_var == 3) {   // T14: neumann-var-opp-3d on zmin u zmax
+    config.control_face_mask = (1u << 1) | (1u << 6);
+    config.neumann_control_face = 1u;
+    config.neumann_control_boundary = "zmin,zmax";
+  }
   config.additional_control_regions.clear();
   config.additional_tracking_regions.clear();
   config.source_regions.clear();
   config.alpha_track = 1.0;
   config.eta = 1.0;
-  config.diffusivity = nu > 0.0 ? nu : 0.25;
+  // T14: the potential-wind cases default to nu = 1/2 (exp(-Phi/nu) within a factor ~90 on the cube)
+  config.diffusivity = nu > 0.0 ? nu : (g_var >= 1 && g_var <= 3 ? 0.5 : 0.25);
   config.alpha_u = alpha_u > 0.0 ? alpha_u : 1.0e-2;
   const double T = final_time > 0.0 ? final_time : 1.0;
   config.time.dt = T / config.time.steps;
@@ -818,6 +1006,12 @@ void ApplyExactOptimalControl3D(ProblemConfig& config, const std::string& name,
           std::string(g_multi ? "dirichlet-opp-3d" : "dirichlet-h1-3d") +
           ": gamma_u too small for the closed form (needs cc > sqrt(alpha_u (1 + 2 pi^2"
           " ell^2) / gamma_u)); increase --control-h1-time-weight");
+  }
+  if (g_var >= 1 && g_var <= 3) {   // T14
+    config.data_overrides.source3d = VarSource3D;
+    config.data_overrides.target3d = VarTarget3D;
+    config.data_overrides.initial3d = VarInitial3D;
+    return;
   }
   if (g_multi) {   // T13
     config.data_overrides.source3d = g_multi == 3 ? DopSource3D : MnSource3D;
@@ -855,7 +1049,8 @@ int RunExactOptimalControl3D(const ProblemConfig& config,
   std::printf("EX21_EXACT3D_CONFIG case=%s nx=%u ny=%u nz=%u steps=%u T=%.6g dt=%.10e"
               " scheme=%s nu=%.6g convection=%s vx=%.6g vy=%.6g vz=%.6g alpha_u=%.6e"
               " h=%.6e Pe_cell=%.6e dofs=%d spacetime_unknowns=%lld pc=%d\n",
-              g_multi == 1 ? "neumann-opp-3d" : g_multi == 2 ? "neumann-adj-3d" : g_multi == 3 ? "dirichlet-opp-3d"
+              g_var == 1 ? "natural-var-3d" : g_var == 2 ? "neumann-var-3d" : g_var == 3 ? "neumann-var-opp-3d"
+              : g_var == 4 ? "dirichlet-var-3d" : g_multi == 1 ? "neumann-opp-3d" : g_multi == 2 ? "neumann-adj-3d" : g_multi == 3 ? "dirichlet-opp-3d"
               : g_dir_h1 ? "dirichlet-h1-3d" : g_dirichlet ? "dirichlet-conv-3d" : g_neumann ? "neumann-conv-3d"
                         : (g_natural ? "natural-conv-3d" : (g_cubic ? "conv-sin3-3d" : "conv-sin-3d")),
               config.mesh.nx, config.mesh.ny, config.mesh.nz, steps, T, dt,
@@ -1002,7 +1197,7 @@ int RunExactOptimalControl3D(const ProblemConfig& config,
       if (m[static_cast<std::size_t>(i)]) {
         ++n_c;
         const double xi = spatial.layout.x[i], yi = spatial.layout.z[i], zi = spatial.layout.Axis2(i);
-        if (g_multi ? !OnControlSet3D(config, xi, yi, zi, true)   // T13: the geometric C of the union
+        if (IsMultiFace3D(config) ? !OnControlSet3D(config, xi, yi, zi, true)   // T13: the geometric C of the union
                     : (std::fabs(zi) > 1e-12 || xi < 1e-12 || xi > 1 - 1e-12 || yi < 1e-12 || yi > 1 - 1e-12)) ++off_plane;
       }
       for (unsigned slot = 0; slot < steps; ++slot) {
@@ -1020,7 +1215,7 @@ int RunExactOptimalControl3D(const ProblemConfig& config,
                 " B_D^T_transposes_L=%d\n",
                 config.neumann_control_boundary.c_str(), config.neumann_control_face, stat_rel,
                 trace_err, off_max, n_c,
-                g_multi ? (int)ExpectedControlNodes3D(config, true) : (2 * (int)config.mesh.nx - 1) * (2 * (int)config.mesh.ny - 1),
+                IsMultiFace3D(config) ? (int)ExpectedControlNodes3D(config, true) : (2 * (int)config.mesh.nx - 1) * (2 * (int)config.mesh.ny - 1),
                 off_plane, dc.transposes_stiffness() ? 1 : 0);
     PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(&ru));
     PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(&bp));
@@ -1056,7 +1251,7 @@ int RunExactOptimalControl3D(const ProblemConfig& config,
     for (PetscInt i = 0; i < local; ++i)
       if (active[i]) {
         ++n_active;
-        if (g_multi ? !OnControlSet3D(config, spatial.layout.x[i], spatial.layout.z[i], spatial.layout.Axis2(i), false)
+        if (IsMultiFace3D(config) ? !OnControlSet3D(config, spatial.layout.x[i], spatial.layout.z[i], spatial.layout.Axis2(i), false)
                     : std::fabs(spatial.layout.Axis2(i) - config.domain.zmin) > 1e-12) ++off_plane;
       }
     stat_rel = std::sqrt(num / (den > 0.0 ? den : 1.0));
@@ -1064,7 +1259,7 @@ int RunExactOptimalControl3D(const ProblemConfig& config,
                 " max|u|_off_face=%.3e active_nodes=%lld expected=%d active_off_plane=%lld\n",
                 config.neumann_control_boundary.c_str(), config.neumann_control_face, stat_rel, off_max,
                 n_active,
-                g_multi ? (int)ExpectedControlNodes3D(config, false) : (2 * (int)config.mesh.nx + 1) * (2 * (int)config.mesh.ny + 1),
+                IsMultiFace3D(config) ? (int)ExpectedControlNodes3D(config, false) : (2 * (int)config.mesh.nx + 1) * (2 * (int)config.mesh.ny + 1),
                 off_plane);
     PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(&v));
     PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(&w));
@@ -1084,7 +1279,11 @@ int RunExactOptimalControl3D(const ProblemConfig& config,
       // T11N: the Neumann control lives on Gamma_c -- its error is the surface L2
       // norm on the face (the face quadrature that assembled M_Gamma)
       const SpatialFieldIntegrals I =
-          g_multi ? (which == 2 ? IntegrateBoundaryField3DFaces(mesh, solution_type, ControlFaceMask3D(config), a,
+          (g_var >= 1 && g_var <= 3)   // T14: natural-var-3d (volume u), neumann-var-* (u on Gamma_c = sum_f)
+              ? ((which == 2 && g_var != 1)
+                     ? IntegrateBoundaryField3DFaces(mesh, solution_type, ControlFaceMask3D(config), a, VarExactAt3D, &ctx)
+                     : IntegrateSpatialField3D(mesh, solution_type, a, VarExactAt3D, &ctx))
+          : g_multi ? (which == 2 ? IntegrateBoundaryField3DFaces(mesh, solution_type, ControlFaceMask3D(config), a,
                                                                 g_multi == 3 ? DopExactAt3D : MnExactAt3D, &ctx)
                                 : IntegrateSpatialField3D(mesh, solution_type, a,
                                                           g_multi == 3 ? DopExactAt3D : MnExactAt3D, &ctx))   // T13: sum_f

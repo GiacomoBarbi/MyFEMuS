@@ -1,0 +1,73 @@
+study,tag,kind,scheme,n,nt,ref,y,ord_y,p,ord_p,u,ord_u,maxrss_MB,wall_s,stationarity_rel,march_rel
+exact conv-sin3-3d constant wind A (baseline),dA,exact,CN,2,64,exact,0.055937803477,,0.0025937942062,,0.25937942062,,68,0.34,5.030e-17,1.293e-15
+exact conv-sin3-3d constant wind A (baseline),dA,exact,CN,4,64,exact,0.0051325486664,3.45,7.5693218499e-05,5.10,0.0075693218499,5.10,283,2.49,5.019e-17,9.014e-16
+exact conv-sin3-3d constant wind A (baseline),dA,exact,CN,6,64,exact,0.0014253229266,3.16,1.8368708113e-05,3.49,0.0018368708113,3.49,864,10.12,5.124e-17,5.876e-15
+exact conv-sin3-3d constant wind A (baseline),dA,exact,CN,8,64,exact,0.00058806294939,3.08,6.7655953555e-06,3.47,0.00067655953555,3.47,1987,30.10,5.226e-17,8.063e-15
+exact conv-sin3-3d constant wind A (baseline),dA,exact,CN,10,64,exact,0.0002980460326,3.05,3.1580188338e-06,3.41,0.00031580188338,3.41,3841,118.39,5.166e-17,6.402e-15
+exact conv-sin3-3d harmonic-3d,dH,exact,CN,2,64,exact,0.056407552806,,0.0027041964125,,0.27041964125,,68,0.51,5.111e-17,3.322e-15
+exact conv-sin3-3d harmonic-3d,dH,exact,CN,4,64,exact,0.0051515782869,3.45,7.6924620317e-05,5.14,0.0076924620317,5.14,283,3.38,5.040e-17,1.883e-15
+exact conv-sin3-3d harmonic-3d,dH,exact,CN,6,64,exact,0.0014285094082,3.16,1.8793105315e-05,3.48,0.0018793105315,3.48,864,12.45,5.186e-17,2.857e-15
+exact conv-sin3-3d harmonic-3d,dH,exact,CN,8,64,exact,0.00058888493837,3.08,6.898229638e-06,3.48,0.0006898229638,3.48,1987,36.54,5.218e-17,2.213e-15
+exact conv-sin3-3d harmonic-3d,dH,exact,CN,10,64,exact,0.00029832270389,3.05,3.2080560732e-06,3.43,0.00032080560732,3.43,3842,102.74,5.180e-17,3.176e-15
+exact conv-sin3-3d affine-div-3d,dF,exact,CN,2,64,exact,0.057347623066,,0.0029456913785,,0.29456913785,,70,0.65,4.946e-17,6.041e-16
+exact conv-sin3-3d affine-div-3d,dF,exact,CN,4,64,exact,0.0052597623615,3.45,8.0810440611e-05,5.19,0.0080810440611,5.19,283,4.07,5.105e-17,1.591e-15
+exact conv-sin3-3d affine-div-3d,dF,exact,CN,6,64,exact,0.001441763982,3.19,1.9455809383e-05,3.51,0.0019455809383,3.51,864,26.60,5.118e-17,4.229e-15
+exact conv-sin3-3d affine-div-3d,dF,exact,CN,8,64,exact,0.0005921020787,3.09,7.0953941485e-06,3.51,0.00070953941485,3.51,1987,50.41,5.180e-17,3.726e-15
+exact conv-sin3-3d affine-div-3d,dF,exact,CN,10,64,exact,0.0002993950233,3.06,3.2816679094e-06,3.46,0.00032816679094,3.46,3859,153.94,5.189e-17,6.228e-15
+exact natural-var-3d harmonic-3d N=64,nH,exact,CN,2,64,exact,0.009280622472,,0.00071797293137,,0.071797293137,,69,0.45,5.270e-17,3.304e-15
+exact natural-var-3d harmonic-3d N=64,nH,exact,CN,4,64,exact,0.0011009218921,3.08,8.6261815069e-05,3.06,0.0086261815069,3.06,286,3.85,5.219e-17,2.719e-14
+exact natural-var-3d harmonic-3d N=64,nH,exact,CN,6,64,exact,0.00032303236684,3.02,2.5645641816e-05,2.99,0.0025645641816,2.99,864,15.27,5.168e-17,7.178e-15
+exact natural-var-3d harmonic-3d N=64,nH,exact,CN,8,64,exact,0.00013697927635,2.98,1.1299730384e-05,2.85,0.0011299730384,2.85,1987,49.92,5.192e-17,2.632e-14
+exact natural-var-3d harmonic-3d N=64,nH,exact,CN,10,64,exact,7.2194335495e-05,2.87,6.5743186926e-06,2.43,0.00065743186926,2.43,3841,133.64,5.193e-17,7.166e-15
+exact natural-var-3d affine-div-3d N=64,nF,exact,CN,2,64,exact,0.009418622315,,0.00066570600957,,0.066570600957,,69,0.49,5.170e-17,4.505e-15
+exact natural-var-3d affine-div-3d N=64,nF,exact,CN,4,64,exact,0.001106711405,3.09,8.0746517415e-05,3.04,0.0080746517415,3.04,286,4.77,5.154e-17,1.464e-14
+exact natural-var-3d affine-div-3d N=64,nF,exact,CN,6,64,exact,0.00032367960313,3.03,2.4016639907e-05,2.99,0.0024016639907,2.99,864,19.35,5.202e-17,5.605e-15
+exact natural-var-3d affine-div-3d N=64,nF,exact,CN,8,64,exact,0.00013674202237,3.00,1.0519011565e-05,2.87,0.0010519011565,2.87,1969,79.53,5.182e-17,9.452e-15
+exact natural-var-3d affine-div-3d N=64,nF,exact,CN,10,64,exact,7.1397338845e-05,2.91,6.0177459015e-06,2.50,0.00060177459015,2.50,3862,183.20,5.168e-17,8.648e-14
+exact natural-var-3d harmonic-3d N=128,nH128,exact,CN,6,128,exact,0.0003237122422,,2.5363490738e-05,,0.0025363490738,,1644,39.39,5.184e-17,4.653e-14
+exact natural-var-3d harmonic-3d N=128,nH128,exact,CN,8,128,exact,0.00013606781721,3.01,1.071053723e-05,3.00,0.001071053723,3.00,3803,116.45,5.183e-17,3.127e-14
+exact natural-var-3d harmonic-3d N=128,nH128,exact,CN,10,128,exact,6.9657682798e-05,3.00,5.5358523512e-06,2.96,0.00055358523512,2.96,7360,248.38,5.171e-17,3.807e-14
+exact natural-var-3d affine-div-3d N=128,nF128,exact,CN,6,128,exact,0.00032450096223,,2.3777120589e-05,,0.0023777120589,,1644,35.58,5.159e-17,1.928e-14
+exact natural-var-3d affine-div-3d N=128,nF128,exact,CN,8,128,exact,0.00013623989219,3.02,1.0042915755e-05,3.00,0.0010042915755,3.00,3804,117.71,5.156e-17,1.090e-14
+exact natural-var-3d affine-div-3d N=128,nF128,exact,CN,10,128,exact,6.9675025226e-05,3.01,5.1844952641e-06,2.96,0.00051844952641,2.96,7360,269.41,5.174e-17,9.513e-15
+exact neumann-var-3d harmonic-3d,mH,exact,CN,2,64,exact,0.29538025934,,0.044937134978,,0.62369660306,,72,0.99,4.100e-17,1.810e-15
+exact neumann-var-3d harmonic-3d,mH,exact,CN,4,64,exact,0.026820446448,3.46,0.0027822650451,4.01,0.045262612267,3.78,290,8.25,3.883e-17,2.869e-15
+exact neumann-var-3d harmonic-3d,mH,exact,CN,6,64,exact,0.007252117154,3.23,0.0005450828211,4.02,0.011232569264,3.44,874,38.49,3.856e-17,3.151e-15
+exact neumann-var-3d harmonic-3d,mH,exact,CN,8,64,exact,0.0029585104099,3.12,0.0001742317343,3.96,0.0044032932306,3.26,2011,132.37,3.921e-17,1.304e-14
+exact neumann-var-3d harmonic-3d,mH,exact,CN,10,64,exact,0.0014910661385,3.07,7.3233966513e-05,3.88,0.002194562037,3.12,3903,306.99,3.788e-17,3.159e-14
+exact neumann-var-opp-3d affine-div-3d,oF,exact,CN,2,64,exact,0.19138530705,,0.0078118084286,,0.67821247389,,71,0.65,3.933e-17,2.661e-15
+exact neumann-var-opp-3d affine-div-3d,oF,exact,CN,4,64,exact,0.020289942078,3.24,0.00040158848325,4.28,0.044525101817,3.93,290,6.66,3.864e-17,1.880e-15
+exact neumann-var-opp-3d affine-div-3d,oF,exact,CN,6,64,exact,0.0055111634756,3.21,9.138819514e-05,3.65,0.011076380161,3.43,874,34.15,3.826e-17,5.655e-15
+exact neumann-var-opp-3d affine-div-3d,oF,exact,CN,8,64,exact,0.0022595070929,3.10,3.392556668e-05,3.44,0.0043436011495,3.25,2009,125.01,3.805e-17,8.408e-15
+exact neumann-var-opp-3d affine-div-3d,oF,exact,CN,10,64,exact,0.0011419103743,3.06,1.63009096e-05,3.28,0.0021595841255,3.13,3903,317.54,3.842e-17,3.211e-14
+exact dirichlet-var-3d swirl,rS,exact,CN,2,256,exact,0.12604363138,,0.026625997854,,0.34423610609,,110,1.51,1.547e-16,2.660e-15
+exact dirichlet-var-3d swirl,rS,exact,CN,4,256,exact,0.0058550761489,4.43,0.007470989492,1.83,0.0094309009734,5.19,562,11.21,1.687e-16,2.718e-15
+exact dirichlet-var-3d swirl,rS,exact,CN,6,256,exact,0.0014981571979,3.36,0.0014485574278,4.05,0.0014359542056,4.64,1735,40.69,1.666e-16,4.942e-15
+exact dirichlet-var-3d swirl,rS,exact,CN,8,256,exact,0.00061456203711,3.10,0.00049921745783,3.70,0.00055893045709,3.28,3958,116.81,1.680e-16,6.450e-15
+exact dirichlet-var-3d swirl,rS,exact,CN,10,256,exact,0.00031122856584,3.05,0.00027605224068,2.66,0.00028693013257,2.99,7623,329.23,1.673e-16,1.040e-14
+exact dirichlet-var-3d swirl,rS,exact,CN,12,256,exact,0.00017866422828,3.04,0.00016433759985,2.84,0.00016266092653,3.11,13070,475.32,1.674e-16,9.255e-15
+self-conv Dirichlet zmin affine-div-3d L2,scF,self-convergence,CN,2,16,n=12,3.6980e-03,,4.0993e-04,,1.2507e-02,,,,,
+self-conv Dirichlet zmin affine-div-3d L2,scF,self-convergence,CN,4,16,n=12,3.8534e-04,3.26,9.3319e-05,2.14,5.8427e-04,4.42,,,,
+self-conv Dirichlet zmin affine-div-3d L2,scF,self-convergence,CN,6,16,n=12,1.8340e-04,1.83,3.3844e-05,2.50,1.3329e-04,3.64,,,,
+self-conv Dirichlet zmin constant wind A L2,scA,self-convergence,CN,2,16,n=12,4.7945e-03,,4.0751e-04,,1.7306e-02,,,,,
+self-conv Dirichlet zmin constant wind A L2,scA,self-convergence,CN,4,16,n=12,2.3531e-04,4.35,9.5854e-05,2.09,6.4390e-04,4.75,,,,
+self-conv Dirichlet zmin constant wind A L2,scA,self-convergence,CN,6,16,n=12,8.5191e-05,2.51,3.5110e-05,2.48,1.0138e-04,4.56,,,,
+self-conv Dirichlet zmin constant normal wind L2,scN,self-convergence,CN,2,16,n=12,4.7862e-03,,4.0363e-04,,1.7381e-02,,,,,
+self-conv Dirichlet zmin constant normal wind L2,scN,self-convergence,CN,4,16,n=12,2.1826e-04,4.45,9.2965e-05,2.12,6.5486e-04,4.73,,,,
+self-conv Dirichlet zmin constant normal wind L2,scN,self-convergence,CN,6,16,n=12,7.3403e-05,2.69,3.3797e-05,2.50,1.0532e-04,4.51,,,,
+self-conv Dirichlet zmin affine-div-3d H1 comb,scFH,self-convergence,CN,2,16,n=12,2.8821e-04,,4.0937e-04,,7.3330e-04,,,,,
+self-conv Dirichlet zmin affine-div-3d H1 comb,scFH,self-convergence,CN,4,16,n=12,2.7725e-05,3.38,9.3324e-05,2.13,4.5864e-05,4.00,,,,
+self-conv Dirichlet zmin affine-div-3d H1 comb,scFH,self-convergence,CN,6,16,n=12,9.5319e-06,2.63,3.3847e-05,2.50,1.4691e-05,2.81,,,,
+self-conv Dirichlet zmin constant wind A H1 comb,scAH,self-convergence,CN,2,16,n=12,4.5881e-04,,4.0699e-04,,1.5613e-03,,,,,
+self-conv Dirichlet zmin constant wind A H1 comb,scAH,self-convergence,CN,4,16,n=12,2.2636e-05,4.34,9.5854e-05,2.09,6.7696e-05,4.53,,,,
+self-conv Dirichlet zmin constant wind A H1 comb,scAH,self-convergence,CN,6,16,n=12,5.3326e-06,3.57,3.5111e-05,2.48,1.2552e-05,4.16,,,,
+self-conv Dirichlet zmin affine-div-3d L2,scF,self-convergence,CN,2,16,n=24,3.6960e-03,,4.1134e-04,,1.2507e-02,,,,,
+self-conv Dirichlet zmin affine-div-3d L2,scF,self-convergence,CN,4,16,n=24,3.7426e-04,3.30,9.6061e-05,2.10,5.8328e-04,4.42,,,,
+self-conv Dirichlet zmin affine-div-3d L2,scF,self-convergence,CN,6,16,n=24,1.7336e-04,1.90,3.7621e-05,2.31,1.2966e-04,3.71,,,,
+self-conv Dirichlet zmin affine-div-3d L2,scF,self-convergence,CN,8,16,n=24,1.0525e-04,1.73,1.8728e-05,2.42,5.1191e-05,3.23,,,,
+self-conv Dirichlet zmin affine-div-3d L2,scF,self-convergence,CN,12,16,n=24,5.1213e-05,1.78,6.4724e-06,2.62,1.5284e-05,2.98,,,,
+self-conv Dirichlet zmin constant wind A L2,scA,self-convergence,CN,2,16,n=24,4.7949e-03,,4.0837e-04,,1.7308e-02,,,,,
+self-conv Dirichlet zmin constant wind A L2,scA,self-convergence,CN,4,16,n=24,2.3271e-04,4.36,9.8069e-05,2.06,6.4806e-04,4.74,,,,
+self-conv Dirichlet zmin constant wind A L2,scA,self-convergence,CN,6,16,n=24,8.1277e-05,2.59,3.8390e-05,2.31,1.0578e-04,4.47,,,,
+self-conv Dirichlet zmin constant wind A L2,scA,self-convergence,CN,8,16,n=24,4.6993e-05,1.90,1.9054e-05,2.44,3.2530e-05,4.10,,,,
+self-conv Dirichlet zmin constant wind A L2,scA,self-convergence,CN,12,16,n=24,2.2585e-05,1.81,6.5745e-06,2.62,6.8769e-06,3.83,,,,

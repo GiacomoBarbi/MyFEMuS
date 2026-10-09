@@ -1,0 +1,218 @@
+source,case,check,value,verdict
+gates_neumann,adj_aff_BE_n3,G1W identity / G13N union / FD / negatives,G1W=2.979e-14 union=0.000e+00 fd=8.616e-14 drop=1.610e+00 missdiv=3.535e-01,PASS
+gates_neumann,adj_aff_CN_n3,G1W identity / G13N union / FD / negatives,G1W=2.979e-14 union=0.000e+00 fd=4.496e-14 drop=8.663e-01 missdiv=1.620e-01,PASS
+gates_neumann,adj_harm_BE_n3,G1W identity / G13N union / FD / negatives,G1W=3.085e-14 union=0.000e+00 fd=1.521e-14 drop=1.067e+00 missdiv=1.586e-14,PASS
+gates_neumann,adj_harm_CN_n3,G1W identity / G13N union / FD / negatives,G1W=3.085e-14 union=0.000e+00 fd=8.472e-15 drop=6.727e-01 missdiv=9.801e-15,PASS
+gates_neumann,ex2_aff_BE_n2,G1W identity / G13N union / FD / negatives,G1W=2.618e-14 union=0.000e+00 fd=1.137e-13 drop=6.572e+00 missdiv=1.755e+01,PASS
+gates_neumann,ex2_aff_BE_n3,G1W identity / G13N union / FD / negatives,G1W=3.152e-14 union=0.000e+00 fd=2.150e-14 drop=2.640e-01 missdiv=7.677e-01,PASS
+gates_neumann,ex2_aff_CN_n2,G1W identity / G13N union / FD / negatives,G1W=2.618e-14 union=0.000e+00 fd=3.250e-12 drop=1.070e+02 missdiv=1.082e+00,PASS
+gates_neumann,ex2_aff_CN_n3,G1W identity / G13N union / FD / negatives,G1W=3.152e-14 union=0.000e+00 fd=4.747e-14 drop=1.784e-01 missdiv=5.585e-01,PASS
+gates_neumann,ex2_harm_BE_n2,G1W identity / G13N union / FD / negatives,G1W=2.686e-14 union=0.000e+00 fd=3.779e-13 drop=3.025e+00 missdiv=3.799e-13,PASS
+gates_neumann,ex2_harm_BE_n3,G1W identity / G13N union / FD / negatives,G1W=3.453e-14 union=0.000e+00 fd=3.428e-14 drop=1.948e-01 missdiv=3.147e-14,PASS
+gates_neumann,ex2_harm_CN_n2,G1W identity / G13N union / FD / negatives,G1W=2.686e-14 union=0.000e+00 fd=2.712e-13 drop=5.277e+00 missdiv=2.715e-13,PASS
+gates_neumann,ex2_harm_CN_n3,G1W identity / G13N union / FD / negatives,G1W=3.453e-14 union=0.000e+00 fd=5.929e-14 drop=1.225e-01 missdiv=5.944e-14,PASS
+gates_neumann,opp_aff_BE_n3,G1W identity / G13N union / FD / negatives,G1W=2.979e-14 union=0.000e+00 fd=0.000e+00 drop=2.282e-01 missdiv=1.584e-01,PASS
+gates_neumann,opp_aff_CN_n3,G1W identity / G13N union / FD / negatives,G1W=2.979e-14 union=0.000e+00 fd=4.312e-15 drop=1.677e-01 missdiv=7.910e-02,PASS
+gates_neumann,opp_harm_BE_n3,G1W identity / G13N union / FD / negatives,G1W=3.085e-14 union=0.000e+00 fd=2.509e-15 drop=2.472e-01 missdiv=2.509e-15,PASS
+gates_neumann,opp_harm_CN_n3,G1W identity / G13N union / FD / negatives,G1W=3.085e-14 union=0.000e+00 fd=3.828e-15 drop=1.665e-01 missdiv=3.995e-15,PASS
+gates_neumann,thr_aff_BE_n3,G1W identity / G13N union / FD / negatives,G1W=2.979e-14 union=1.150e-17 fd=1.539e-14 drop=1.073e-01 missdiv=6.752e-02,PASS
+gates_neumann,thr_aff_CN_n3,G1W identity / G13N union / FD / negatives,G1W=2.979e-14 union=1.150e-17 fd=3.022e-15 drop=9.787e-02 missdiv=5.926e-02,PASS
+gates_neumann,thr_harm_BE_n3,G1W identity / G13N union / FD / negatives,G1W=3.085e-14 union=1.150e-17 fd=1.146e-14 drop=1.089e-01 missdiv=1.167e-14,PASS
+gates_neumann,thr_harm_CN_n3,G1W identity / G13N union / FD / negatives,G1W=3.085e-14 union=1.150e-17 fd=9.521e-15 drop=9.551e-02 missdiv=9.926e-15,PASS
+gates_dirichlet,adj_aff_H1s_BE_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.801e-14 BDt=5.383e-18 fd=3.891e-14 res=8.622e-13,PASS
+gates_dirichlet,adj_aff_H1s_CN_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.801e-14 BDt=1.762e-17 fd=1.544e-14 res=4.213e-13,PASS
+gates_dirichlet,adj_aff_H1t_BE_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.801e-14 BDt=5.383e-18 fd=1.589e-14 res=5.847e-13,PASS
+gates_dirichlet,adj_aff_H1t_CN_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.801e-14 BDt=1.762e-17 fd=2.050e-14 res=2.645e-13,PASS
+gates_dirichlet,adj_aff_L2_BE_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.801e-14 BDt=5.383e-18 fd=1.500e-14 res=1.770e-12,PASS
+gates_dirichlet,adj_aff_L2_CN_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.801e-14 BDt=1.762e-17 fd=2.265e-14 res=9.371e-13,PASS
+gates_dirichlet,adj_aff_comb_BE_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.801e-14 BDt=5.383e-18 fd=6.835e-15 res=4.407e-13,PASS
+gates_dirichlet,adj_aff_comb_CN_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.801e-14 BDt=1.762e-17 fd=7.260e-15 res=1.859e-13,PASS
+gates_dirichlet,adj_harm_H1s_BE_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.863e-14 BDt=1.646e-17 fd=3.396e-14 res=2.227e-13,PASS
+gates_dirichlet,adj_harm_H1s_CN_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.863e-14 BDt=6.273e-18 fd=1.461e-14 res=9.367e-14,PASS
+gates_dirichlet,adj_harm_H1t_BE_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.863e-14 BDt=1.646e-17 fd=2.801e-14 res=1.269e-13,PASS
+gates_dirichlet,adj_harm_H1t_CN_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.863e-14 BDt=6.273e-18 fd=1.324e-14 res=5.989e-14,PASS
+gates_dirichlet,adj_harm_L2_BE_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.863e-14 BDt=1.646e-17 fd=4.676e-14 res=4.350e-13,PASS
+gates_dirichlet,adj_harm_L2_CN_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.863e-14 BDt=6.273e-18 fd=5.226e-15 res=2.161e-13,PASS
+gates_dirichlet,adj_harm_comb_BE_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.863e-14 BDt=1.646e-17 fd=1.850e-14 res=1.091e-13,PASS
+gates_dirichlet,adj_harm_comb_CN_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.863e-14 BDt=6.273e-18 fd=1.470e-14 res=4.096e-14,PASS
+gates_dirichlet,adj_wA_L2_BE_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W= BDt=9.772e-18 fd=1.889e-14 res=1.136e-12,PASS
+gates_dirichlet,adj_wA_L2_CN_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W= BDt=9.549e-18 fd=1.458e-14 res=5.942e-13,PASS
+gates_dirichlet,nu_aff_L2_BE_n4,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.860e-14 BDt=0.000e+00 fd=1.690e-15 res=2.879e-16,PASS
+gates_dirichlet,nu_aff_L2_CN_n4,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.860e-14 BDt=0.000e+00 fd=7.457e-15 res=1.785e-11,PASS
+gates_dirichlet,nu_harm_L2_BE_n4,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.837e-14 BDt=1.686e-18 fd=5.149e-15 res=2.931e-16,PASS
+gates_dirichlet,nu_harm_L2_CN_n4,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.837e-14 BDt=5.164e-18 fd=1.836e-15 res=1.159e-11,PASS
+gates_dirichlet,nu_wA_L2_BE_n4,G1W_DIRICHLET / B_D^T / FD / core,G1W= BDt=1.689e-18 fd=7.255e-15 res=2.836e-11,PASS
+gates_dirichlet,nu_wA_L2_CN_n4,G1W_DIRICHLET / B_D^T / FD / core,G1W= BDt=7.748e-18 fd=5.760e-15 res=2.515e-11,PASS
+gates_dirichlet,opp_aff_H1s_BE_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.794e-14 BDt=3.190e-18 fd=1.526e-15 res=3.930e-13,PASS
+gates_dirichlet,opp_aff_H1s_CN_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.794e-14 BDt=1.374e-18 fd=3.041e-15 res=1.340e-13,PASS
+gates_dirichlet,opp_aff_H1t_BE_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.794e-14 BDt=3.190e-18 fd=2.182e-16 res=4.619e-13,PASS
+gates_dirichlet,opp_aff_H1t_CN_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.794e-14 BDt=1.374e-18 fd=2.419e-15 res=1.181e-13,PASS
+gates_dirichlet,opp_aff_L2_BE_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.794e-14 BDt=3.190e-18 fd=2.789e-15 res=1.456e-12,PASS
+gates_dirichlet,opp_aff_L2_CN_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.794e-14 BDt=1.374e-18 fd=6.275e-15 res=4.306e-13,PASS
+gates_dirichlet,opp_aff_comb_BE_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.794e-14 BDt=3.190e-18 fd=3.453e-16 res=2.300e-13,PASS
+gates_dirichlet,opp_aff_comb_CN_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.794e-14 BDt=1.374e-18 fd=3.923e-15 res=6.985e-14,PASS
+gates_dirichlet,opp_harm_H1s_BE_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.840e-14 BDt=9.202e-18 fd=3.433e-15 res=2.638e-13,PASS
+gates_dirichlet,opp_harm_H1s_CN_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.840e-14 BDt=4.610e-18 fd=7.708e-15 res=4.827e-14,PASS
+gates_dirichlet,opp_harm_H1t_BE_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.840e-14 BDt=9.202e-18 fd=6.547e-16 res=2.738e-13,PASS
+gates_dirichlet,opp_harm_H1t_CN_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.840e-14 BDt=4.610e-18 fd=1.539e-15 res=4.202e-14,PASS
+gates_dirichlet,opp_harm_L2_BE_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.840e-14 BDt=9.202e-18 fd=7.297e-15 res=8.683e-13,PASS
+gates_dirichlet,opp_harm_L2_CN_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.840e-14 BDt=4.610e-18 fd=4.280e-15 res=1.566e-13,PASS
+gates_dirichlet,opp_harm_comb_BE_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.840e-14 BDt=9.202e-18 fd=6.906e-16 res=1.480e-13,PASS
+gates_dirichlet,opp_harm_comb_CN_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W=1.840e-14 BDt=4.610e-18 fd=1.765e-15 res=2.390e-14,PASS
+gates_dirichlet,opp_wA_L2_BE_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W= BDt=1.542e-18 fd=2.880e-15 res=7.292e-13,PASS
+gates_dirichlet,opp_wA_L2_CN_n3,G1W_DIRICHLET / B_D^T / FD / core,G1W= BDt=1.584e-18 fd=3.685e-15 res=4.203e-13,PASS
+bd_explicit,harmonic-3d_zmin+zmax_be,dumped C = geometric C,18,PASS
+bd_explicit,harmonic-3d_zmin+zmax_be,dumped B_D = formula (rel.),7.8e-17,PASS
+bd_explicit,harmonic-3d_zmin+zmax_be,dumped B_D^T = (formula)^T = (dumped B_D)^T,7.8e-17,PASS
+bd_explicit,harmonic-3d_zmin+zmax_be,"<B_D u, p> = <u, B_D^T p>",0.0e+00,PASS
+bd_explicit,harmonic-3d_zmin+zmax_be,NEG L instead of L^T in B_D^T: detected,9.3e-01,PASS
+bd_explicit,harmonic-3d_zmin+zmax_be,NEG wrong C (face zmax omitted): detected,1.4e+00,PASS
+bd_explicit,harmonic-3d_zmin+zmax_be,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.1e-14,PASS
+bd_explicit,harmonic-3d_zmin+zmax_be,NEG plain skew C + C^T = 0 on I u C,5.8e-01,PASS
+bd_explicit,harmonic-3d_zmin+zmax_cn,dumped C = geometric C,18,PASS
+bd_explicit,harmonic-3d_zmin+zmax_cn,dumped B_D = formula (rel.),1.2e-16,PASS
+bd_explicit,harmonic-3d_zmin+zmax_cn,dumped B_D^T = (formula)^T = (dumped B_D)^T,1.2e-16,PASS
+bd_explicit,harmonic-3d_zmin+zmax_cn,"<B_D u, p> = <u, B_D^T p>",0.0e+00,PASS
+bd_explicit,harmonic-3d_zmin+zmax_cn,NEG L instead of L^T in B_D^T: detected,3.6e-01,PASS
+bd_explicit,harmonic-3d_zmin+zmax_cn,NEG wrong C (face zmax omitted): detected,1.1e+00,PASS
+bd_explicit,harmonic-3d_zmin+zmax_cn,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.1e-14,PASS
+bd_explicit,harmonic-3d_zmin+zmax_cn,NEG plain skew C + C^T = 0 on I u C,5.8e-01,PASS
+bd_explicit,harmonic-3d_zmin+xmin_be,dumped C = geometric C,21,PASS
+bd_explicit,harmonic-3d_zmin+xmin_be,dumped B_D = formula (rel.),6.9e-17,PASS
+bd_explicit,harmonic-3d_zmin+xmin_be,dumped B_D^T = (formula)^T = (dumped B_D)^T,6.9e-17,PASS
+bd_explicit,harmonic-3d_zmin+xmin_be,"<B_D u, p> = <u, B_D^T p>",7.9e-16,PASS
+bd_explicit,harmonic-3d_zmin+xmin_be,NEG L instead of L^T in B_D^T: detected,1.2e+00,PASS
+bd_explicit,harmonic-3d_zmin+xmin_be,NEG wrong C (face xmin omitted): detected,1.5e+00,PASS
+bd_explicit,harmonic-3d_zmin+xmin_be,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.1e-14,PASS
+bd_explicit,harmonic-3d_zmin+xmin_be,NEG plain skew C + C^T = 0 on I u C,7.5e-01,PASS
+bd_explicit,harmonic-3d_zmin+xmin_cn,dumped C = geometric C,21,PASS
+bd_explicit,harmonic-3d_zmin+xmin_cn,dumped B_D = formula (rel.),1.1e-16,PASS
+bd_explicit,harmonic-3d_zmin+xmin_cn,dumped B_D^T = (formula)^T = (dumped B_D)^T,1.1e-16,PASS
+bd_explicit,harmonic-3d_zmin+xmin_cn,"<B_D u, p> = <u, B_D^T p>",1.6e-15,PASS
+bd_explicit,harmonic-3d_zmin+xmin_cn,NEG L instead of L^T in B_D^T: detected,4.6e-01,PASS
+bd_explicit,harmonic-3d_zmin+xmin_cn,NEG wrong C (face xmin omitted): detected,1.2e+00,PASS
+bd_explicit,harmonic-3d_zmin+xmin_cn,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.1e-14,PASS
+bd_explicit,harmonic-3d_zmin+xmin_cn,NEG plain skew C + C^T = 0 on I u C,7.5e-01,PASS
+bd_explicit,harmonic-3d_zmin+ymin+xmin_be,dumped C = geometric C,37,PASS
+bd_explicit,harmonic-3d_zmin+ymin+xmin_be,dumped B_D = formula (rel.),1.8e-16,PASS
+bd_explicit,harmonic-3d_zmin+ymin+xmin_be,dumped B_D^T = (formula)^T = (dumped B_D)^T,1.8e-16,PASS
+bd_explicit,harmonic-3d_zmin+ymin+xmin_be,"<B_D u, p> = <u, B_D^T p>",4.0e-16,PASS
+bd_explicit,harmonic-3d_zmin+ymin+xmin_be,NEG L instead of L^T in B_D^T: detected,2.4e+00,PASS
+bd_explicit,harmonic-3d_zmin+ymin+xmin_be,NEG wrong C (face xmin omitted): detected,6.5e-01,PASS
+bd_explicit,harmonic-3d_zmin+ymin+xmin_be,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.1e-14,PASS
+bd_explicit,harmonic-3d_zmin+ymin+xmin_be,NEG plain skew C + C^T = 0 on I u C,1.5e+00,PASS
+bd_explicit,harmonic-3d_zmin+ymin+xmin_cn,dumped C = geometric C,37,PASS
+bd_explicit,harmonic-3d_zmin+ymin+xmin_cn,dumped B_D = formula (rel.),9.4e-17,PASS
+bd_explicit,harmonic-3d_zmin+ymin+xmin_cn,dumped B_D^T = (formula)^T = (dumped B_D)^T,9.4e-17,PASS
+bd_explicit,harmonic-3d_zmin+ymin+xmin_cn,"<B_D u, p> = <u, B_D^T p>",4.5e-16,PASS
+bd_explicit,harmonic-3d_zmin+ymin+xmin_cn,NEG L instead of L^T in B_D^T: detected,9.2e-01,PASS
+bd_explicit,harmonic-3d_zmin+ymin+xmin_cn,NEG wrong C (face xmin omitted): detected,8.2e-01,PASS
+bd_explicit,harmonic-3d_zmin+ymin+xmin_cn,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.1e-14,PASS
+bd_explicit,harmonic-3d_zmin+ymin+xmin_cn,NEG plain skew C + C^T = 0 on I u C,1.5e+00,PASS
+bd_explicit,affine-div-3d_zmin+zmax_be,dumped C = geometric C,18,PASS
+bd_explicit,affine-div-3d_zmin+zmax_be,dumped B_D = formula (rel.),9.8e-17,PASS
+bd_explicit,affine-div-3d_zmin+zmax_be,dumped B_D^T = (formula)^T = (dumped B_D)^T,9.8e-17,PASS
+bd_explicit,affine-div-3d_zmin+zmax_be,"<B_D u, p> = <u, B_D^T p>",5.4e-16,PASS
+bd_explicit,affine-div-3d_zmin+zmax_be,NEG L instead of L^T in B_D^T: detected,8.7e-01,PASS
+bd_explicit,affine-div-3d_zmin+zmax_be,NEG wrong C (face zmax omitted): detected,1.0e+00,PASS
+bd_explicit,affine-div-3d_zmin+zmax_be,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.0e-14,PASS
+bd_explicit,affine-div-3d_zmin+zmax_be,NEG identity without D_w (div-free form) on the generic field,3.1e-01,PASS
+bd_explicit,affine-div-3d_zmin+zmax_be,NEG plain skew C + C^T = 0 on I u C,4.3e-01,PASS
+bd_explicit,affine-div-3d_zmin+zmax_cn,dumped C = geometric C,18,PASS
+bd_explicit,affine-div-3d_zmin+zmax_cn,dumped B_D = formula (rel.),1.3e-16,PASS
+bd_explicit,affine-div-3d_zmin+zmax_cn,dumped B_D^T = (formula)^T = (dumped B_D)^T,1.3e-16,PASS
+bd_explicit,affine-div-3d_zmin+zmax_cn,"<B_D u, p> = <u, B_D^T p>",3.8e-16,PASS
+bd_explicit,affine-div-3d_zmin+zmax_cn,NEG L instead of L^T in B_D^T: detected,3.3e-01,PASS
+bd_explicit,affine-div-3d_zmin+zmax_cn,NEG wrong C (face zmax omitted): detected,1.0e+00,PASS
+bd_explicit,affine-div-3d_zmin+zmax_cn,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.0e-14,PASS
+bd_explicit,affine-div-3d_zmin+zmax_cn,NEG identity without D_w (div-free form) on the generic field,3.1e-01,PASS
+bd_explicit,affine-div-3d_zmin+zmax_cn,NEG plain skew C + C^T = 0 on I u C,4.3e-01,PASS
+bd_explicit,affine-div-3d_zmin+xmin_be,dumped C = geometric C,21,PASS
+bd_explicit,affine-div-3d_zmin+xmin_be,dumped B_D = formula (rel.),6.4e-17,PASS
+bd_explicit,affine-div-3d_zmin+xmin_be,dumped B_D^T = (formula)^T = (dumped B_D)^T,6.4e-17,PASS
+bd_explicit,affine-div-3d_zmin+xmin_be,"<B_D u, p> = <u, B_D^T p>",4.9e-16,PASS
+bd_explicit,affine-div-3d_zmin+xmin_be,NEG L instead of L^T in B_D^T: detected,1.3e+00,PASS
+bd_explicit,affine-div-3d_zmin+xmin_be,NEG wrong C (face xmin omitted): detected,1.5e+00,PASS
+bd_explicit,affine-div-3d_zmin+xmin_be,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.0e-14,PASS
+bd_explicit,affine-div-3d_zmin+xmin_be,NEG identity without D_w (div-free form) on the generic field,3.1e-01,PASS
+bd_explicit,affine-div-3d_zmin+xmin_be,NEG plain skew C + C^T = 0 on I u C,7.2e-01,PASS
+bd_explicit,affine-div-3d_zmin+xmin_cn,dumped C = geometric C,21,PASS
+bd_explicit,affine-div-3d_zmin+xmin_cn,dumped B_D = formula (rel.),1.1e-16,PASS
+bd_explicit,affine-div-3d_zmin+xmin_cn,dumped B_D^T = (formula)^T = (dumped B_D)^T,1.1e-16,PASS
+bd_explicit,affine-div-3d_zmin+xmin_cn,"<B_D u, p> = <u, B_D^T p>",1.2e-15,PASS
+bd_explicit,affine-div-3d_zmin+xmin_cn,NEG L instead of L^T in B_D^T: detected,5.1e-01,PASS
+bd_explicit,affine-div-3d_zmin+xmin_cn,NEG wrong C (face xmin omitted): detected,1.2e+00,PASS
+bd_explicit,affine-div-3d_zmin+xmin_cn,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.0e-14,PASS
+bd_explicit,affine-div-3d_zmin+xmin_cn,NEG identity without D_w (div-free form) on the generic field,3.1e-01,PASS
+bd_explicit,affine-div-3d_zmin+xmin_cn,NEG plain skew C + C^T = 0 on I u C,7.2e-01,PASS
+bd_explicit,affine-div-3d_zmin+ymin+xmin_be,dumped C = geometric C,37,PASS
+bd_explicit,affine-div-3d_zmin+ymin+xmin_be,dumped B_D = formula (rel.),4.4e-17,PASS
+bd_explicit,affine-div-3d_zmin+ymin+xmin_be,dumped B_D^T = (formula)^T = (dumped B_D)^T,4.4e-17,PASS
+bd_explicit,affine-div-3d_zmin+ymin+xmin_be,"<B_D u, p> = <u, B_D^T p>",6.1e-16,PASS
+bd_explicit,affine-div-3d_zmin+ymin+xmin_be,NEG L instead of L^T in B_D^T: detected,2.5e+00,PASS
+bd_explicit,affine-div-3d_zmin+ymin+xmin_be,NEG wrong C (face xmin omitted): detected,6.8e-01,PASS
+bd_explicit,affine-div-3d_zmin+ymin+xmin_be,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.0e-14,PASS
+bd_explicit,affine-div-3d_zmin+ymin+xmin_be,NEG identity without D_w (div-free form) on the generic field,3.1e-01,PASS
+bd_explicit,affine-div-3d_zmin+ymin+xmin_be,NEG plain skew C + C^T = 0 on I u C,1.4e+00,PASS
+bd_explicit,affine-div-3d_zmin+ymin+xmin_cn,dumped C = geometric C,37,PASS
+bd_explicit,affine-div-3d_zmin+ymin+xmin_cn,dumped B_D = formula (rel.),9.2e-17,PASS
+bd_explicit,affine-div-3d_zmin+ymin+xmin_cn,dumped B_D^T = (formula)^T = (dumped B_D)^T,9.2e-17,PASS
+bd_explicit,affine-div-3d_zmin+ymin+xmin_cn,"<B_D u, p> = <u, B_D^T p>",0.0e+00,PASS
+bd_explicit,affine-div-3d_zmin+ymin+xmin_cn,NEG L instead of L^T in B_D^T: detected,9.5e-01,PASS
+bd_explicit,affine-div-3d_zmin+ymin+xmin_cn,NEG wrong C (face xmin omitted): detected,8.3e-01,PASS
+bd_explicit,affine-div-3d_zmin+ymin+xmin_cn,"G1D C + C^T = (B_w - D_w) on I u C (independent B_w, D_w)",2.0e-14,PASS
+bd_explicit,affine-div-3d_zmin+ymin+xmin_cn,NEG identity without D_w (div-free form) on the generic field,3.1e-01,PASS
+bd_explicit,affine-div-3d_zmin+ymin+xmin_cn,NEG plain skew C + C^T = 0 on I u C,1.4e+00,PASS
+permutation,"Neumann opp zmax,zmin",byte-identical vc,IDENTICAL,PASS
+permutation,"Neumann opp zmax,zmin",byte-identical out,IDENTICAL,PASS
+permutation,"Neumann opp zmax,zmin",byte-identical json,IDENTICAL,PASS
+permutation,"Neumann opp zmax,zmin",byte-identical operator_dumps,IDENTICAL,PASS
+permutation,"Neumann adj xmin,zmin",byte-identical vc,IDENTICAL,PASS
+permutation,"Neumann adj xmin,zmin",byte-identical out,IDENTICAL,PASS
+permutation,"Neumann adj xmin,zmin",byte-identical json,IDENTICAL,PASS
+permutation,"Neumann adj xmin,zmin",byte-identical operator_dumps,IDENTICAL,PASS
+permutation,"Neumann thr xmin,ymin,zmin",byte-identical vc,IDENTICAL,PASS
+permutation,"Neumann thr xmin,ymin,zmin",byte-identical out,IDENTICAL,PASS
+permutation,"Neumann thr xmin,ymin,zmin",byte-identical json,IDENTICAL,PASS
+permutation,"Neumann thr xmin,ymin,zmin",byte-identical operator_dumps,IDENTICAL,PASS
+permutation,"Neumann thr ymin,zmin,xmin",byte-identical vc,IDENTICAL,PASS
+permutation,"Neumann thr ymin,zmin,xmin",byte-identical out,IDENTICAL,PASS
+permutation,"Neumann thr ymin,zmin,xmin",byte-identical json,IDENTICAL,PASS
+permutation,"Neumann thr ymin,zmin,xmin",byte-identical operator_dumps,IDENTICAL,PASS
+permutation,"Dirichlet opp_be zmax,zmin",byte-identical vc,IDENTICAL,PASS
+permutation,"Dirichlet opp_be zmax,zmin",byte-identical out,IDENTICAL,PASS
+permutation,"Dirichlet opp_be zmax,zmin",byte-identical json,IDENTICAL,PASS
+permutation,"Dirichlet opp_be zmax,zmin",byte-identical operator_dumps,IDENTICAL,PASS
+permutation,"Dirichlet adj_be xmin,zmin",byte-identical vc,IDENTICAL,PASS
+permutation,"Dirichlet adj_be xmin,zmin",byte-identical out,IDENTICAL,PASS
+permutation,"Dirichlet adj_be xmin,zmin",byte-identical json,IDENTICAL,PASS
+permutation,"Dirichlet adj_be xmin,zmin",byte-identical operator_dumps,IDENTICAL,PASS
+permutation,"Dirichlet opp_cn zmax,zmin",byte-identical vc,IDENTICAL,PASS
+permutation,"Dirichlet opp_cn zmax,zmin",byte-identical out,IDENTICAL,PASS
+permutation,"Dirichlet opp_cn zmax,zmin",byte-identical json,IDENTICAL,PASS
+permutation,"Dirichlet opp_cn zmax,zmin",byte-identical operator_dumps,IDENTICAL,PASS
+permutation,"Dirichlet adj_cn xmin,zmin",byte-identical vc,IDENTICAL,PASS
+permutation,"Dirichlet adj_cn xmin,zmin",byte-identical out,IDENTICAL,PASS
+permutation,"Dirichlet adj_cn xmin,zmin",byte-identical json,IDENTICAL,PASS
+permutation,"Dirichlet adj_cn xmin,zmin",byte-identical operator_dumps,IDENTICAL,PASS
+permutation,"Dirichlet thr xmin,ymin,zmin",byte-identical vc,IDENTICAL,PASS
+permutation,"Dirichlet thr xmin,ymin,zmin",byte-identical out,IDENTICAL,PASS
+permutation,"Dirichlet thr xmin,ymin,zmin",byte-identical json,IDENTICAL,PASS
+permutation,"Dirichlet thr xmin,ymin,zmin",byte-identical operator_dumps,IDENTICAL,PASS
+permutation,"Dirichlet thr ymin,zmin,xmin",byte-identical vc,IDENTICAL,PASS
+permutation,"Dirichlet thr ymin,zmin,xmin",byte-identical out,IDENTICAL,PASS
+permutation,"Dirichlet thr ymin,zmin,xmin",byte-identical json,IDENTICAL,PASS
+permutation,"Dirichlet thr ymin,zmin,xmin",byte-identical operator_dumps,IDENTICAL,PASS
+permutation,"Dirichlet adjH1 xmin,zmin",byte-identical vc,IDENTICAL,PASS
+permutation,"Dirichlet adjH1 xmin,zmin",byte-identical out,IDENTICAL,PASS
+permutation,"Dirichlet adjH1 xmin,zmin",byte-identical json,IDENTICAL,PASS
+permutation,"Dirichlet adjH1 xmin,zmin",byte-identical operator_dumps,IDENTICAL,PASS
+mpi,Nof np=1,fields / J / trace set vs np = 1,y=0.00e+00 u=0.00e+00 J=0.00e+00 trace=162/162,PASS
+mpi,Nof np=2,fields / J / trace set vs np = 1,y=1.21e-15 u=7.20e-16 J=9.09e-16 trace=162/162,PASS
+mpi,Nof np=4,fields / J / trace set vs np = 1,y=8.47e-16 u=7.20e-16 J=3.90e-16 trace=162/162,PASS
+mpi,Daf np=1,fields / J / trace set vs np = 1,y=0.00e+00 u=0.00e+00 J=0.00e+00 trace=105/105,PASS
+mpi,Daf np=2,fields / J / trace set vs np = 1,y=1.39e-15 u=1.39e-15 J=0.00e+00 trace=105/105,PASS
+mpi,Daf np=4,fields / J / trace set vs np = 1,y=1.58e-15 u=1.58e-15 J=0.00e+00 trace=105/105,PASS
+mpi,Dh1 np=1,fields / J / trace set vs np = 1,y=0.00e+00 u=0.00e+00 J=0.00e+00 trace=98/98,PASS
+mpi,Dh1 np=2,fields / J / trace set vs np = 1,y=1.29e-15 u=1.29e-15 J=1.30e-16 trace=98/98,PASS
+mpi,Dh1 np=4,fields / J / trace set vs np = 1,y=1.16e-15 u=1.16e-15 J=1.30e-16 trace=98/98,PASS

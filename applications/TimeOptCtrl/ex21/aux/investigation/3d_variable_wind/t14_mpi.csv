@@ -1,0 +1,25 @@
+case,kind,faces,np,nrank,dofs,steps,coords_match,y_maxrel,p_maxrel,u_maxrel,trace_nodes,trace_expected,trace_set_equal_predicted,u_off_trace_max,max|y_C - eta u_C|/max|u|,J_rel,true_res,outer,core_its,hist_len,hist_max_dr_over_r0,r0_rel_diff,rank_maxrss_MB_max,sum_maxrss_MB,verdict
+Vdh,distributed/natural,,1,1,729,8,True,0.00e+00,0.00e+00,0.00e+00,343,729,False,0.0e+00,,0.00e+00,1.173e-15,2,,3,0.00e+00,0.0e+00,75,75,PASS
+Vdh,distributed/natural,,2,2,729,8,True,8.22e-16,1.07e-15,1.11e-15,343,729,False,0.0e+00,,9.79e-16,1.177e-15,2,,3,1.23e-17,0.0e+00,73,135,PASS
+Vdh,distributed/natural,,4,4,729,8,True,9.39e-16,1.87e-15,1.89e-15,343,729,False,0.0e+00,,2.45e-15,1.177e-15,2,,3,1.14e-17,0.0e+00,59,224,PASS
+Vdf,distributed/natural,,1,1,729,8,True,0.00e+00,0.00e+00,0.00e+00,343,729,False,0.0e+00,,0.00e+00,1.071e-15,2,,3,0.00e+00,0.0e+00,77,77,PASS
+Vdf,distributed/natural,,2,2,729,8,True,9.46e-16,2.36e-15,2.39e-15,343,729,False,0.0e+00,,2.60e-15,1.072e-15,2,,3,4.47e-18,0.0e+00,71,134,PASS
+Vdf,distributed/natural,,4,4,729,8,True,7.09e-16,2.98e-15,2.94e-15,343,729,False,0.0e+00,,0.00e+00,1.072e-15,2,,3,4.57e-18,0.0e+00,60,229,PASS
+Vnf,distributed/natural,,1,1,729,8,True,0.00e+00,0.00e+00,0.00e+00,729,729,True,0.0e+00,,0.00e+00,1.330e-13,2,,3,0.00e+00,0.0e+00,78,78,PASS
+Vnf,distributed/natural,,2,2,729,8,True,6.87e-16,6.38e-16,6.54e-16,729,729,True,0.0e+00,,4.50e-16,1.330e-13,2,,3,1.78e-17,0.0e+00,71,136,PASS
+Vnf,distributed/natural,,4,4,729,8,True,1.26e-15,1.15e-15,1.14e-15,729,729,True,0.0e+00,,1.65e-15,1.330e-13,2,,3,1.09e-16,0.0e+00,61,230,PASS
+Nmh,Neumann,zmin,1,1,729,8,True,0.00e+00,0.00e+00,0.00e+00,81,81,True,0.0e+00,,0.00e+00,6.602e-14,2,,3,0.00e+00,0.0e+00,77,77,PASS
+Nmh,Neumann,zmin,2,2,729,8,True,9.59e-16,1.96e-15,1.13e-15,81,81,True,0.0e+00,,2.16e-15,6.601e-14,2,,3,1.18e-17,0.0e+00,71,134,PASS
+Nmh,Neumann,zmin,4,4,729,8,True,7.99e-16,4.07e-15,8.07e-16,81,81,True,0.0e+00,,0.00e+00,6.600e-14,2,,3,3.15e-17,0.0e+00,60,170,PASS
+Nof,Neumann,zmin+zmax,1,1,729,8,True,0.00e+00,0.00e+00,0.00e+00,162,162,True,0.0e+00,,0.00e+00,7.943e-14,2,,3,0.00e+00,0.0e+00,78,78,PASS
+Nof,Neumann,zmin+zmax,2,2,729,8,True,1.21e-15,1.83e-15,7.20e-16,162,162,True,0.0e+00,,9.09e-16,7.942e-14,2,,3,4.57e-17,0.0e+00,73,138,PASS
+Nof,Neumann,zmin+zmax,4,4,729,8,True,8.47e-16,3.02e-15,7.20e-16,162,162,True,0.0e+00,,3.90e-16,7.943e-14,2,,3,4.27e-17,0.0e+00,61,231,PASS
+Drs,Dirichlet,zmin,1,1,729,8,True,0.00e+00,0.00e+00,0.00e+00,49,49,True,0.0e+00,0.0e+00,0.00e+00,2.743e-16,2,5,3,0.00e+00,0.0e+00,66,66,PASS
+Drs,Dirichlet,zmin,2,2,729,8,True,2.53e-15,1.45e-15,3.26e-15,49,49,True,0.0e+00,0.0e+00,3.68e-16,1.578e-16,2,5,3,9.91e-12,0.0e+00,66,127,PASS
+Drs,Dirichlet,zmin,4,4,729,8,True,1.69e-15,1.23e-15,2.17e-15,49,49,True,0.0e+00,0.0e+00,3.68e-16,1.659e-16,2,5,3,1.13e-11,0.0e+00,57,218,PASS
+Daf,Dirichlet,zmin+xmin,1,1,729,8,True,0.00e+00,0.00e+00,0.00e+00,105,105,True,0.0e+00,0.0e+00,0.00e+00,3.511e-17,2,8,3,0.00e+00,0.0e+00,66,66,PASS
+Daf,Dirichlet,zmin+xmin,2,2,729,8,True,1.39e-15,8.22e-16,1.39e-15,105,105,True,0.0e+00,0.0e+00,0.00e+00,3.573e-17,2,8,3,4.66e-11,0.0e+00,66,128,PASS
+Daf,Dirichlet,zmin+xmin,4,4,729,8,True,1.58e-15,7.40e-16,1.58e-15,105,105,True,0.0e+00,0.0e+00,0.00e+00,3.840e-17,2,8,3,1.20e-11,0.0e+00,59,224,PASS
+Dh1,Dirichlet,zmin+zmax,1,1,729,8,True,0.00e+00,0.00e+00,0.00e+00,98,98,True,0.0e+00,0.0e+00,0.00e+00,4.403e-18,2,5,3,0.00e+00,0.0e+00,71,71,PASS
+Dh1,Dirichlet,zmin+zmax,2,2,729,8,True,1.29e-15,1.33e-15,1.29e-15,98,98,True,0.0e+00,0.0e+00,1.30e-16,4.152e-18,2,5,3,4.35e-10,0.0e+00,68,130,PASS
+Dh1,Dirichlet,zmin+zmax,4,4,729,8,True,1.16e-15,1.24e-15,1.16e-15,98,98,True,0.0e+00,0.0e+00,1.30e-16,4.285e-18,2,5,3,4.15e-10,0.0e+00,59,224,PASS

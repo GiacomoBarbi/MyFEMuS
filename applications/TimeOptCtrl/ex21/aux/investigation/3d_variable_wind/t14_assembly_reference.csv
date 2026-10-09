@@ -1,0 +1,19 @@
+case,check,value,reference,verdict
+harmonic-3d_2x2x2_natural,"C_dump = C_ref (quadrature-point wind, rel. max entrywise)",1.1e-14,<=1e-13,PASS
+harmonic-3d_2x2x2_natural,NEG centroid-frozen wind C_cent: differs,6.3e-02,> 1e-4,PASS
+harmonic-3d_3x2x2_nonunit_natural,"C_dump = C_ref (quadrature-point wind, rel. max entrywise)",1.1e-14,<=1e-13,PASS
+harmonic-3d_3x2x2_nonunit_natural,NEG centroid-frozen wind C_cent: differs,3.3e-02,> 1e-4,PASS
+harmonic-3d_2x3x4_nonunit_natural,"C_dump = C_ref (quadrature-point wind, rel. max entrywise)",1.7e-14,<=1e-13,PASS
+harmonic-3d_2x3x4_nonunit_natural,NEG centroid-frozen wind C_cent: differs,4.9e-02,> 1e-4,PASS
+harmonic-3d_2x2x2_dirichlet,"C_FF (eliminated) = C_ref[F,F]",1.1e-14,<=1e-13,PASS
+harmonic-3d_3x2x2_nonunit_dirichlet,"C_FF (eliminated) = C_ref[F,F]",1.0e-14,<=1e-13,PASS
+harmonic-3d_2x3x4_nonunit_dirichlet,"C_FF (eliminated) = C_ref[F,F]",1.7e-14,<=1e-13,PASS
+affine-div-3d_2x2x2_natural,"C_dump = C_ref (quadrature-point wind, rel. max entrywise)",1.1e-14,<=1e-13,PASS
+affine-div-3d_2x2x2_natural,NEG centroid-frozen wind C_cent: differs,1.5e-01,> 1e-4,PASS
+affine-div-3d_3x2x2_nonunit_natural,"C_dump = C_ref (quadrature-point wind, rel. max entrywise)",1.1e-14,<=1e-13,PASS
+affine-div-3d_3x2x2_nonunit_natural,NEG centroid-frozen wind C_cent: differs,6.8e-02,> 1e-4,PASS
+affine-div-3d_2x3x4_nonunit_natural,"C_dump = C_ref (quadrature-point wind, rel. max entrywise)",1.7e-14,<=1e-13,PASS
+affine-div-3d_2x3x4_nonunit_natural,NEG centroid-frozen wind C_cent: differs,5.1e-02,> 1e-4,PASS
+affine-div-3d_2x2x2_dirichlet,"C_FF (eliminated) = C_ref[F,F]",1.0e-14,<=1e-13,PASS
+affine-div-3d_3x2x2_nonunit_dirichlet,"C_FF (eliminated) = C_ref[F,F]",1.0e-14,<=1e-13,PASS
+affine-div-3d_2x3x4_nonunit_dirichlet,"C_FF (eliminated) = C_ref[F,F]",1.7e-14,<=1e-13,PASS
