@@ -288,6 +288,15 @@ static void ParseArguments(int argc, char** argv, ProblemConfig& config,
       config.mesh.ny = static_cast<unsigned>(std::stoul(argv[++argument]));
     } else if (option == "--nz" && argument + 1 < argc) {
       config.mesh.nz = static_cast<unsigned>(std::stoul(argv[++argument]));
+    } else if (option == "--mesh-type" && argument + 1 < argc) {
+      // T12: element family; absent, the historical QUAD9 (2D) / HEX27 (3D) mesh
+      const std::string type(argv[++argument]);
+      using E = ProblemConfig::MeshConfig::ElementType;
+      if (type == "quad") config.mesh.type = E::QUAD;
+      else if (type == "tri") config.mesh.type = E::TRI;
+      else if (type == "hex") config.mesh.type = E::HEX;
+      else if (type == "tet") config.mesh.type = E::TET;
+      else throw std::invalid_argument("--mesh-type must be quad|tri (2D) or hex|tet (3D)");
     } else if (option == "--control-box" && argument + 4 < argc) {
       raw.control_box_2d = true;
       raw.control_full_domain = false;
@@ -738,6 +747,29 @@ static void ResolveProblemData(const RawCommandLineOptions& raw,
         config.time.scheme == ProblemConfig::TimeScheme::CRANK_NICOLSON)
       refuse("Crank-Nicolson needs --pc-schur-sweep (ADDITIVE_GAMG is not robust under CN,"
              " T7F/T8D finalisation)");
+  }
+  if (config.IsSimplex()) {
+    // T12: P2 triangles / tetrahedra -- the validated scope is the distributed full-domain
+    // problem (ProblemConfig::ValidateSimplex) with SCHUR_SWEEP; refuse every other run mode.
+    auto refuse = [](const std::string& what) {
+      throw std::invalid_argument("simplex mesh: " + what);
+    };
+    if (raw.math2025_ex3 || raw.math2025_ex4 || raw.math2025_ex5 || raw.errorfeedback != 0)
+      refuse("the Math2025 / ErrorFeedback presets are not validated on simplices");
+    if (options.benchmark != LiteratureBenchmark::NONE ||
+        options.manufactured != ManufacturedCase::NONE || raw.convection_mms)
+      refuse("the literature / manufactured batteries are not validated on simplices");
+    if (raw.verify_stage1 || raw.verify_sweeps || raw.verify_boundary_reduced)
+      refuse("the ex20 verification batteries are not validated on simplices"
+             " (use --verify-convection)");
+    if (!options.exact_oc.empty() && options.exact_oc != "conv-sin3" &&
+        options.exact_oc != "conv-sin" && options.exact_oc != "conv-sin-3d" &&
+        options.exact_oc != "conv-sin3-3d")
+      refuse("the exact OC cases validated on simplices are conv-sin3, conv-sin (2D) and"
+             " conv-sin-3d, conv-sin3-3d (3D)");
+    if (!raw.pc_schur_sweep || raw.pc_schur_matching || raw.pc_schur_boundary_reduced ||
+        raw.pc_schur_dirichlet_reduced || options.pc_time_blocks > 0 || options.pc_sweep_depth > 0)
+      refuse("only SCHUR_SWEEP (--pc-schur-sweep) is validated");
   }
   if (config.convection.enabled &&
       (options.benchmark != LiteratureBenchmark::NONE ||

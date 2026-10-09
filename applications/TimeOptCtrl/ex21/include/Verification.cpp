@@ -374,8 +374,11 @@ int RunSpatialOperatorDump(const ProblemConfig& config,
                            const std::string& prefix) {
   KeepFaceOperatorsBeforeElimination(config.dimension == 3u &&
                                      config.control.type == ProblemConfig::ControlType::DIRICHLET);
+  const bool t12 = config.mesh.type != ProblemConfig::MeshConfig::ElementType::DEFAULT;
+  KeepVolumeOperatorsBeforeElimination(t12);
   SpatialOperators spatial(config, mesh, solution_type, solution);
   KeepFaceOperatorsBeforeElimination(false);
+  KeepVolumeOperatorsBeforeElimination(false);
   DumpSpatialOperatorsSerial(prefix, spatial.assembled, spatial.control,
                              spatial.layout);
   // T7F: the source-region mass, only when source regions exist (so every
@@ -413,6 +416,24 @@ int RunSpatialOperatorDump(const ProblemConfig& config,
              << TrackingRegionIndex(config, mesh, element) << ' '
              << ControlRegionIndex(config, mesh, element) << ' '
              << SourceRegionIndex3D(config, mesh, element) << '\n';
+    }
+  }
+  // T12: with an explicit --mesh-type, the volume M and L = nu K (+ C) BEFORE the homogeneous
+  // elimination (exact polynomial moments, L 1 = 0, |Omega| = 1^T M 1, convection orientation).
+  for (int which = 0; which < 2 && VolumeOperatorBeforeElimination(0); ++which) {
+    Mat m = VolumeOperatorBeforeElimination(which);
+    PetscInt rows = 0, cols = 0;
+    PetscCallAbort(PETSC_COMM_WORLD, MatGetSize(m, &rows, &cols));
+    std::ofstream out((prefix + (which == 0 ? "_M_full.coo" : "_L_full.coo")).c_str());
+    out << std::setprecision(17) << "# rows cols\n" << rows << ' ' << cols << "\n# row col value\n";
+    for (PetscInt r = 0; r < rows; ++r) {
+      PetscInt count = 0;
+      const PetscInt* c = nullptr;
+      const PetscScalar* v = nullptr;
+      PetscCallAbort(PETSC_COMM_WORLD, MatGetRow(m, r, &count, &c, &v));
+      for (PetscInt k = 0; k < count; ++k)
+        if (PetscRealPart(v[k]) != 0.0) out << r << ' ' << c[k] << ' ' << PetscRealPart(v[k]) << '\n';
+      PetscCallAbort(PETSC_COMM_WORLD, MatRestoreRow(m, r, &count, &c, &v));
     }
   }
   // T11D: 3D Dirichlet control (serial) -- the unhatted M and L (C kept, D

@@ -1,0 +1,54 @@
+study,mesh,n,nt,N_elem,N_space,nnz_M,nnz_L,nnz_L_per_row,spacetime_unknowns,maxrss_MB,bytes_per_spacetime_unknown,wall_s,fit_MB_per_slot(Nt>=64),fit_bytes_per_slot_per_dof
+"space ladder (CN, LU)",quad,4,256,16,81,1089,1089,13.4,41472,71,1795,0.35,,
+"space ladder (CN, LU)",quad,8,256,64,289,4225,4225,14.6,147968,181,1283,1.26,,
+"space ladder (CN, LU)",quad,16,256,256,1089,16641,16641,15.3,557568,611,1149,7.0,,
+"space ladder (CN, LU)",quad,32,256,1024,4225,66049,66049,15.6,2163200,2320,1125,32.56,,
+"space ladder (CN, LU)",quad,64,256,4096,16641,,,,8520192,9088,1118,158.76,,
+"space ladder (CN, LU)",tri,4,256,32,81,801,801,9.9,41472,64,1618,0.36,,
+"space ladder (CN, LU)",tri,8,256,128,289,3073,3073,10.6,147968,154,1091,1.74,,
+"space ladder (CN, LU)",tri,16,256,512,1089,12033,12033,11.0,557568,503,946,6.91,,
+"space ladder (CN, LU)",tri,32,256,2048,4225,47617,47617,11.3,2163200,1888,915,30.22,,
+"space ladder (CN, LU)",tri,64,256,8192,16641,,,,8520192,7354,905,139.18,,
+"space ladder (CN, LU)",hex,2,128,8,125,4913,4913,39.3,32000,103,3375,0.72,,
+"space ladder (CN, LU)",hex,4,128,64,729,35937,35937,49.3,186624,527,2961,4.81,,
+"space ladder (CN, LU)",hex,6,128,216,2197,117649,117649,53.5,562432,1644,3065,18.18,,
+"space ladder (CN, LU)",hex,8,128,512,4913,274625,274625,55.9,1257728,3804,3171,56.5,,
+"space ladder (CN, LU)",hex,10,128,1000,9261,,,,2370816,7360,3255,212.72,,
+"space ladder (CN, LU)",tet,2,128,48,125,2441,2441,19.5,32000,72,2359,0.59,,
+"space ladder (CN, LU)",tet,4,128,384,729,17025,17025,23.4,186624,304,1708,3.49,,
+"space ladder (CN, LU)",tet,6,128,1296,2197,54793,54793,24.9,562432,905,1687,13.25,,
+"space ladder (CN, LU)",tet,8,128,3072,4913,126785,126785,25.8,1257728,2062,1719,59.04,,
+"space ladder (CN, LU)",tet,10,128,6000,9261,,,,2370816,3954,1749,164.57,,
+"space ladder (CN, LU)",tet,12,128,10368,15625,,,,4000000,6813,1786,323.46,,
+"N_t scaling (BE, LU, fixed mesh)",tri,16,4,,1089,,,,8712,48,5821,,1.731,1666
+"N_t scaling (BE, LU, fixed mesh)",tri,16,8,,1089,,,,17424,53,3214,,1.731,1666
+"N_t scaling (BE, LU, fixed mesh)",tri,16,16,,1089,,,,34848,69,2071,,1.731,1666
+"N_t scaling (BE, LU, fixed mesh)",tri,16,32,,1089,,,,69696,95,1425,,1.731,1666
+"N_t scaling (BE, LU, fixed mesh)",tri,16,64,,1089,,,,139392,150,1126,,1.731,1666
+"N_t scaling (BE, LU, fixed mesh)",tri,16,128,,1089,,,,278784,260,978,,1.731,1666
+"N_t scaling (BE, LU, fixed mesh)",tri,16,256,,1089,,,,557568,482,906,,1.731,1666
+"N_t scaling (BE, LU, fixed mesh)",tri,16,1024,,1089,,,,2230272,1811,851,,1.731,1666
+"N_t scaling (BE, LU, fixed mesh)",quad,16,4,,1089,,,,8712,50,6024,,2.152,2073
+"N_t scaling (BE, LU, fixed mesh)",quad,16,8,,1089,,,,17424,59,3532,,2.152,2073
+"N_t scaling (BE, LU, fixed mesh)",quad,16,16,,1089,,,,34848,74,2221,,2.152,2073
+"N_t scaling (BE, LU, fixed mesh)",quad,16,32,,1089,,,,69696,108,1625,,2.152,2073
+"N_t scaling (BE, LU, fixed mesh)",quad,16,64,,1089,,,,139392,176,1326,,2.152,2073
+"N_t scaling (BE, LU, fixed mesh)",quad,16,128,,1089,,,,278784,314,1181,,2.152,2073
+"N_t scaling (BE, LU, fixed mesh)",quad,16,256,,1089,,,,557568,589,1108,,2.152,2073
+"N_t scaling (BE, LU, fixed mesh)",quad,16,1024,,1089,,,,2230272,2242,1054,,2.152,2073
+"N_t scaling (BE, LU, fixed mesh)",tet,4,4,,729,,,,5832,51,9226,,1.977,2843
+"N_t scaling (BE, LU, fixed mesh)",tet,4,8,,729,,,,11664,59,5317,,1.977,2843
+"N_t scaling (BE, LU, fixed mesh)",tet,4,16,,729,,,,23328,75,3371,,1.977,2843
+"N_t scaling (BE, LU, fixed mesh)",tet,4,32,,729,,,,46656,106,2390,,1.977,2843
+"N_t scaling (BE, LU, fixed mesh)",tet,4,64,,729,,,,93312,170,1908,,1.977,2843
+"N_t scaling (BE, LU, fixed mesh)",tet,4,128,,729,,,,186624,296,1661,,1.977,2843
+"N_t scaling (BE, LU, fixed mesh)",tet,4,256,,729,,,,373248,547,1536,,1.977,2843
+"N_t scaling (BE, LU, fixed mesh)",tet,4,1024,,729,,,,1492992,2067,1451,,1.977,2843
+"N_t scaling (BE, LU, fixed mesh)",hex,4,4,,729,,,,5832,58,10386,,3.711,5338
+"N_t scaling (BE, LU, fixed mesh)",hex,4,8,,729,,,,11664,72,6516,,3.711,5338
+"N_t scaling (BE, LU, fixed mesh)",hex,4,16,,729,,,,23328,102,4581,,3.711,5338
+"N_t scaling (BE, LU, fixed mesh)",hex,4,32,,729,,,,46656,161,3620,,3.711,5338
+"N_t scaling (BE, LU, fixed mesh)",hex,4,64,,729,,,,93312,279,3137,,3.711,5338
+"N_t scaling (BE, LU, fixed mesh)",hex,4,128,,729,,,,186624,518,2909,,3.711,5338
+"N_t scaling (BE, LU, fixed mesh)",hex,4,256,,729,,,,373248,993,2790,,3.711,5338
+"N_t scaling (BE, LU, fixed mesh)",hex,4,1024,,729,,,,1492992,3842,2699,,3.711,5338

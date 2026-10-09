@@ -1,0 +1,134 @@
+case,check,value,reference,verdict
+quad_2x2_unit,elements,4,4,PASS
+quad_2x2_unit,P2/Q2 DOFs = lattice prod(2n+1),25,25,PASS
+quad_2x2_unit,dump size = DOFs,25,25,PASS
+quad_2x2_unit,coordinates within the box,True,True,PASS
+quad_2x2_unit,coordinates on the lattice (max dev),0.0e+00,<= 1e-10,PASS
+quad_2x2_unit,no duplicated DOF (unique lattice points),25,25,PASS
+quad_2x2_unit,constrained DOFs = boundary lattice points,16,16,PASS
+quad_2x2_unit,free DOFs = interior lattice points,9,9,PASS
+quad_2x2_unit,|Omega| = 1^T M_full 1,1,1,PASS
+quad_4x4_unit,elements,16,16,PASS
+quad_4x4_unit,P2/Q2 DOFs = lattice prod(2n+1),81,81,PASS
+quad_4x4_unit,dump size = DOFs,81,81,PASS
+quad_4x4_unit,coordinates within the box,True,True,PASS
+quad_4x4_unit,coordinates on the lattice (max dev),0.0e+00,<= 1e-10,PASS
+quad_4x4_unit,no duplicated DOF (unique lattice points),81,81,PASS
+quad_4x4_unit,constrained DOFs = boundary lattice points,32,32,PASS
+quad_4x4_unit,free DOFs = interior lattice points,49,49,PASS
+quad_4x4_unit,|Omega| = 1^T M_full 1,1,1,PASS
+quad_3x5_unit,elements,15,15,PASS
+quad_3x5_unit,P2/Q2 DOFs = lattice prod(2n+1),77,77,PASS
+quad_3x5_unit,dump size = DOFs,77,77,PASS
+quad_3x5_unit,coordinates within the box,True,True,PASS
+quad_3x5_unit,coordinates on the lattice (max dev),0.0e+00,<= 1e-10,PASS
+quad_3x5_unit,no duplicated DOF (unique lattice points),77,77,PASS
+quad_3x5_unit,constrained DOFs = boundary lattice points,32,32,PASS
+quad_3x5_unit,free DOFs = interior lattice points,45,45,PASS
+quad_3x5_unit,|Omega| = 1^T M_full 1,1,1,PASS
+quad_4x2_nonunit,elements,8,8,PASS
+quad_4x2_nonunit,P2/Q2 DOFs = lattice prod(2n+1),45,45,PASS
+quad_4x2_nonunit,dump size = DOFs,45,45,PASS
+quad_4x2_nonunit,coordinates within the box,True,True,PASS
+quad_4x2_nonunit,coordinates on the lattice (max dev),0.0e+00,<= 1e-10,PASS
+quad_4x2_nonunit,no duplicated DOF (unique lattice points),45,45,PASS
+quad_4x2_nonunit,constrained DOFs = boundary lattice points,24,24,PASS
+quad_4x2_nonunit,free DOFs = interior lattice points,21,21,PASS
+quad_4x2_nonunit,|Omega| = 1^T M_full 1,3,3,PASS
+tri_2x2_unit,elements,8,8,PASS
+tri_2x2_unit,P2/Q2 DOFs = lattice prod(2n+1),25,25,PASS
+tri_2x2_unit,FEMuS type-2 nodes = lattice + n_el (TRI7 bubble),33,33,PASS
+tri_2x2_unit,dump size = DOFs,25,25,PASS
+tri_2x2_unit,coordinates within the box,True,True,PASS
+tri_2x2_unit,coordinates on the lattice (max dev),0.0e+00,<= 1e-10,PASS
+tri_2x2_unit,no duplicated DOF (unique lattice points),25,25,PASS
+tri_2x2_unit,constrained DOFs = boundary lattice points,16,16,PASS
+tri_2x2_unit,free DOFs = interior lattice points,9,9,PASS
+tri_2x2_unit,|Omega| = 1^T M_full 1,0.999999999999992,1,PASS
+tri_4x4_unit,elements,32,32,PASS
+tri_4x4_unit,P2/Q2 DOFs = lattice prod(2n+1),81,81,PASS
+tri_4x4_unit,FEMuS type-2 nodes = lattice + n_el (TRI7 bubble),113,113,PASS
+tri_4x4_unit,dump size = DOFs,81,81,PASS
+tri_4x4_unit,coordinates within the box,True,True,PASS
+tri_4x4_unit,coordinates on the lattice (max dev),0.0e+00,<= 1e-10,PASS
+tri_4x4_unit,no duplicated DOF (unique lattice points),81,81,PASS
+tri_4x4_unit,constrained DOFs = boundary lattice points,32,32,PASS
+tri_4x4_unit,free DOFs = interior lattice points,49,49,PASS
+tri_4x4_unit,|Omega| = 1^T M_full 1,0.999999999999992,1,PASS
+tri_3x5_unit,elements,30,30,PASS
+tri_3x5_unit,P2/Q2 DOFs = lattice prod(2n+1),77,77,PASS
+tri_3x5_unit,FEMuS type-2 nodes = lattice + n_el (TRI7 bubble),107,107,PASS
+tri_3x5_unit,dump size = DOFs,77,77,PASS
+tri_3x5_unit,coordinates within the box,True,True,PASS
+tri_3x5_unit,coordinates on the lattice (max dev),0.0e+00,<= 1e-10,PASS
+tri_3x5_unit,no duplicated DOF (unique lattice points),77,77,PASS
+tri_3x5_unit,constrained DOFs = boundary lattice points,32,32,PASS
+tri_3x5_unit,free DOFs = interior lattice points,45,45,PASS
+tri_3x5_unit,|Omega| = 1^T M_full 1,0.999999999999992,1,PASS
+tri_4x2_nonunit,elements,16,16,PASS
+tri_4x2_nonunit,P2/Q2 DOFs = lattice prod(2n+1),45,45,PASS
+tri_4x2_nonunit,FEMuS type-2 nodes = lattice + n_el (TRI7 bubble),61,61,PASS
+tri_4x2_nonunit,dump size = DOFs,45,45,PASS
+tri_4x2_nonunit,coordinates within the box,True,True,PASS
+tri_4x2_nonunit,coordinates on the lattice (max dev),0.0e+00,<= 1e-10,PASS
+tri_4x2_nonunit,no duplicated DOF (unique lattice points),45,45,PASS
+tri_4x2_nonunit,constrained DOFs = boundary lattice points,24,24,PASS
+tri_4x2_nonunit,free DOFs = interior lattice points,21,21,PASS
+tri_4x2_nonunit,|Omega| = 1^T M_full 1,2.99999999999998,3,PASS
+hex_2x2x2_unit,elements,8,8,PASS
+hex_2x2x2_unit,P2/Q2 DOFs = lattice prod(2n+1),125,125,PASS
+hex_2x2x2_unit,dump size = DOFs,125,125,PASS
+hex_2x2x2_unit,coordinates within the box,True,True,PASS
+hex_2x2x2_unit,coordinates on the lattice (max dev),0.0e+00,<= 1e-10,PASS
+hex_2x2x2_unit,no duplicated DOF (unique lattice points),125,125,PASS
+hex_2x2x2_unit,constrained DOFs = boundary lattice points,98,98,PASS
+hex_2x2x2_unit,free DOFs = interior lattice points,27,27,PASS
+hex_2x2x2_unit,|Omega| = 1^T M_full 1,0.999999999999997,1,PASS
+hex_2x3x4_unit,elements,24,24,PASS
+hex_2x3x4_unit,P2/Q2 DOFs = lattice prod(2n+1),315,315,PASS
+hex_2x3x4_unit,dump size = DOFs,315,315,PASS
+hex_2x3x4_unit,coordinates within the box,True,True,PASS
+hex_2x3x4_unit,coordinates on the lattice (max dev),0.0e+00,<= 1e-10,PASS
+hex_2x3x4_unit,no duplicated DOF (unique lattice points),315,315,PASS
+hex_2x3x4_unit,constrained DOFs = boundary lattice points,210,210,PASS
+hex_2x3x4_unit,free DOFs = interior lattice points,105,105,PASS
+hex_2x3x4_unit,|Omega| = 1^T M_full 1,0.999999999999997,1,PASS
+hex_3x2x2_nonunit,elements,12,12,PASS
+hex_3x2x2_nonunit,P2/Q2 DOFs = lattice prod(2n+1),175,175,PASS
+hex_3x2x2_nonunit,dump size = DOFs,175,175,PASS
+hex_3x2x2_nonunit,coordinates within the box,True,True,PASS
+hex_3x2x2_nonunit,coordinates on the lattice (max dev),0.0e+00,<= 1e-10,PASS
+hex_3x2x2_nonunit,no duplicated DOF (unique lattice points),175,175,PASS
+hex_3x2x2_nonunit,constrained DOFs = boundary lattice points,130,130,PASS
+hex_3x2x2_nonunit,free DOFs = interior lattice points,45,45,PASS
+hex_3x2x2_nonunit,|Omega| = 1^T M_full 1,1.99999999999999,2,PASS
+tet_2x2x2_unit,elements,48,48,PASS
+tet_2x2x2_unit,P2/Q2 DOFs = lattice prod(2n+1),125,125,PASS
+tet_2x2x2_unit,FEMuS type-2 nodes = lattice + faces + n_el (TET15),293,293,PASS
+tet_2x2x2_unit,dump size = DOFs,125,125,PASS
+tet_2x2x2_unit,coordinates within the box,True,True,PASS
+tet_2x2x2_unit,coordinates on the lattice (max dev),0.0e+00,<= 1e-10,PASS
+tet_2x2x2_unit,no duplicated DOF (unique lattice points),125,125,PASS
+tet_2x2x2_unit,constrained DOFs = boundary lattice points,98,98,PASS
+tet_2x2x2_unit,free DOFs = interior lattice points,27,27,PASS
+tet_2x2x2_unit,|Omega| = 1^T M_full 1,0.999999999999989,1,PASS
+tet_2x3x4_unit,elements,144,144,PASS
+tet_2x3x4_unit,P2/Q2 DOFs = lattice prod(2n+1),315,315,PASS
+tet_2x3x4_unit,FEMuS type-2 nodes = lattice + faces + n_el (TET15),799,799,PASS
+tet_2x3x4_unit,dump size = DOFs,315,315,PASS
+tet_2x3x4_unit,coordinates within the box,True,True,PASS
+tet_2x3x4_unit,coordinates on the lattice (max dev),0.0e+00,<= 1e-10,PASS
+tet_2x3x4_unit,no duplicated DOF (unique lattice points),315,315,PASS
+tet_2x3x4_unit,constrained DOFs = boundary lattice points,210,210,PASS
+tet_2x3x4_unit,free DOFs = interior lattice points,105,105,PASS
+tet_2x3x4_unit,|Omega| = 1^T M_full 1,0.999999999999988,1,PASS
+tet_3x2x2_nonunit,elements,72,72,PASS
+tet_3x2x2_nonunit,P2/Q2 DOFs = lattice prod(2n+1),175,175,PASS
+tet_3x2x2_nonunit,FEMuS type-2 nodes = lattice + faces + n_el (TET15),423,423,PASS
+tet_3x2x2_nonunit,dump size = DOFs,175,175,PASS
+tet_3x2x2_nonunit,coordinates within the box,True,True,PASS
+tet_3x2x2_nonunit,coordinates on the lattice (max dev),0.0e+00,<= 1e-10,PASS
+tet_3x2x2_nonunit,no duplicated DOF (unique lattice points),175,175,PASS
+tet_3x2x2_nonunit,constrained DOFs = boundary lattice points,130,130,PASS
+tet_3x2x2_nonunit,free DOFs = interior lattice points,45,45,PASS
+tet_3x2x2_nonunit,|Omega| = 1^T M_full 1,1.99999999999998,2,PASS

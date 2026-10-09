@@ -97,6 +97,13 @@ struct ProblemConfig {
     unsigned nx = 4;
     unsigned nz = 4;
     unsigned ny = 4;     // 3D only (storage axis 1)
+    /** T12: element family (--mesh-type).  DEFAULT keeps the historical mesh:
+     *  QUAD9 in 2D, HEX27 in 3D, EDGE3 in 1D.  TRI = P2 triangles (FEMuS TRI6,
+     *  native BuildBox diagonal split), TET = P2 tetrahedra (Kuhn subdivision
+     *  of the box, TET10).  Simplex fields use FEMuS FE order type 1 (true P2;
+     *  type 2 would be bubble-enriched TRI7 / TET15). */
+    enum class ElementType { DEFAULT, QUAD, TRI, HEX, TET };
+    ElementType type = ElementType::DEFAULT;
   } mesh;
 
   /** Spatial dimension of the mesh: 2 (QUAD9 box, the ex20 default), 1, or
@@ -348,9 +355,53 @@ struct ProblemConfig {
   // In 1D the z extents are inert: every z coordinate is 0 and the box tests
   // ignore z, so the default z ranges of the domain and boxes are left alone.
 
+  bool IsSimplex() const {   // T12
+    return mesh.type == MeshConfig::ElementType::TRI || mesh.type == MeshConfig::ElementType::TET;
+  }
+
+  /** T12: the validated simplex scope -- distributed control on the whole domain, whole-domain
+   *  tracking, homogeneous Dirichlet state, constant wind (or none), L2 control.  Everything
+   *  whose element/face machinery has not been checked on simplices is refused. */
+  void ValidateSimplex() const {
+    using E = MeshConfig::ElementType;
+    auto refuse = [](const std::string& what) {
+      throw std::invalid_argument("simplex mesh: " + what);
+    };
+    if (mesh.type == E::TRI && dimension != 2u) refuse("--mesh-type tri is 2D (use --mesh-type tet in 3D)");
+    if (mesh.type == E::TET && dimension != 3u) refuse("--mesh-type tet is 3D (use --mesh-type tri in 2D)");
+    if (control.type != ControlType::DISTRIBUTED)
+      refuse("only distributed control is validated (Neumann and Dirichlet boundary control are refused)");
+    if (state_bc != StateBoundaryCondition::HOMOGENEOUS_DIRICHLET)
+      refuse("only the homogeneous Dirichlet state BC is validated (natural BC refused)");
+    if (control_h1_length != 0.0 || control_h1_time_weight != 0.0)
+      refuse("only L2 control regularisation (no H1)");
+    if (!additional_control_regions.empty() || !additional_tracking_regions.empty() ||
+        !source_regions.empty())
+      refuse("no multi-zone or source regions (full-domain control and tracking only)");
+    auto full = [&](const Box& b) {
+      const bool xz = b.xmin <= domain.xmin && b.xmax >= domain.xmax && b.zmin <= domain.zmin &&
+                      b.zmax >= domain.zmax;
+      return dimension == 3u ? xz && b.ymin <= domain.ymin && b.ymax >= domain.ymax : xz;
+    };
+    if (!full(control.region) || !full(tracking_box))
+      refuse("control and tracking must cover the whole domain");
+    if (convection.field) refuse("only a constant wind (variable winds refused)");
+    if (convection.stabilization != ConvectionConfig::Stabilization::NONE)
+      refuse("no convection stabilisation (LPS refused)");
+    if (data_overrides.dirichlet_state) refuse("no inhomogeneous Dirichlet lifting");
+  }
+
   void Validate() const {
     if (dimension != 1u && dimension != 2u && dimension != 3u)
       throw std::invalid_argument("dimension must be 1, 2 or 3");
+    {   // T12: element family vs dimension (defaults unchanged)
+      using E = MeshConfig::ElementType;
+      if ((mesh.type == E::QUAD || mesh.type == E::TRI) && dimension != 2u)
+        throw std::invalid_argument("--mesh-type quad|tri are 2D element families");
+      if ((mesh.type == E::HEX || mesh.type == E::TET) && dimension != 3u)
+        throw std::invalid_argument("--mesh-type hex|tet are 3D element families");
+      if (IsSimplex()) ValidateSimplex();
+    }
     if (dimension != 3u && convection.vz != 0.0)
       throw std::invalid_argument("--vz is a 3D wind component (--dimension 3)");
     if (dimension == 3u) Validate3D();

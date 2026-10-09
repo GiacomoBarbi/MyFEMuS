@@ -1,0 +1,267 @@
+case,check,value,reference,verdict
+quad_2x2_unit,M_full symmetric max|M-M^T|/max|M|,0.0e+00,<= 1e-15,PASS
+quad_2x2_unit,M_FF SPD: lambda_min,1.401e-02,> 0,PASS
+quad_2x2_unit,"v^T M w = int f g, f,g in {1,x_a,x_a x_b} (max err/max(1,|int|))",3.9e-16,<= 1e-13,PASS
+quad_2x2_unit,L_heat symmetric,0.0e+00,<= 1e-14,PASS
+quad_2x2_unit,L_heat 1 = 0 (max|L 1|/max|L|),1.3e-16,<= 1e-13,PASS
+quad_2x2_unit,"v^T L w = nu int grad f.grad g (max err/max(1,|int|))",1.3e-15,<= 1e-12,PASS
+quad_2x2_unit,L_FF SPD (heat): lambda_min,8.048e-01,> 0,PASS
+quad_2x2_unit_w0,"C orientation: C I(x_a) = w_a M 1 (w=(1.0, 0.5))",5.2e-15,<= 1e-13,PASS
+quad_2x2_unit_w0,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,2.5e+00,> 1e-3,PASS
+quad_2x2_unit_w0,"v^T C g = int v (w.grad g), quadratics (max err)",1.5e-15,<= 1e-12,PASS
+quad_2x2_unit_w0,free-subspace skew max|(C+C^T)_FF|/max|C|,1.4e-14,<= 1e-12,PASS
+quad_2x2_unit_w0,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+quad_2x2_unit_w0,"full C + C^T != 0 (boundary terms, informational)",1.5e+00,> 0,PASS
+quad_2x2_unit_w1,"C orientation: C I(x_a) = w_a M 1 (w=(-2.0, 1.0))",3.8e-15,<= 1e-13,PASS
+quad_2x2_unit_w1,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,5.0e+00,> 1e-3,PASS
+quad_2x2_unit_w1,"v^T C g = int v (w.grad g), quadratics (max err)",2.1e-15,<= 1e-12,PASS
+quad_2x2_unit_w1,free-subspace skew max|(C+C^T)_FF|/max|C|,1.3e-14,<= 1e-12,PASS
+quad_2x2_unit_w1,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+quad_2x2_unit_w1,"full C + C^T != 0 (boundary terms, informational)",1.5e+00,> 0,PASS
+quad_4x4_unit,M_full symmetric max|M-M^T|/max|M|,0.0e+00,<= 1e-15,PASS
+quad_4x4_unit,M_FF SPD: lambda_min,1.957e-03,> 0,PASS
+quad_4x4_unit,"v^T M w = int f g, f,g in {1,x_a,x_a x_b} (max err/max(1,|int|))",1.1e-16,<= 1e-13,PASS
+quad_4x4_unit,L_heat symmetric,0.0e+00,<= 1e-14,PASS
+quad_4x4_unit,L_heat 1 = 0 (max|L 1|/max|L|),2.2e-16,<= 1e-13,PASS
+quad_4x4_unit,"v^T L w = nu int grad f.grad g (max err/max(1,|int|))",4.5e-15,<= 1e-12,PASS
+quad_4x4_unit,L_FF SPD (heat): lambda_min,2.128e-01,> 0,PASS
+quad_4x4_unit_w0,"C orientation: C I(x_a) = w_a M 1 (w=(1.0, 0.5))",2.7e-14,<= 1e-13,PASS
+quad_4x4_unit_w0,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,5.5e+00,> 1e-3,PASS
+quad_4x4_unit_w0,"v^T C g = int v (w.grad g), quadratics (max err)",1.4e-14,<= 1e-12,PASS
+quad_4x4_unit_w0,free-subspace skew max|(C+C^T)_FF|/max|C|,2.0e-14,<= 1e-12,PASS
+quad_4x4_unit_w0,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+quad_4x4_unit_w0,"full C + C^T != 0 (boundary terms, informational)",1.5e+00,> 0,PASS
+quad_4x4_unit_w1,"C orientation: C I(x_a) = w_a M 1 (w=(-2.0, 1.0))",1.8e-14,<= 1e-13,PASS
+quad_4x4_unit_w1,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,1.1e+01,> 1e-3,PASS
+quad_4x4_unit_w1,"v^T C g = int v (w.grad g), quadratics (max err)",7.8e-15,<= 1e-12,PASS
+quad_4x4_unit_w1,free-subspace skew max|(C+C^T)_FF|/max|C|,1.4e-14,<= 1e-12,PASS
+quad_4x4_unit_w1,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+quad_4x4_unit_w1,"full C + C^T != 0 (boundary terms, informational)",1.5e+00,> 0,PASS
+quad_3x5_unit,M_full symmetric max|M-M^T|/max|M|,0.0e+00,<= 1e-15,PASS
+quad_3x5_unit,M_FF SPD: lambda_min,2.181e-03,> 0,PASS
+quad_3x5_unit,"v^T M w = int f g, f,g in {1,x_a,x_a x_b} (max err/max(1,|int|))",4.4e-16,<= 1e-13,PASS
+quad_3x5_unit,L_heat symmetric,0.0e+00,<= 1e-14,PASS
+quad_3x5_unit,L_heat 1 = 0 (max|L 1|/max|L|),5.9e-16,<= 1e-13,PASS
+quad_3x5_unit,"v^T L w = nu int grad f.grad g (max err/max(1,|int|))",5.5e-15,<= 1e-12,PASS
+quad_3x5_unit,L_FF SPD (heat): lambda_min,2.262e-01,> 0,PASS
+quad_3x5_unit_w0,"C orientation: C I(x_a) = w_a M 1 (w=(1.0, 0.5))",3.0e-14,<= 1e-13,PASS
+quad_3x5_unit_w0,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,4.3e+00,> 1e-3,PASS
+quad_3x5_unit_w0,"v^T C g = int v (w.grad g), quadratics (max err)",1.6e-14,<= 1e-12,PASS
+quad_3x5_unit_w0,free-subspace skew max|(C+C^T)_FF|/max|C|,5.0e-14,<= 1e-12,PASS
+quad_3x5_unit_w0,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+quad_3x5_unit_w0,"full C + C^T != 0 (boundary terms, informational)",1.5e+00,> 0,PASS
+quad_3x5_unit_w1,"C orientation: C I(x_a) = w_a M 1 (w=(-2.0, 1.0))",2.9e-14,<= 1e-13,PASS
+quad_3x5_unit_w1,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,8.6e+00,> 1e-3,PASS
+quad_3x5_unit_w1,"v^T C g = int v (w.grad g), quadratics (max err)",6.2e-15,<= 1e-12,PASS
+quad_3x5_unit_w1,free-subspace skew max|(C+C^T)_FF|/max|C|,1.4e-14,<= 1e-12,PASS
+quad_3x5_unit_w1,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+quad_3x5_unit_w1,"full C + C^T != 0 (boundary terms, informational)",1.5e+00,> 0,PASS
+quad_4x2_nonunit,M_full symmetric max|M-M^T|/max|M|,0.0e+00,<= 1e-15,PASS
+quad_4x2_nonunit,M_FF SPD: lambda_min,1.571e-02,> 0,PASS
+quad_4x2_nonunit,"v^T M w = int f g, f,g in {1,x_a,x_a x_b} (max err/max(1,|int|))",1.6e-15,<= 1e-13,PASS
+quad_4x2_nonunit,L_heat symmetric,0.0e+00,<= 1e-14,PASS
+quad_4x2_nonunit,L_heat 1 = 0 (max|L 1|/max|L|),2.1e-16,<= 1e-13,PASS
+quad_4x2_nonunit,"v^T L w = nu int grad f.grad g (max err/max(1,|int|))",6.1e-15,<= 1e-12,PASS
+quad_4x2_nonunit,L_FF SPD (heat): lambda_min,4.334e-01,> 0,PASS
+quad_4x2_nonunit_w0,"C orientation: C I(x_a) = w_a M 1 (w=(1.0, 0.5))",6.5e-15,<= 1e-13,PASS
+quad_4x2_nonunit_w0,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,5.5e+00,> 1e-3,PASS
+quad_4x2_nonunit_w0,"v^T C g = int v (w.grad g), quadratics (max err)",4.9e-15,<= 1e-12,PASS
+quad_4x2_nonunit_w0,free-subspace skew max|(C+C^T)_FF|/max|C|,1.4e-14,<= 1e-12,PASS
+quad_4x2_nonunit_w0,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+quad_4x2_nonunit_w0,"full C + C^T != 0 (boundary terms, informational)",1.5e+00,> 0,PASS
+quad_4x2_nonunit_w1,"C orientation: C I(x_a) = w_a M 1 (w=(-2.0, 1.0))",1.2e-14,<= 1e-13,PASS
+quad_4x2_nonunit_w1,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,1.1e+01,> 1e-3,PASS
+quad_4x2_nonunit_w1,"v^T C g = int v (w.grad g), quadratics (max err)",2.5e-15,<= 1e-12,PASS
+quad_4x2_nonunit_w1,free-subspace skew max|(C+C^T)_FF|/max|C|,1.4e-14,<= 1e-12,PASS
+quad_4x2_nonunit_w1,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+quad_4x2_nonunit_w1,"full C + C^T != 0 (boundary terms, informational)",1.5e+00,> 0,PASS
+tri_2x2_unit,M_full symmetric max|M-M^T|/max|M|,0.0e+00,<= 1e-15,PASS
+tri_2x2_unit,M_FF SPD: lambda_min,2.222e-02,> 0,PASS
+tri_2x2_unit,"v^T M w = int f g, f,g in {1,x_a,x_a x_b} (max err/max(1,|int|))",8.1e-15,<= 1e-13,PASS
+tri_2x2_unit,L_heat symmetric,0.0e+00,<= 1e-14,PASS
+tri_2x2_unit,L_heat 1 = 0 (max|L 1|/max|L|),3.1e-16,<= 1e-13,PASS
+tri_2x2_unit,"v^T L w = nu int grad f.grad g (max err/max(1,|int|))",7.4e-15,<= 1e-12,PASS
+tri_2x2_unit,L_FF SPD (heat): lambda_min,8.014e-01,> 0,PASS
+tri_2x2_unit_w0,"C orientation: C I(x_a) = w_a M 1 (w=(1.0, 0.5))",5.0e-15,<= 1e-13,PASS
+tri_2x2_unit_w0,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,3.5e+00,> 1e-3,PASS
+tri_2x2_unit_w0,"v^T C g = int v (w.grad g), quadratics (max err)",9.2e-15,<= 1e-12,PASS
+tri_2x2_unit_w0,free-subspace skew max|(C+C^T)_FF|/max|C|,4.7e-14,<= 1e-12,PASS
+tri_2x2_unit_w0,NEG (C-C^T)_FF / max|C| (not symmetric),1.5e+00,> 1e-2,PASS
+tri_2x2_unit_w0,"full C + C^T != 0 (boundary terms, informational)",2.0e+00,> 0,PASS
+tri_2x2_unit_w1,"C orientation: C I(x_a) = w_a M 1 (w=(-2.0, 1.0))",6.3e-15,<= 1e-13,PASS
+tri_2x2_unit_w1,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,7.0e+00,> 1e-3,PASS
+tri_2x2_unit_w1,"v^T C g = int v (w.grad g), quadratics (max err)",8.9e-15,<= 1e-12,PASS
+tri_2x2_unit_w1,free-subspace skew max|(C+C^T)_FF|/max|C|,4.0e-14,<= 1e-12,PASS
+tri_2x2_unit_w1,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+tri_2x2_unit_w1,"full C + C^T != 0 (boundary terms, informational)",1.6e+00,> 0,PASS
+tri_4x4_unit,M_full symmetric max|M-M^T|/max|M|,0.0e+00,<= 1e-15,PASS
+tri_4x4_unit,M_FF SPD: lambda_min,4.405e-03,> 0,PASS
+tri_4x4_unit,"v^T M w = int f g, f,g in {1,x_a,x_a x_b} (max err/max(1,|int|))",8.0e-15,<= 1e-13,PASS
+tri_4x4_unit,L_heat symmetric,0.0e+00,<= 1e-14,PASS
+tri_4x4_unit,L_heat 1 = 0 (max|L 1|/max|L|),3.1e-16,<= 1e-13,PASS
+tri_4x4_unit,"v^T L w = nu int grad f.grad g (max err/max(1,|int|))",8.0e-15,<= 1e-12,PASS
+tri_4x4_unit,L_FF SPD (heat): lambda_min,2.123e-01,> 0,PASS
+tri_4x4_unit_w0,"C orientation: C I(x_a) = w_a M 1 (w=(1.0, 0.5))",3.3e-14,<= 1e-13,PASS
+tri_4x4_unit_w0,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,7.5e+00,> 1e-3,PASS
+tri_4x4_unit_w0,"v^T C g = int v (w.grad g), quadratics (max err)",7.5e-15,<= 1e-12,PASS
+tri_4x4_unit_w0,free-subspace skew max|(C+C^T)_FF|/max|C|,5.3e-14,<= 1e-12,PASS
+tri_4x4_unit_w0,NEG (C-C^T)_FF / max|C| (not symmetric),1.5e+00,> 1e-2,PASS
+tri_4x4_unit_w0,"full C + C^T != 0 (boundary terms, informational)",2.0e+00,> 0,PASS
+tri_4x4_unit_w1,"C orientation: C I(x_a) = w_a M 1 (w=(-2.0, 1.0))",3.7e-14,<= 1e-13,PASS
+tri_4x4_unit_w1,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,1.5e+01,> 1e-3,PASS
+tri_4x4_unit_w1,"v^T C g = int v (w.grad g), quadratics (max err)",1.3e-14,<= 1e-12,PASS
+tri_4x4_unit_w1,free-subspace skew max|(C+C^T)_FF|/max|C|,5.3e-14,<= 1e-12,PASS
+tri_4x4_unit_w1,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+tri_4x4_unit_w1,"full C + C^T != 0 (boundary terms, informational)",1.6e+00,> 0,PASS
+tri_3x5_unit,M_full symmetric max|M-M^T|/max|M|,0.0e+00,<= 1e-15,PASS
+tri_3x5_unit,M_FF SPD: lambda_min,4.785e-03,> 0,PASS
+tri_3x5_unit,"v^T M w = int f g, f,g in {1,x_a,x_a x_b} (max err/max(1,|int|))",7.9e-15,<= 1e-13,PASS
+tri_3x5_unit,L_heat symmetric,0.0e+00,<= 1e-14,PASS
+tri_3x5_unit,L_heat 1 = 0 (max|L 1|/max|L|),3.3e-16,<= 1e-13,PASS
+tri_3x5_unit,"v^T L w = nu int grad f.grad g (max err/max(1,|int|))",6.1e-15,<= 1e-12,PASS
+tri_3x5_unit,L_FF SPD (heat): lambda_min,2.258e-01,> 0,PASS
+tri_3x5_unit_w0,"C orientation: C I(x_a) = w_a M 1 (w=(1.0, 0.5))",4.3e-14,<= 1e-13,PASS
+tri_3x5_unit_w0,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,5.9e+00,> 1e-3,PASS
+tri_3x5_unit_w0,"v^T C g = int v (w.grad g), quadratics (max err)",1.2e-14,<= 1e-12,PASS
+tri_3x5_unit_w0,free-subspace skew max|(C+C^T)_FF|/max|C|,6.7e-14,<= 1e-12,PASS
+tri_3x5_unit_w0,NEG (C-C^T)_FF / max|C| (not symmetric),1.8e+00,> 1e-2,PASS
+tri_3x5_unit_w0,"full C + C^T != 0 (boundary terms, informational)",2.0e+00,> 0,PASS
+tri_3x5_unit_w1,"C orientation: C I(x_a) = w_a M 1 (w=(-2.0, 1.0))",6.0e-14,<= 1e-13,PASS
+tri_3x5_unit_w1,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,1.2e+01,> 1e-3,PASS
+tri_3x5_unit_w1,"v^T C g = int v (w.grad g), quadratics (max err)",1.0e-14,<= 1e-12,PASS
+tri_3x5_unit_w1,free-subspace skew max|(C+C^T)_FF|/max|C|,4.7e-14,<= 1e-12,PASS
+tri_3x5_unit_w1,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+tri_3x5_unit_w1,"full C + C^T != 0 (boundary terms, informational)",1.4e+00,> 0,PASS
+tri_4x2_nonunit,M_full symmetric max|M-M^T|/max|M|,0.0e+00,<= 1e-15,PASS
+tri_4x2_nonunit,M_FF SPD: lambda_min,2.932e-02,> 0,PASS
+tri_4x2_nonunit,"v^T M w = int f g, f,g in {1,x_a,x_a x_b} (max err/max(1,|int|))",1.3e-14,<= 1e-13,PASS
+tri_4x2_nonunit,L_heat symmetric,0.0e+00,<= 1e-14,PASS
+tri_4x2_nonunit,L_heat 1 = 0 (max|L 1|/max|L|),2.8e-16,<= 1e-13,PASS
+tri_4x2_nonunit,"v^T L w = nu int grad f.grad g (max err/max(1,|int|))",1.6e-14,<= 1e-12,PASS
+tri_4x2_nonunit,L_FF SPD (heat): lambda_min,4.326e-01,> 0,PASS
+tri_4x2_nonunit_w0,"C orientation: C I(x_a) = w_a M 1 (w=(1.0, 0.5))",9.2e-15,<= 1e-13,PASS
+tri_4x2_nonunit_w0,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,7.0e+00,> 1e-3,PASS
+tri_4x2_nonunit_w0,"v^T C g = int v (w.grad g), quadratics (max err)",1.3e-14,<= 1e-12,PASS
+tri_4x2_nonunit_w0,free-subspace skew max|(C+C^T)_FF|/max|C|,5.3e-14,<= 1e-12,PASS
+tri_4x2_nonunit_w0,NEG (C-C^T)_FF / max|C| (not symmetric),1.7e+00,> 1e-2,PASS
+tri_4x2_nonunit_w0,"full C + C^T != 0 (boundary terms, informational)",2.0e+00,> 0,PASS
+tri_4x2_nonunit_w1,"C orientation: C I(x_a) = w_a M 1 (w=(-2.0, 1.0))",1.2e-14,<= 1e-13,PASS
+tri_4x2_nonunit_w1,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,1.4e+01,> 1e-3,PASS
+tri_4x2_nonunit_w1,"v^T C g = int v (w.grad g), quadratics (max err)",1.6e-14,<= 1e-12,PASS
+tri_4x2_nonunit_w1,free-subspace skew max|(C+C^T)_FF|/max|C|,4.6e-14,<= 1e-12,PASS
+tri_4x2_nonunit_w1,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+tri_4x2_nonunit_w1,"full C + C^T != 0 (boundary terms, informational)",1.7e+00,> 0,PASS
+hex_2x2x2_unit,M_full symmetric max|M-M^T|/max|M|,0.0e+00,<= 1e-15,PASS
+hex_2x2x2_unit,M_FF SPD: lambda_min,1.658e-03,> 0,PASS
+hex_2x2x2_unit,"v^T M w = int f g, f,g in {1,x_a,x_a x_b} (max err/max(1,|int|))",3.2e-15,<= 1e-13,PASS
+hex_2x2x2_unit,L_heat symmetric,0.0e+00,<= 1e-14,PASS
+hex_2x2x2_unit,L_heat 1 = 0 (max|L 1|/max|L|),7.0e-16,<= 1e-13,PASS
+hex_2x2x2_unit,"v^T L w = nu int grad f.grad g (max err/max(1,|int|))",1.3e-14,<= 1e-12,PASS
+hex_2x2x2_unit,L_FF SPD (heat): lambda_min,2.682e-01,> 0,PASS
+hex_2x2x2_unit_w0,"C orientation: C I(x_a) = w_a M 1 (w=(1.0, 0.5, -0.75))",1.2e-14,<= 1e-13,PASS
+hex_2x2x2_unit_w0,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,2.6e+00,> 1e-3,PASS
+hex_2x2x2_unit_w0,"v^T C g = int v (w.grad g), quadratics (max err)",2.9e-15,<= 1e-12,PASS
+hex_2x2x2_unit_w0,free-subspace skew max|(C+C^T)_FF|/max|C|,2.3e-14,<= 1e-12,PASS
+hex_2x2x2_unit_w0,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+hex_2x2x2_unit_w0,"full C + C^T != 0 (boundary terms, informational)",1.5e+00,> 0,PASS
+hex_2x2x2_unit_w1,"C orientation: C I(x_a) = w_a M 1 (w=(-2.0, 1.0, 0.5))",1.4e-14,<= 1e-13,PASS
+hex_2x2x2_unit_w1,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,5.0e+00,> 1e-3,PASS
+hex_2x2x2_unit_w1,"v^T C g = int v (w.grad g), quadratics (max err)",6.4e-15,<= 1e-12,PASS
+hex_2x2x2_unit_w1,free-subspace skew max|(C+C^T)_FF|/max|C|,2.0e-14,<= 1e-12,PASS
+hex_2x2x2_unit_w1,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+hex_2x2x2_unit_w1,"full C + C^T != 0 (boundary terms, informational)",1.5e+00,> 0,PASS
+hex_2x3x4_unit,M_full symmetric max|M-M^T|/max|M|,0.0e+00,<= 1e-15,PASS
+hex_2x3x4_unit,M_FF SPD: lambda_min,3.386e-04,> 0,PASS
+hex_2x3x4_unit,"v^T M w = int f g, f,g in {1,x_a,x_a x_b} (max err/max(1,|int|))",2.8e-15,<= 1e-13,PASS
+hex_2x3x4_unit,L_heat symmetric,0.0e+00,<= 1e-14,PASS
+hex_2x3x4_unit,L_heat 1 = 0 (max|L 1|/max|L|),5.2e-16,<= 1e-13,PASS
+hex_2x3x4_unit,"v^T L w = nu int grad f.grad g (max err/max(1,|int|))",1.9e-14,<= 1e-12,PASS
+hex_2x3x4_unit,L_FF SPD (heat): lambda_min,9.872e-02,> 0,PASS
+hex_2x3x4_unit_w0,"C orientation: C I(x_a) = w_a M 1 (w=(1.0, 0.5, -0.75))",2.1e-14,<= 1e-13,PASS
+hex_2x3x4_unit_w0,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,4.1e+00,> 1e-3,PASS
+hex_2x3x4_unit_w0,"v^T C g = int v (w.grad g), quadratics (max err)",3.7e-15,<= 1e-12,PASS
+hex_2x3x4_unit_w0,free-subspace skew max|(C+C^T)_FF|/max|C|,2.1e-14,<= 1e-12,PASS
+hex_2x3x4_unit_w0,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+hex_2x3x4_unit_w0,"full C + C^T != 0 (boundary terms, informational)",1.5e+00,> 0,PASS
+hex_2x3x4_unit_w1,"C orientation: C I(x_a) = w_a M 1 (w=(-2.0, 1.0, 0.5))",4.6e-14,<= 1e-13,PASS
+hex_2x3x4_unit_w1,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,5.5e+00,> 1e-3,PASS
+hex_2x3x4_unit_w1,"v^T C g = int v (w.grad g), quadratics (max err)",3.9e-15,<= 1e-12,PASS
+hex_2x3x4_unit_w1,free-subspace skew max|(C+C^T)_FF|/max|C|,2.8e-14,<= 1e-12,PASS
+hex_2x3x4_unit_w1,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+hex_2x3x4_unit_w1,"full C + C^T != 0 (boundary terms, informational)",1.5e+00,> 0,PASS
+hex_3x2x2_nonunit,M_full symmetric max|M-M^T|/max|M|,0.0e+00,<= 1e-15,PASS
+hex_3x2x2_nonunit,M_FF SPD: lambda_min,1.812e-03,> 0,PASS
+hex_3x2x2_nonunit,"v^T M w = int f g, f,g in {1,x_a,x_a x_b} (max err/max(1,|int|))",4.9e-15,<= 1e-13,PASS
+hex_3x2x2_nonunit,L_heat symmetric,0.0e+00,<= 1e-14,PASS
+hex_3x2x2_nonunit,L_heat 1 = 0 (max|L 1|/max|L|),9.8e-16,<= 1e-13,PASS
+hex_3x2x2_nonunit,"v^T L w = nu int grad f.grad g (max err/max(1,|int|))",5.2e-14,<= 1e-12,PASS
+hex_3x2x2_nonunit,L_FF SPD (heat): lambda_min,3.451e-01,> 0,PASS
+hex_3x2x2_nonunit_w0,"C orientation: C I(x_a) = w_a M 1 (w=(1.0, 0.5, -0.75))",2.6e-14,<= 1e-13,PASS
+hex_3x2x2_nonunit_w0,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,8.0e+00,> 1e-3,PASS
+hex_3x2x2_nonunit_w0,"v^T C g = int v (w.grad g), quadratics (max err)",2.2e-14,<= 1e-12,PASS
+hex_3x2x2_nonunit_w0,free-subspace skew max|(C+C^T)_FF|/max|C|,2.6e-14,<= 1e-12,PASS
+hex_3x2x2_nonunit_w0,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+hex_3x2x2_nonunit_w0,"full C + C^T != 0 (boundary terms, informational)",1.5e+00,> 0,PASS
+hex_3x2x2_nonunit_w1,"C orientation: C I(x_a) = w_a M 1 (w=(-2.0, 1.0, 0.5))",3.7e-14,<= 1e-13,PASS
+hex_3x2x2_nonunit_w1,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,8.0e+00,> 1e-3,PASS
+hex_3x2x2_nonunit_w1,"v^T C g = int v (w.grad g), quadratics (max err)",6.0e-15,<= 1e-12,PASS
+hex_3x2x2_nonunit_w1,free-subspace skew max|(C+C^T)_FF|/max|C|,2.0e-14,<= 1e-12,PASS
+hex_3x2x2_nonunit_w1,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+hex_3x2x2_nonunit_w1,"full C + C^T != 0 (boundary terms, informational)",1.5e+00,> 0,PASS
+tet_2x2x2_unit,M_full symmetric max|M-M^T|/max|M|,0.0e+00,<= 1e-15,PASS
+tet_2x2x2_unit,M_FF SPD: lambda_min,3.046e-03,> 0,PASS
+tet_2x2x2_unit,"v^T M w = int f g, f,g in {1,x_a,x_a x_b} (max err/max(1,|int|))",1.1e-14,<= 1e-13,PASS
+tet_2x2x2_unit,L_heat symmetric,0.0e+00,<= 1e-14,PASS
+tet_2x2x2_unit,L_heat 1 = 0 (max|L 1|/max|L|),6.1e-16,<= 1e-13,PASS
+tet_2x2x2_unit,"v^T L w = nu int grad f.grad g (max err/max(1,|int|))",1.3e-14,<= 1e-12,PASS
+tet_2x2x2_unit,L_FF SPD (heat): lambda_min,2.791e-01,> 0,PASS
+tet_2x2x2_unit_w0,"C orientation: C I(x_a) = w_a M 1 (w=(1.0, 0.5, -0.75))",1.8e-14,<= 1e-13,PASS
+tet_2x2x2_unit_w0,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,3.2e+00,> 1e-3,PASS
+tet_2x2x2_unit_w0,"v^T C g = int v (w.grad g), quadratics (max err)",1.3e-14,<= 1e-12,PASS
+tet_2x2x2_unit_w0,free-subspace skew max|(C+C^T)_FF|/max|C|,1.5e-13,<= 1e-12,PASS
+tet_2x2x2_unit_w0,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+tet_2x2x2_unit_w0,"full C + C^T != 0 (boundary terms, informational)",1.5e+00,> 0,PASS
+tet_2x2x2_unit_w1,"C orientation: C I(x_a) = w_a M 1 (w=(-2.0, 1.0, 0.5))",1.5e-14,<= 1e-13,PASS
+tet_2x2x2_unit_w1,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,6.0e+00,> 1e-3,PASS
+tet_2x2x2_unit_w1,"v^T C g = int v (w.grad g), quadratics (max err)",1.3e-14,<= 1e-12,PASS
+tet_2x2x2_unit_w1,free-subspace skew max|(C+C^T)_FF|/max|C|,1.5e-13,<= 1e-12,PASS
+tet_2x2x2_unit_w1,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+tet_2x2x2_unit_w1,"full C + C^T != 0 (boundary terms, informational)",1.5e+00,> 0,PASS
+tet_2x3x4_unit,M_full symmetric max|M-M^T|/max|M|,0.0e+00,<= 1e-15,PASS
+tet_2x3x4_unit,M_FF SPD: lambda_min,8.289e-04,> 0,PASS
+tet_2x3x4_unit,"v^T M w = int f g, f,g in {1,x_a,x_a x_b} (max err/max(1,|int|))",1.2e-14,<= 1e-13,PASS
+tet_2x3x4_unit,L_heat symmetric,0.0e+00,<= 1e-14,PASS
+tet_2x3x4_unit,L_heat 1 = 0 (max|L 1|/max|L|),6.8e-16,<= 1e-13,PASS
+tet_2x3x4_unit,"v^T L w = nu int grad f.grad g (max err/max(1,|int|))",1.1e-14,<= 1e-12,PASS
+tet_2x3x4_unit,L_FF SPD (heat): lambda_min,9.879e-02,> 0,PASS
+tet_2x3x4_unit_w0,"C orientation: C I(x_a) = w_a M 1 (w=(1.0, 0.5, -0.75))",3.8e-14,<= 1e-13,PASS
+tet_2x3x4_unit_w0,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,4.7e+00,> 1e-3,PASS
+tet_2x3x4_unit_w0,"v^T C g = int v (w.grad g), quadratics (max err)",1.3e-14,<= 1e-12,PASS
+tet_2x3x4_unit_w0,free-subspace skew max|(C+C^T)_FF|/max|C|,1.5e-13,<= 1e-12,PASS
+tet_2x3x4_unit_w0,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+tet_2x3x4_unit_w0,"full C + C^T != 0 (boundary terms, informational)",1.4e+00,> 0,PASS
+tet_2x3x4_unit_w1,"C orientation: C I(x_a) = w_a M 1 (w=(-2.0, 1.0, 0.5))",5.7e-14,<= 1e-13,PASS
+tet_2x3x4_unit_w1,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,6.6e+00,> 1e-3,PASS
+tet_2x3x4_unit_w1,"v^T C g = int v (w.grad g), quadratics (max err)",1.9e-14,<= 1e-12,PASS
+tet_2x3x4_unit_w1,free-subspace skew max|(C+C^T)_FF|/max|C|,1.4e-13,<= 1e-12,PASS
+tet_2x3x4_unit_w1,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+tet_2x3x4_unit_w1,"full C + C^T != 0 (boundary terms, informational)",1.3e+00,> 0,PASS
+tet_3x2x2_nonunit,M_full symmetric max|M-M^T|/max|M|,0.0e+00,<= 1e-15,PASS
+tet_3x2x2_nonunit,M_FF SPD: lambda_min,3.744e-03,> 0,PASS
+tet_3x2x2_nonunit,"v^T M w = int f g, f,g in {1,x_a,x_a x_b} (max err/max(1,|int|))",1.7e-14,<= 1e-13,PASS
+tet_3x2x2_nonunit,L_heat symmetric,0.0e+00,<= 1e-14,PASS
+tet_3x2x2_nonunit,L_heat 1 = 0 (max|L 1|/max|L|),5.7e-16,<= 1e-13,PASS
+tet_3x2x2_nonunit,"v^T L w = nu int grad f.grad g (max err/max(1,|int|))",4.2e-14,<= 1e-12,PASS
+tet_3x2x2_nonunit,L_FF SPD (heat): lambda_min,4.961e-01,> 0,PASS
+tet_3x2x2_nonunit_w0,"C orientation: C I(x_a) = w_a M 1 (w=(1.0, 0.5, -0.75))",5.7e-14,<= 1e-13,PASS
+tet_3x2x2_nonunit_w0,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,9.3e+00,> 1e-3,PASS
+tet_3x2x2_nonunit_w0,"v^T C g = int v (w.grad g), quadratics (max err)",4.3e-14,<= 1e-12,PASS
+tet_3x2x2_nonunit_w0,free-subspace skew max|(C+C^T)_FF|/max|C|,1.5e-13,<= 1e-12,PASS
+tet_3x2x2_nonunit_w0,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+tet_3x2x2_nonunit_w0,"full C + C^T != 0 (boundary terms, informational)",1.5e+00,> 0,PASS
+tet_3x2x2_nonunit_w1,"C orientation: C I(x_a) = w_a M 1 (w=(-2.0, 1.0, 0.5))",4.7e-14,<= 1e-13,PASS
+tet_3x2x2_nonunit_w1,NEG transposed orientation C^T I(x_a) = w_a M 1: fails,8.7e+00,> 1e-3,PASS
+tet_3x2x2_nonunit_w1,"v^T C g = int v (w.grad g), quadratics (max err)",3.3e-14,<= 1e-12,PASS
+tet_3x2x2_nonunit_w1,free-subspace skew max|(C+C^T)_FF|/max|C|,1.4e-13,<= 1e-12,PASS
+tet_3x2x2_nonunit_w1,NEG (C-C^T)_FF / max|C| (not symmetric),2.0e+00,> 1e-2,PASS
+tet_3x2x2_nonunit_w1,"full C + C^T != 0 (boundary terms, informational)",1.4e+00,> 0,PASS

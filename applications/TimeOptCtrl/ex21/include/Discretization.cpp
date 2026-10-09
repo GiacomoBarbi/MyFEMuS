@@ -8,6 +8,7 @@
 #include <petscmat.h>
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <cstdio>
 #include <limits>
@@ -46,8 +47,152 @@ static bool StateBoundaryCondition(const std::vector<double>&,
   return std::string(name) == "Ti";
 }
 
+/** T12: deterministic P2 tetrahedral (TET10) mesh of the box by Kuhn (Freudenthal)
+ *  subdivision: every cube of the nx x ny x nz grid is split along its main diagonal
+ *  v000 -> v111 into the 6 tetrahedra v000 -> v000+e_a -> v000+e_a+e_b -> v111 (all
+ *  permutations (a,b,c)); every cube has the same orientation, so the mesh is conforming.
+ *  The P2 nodes are exactly the points of the HEX27 lattice (2nx+1)(2ny+1)(2nz+1).  Each
+ *  tetrahedron is oriented with det[v1-v0, v2-v0, v3-v0] > 0.  Boundary sets use the HEX27
+ *  face numbering (1 zmin, 2 ymin, 3 xmax, 4 ymax, 5 xmin, 6 zmax).  Written by rank 0 as a
+ *  Gambit neutral file (FEMuS GambitIO vertex order {0,4,1,6,5,2,7,8,9,3}, face index
+ *  identity; FEMuS tet faces f0 {0,2,1}, f1 {0,1,3}, f2 {1,2,3}, f3 {2,0,3}) and read by the
+ *  FEMuS reader on every rank.  Returns the file name. */
+static std::string WriteKuhnTetMesh(const ProblemConfig& config) {
+  const unsigned nx = config.mesh.nx, ny = config.mesh.ny, nz = config.mesh.nz;
+  const unsigned Nx = 2u * nx + 1u, Ny = 2u * ny + 1u, Nz = 2u * nz + 1u;
+  char name[256];
+  std::snprintf(name, sizeof(name), "output/ex21_kuhn_tet10_%ux%ux%u_%.17g_%.17g_%.17g_%.17g_%.17g_%.17g.neu",
+                nx, ny, nz, config.domain.xmin, config.domain.xmax, config.domain.ymin,
+                config.domain.ymax, config.domain.zmin, config.domain.zmax);
+  int rank = 0;
+  MPI_Comm_rank(PETSC_COMM_WORLD, &rank);
+  if (rank == 0) {
+    auto node = [&](unsigned i, unsigned j, unsigned k) { return 1u + i + Nx * (j + Ny * k); };
+    const unsigned nel = 6u * nx * ny * nz;
+    std::vector<std::array<unsigned, 10> > elements;
+    elements.reserve(nel);
+    std::vector<std::vector<std::pair<unsigned, unsigned> > > faces(7);   // set id -> (element, gambit face)
+    const unsigned perm[6][3] = {{0, 1, 2}, {0, 2, 1}, {1, 0, 2}, {1, 2, 0}, {2, 0, 1}, {2, 1, 0}};
+    const unsigned face_vertices[4][3] = {{0, 2, 1}, {0, 1, 3}, {1, 2, 3}, {2, 0, 3}};
+    const unsigned edges[6][2] = {{0, 1}, {1, 2}, {2, 0}, {0, 3}, {1, 3}, {2, 3}};
+    for (unsigned k = 0; k < nz; ++k)
+      for (unsigned j = 0; j < ny; ++j)
+        for (unsigned i = 0; i < nx; ++i)
+          for (const auto& p : perm) {
+            int v[4][3];   // lattice coordinates (even)
+            int c[3] = {static_cast<int>(2 * i), static_cast<int>(2 * j), static_cast<int>(2 * k)};
+            for (unsigned a = 0; a < 3u; ++a) v[0][a] = c[a];
+            for (unsigned m = 1; m < 4u; ++m) {
+              for (unsigned a = 0; a < 3u; ++a) v[m][a] = v[m - 1][a];
+              if (m < 3u) v[m][p[m - 1]] += 2;
+              else for (unsigned a = 0; a < 3u; ++a) v[m][a] = c[a] + 2;
+            }
+            long det = 0;
+            {
+              long d1[3], d2[3], d3[3];
+              for (unsigned a = 0; a < 3u; ++a) {
+                d1[a] = v[1][a] - v[0][a]; d2[a] = v[2][a] - v[0][a]; d3[a] = v[3][a] - v[0][a];
+              }
+              det = d1[0] * (d2[1] * d3[2] - d2[2] * d3[1]) - d1[1] * (d2[0] * d3[2] - d2[2] * d3[0]) +
+                    d1[2] * (d2[0] * d3[1] - d2[1] * d3[0]);
+            }
+            if (det < 0)
+              for (unsigned a = 0; a < 3u; ++a) std::swap(v[1][a], v[2][a]);
+            std::array<unsigned, 10> femus{};   // FEMuS local order: corners 0..3, mid-edges 4..9
+            for (unsigned m = 0; m < 4u; ++m) femus[m] = node(v[m][0], v[m][1], v[m][2]);
+            for (unsigned e = 0; e < 6u; ++e) {
+              const int* a0 = v[edges[e][0]];
+              const int* a1 = v[edges[e][1]];
+              femus[4 + e] = node((a0[0] + a1[0]) / 2, (a0[1] + a1[1]) / 2, (a0[2] + a1[2]) / 2);
+            }
+            const unsigned iel = static_cast<unsigned>(elements.size()) + 1u;
+            for (unsigned f = 0; f < 4u; ++f) {
+              const int* q[3] = {v[face_vertices[f][0]], v[face_vertices[f][1]], v[face_vertices[f][2]]};
+              const int hi[3] = {static_cast<int>(2 * nx), static_cast<int>(2 * ny), static_cast<int>(2 * nz)};
+              for (unsigned axis = 0; axis < 3u; ++axis)
+                for (int side = 0; side < 2; ++side) {
+                  const int plane = side == 0 ? 0 : hi[axis];
+                  if (q[0][axis] == plane && q[1][axis] == plane && q[2][axis] == plane) {
+                    // HEX27 numbering: 1 zmin, 2 ymin, 3 xmax, 4 ymax, 5 xmin, 6 zmax
+                    const unsigned id = axis == 2u ? (side == 0 ? 1u : 6u)
+                                      : axis == 1u ? (side == 0 ? 2u : 4u) : (side == 0 ? 5u : 3u);
+                    faces[id].push_back({iel, f + 1u});
+                  }
+                }
+            }
+            elements.push_back(femus);
+          }
+    std::FILE* out = std::fopen(name, "w");
+    if (!out) throw std::runtime_error(std::string("cannot write the tetrahedral mesh ") + name);
+    const unsigned nvt = Nx * Ny * Nz;
+    std::fprintf(out, "        CONTROL INFO 2.4.6\n** GAMBIT NEUTRAL FILE\nex21 Kuhn TET10 box (T12)\n"
+                      "PROGRAM:                ex21     VERSION:  2.4.6\nT12\n"
+                      "     NUMNP     NELEM     NGRPS    NBSETS     NDFCD     NDFVL\n"
+                      " %9u %9u %9u %9u %9u %9u\nENDOFSECTION\n", nvt, nel, 1u, 6u, 3u, 3u);
+    std::fprintf(out, "   NODAL COORDINATES 2.4.6\n");
+    const double hx = (config.domain.xmax - config.domain.xmin) / (2.0 * nx);
+    const double hy = (config.domain.ymax - config.domain.ymin) / (2.0 * ny);
+    const double hz = (config.domain.zmax - config.domain.zmin) / (2.0 * nz);
+    for (unsigned k = 0; k < Nz; ++k)
+      for (unsigned j = 0; j < Ny; ++j)
+        for (unsigned i = 0; i < Nx; ++i)
+          std::fprintf(out, "%10u %.17g %.17g %.17g\n", node(i, j, k),
+                       i == Nx - 1u ? config.domain.xmax : config.domain.xmin + i * hx,
+                       j == Ny - 1u ? config.domain.ymax : config.domain.ymin + j * hy,
+                       k == Nz - 1u ? config.domain.zmax : config.domain.zmin + k * hz);
+    std::fprintf(out, "ENDOFSECTION\n      ELEMENTS/CELLS 2.4.6\n");
+    const unsigned gambit_from_femus[10] = {0, 4, 1, 6, 5, 2, 7, 8, 9, 3};   // GambitToFemusVertexIndex[TET]
+    for (unsigned e = 0; e < nel; ++e) {
+      std::fprintf(out, "%8u  6 10", e + 1u);
+      for (unsigned g = 0; g < 10u; ++g) std::fprintf(out, " %u", elements[e][gambit_from_femus[g]]);
+      std::fprintf(out, "\n");
+    }
+    std::fprintf(out, "ENDOFSECTION\n       ELEMENT GROUP 2.4.6\n"
+                      "GROUP:          1 ELEMENTS: %10u MATERIAL:          2 NFLAGS:          1\n"
+                      "                           1\n       0\n", nel);
+    for (unsigned e = 0; e < nel; ++e) std::fprintf(out, "%u%s", e + 1u, (e + 1u) % 10u ? " " : "\n");
+    std::fprintf(out, "\nENDOFSECTION\n");
+    for (unsigned id = 1; id <= 6u; ++id) {
+      std::fprintf(out, " BOUNDARY CONDITIONS 2.4.6\n %u 1 %zu 0 6\n", id, faces[id].size());
+      for (const auto& f : faces[id]) std::fprintf(out, "%u 6 %u\n", f.first, f.second);
+      std::fprintf(out, "ENDOFSECTION\n");
+    }
+    std::fclose(out);
+  }
+  MPI_Barrier(PETSC_COMM_WORLD);
+  return name;
+}
+
+static void PrintMeshInfo(const ProblemConfig& config, MultiLevelMesh& mesh) {   // T12
+  if (config.mesh.type == ProblemConfig::MeshConfig::ElementType::DEFAULT) return;
+  Mesh* m = mesh.GetLevel(0);
+  const char* names[] = {"default", "quad", "tri", "hex", "tet"};
+  int rank = 0;
+  MPI_Comm_rank(PETSC_COMM_WORLD, &rank);
+  if (rank == 0)
+    std::printf("EX21_MESH type=%s dim=%u elements=%u nodes_biquadratic=%u dofs_type1=%u dofs_type2=%u\n",
+                names[static_cast<int>(config.mesh.type)], m->GetDimension(), m->GetNumberOfElements(),
+                m->GetNumberOfNodes(), m->GetTotalNumberOfDofs(1), m->GetTotalNumberOfDofs(2));
+}
+
 void BuildMesh(const ProblemConfig& config, MultiLevelMesh& mesh) {
   config.Validate();
+  using E = ProblemConfig::MeshConfig::ElementType;
+  if (config.mesh.type == E::TET) {   // T12: P2 tetrahedra (Kuhn subdivision, FEMuS Gambit reader)
+    const std::string file = WriteKuhnTetMesh(config);
+    mesh.ReadCoarseMesh(file.c_str(), "seventh", 1.0);
+    mesh.EraseCoarseLevels(0);
+    PrintMeshInfo(config, mesh);
+    return;
+  }
+  if (config.mesh.type == E::TRI) {   // T12: P2 triangles (FEMuS-native diagonal split)
+    mesh.GenerateCoarseBoxMesh(config.mesh.nx, config.mesh.nz, 0, config.domain.xmin,
+                               config.domain.xmax, config.domain.zmin, config.domain.zmax,
+                               0.0, 0.0, TRI6, "seventh");
+    mesh.EraseCoarseLevels(0);
+    PrintMeshInfo(config, mesh);
+    return;
+  }
   if (config.dimension == 1u)
     // Q2 line elements on [xmin, xmax]: faces 1 (x = xmin) and 2 (x = xmax).
     mesh.GenerateCoarseBoxMesh(config.mesh.nx, 0, 0, config.domain.xmin,
@@ -66,12 +211,13 @@ void BuildMesh(const ProblemConfig& config, MultiLevelMesh& mesh) {
                                config.domain.zmin, config.domain.zmax,
                                0.0, 0.0, QUAD9, "seventh");
   mesh.EraseCoarseLevels(0);
+  PrintMeshInfo(config, mesh);
 }
 
 void InitializeStateSpace(MultiLevelSolution& solution,
                           bool with_region_fields,
                           ProblemConfig::StateBoundaryCondition state_bc,
-                          unsigned free_face) {
+                          unsigned free_face, bool simplex) {
   g_state_bc = state_bc;
   g_free_face = free_face;
   if (with_region_fields) {
@@ -88,10 +234,13 @@ void InitializeStateSpace(MultiLevelSolution& solution,
     solution.AddSolution("tracking_region", DISCONTINUOUS_POLYNOMIAL, ZERO);
     solution.AddSolution("control_region", DISCONTINUOUS_POLYNOMIAL, ZERO);
   }
-  solution.AddSolution("Ti", LAGRANGE, SECOND, 2);
-  solution.AddSolution("Y", LAGRANGE, SECOND, 2);
-  solution.AddSolution("P", LAGRANGE, SECOND, 2);
-  solution.AddSolution("u_q", LAGRANGE, SECOND, 2);
+  // T12: true P2 on simplices is FEMuS order type 1 (SERENDIPITY: TRI6 / TET10); type 2
+  // (SECOND) is QUAD9 / HEX27 on tensor elements but bubble-enriched TRI7 / TET15 on simplices.
+  const FEOrder order = simplex ? SERENDIPITY : SECOND;
+  solution.AddSolution("Ti", LAGRANGE, order, 2);
+  solution.AddSolution("Y", LAGRANGE, order, 2);
+  solution.AddSolution("P", LAGRANGE, order, 2);
+  solution.AddSolution("u_q", LAGRANGE, order, 2);
   solution.Initialize("All");
   solution.AttachSetBoundaryConditionFunction(StateBoundaryCondition);
   solution.GenerateBdc("Ti", "Time_dependent");
@@ -204,6 +353,10 @@ static bool g_keep_face_operators = false;
 static Mat g_face_operators[2] = {nullptr, nullptr};
 void KeepFaceOperatorsBeforeElimination(bool keep) { g_keep_face_operators = keep; }
 Mat FaceOperatorBeforeElimination(int which) { return g_face_operators[which]; }
+static bool g_keep_volume_operators = false;   // T12
+static Mat g_volume_operators[2] = {nullptr, nullptr};
+void KeepVolumeOperatorsBeforeElimination(bool keep) { g_keep_volume_operators = keep; }
+Mat VolumeOperatorBeforeElimination(int which) { return g_volume_operators[which]; }
 
 /** T11H1: diagnostics of the last 3D K_Gamma assembly (rank-local maxima). */
 static double g_kgamma_leak = 0.0;
@@ -876,6 +1029,18 @@ NativeSpatialOperators BuildNativeSpatialOperators(
     // matrix and as the whole-domain control operator and is eliminated once.
     // T11H1 (operator dump only): the whole-face M_Gamma / K_Gamma before the
     // elimination, for the surface-stiffness battery (K_Gamma 1 = 0 on the face).
+    // T12 (operator dump with an explicit --mesh-type only): the volume M and L = nu K (+ C)
+    // before the homogeneous elimination (exact polynomial moments, L 1 = 0, |Omega|).
+    if (g_keep_volume_operators) {
+      for (Mat* m : {&g_volume_operators[0], &g_volume_operators[1]})
+        PetscCallAbort(PETSC_COMM_WORLD, MatDestroy(m));
+      PetscCallAbort(PETSC_COMM_WORLD,
+                     MatDuplicate(static_cast<PetscMatrix*>(operators.M.get())->mat(),
+                                  MAT_COPY_VALUES, &g_volume_operators[0]));
+      PetscCallAbort(PETSC_COMM_WORLD,
+                     MatDuplicate(static_cast<PetscMatrix*>(operators.K.get())->mat(),
+                                  MAT_COPY_VALUES, &g_volume_operators[1]));
+    }
     if (g_keep_face_operators && config.dimension == 3u) {
       for (Mat* m : {&g_face_operators[0], &g_face_operators[1]})
         PetscCallAbort(PETSC_COMM_WORLD, MatDestroy(m));

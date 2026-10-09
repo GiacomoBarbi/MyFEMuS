@@ -126,7 +126,7 @@ void InitializeStateSpace(
     femus::MultiLevelSolution& solution, bool with_region_fields = false,
     ProblemConfig::StateBoundaryCondition state_bc =
         ProblemConfig::StateBoundaryCondition::NATURAL,
-    unsigned free_face = 0u);   // T11D: FEMuS face id left unconstrained (0 = none)
+    unsigned free_face = 0u, bool simplex = false);   // T12: simplex = P2 (FE type 1)   // T11D: FEMuS face id left unconstrained (0 = none)
 
 /** 1-based index of the region of the tracking / distributed-control UNION
  *  containing this element, or 0 if it is in none.
@@ -302,6 +302,11 @@ double SurfaceGradientNormalLeak();
  *  (which = 0) and K_Gamma (which = 1) taken before the homogeneous elimination. */
 void KeepFaceOperatorsBeforeElimination(bool keep);
 Mat FaceOperatorBeforeElimination(int which);
+
+/** T12 (operator dump, explicit --mesh-type): copies of the volume M (which = 0) and
+ *  L = nu K (+ C) (which = 1) taken before the homogeneous elimination. */
+void KeepVolumeOperatorsBeforeElimination(bool keep);
+Mat VolumeOperatorBeforeElimination(int which);
 
 /** T11N: 3D counterpart of IntegrateBoundaryField -- the same JacobianSur face
  *  quadrature that assembles the 3D M_Gamma, exact field of (x, y, z). */

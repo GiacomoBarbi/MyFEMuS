@@ -141,7 +141,8 @@ int main(int argc, char** argv) {
   InitializeStateSpace(solution, options.region_fields, config.state_bc,
                        (config.dimension == 3u &&
                         config.control.type == ProblemConfig::ControlType::DIRICHLET)
-                           ? config.neumann_control_face : 0u);
+                           ? config.neumann_control_face : 0u,
+      config.IsSimplex());
 
   Mesh* level_mesh = mesh.GetLevel(0);
   const unsigned solution_type =
