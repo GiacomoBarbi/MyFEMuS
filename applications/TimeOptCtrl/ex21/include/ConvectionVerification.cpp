@@ -998,6 +998,76 @@ int RunConvectionVerification(const ProblemConfig& config,
       PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(w));
   }
 
+  // ---------------------------------------------------------------- G13N
+  // T13 (3D Neumann, union of >= 2 faces only, so single-face logs are unchanged):
+  //   union identity  N = M_Gamma(union) = sum_f M_Gamma({f}), each M_Gamma({f}) assembled
+  //                   by its own SpatialOperators (one face set each);
+  //   negatives       the reduced gradient evaluated with a WRONG control operator
+  //                   (objective unchanged = the true union): face f0 dropped
+  //                   (N - M_f0) and face f0 counted twice (N + M_f0).  Both must fail
+  //                   the FD check that the true N passes (G3 above).
+  if (config.dimension == 3u && IsMultiFace3D(config)) {
+    Mat sum = nullptr, first = nullptr;
+    unsigned first_id = 0u;
+    for (unsigned id = 1; id <= 6u; ++id) {
+      if (!IsControlFace3D(config, id)) continue;
+      ProblemConfig fc = config;
+      fc.control_face_mask = 1u << id;
+      fc.neumann_control_face = id;
+      SpatialOperators F(fc, mesh, solution_type, solution);
+      Mat Mf = static_cast<PetscMatrix*>(F.assembled.M_Gamma.get())->mat();
+      if (!sum) {
+        PetscCallAbort(PETSC_COMM_WORLD, MatDuplicate(spatial.control, MAT_COPY_VALUES, &sum));
+        PetscCallAbort(PETSC_COMM_WORLD, MatZeroEntries(sum));
+        PetscCallAbort(PETSC_COMM_WORLD, MatDuplicate(Mf, MAT_COPY_VALUES, &first));
+        first_id = id;
+      }
+      PetscCallAbort(PETSC_COMM_WORLD, MatAXPY(sum, 1.0, Mf, DIFFERENT_NONZERO_PATTERN));
+    }
+    PetscReal n_norm = 0.0, defect = 0.0;
+    PetscCallAbort(PETSC_COMM_WORLD, MatNorm(spatial.control, NORM_FROBENIUS, &n_norm));
+    PetscCallAbort(PETSC_COMM_WORLD, MatAXPY(sum, -1.0, spatial.control, DIFFERENT_NONZERO_PATTERN));
+    PetscCallAbort(PETSC_COMM_WORLD, MatNorm(sum, NORM_FROBENIUS, &defect));
+    std::printf("EX21_VC_G13N_UNION faces=%s ||N - sum_f M_Gamma(f)||_F/||N||_F=%.3e\n",
+                config.neumann_control_boundary.c_str(), defect / n_norm);
+    Vec U0 = NewLike(X), D = NewLike(X), g = NewLike(X), up = NewLike(X), um = NewLike(X);
+    FillRandom(U0, 3u);
+    FillRandom(D, 33u);
+    const double h = 1e-4 * Norm(U0) / Norm(D);
+    PetscCallAbort(PETSC_COMM_WORLD, VecWAXPY(up, h, D, U0));
+    PetscCallAbort(PETSC_COMM_WORLD, VecWAXPY(um, -h, D, U0));
+    const double fd = (reduced.Objective(up) - reduced.Objective(um)) / (2.0 * h);
+    for (int variant = 0; variant < 3; ++variant) {   // 0 true, 1 drop f0, 2 duplicate f0
+      Mat wrong = nullptr;
+      PetscCallAbort(PETSC_COMM_WORLD, MatDuplicate(spatial.control, MAT_COPY_VALUES, &wrong));
+      if (variant)
+        PetscCallAbort(PETSC_COMM_WORLD, MatAXPY(wrong, variant == 1 ? -1.0 : 1.0, first,
+                                                 DIFFERENT_NONZERO_PATTERN));
+      // grad = N_wrong (dt alpha_u U + eta Lambda); state, adjoint and objective keep the TRUE N
+      {
+        const double dt = config.time.dt;
+        Vec Y = NewLike(X), G = NewLike(X), L = NewLike(X);
+        reduced.State(U0, Y);
+        ApplyBlockDiagonal(reduced.tracking, Y, G, config.time.steps, reduced.local, reduced.weights);
+        PetscCallAbort(PETSC_COMM_WORLD, VecScale(G, config.alpha_track));
+        PetscCallAbort(PETSC_COMM_WORLD, VecAXPY(G, 1.0, reduced.rhs_p));
+        PetscCallAbort(PETSC_COMM_WORLD, VecScale(G, dt));
+        Solve(adjoint_exact, G, L);
+        PetscCallAbort(PETSC_COMM_WORLD, VecAXPBY(L, dt * config.alpha_u, config.eta, U0));
+        ApplyBlockDiagonal(wrong, L, g, config.time.steps, reduced.local, reduced.ones);
+        for (Vec* v : {&Y, &G, &L}) PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(v));
+      }
+      const double directional = Dot(g, D);
+      static const char* names[3] = {"true_union", "drop_face", "duplicate_face"};
+      std::printf("EX21_VC_G13N_FD control=%s face=%u fd=%.17g adj=%.17g rel=%.3e\n", names[variant],
+                  variant ? first_id : 0u, fd, directional, std::fabs(fd - directional) / std::fabs(fd));
+      PetscCallAbort(PETSC_COMM_WORLD, MatDestroy(&wrong));
+    }
+    for (Vec* w : {&U0, &D, &g, &up, &um}) PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(w));
+    PetscCallAbort(PETSC_COMM_WORLD, MatDestroy(&sum));
+    PetscCallAbort(PETSC_COMM_WORLD, MatDestroy(&first));
+  }
+
   // ---------------------------------------------------------------- G4
   {
     const KktSolverPolicy policy =

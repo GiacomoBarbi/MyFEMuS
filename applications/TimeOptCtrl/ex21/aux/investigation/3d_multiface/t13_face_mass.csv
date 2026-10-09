@@ -1,0 +1,313 @@
+case,check,value,reference,verdict
+N_zmin_3x3x3,N_selected = M_Gamma,0.0e+00,0,PASS
+N_zmin_3x3x3,M_Gamma = sum_f M1(a) (x) M1(b) (rel. max entrywise),6.26e-15,<= 1e-14,PASS
+N_zmin_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,1,1,PASS
+N_zmin_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,1.03333333333333,1.03333333333333,PASS
+N_xmax_3x3x3,N_selected = M_Gamma,0.0e+00,0,PASS
+N_xmax_3x3x3,M_Gamma = sum_f M1(a) (x) M1(b) (rel. max entrywise),6.26e-15,<= 1e-14,PASS
+N_xmax_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,1,1,PASS
+N_xmax_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,2.74444444444444,2.74444444444444,PASS
+N_zmin+zmax_3x3x3,N_selected = M_Gamma,0.0e+00,0,PASS
+N_zmin+zmax_3x3x3,M_Gamma = sum_f M1(a) (x) M1(b) (rel. max entrywise),6.26e-15,<= 1e-14,PASS
+N_zmin+zmax_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,2,2,PASS
+N_zmin+zmax_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,1.9,1.9,PASS
+N_zmin+zmax_3x3x3,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),0.00e+00,<= 1e-15,PASS
+N_zmin+zmax_3x3x3,NEGATIVE: double-counted face -> area mismatch,3,!= 2,PASS
+N_xmax+xmin_3x3x3,N_selected = M_Gamma,0.0e+00,0,PASS
+N_xmax+xmin_3x3x3,M_Gamma = sum_f M1(a) (x) M1(b) (rel. max entrywise),6.26e-15,<= 1e-14,PASS
+N_xmax+xmin_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,2,2,PASS
+N_xmax+xmin_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,3.15555555555556,3.15555555555555,PASS
+N_xmax+xmin_3x3x3,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),0.00e+00,<= 1e-15,PASS
+N_xmax+xmin_3x3x3,NEGATIVE: double-counted face -> area mismatch,3,!= 2,PASS
+N_ymin+ymax_3x3x3,N_selected = M_Gamma,0.0e+00,0,PASS
+N_ymin+ymax_3x3x3,M_Gamma = sum_f M1(a) (x) M1(b) (rel. max entrywise),6.26e-15,<= 1e-14,PASS
+N_ymin+ymax_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,2,2,PASS
+N_ymin+ymax_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,1.61111111111111,1.61111111111111,PASS
+N_ymin+ymax_3x3x3,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),0.00e+00,<= 1e-15,PASS
+N_ymin+ymax_3x3x3,NEGATIVE: double-counted face -> area mismatch,3,!= 2,PASS
+N_zmin+xmin_3x3x3,N_selected = M_Gamma,0.0e+00,0,PASS
+N_zmin+xmin_3x3x3,M_Gamma = sum_f M1(a) (x) M1(b) (rel. max entrywise),6.26e-15,<= 1e-14,PASS
+N_zmin+xmin_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,2,2,PASS
+N_zmin+xmin_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,1.44444444444444,1.44444444444444,PASS
+N_zmin+xmin_3x3x3,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),0.00e+00,<= 1e-15,PASS
+N_zmin+xmin_3x3x3,NEGATIVE: double-counted face -> area mismatch,3,!= 2,PASS
+N_xmax+ymax_3x3x3,N_selected = M_Gamma,0.0e+00,0,PASS
+N_xmax+ymax_3x3x3,M_Gamma = sum_f M1(a) (x) M1(b) (rel. max entrywise),7.03e-15,<= 1e-14,PASS
+N_xmax+ymax_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,2,2,PASS
+N_xmax+ymax_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,3.63333333333333,3.63333333333333,PASS
+N_xmax+ymax_3x3x3,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),5.49e-17,<= 1e-15,PASS
+N_xmax+ymax_3x3x3,NEGATIVE: double-counted face -> area mismatch,3,!= 2,PASS
+N_ymin+zmax_3x3x3,N_selected = M_Gamma,0.0e+00,0,PASS
+N_ymin+zmax_3x3x3,M_Gamma = sum_f M1(a) (x) M1(b) (rel. max entrywise),6.59e-15,<= 1e-14,PASS
+N_ymin+zmax_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,2,2,PASS
+N_ymin+zmax_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,1.58888888888889,1.58888888888889,PASS
+N_ymin+zmax_3x3x3,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),0.00e+00,<= 1e-15,PASS
+N_ymin+zmax_3x3x3,NEGATIVE: double-counted face -> area mismatch,3,!= 2,PASS
+N_zmin+ymin+xmin_3x3x3,N_selected = M_Gamma,0.0e+00,0,PASS
+N_zmin+ymin+xmin_3x3x3,M_Gamma = sum_f M1(a) (x) M1(b) (rel. max entrywise),6.26e-15,<= 1e-14,PASS
+N_zmin+ymin+xmin_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,3,3,PASS
+N_zmin+ymin+xmin_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,2.16666666666666,2.16666666666667,PASS
+N_zmin+ymin+xmin_3x3x3,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),5.49e-17,<= 1e-15,PASS
+N_zmin+ymin+xmin_3x3x3,NEGATIVE: double-counted face -> area mismatch,4,!= 3,PASS
+N_xmax+ymax+zmax_3x3x3,N_selected = M_Gamma,0.0e+00,0,PASS
+N_xmax+ymax+zmax_3x3x3,M_Gamma = sum_f M1(a) (x) M1(b) (rel. max entrywise),7.03e-15,<= 1e-14,PASS
+N_xmax+ymax+zmax_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,3,3,PASS
+N_xmax+ymax+zmax_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,4.5,4.5,PASS
+N_xmax+ymax+zmax_3x3x3,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),5.49e-17,<= 1e-15,PASS
+N_xmax+ymax+zmax_3x3x3,NEGATIVE: double-counted face -> area mismatch,4,!= 3,PASS
+N_zmin+xmax+xmin_3x3x3,N_selected = M_Gamma,0.0e+00,0,PASS
+N_zmin+xmax+xmin_3x3x3,M_Gamma = sum_f M1(a) (x) M1(b) (rel. max entrywise),6.59e-15,<= 1e-14,PASS
+N_zmin+xmax+xmin_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,3,3,PASS
+N_zmin+xmax+xmin_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,4.18888888888889,4.18888888888889,PASS
+N_zmin+xmax+xmin_3x3x3,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),0.00e+00,<= 1e-15,PASS
+N_zmin+xmax+xmin_3x3x3,NEGATIVE: double-counted face -> area mismatch,4,!= 3,PASS
+N_zmin+ymin+xmax+ymax+xmin_3x3x3,N_selected = M_Gamma,0.0e+00,0,PASS
+N_zmin+ymin+xmax+ymax+xmin_3x3x3,M_Gamma = sum_f M1(a) (x) M1(b) (rel. max entrywise),7.03e-15,<= 1e-14,PASS
+N_zmin+ymin+xmax+ymax+xmin_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,5,5,PASS
+N_zmin+ymin+xmax+ymax+xmin_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,5.8,5.8,PASS
+N_zmin+ymin+xmax+ymax+xmin_3x3x3,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),5.49e-17,<= 1e-15,PASS
+N_zmin+ymin+xmax+ymax+xmin_3x3x3,NEGATIVE: double-counted face -> area mismatch,6,!= 5,PASS
+N_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,N_selected = M_Gamma,0.0e+00,0,PASS
+N_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,M_Gamma = sum_f M1(a) (x) M1(b) (rel. max entrywise),7.03e-15,<= 1e-14,PASS
+N_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,6,6,PASS
+N_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,6.66666666666667,6.66666666666667,PASS
+N_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),5.49e-17,<= 1e-15,PASS
+N_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,NEGATIVE: double-counted face -> area mismatch,7,!= 6,PASS
+N_xmax+xmin_2x3x4,N_selected = M_Gamma,0.0e+00,0,PASS
+N_xmax+xmin_2x3x4,M_Gamma = sum_f M1(a) (x) M1(b) (rel. max entrywise),6.59e-15,<= 1e-14,PASS
+N_xmax+xmin_2x3x4,1^T M_Gamma 1 = sum_f |Gamma_f|,2,2,PASS
+N_xmax+xmin_2x3x4,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,3.15555555555555,3.15555555555555,PASS
+N_xmax+xmin_2x3x4,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),0.00e+00,<= 1e-15,PASS
+N_xmax+xmin_2x3x4,NEGATIVE: double-counted face -> area mismatch,3,!= 2,PASS
+N_zmin+xmin_2x3x4,N_selected = M_Gamma,0.0e+00,0,PASS
+N_zmin+xmin_2x3x4,M_Gamma = sum_f M1(a) (x) M1(b) (rel. max entrywise),6.37e-15,<= 1e-14,PASS
+N_zmin+xmin_2x3x4,1^T M_Gamma 1 = sum_f |Gamma_f|,2,2,PASS
+N_zmin+xmin_2x3x4,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,1.44444444444444,1.44444444444444,PASS
+N_zmin+xmin_2x3x4,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),3.66e-17,<= 1e-15,PASS
+N_zmin+xmin_2x3x4,NEGATIVE: double-counted face -> area mismatch,3,!= 2,PASS
+N_zmin+ymin+xmin_2x3x4,N_selected = M_Gamma,0.0e+00,0,PASS
+N_zmin+ymin+xmin_2x3x4,M_Gamma = sum_f M1(a) (x) M1(b) (rel. max entrywise),6.37e-15,<= 1e-14,PASS
+N_zmin+ymin+xmin_2x3x4,1^T M_Gamma 1 = sum_f |Gamma_f|,3,3,PASS
+N_zmin+ymin+xmin_2x3x4,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,2.16666666666666,2.16666666666667,PASS
+N_zmin+ymin+xmin_2x3x4,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),3.66e-17,<= 1e-15,PASS
+N_zmin+ymin+xmin_2x3x4,NEGATIVE: double-counted face -> area mismatch,4,!= 3,PASS
+N_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,N_selected = M_Gamma,0.0e+00,0,PASS
+N_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,M_Gamma = sum_f M1(a) (x) M1(b) (rel. max entrywise),6.44e-15,<= 1e-14,PASS
+N_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,1^T M_Gamma 1 = sum_f |Gamma_f|,6,6,PASS
+N_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,6.66666666666666,6.66666666666667,PASS
+N_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),3.66e-17,<= 1e-15,PASS
+N_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,NEGATIVE: double-counted face -> area mismatch,7,!= 6,PASS
+N_zmin+zmax_4x4x2_nonunit,N_selected = M_Gamma,0.0e+00,0,PASS
+N_zmin+zmax_4x4x2_nonunit,M_Gamma = sum_f M1(a) (x) M1(b) (rel. max entrywise),6.54e-15,<= 1e-14,PASS
+N_zmin+zmax_4x4x2_nonunit,1^T M_Gamma 1 = sum_f |Gamma_f|,8,8,PASS
+N_zmin+zmax_4x4x2_nonunit,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,60.2666666666666,60.2666666666667,PASS
+N_zmin+zmax_4x4x2_nonunit,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),0.00e+00,<= 1e-15,PASS
+N_zmin+zmax_4x4x2_nonunit,NEGATIVE: double-counted face -> area mismatch,12,!= 8,PASS
+N_xmax+ymax_4x4x2_nonunit,N_selected = M_Gamma,0.0e+00,0,PASS
+N_xmax+ymax_4x4x2_nonunit,M_Gamma = sum_f M1(a) (x) M1(b) (rel. max entrywise),6.73e-15,<= 1e-14,PASS
+N_xmax+ymax_4x4x2_nonunit,1^T M_Gamma 1 = sum_f |Gamma_f|,2,2,PASS
+N_xmax+ymax_4x4x2_nonunit,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,43.0083333333333,43.0083333333333,PASS
+N_xmax+ymax_4x4x2_nonunit,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),0.00e+00,<= 1e-15,PASS
+N_xmax+ymax_4x4x2_nonunit,NEGATIVE: double-counted face -> area mismatch,3,!= 2,PASS
+N_xmax+ymax+zmax_4x4x2_nonunit,N_selected = M_Gamma,0.0e+00,0,PASS
+N_xmax+ymax+zmax_4x4x2_nonunit,M_Gamma = sum_f M1(a) (x) M1(b) (rel. max entrywise),6.34e-15,<= 1e-14,PASS
+N_xmax+ymax+zmax_4x4x2_nonunit,1^T M_Gamma 1 = sum_f |Gamma_f|,6,6,PASS
+N_xmax+ymax+zmax_4x4x2_nonunit,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,69.1416666666667,69.1416666666667,PASS
+N_xmax+ymax+zmax_4x4x2_nonunit,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),2.44e-17,<= 1e-15,PASS
+N_xmax+ymax+zmax_4x4x2_nonunit,NEGATIVE: double-counted face -> area mismatch,7,!= 6,PASS
+D_zmin_3x3x3,M_Gamma (before elim.) = sum_f M1 (x) M1,6.26e-15,<= 1e-14,PASS
+D_zmin_3x3x3,K_Gamma (before elim.) = sum_f [K1(x)M1 + M1(x)K1],7.34e-15,<= 1e-13,PASS
+D_zmin_3x3x3,"R = M_ref[C, C]",6.26e-15,<= 1e-14,PASS
+D_zmin_3x3x3,"R symmetric, SPD (min eig)",4.183e-03,> 0,PASS
+D_zmin_3x3x3,v^T R v = sum_f int phi^2 (phi = prod dist to uncontrolled),0.00111111111111111,0.00111111111111111,PASS
+D_zmin_3x3x3,v^T K_Gamma v = sum_f int |grad_f phi|^2,0.0222222222222222,0.0222222222229967,PASS
+D_zmin_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,1,1,PASS
+D_zmin_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,1.03333333333333,1.03333333333333,PASS
+D_xmax_3x3x3,M_Gamma (before elim.) = sum_f M1 (x) M1,6.26e-15,<= 1e-14,PASS
+D_xmax_3x3x3,K_Gamma (before elim.) = sum_f [K1(x)M1 + M1(x)K1],7.34e-15,<= 1e-13,PASS
+D_xmax_3x3x3,"R = M_ref[C, C]",6.26e-15,<= 1e-14,PASS
+D_xmax_3x3x3,"R symmetric, SPD (min eig)",4.183e-03,> 0,PASS
+D_xmax_3x3x3,v^T R v = sum_f int phi^2 (phi = prod dist to uncontrolled),0.00111111111111111,0.00111111111111111,PASS
+D_xmax_3x3x3,v^T K_Gamma v = sum_f int |grad_f phi|^2,0.0222222222222222,0.0222222222229584,PASS
+D_xmax_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,1,1,PASS
+D_xmax_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,2.74444444444444,2.74444444444444,PASS
+D_zmin+zmax_3x3x3,M_Gamma (before elim.) = sum_f M1 (x) M1,6.26e-15,<= 1e-14,PASS
+D_zmin+zmax_3x3x3,K_Gamma (before elim.) = sum_f [K1(x)M1 + M1(x)K1],7.34e-15,<= 1e-13,PASS
+D_zmin+zmax_3x3x3,"R = M_ref[C, C]",6.26e-15,<= 1e-14,PASS
+D_zmin+zmax_3x3x3,"R symmetric, SPD (min eig)",4.183e-03,> 0,PASS
+D_zmin+zmax_3x3x3,v^T R v = sum_f int phi^2 (phi = prod dist to uncontrolled),0.00222222222222222,0.00222222222222222,PASS
+D_zmin+zmax_3x3x3,v^T K_Gamma v = sum_f int |grad_f phi|^2,0.0444444444444444,0.0444444444459934,PASS
+D_zmin+zmax_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,2,2,PASS
+D_zmin+zmax_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,1.9,1.9,PASS
+D_zmin+zmax_3x3x3,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),0.00e+00,<= 1e-15,PASS
+D_zmin+zmax_3x3x3,NEGATIVE: double-counted face -> area mismatch,3,!= 2,PASS
+D_xmax+xmin_3x3x3,M_Gamma (before elim.) = sum_f M1 (x) M1,6.26e-15,<= 1e-14,PASS
+D_xmax+xmin_3x3x3,K_Gamma (before elim.) = sum_f [K1(x)M1 + M1(x)K1],7.49e-15,<= 1e-13,PASS
+D_xmax+xmin_3x3x3,"R = M_ref[C, C]",6.26e-15,<= 1e-14,PASS
+D_xmax+xmin_3x3x3,"R symmetric, SPD (min eig)",4.183e-03,> 0,PASS
+D_xmax+xmin_3x3x3,v^T R v = sum_f int phi^2 (phi = prod dist to uncontrolled),0.00222222222222222,0.00222222222222222,PASS
+D_xmax+xmin_3x3x3,v^T K_Gamma v = sum_f int |grad_f phi|^2,0.0444444444444444,0.0444444444459169,PASS
+D_xmax+xmin_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,2,2,PASS
+D_xmax+xmin_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,3.15555555555556,3.15555555555555,PASS
+D_xmax+xmin_3x3x3,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),0.00e+00,<= 1e-15,PASS
+D_xmax+xmin_3x3x3,NEGATIVE: double-counted face -> area mismatch,3,!= 2,PASS
+D_ymin+ymax_3x3x3,M_Gamma (before elim.) = sum_f M1 (x) M1,6.26e-15,<= 1e-14,PASS
+D_ymin+ymax_3x3x3,K_Gamma (before elim.) = sum_f [K1(x)M1 + M1(x)K1],7.49e-15,<= 1e-13,PASS
+D_ymin+ymax_3x3x3,"R = M_ref[C, C]",6.26e-15,<= 1e-14,PASS
+D_ymin+ymax_3x3x3,"R symmetric, SPD (min eig)",4.183e-03,> 0,PASS
+D_ymin+ymax_3x3x3,v^T R v = sum_f int phi^2 (phi = prod dist to uncontrolled),0.00222222222222222,0.00222222222222222,PASS
+D_ymin+ymax_3x3x3,v^T K_Gamma v = sum_f int |grad_f phi|^2,0.0444444444444444,0.044444444445978,PASS
+D_ymin+ymax_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,2,2,PASS
+D_ymin+ymax_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,1.61111111111111,1.61111111111111,PASS
+D_ymin+ymax_3x3x3,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),0.00e+00,<= 1e-15,PASS
+D_ymin+ymax_3x3x3,NEGATIVE: double-counted face -> area mismatch,3,!= 2,PASS
+D_zmin+xmin_3x3x3,M_Gamma (before elim.) = sum_f M1 (x) M1,6.26e-15,<= 1e-14,PASS
+D_zmin+xmin_3x3x3,K_Gamma (before elim.) = sum_f [K1(x)M1 + M1(x)K1],7.49e-15,<= 1e-13,PASS
+D_zmin+xmin_3x3x3,"R = M_ref[C, C]",6.26e-15,<= 1e-14,PASS
+D_zmin+xmin_3x3x3,"R symmetric, SPD (min eig)",3.536e-03,> 0,PASS
+D_zmin+xmin_3x3x3,v^T R v = sum_f int phi^2 (phi = prod dist to uncontrolled),0.0222222222222222,0.0222222222222222,PASS
+D_zmin+xmin_3x3x3,v^T K_Gamma v = sum_f int |grad_f phi|^2,0.288888888888888,0.288888888895197,PASS
+D_zmin+xmin_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,2,2,PASS
+D_zmin+xmin_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,1.44444444444444,1.44444444444444,PASS
+D_zmin+xmin_3x3x3,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),0.00e+00,<= 1e-15,PASS
+D_zmin+xmin_3x3x3,NEGATIVE: double-counted face -> area mismatch,3,!= 2,PASS
+D_xmax+ymax_3x3x3,M_Gamma (before elim.) = sum_f M1 (x) M1,7.03e-15,<= 1e-14,PASS
+D_xmax+ymax_3x3x3,K_Gamma (before elim.) = sum_f [K1(x)M1 + M1(x)K1],7.49e-15,<= 1e-13,PASS
+D_xmax+ymax_3x3x3,"R = M_ref[C, C]",7.03e-15,<= 1e-14,PASS
+D_xmax+ymax_3x3x3,"R symmetric, SPD (min eig)",3.536e-03,> 0,PASS
+D_xmax+ymax_3x3x3,v^T R v = sum_f int phi^2 (phi = prod dist to uncontrolled),0.0222222222222222,0.0222222222222222,PASS
+D_xmax+ymax_3x3x3,v^T K_Gamma v = sum_f int |grad_f phi|^2,0.288888888888889,0.288888888898967,PASS
+D_xmax+ymax_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,2,2,PASS
+D_xmax+ymax_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,3.63333333333333,3.63333333333333,PASS
+D_xmax+ymax_3x3x3,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),5.49e-17,<= 1e-15,PASS
+D_xmax+ymax_3x3x3,NEGATIVE: double-counted face -> area mismatch,3,!= 2,PASS
+D_ymin+zmax_3x3x3,M_Gamma (before elim.) = sum_f M1 (x) M1,6.59e-15,<= 1e-14,PASS
+D_ymin+zmax_3x3x3,K_Gamma (before elim.) = sum_f [K1(x)M1 + M1(x)K1],7.34e-15,<= 1e-13,PASS
+D_ymin+zmax_3x3x3,"R = M_ref[C, C]",6.59e-15,<= 1e-14,PASS
+D_ymin+zmax_3x3x3,"R symmetric, SPD (min eig)",3.536e-03,> 0,PASS
+D_ymin+zmax_3x3x3,v^T R v = sum_f int phi^2 (phi = prod dist to uncontrolled),0.0222222222222222,0.0222222222222222,PASS
+D_ymin+zmax_3x3x3,v^T K_Gamma v = sum_f int |grad_f phi|^2,0.288888888888888,0.288888888898327,PASS
+D_ymin+zmax_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,2,2,PASS
+D_ymin+zmax_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,1.58888888888889,1.58888888888889,PASS
+D_ymin+zmax_3x3x3,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),0.00e+00,<= 1e-15,PASS
+D_ymin+zmax_3x3x3,NEGATIVE: double-counted face -> area mismatch,3,!= 2,PASS
+D_zmin+ymin+xmin_3x3x3,M_Gamma (before elim.) = sum_f M1 (x) M1,6.26e-15,<= 1e-14,PASS
+D_zmin+ymin+xmin_3x3x3,K_Gamma (before elim.) = sum_f [K1(x)M1 + M1(x)K1],7.49e-15,<= 1e-13,PASS
+D_zmin+ymin+xmin_3x3x3,"R = M_ref[C, C]",6.26e-15,<= 1e-14,PASS
+D_zmin+ymin+xmin_3x3x3,"R symmetric, SPD (min eig)",2.874e-03,> 0,PASS
+D_zmin+ymin+xmin_3x3x3,v^T R v = sum_f int phi^2 (phi = prod dist to uncontrolled),0.333333333333333,0.333333333333333,PASS
+D_zmin+ymin+xmin_3x3x3,v^T K_Gamma v = sum_f int |grad_f phi|^2,2,1.99999999995396,PASS
+D_zmin+ymin+xmin_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,3,3,PASS
+D_zmin+ymin+xmin_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,2.16666666666666,2.16666666666667,PASS
+D_zmin+ymin+xmin_3x3x3,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),5.49e-17,<= 1e-15,PASS
+D_zmin+ymin+xmin_3x3x3,NEGATIVE: double-counted face -> area mismatch,4,!= 3,PASS
+D_xmax+ymax+zmax_3x3x3,M_Gamma (before elim.) = sum_f M1 (x) M1,7.03e-15,<= 1e-14,PASS
+D_xmax+ymax+zmax_3x3x3,K_Gamma (before elim.) = sum_f [K1(x)M1 + M1(x)K1],7.49e-15,<= 1e-13,PASS
+D_xmax+ymax+zmax_3x3x3,"R = M_ref[C, C]",7.03e-15,<= 1e-14,PASS
+D_xmax+ymax+zmax_3x3x3,"R symmetric, SPD (min eig)",2.874e-03,> 0,PASS
+D_xmax+ymax+zmax_3x3x3,v^T R v = sum_f int phi^2 (phi = prod dist to uncontrolled),0.333333333333333,0.333333333333333,PASS
+D_xmax+ymax+zmax_3x3x3,v^T K_Gamma v = sum_f int |grad_f phi|^2,2,2.00000000004489,PASS
+D_xmax+ymax+zmax_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,3,3,PASS
+D_xmax+ymax+zmax_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,4.5,4.5,PASS
+D_xmax+ymax+zmax_3x3x3,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),5.49e-17,<= 1e-15,PASS
+D_xmax+ymax+zmax_3x3x3,NEGATIVE: double-counted face -> area mismatch,4,!= 3,PASS
+D_zmin+xmax+xmin_3x3x3,M_Gamma (before elim.) = sum_f M1 (x) M1,6.59e-15,<= 1e-14,PASS
+D_zmin+xmax+xmin_3x3x3,K_Gamma (before elim.) = sum_f [K1(x)M1 + M1(x)K1],7.49e-15,<= 1e-13,PASS
+D_zmin+xmax+xmin_3x3x3,"R = M_ref[C, C]",6.59e-15,<= 1e-14,PASS
+D_zmin+xmax+xmin_3x3x3,"R symmetric, SPD (min eig)",3.408e-03,> 0,PASS
+D_zmin+xmax+xmin_3x3x3,v^T R v = sum_f int phi^2 (phi = prod dist to uncontrolled),0.0555555555555556,0.0555555555555555,PASS
+D_zmin+xmax+xmin_3x3x3,v^T K_Gamma v = sum_f int |grad_f phi|^2,0.622222222222221,0.62222222223778,PASS
+D_zmin+xmax+xmin_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,3,3,PASS
+D_zmin+xmax+xmin_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,4.18888888888889,4.18888888888889,PASS
+D_zmin+xmax+xmin_3x3x3,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),0.00e+00,<= 1e-15,PASS
+D_zmin+xmax+xmin_3x3x3,NEGATIVE: double-counted face -> area mismatch,4,!= 3,PASS
+D_zmin+ymin+xmax+ymax+xmin_3x3x3,M_Gamma (before elim.) = sum_f M1 (x) M1,7.03e-15,<= 1e-14,PASS
+D_zmin+ymin+xmax+ymax+xmin_3x3x3,K_Gamma (before elim.) = sum_f [K1(x)M1 + M1(x)K1],7.49e-15,<= 1e-13,PASS
+D_zmin+ymin+xmax+ymax+xmin_3x3x3,"R = M_ref[C, C]",7.03e-15,<= 1e-14,PASS
+D_zmin+ymin+xmax+ymax+xmin_3x3x3,"R symmetric, SPD (min eig)",2.626e-03,> 0,PASS
+D_zmin+ymin+xmax+ymax+xmin_3x3x3,v^T R v = sum_f int phi^2 (phi = prod dist to uncontrolled),2.33333333333333,2.33333333333333,PASS
+D_zmin+ymin+xmax+ymax+xmin_3x3x3,v^T K_Gamma v = sum_f int |grad_f phi|^2,3.99999999999996,3.99999999994484,PASS
+D_zmin+ymin+xmax+ymax+xmin_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,5,5,PASS
+D_zmin+ymin+xmax+ymax+xmin_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,5.8,5.8,PASS
+D_zmin+ymin+xmax+ymax+xmin_3x3x3,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),5.49e-17,<= 1e-15,PASS
+D_zmin+ymin+xmax+ymax+xmin_3x3x3,NEGATIVE: double-counted face -> area mismatch,6,!= 5,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,M_Gamma (before elim.) = sum_f M1 (x) M1,7.03e-15,<= 1e-14,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,K_Gamma (before elim.) = sum_f [K1(x)M1 + M1(x)K1],7.49e-15,<= 1e-13,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,"R = M_ref[C, C]",7.03e-15,<= 1e-14,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,"R symmetric, SPD (min eig)",2.517e-03,> 0,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,v^T R v = sum_f int phi^2 (phi = prod dist to uncontrolled),6,6,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,v^T K_Gamma v = sum_f int |grad_f phi|^2,-9.47575351517571e-14,0,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,1^T M_Gamma 1 = sum_f |Gamma_f|,6,6,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,6.66666666666667,6.66666666666667,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),5.49e-17,<= 1e-15,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,NEGATIVE: double-counted face -> area mismatch,7,!= 6,PASS
+D_xmax+xmin_2x3x4,M_Gamma (before elim.) = sum_f M1 (x) M1,6.59e-15,<= 1e-14,PASS
+D_xmax+xmin_2x3x4,K_Gamma (before elim.) = sum_f [K1(x)M1 + M1(x)K1],7.34e-15,<= 1e-13,PASS
+D_xmax+xmin_2x3x4,"R = M_ref[C, C]",6.59e-15,<= 1e-14,PASS
+D_xmax+xmin_2x3x4,"R symmetric, SPD (min eig)",2.861e-03,> 0,PASS
+D_xmax+xmin_2x3x4,v^T R v = sum_f int phi^2 (phi = prod dist to uncontrolled),0.00222222222222222,0.00222222222222222,PASS
+D_xmax+xmin_2x3x4,v^T K_Gamma v = sum_f int |grad_f phi|^2,0.0444444444444444,0.0444444444459169,PASS
+D_xmax+xmin_2x3x4,1^T M_Gamma 1 = sum_f |Gamma_f|,2,2,PASS
+D_xmax+xmin_2x3x4,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,3.15555555555555,3.15555555555555,PASS
+D_xmax+xmin_2x3x4,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),0.00e+00,<= 1e-15,PASS
+D_xmax+xmin_2x3x4,NEGATIVE: double-counted face -> area mismatch,3,!= 2,PASS
+D_zmin+xmin_2x3x4,M_Gamma (before elim.) = sum_f M1 (x) M1,6.37e-15,<= 1e-14,PASS
+D_zmin+xmin_2x3x4,K_Gamma (before elim.) = sum_f [K1(x)M1 + M1(x)K1],7.49e-15,<= 1e-13,PASS
+D_zmin+xmin_2x3x4,"R = M_ref[C, C]",6.37e-15,<= 1e-14,PASS
+D_zmin+xmin_2x3x4,"R symmetric, SPD (min eig)",2.811e-03,> 0,PASS
+D_zmin+xmin_2x3x4,v^T R v = sum_f int phi^2 (phi = prod dist to uncontrolled),0.0222222222222222,0.0222222222222222,PASS
+D_zmin+xmin_2x3x4,v^T K_Gamma v = sum_f int |grad_f phi|^2,0.288888888888889,0.288888888895197,PASS
+D_zmin+xmin_2x3x4,1^T M_Gamma 1 = sum_f |Gamma_f|,2,2,PASS
+D_zmin+xmin_2x3x4,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,1.44444444444444,1.44444444444444,PASS
+D_zmin+xmin_2x3x4,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),3.66e-17,<= 1e-15,PASS
+D_zmin+xmin_2x3x4,NEGATIVE: double-counted face -> area mismatch,3,!= 2,PASS
+D_zmin+ymin+xmin_2x3x4,M_Gamma (before elim.) = sum_f M1 (x) M1,6.37e-15,<= 1e-14,PASS
+D_zmin+ymin+xmin_2x3x4,K_Gamma (before elim.) = sum_f [K1(x)M1 + M1(x)K1],6.99e-15,<= 1e-13,PASS
+D_zmin+ymin+xmin_2x3x4,"R = M_ref[C, C]",6.37e-15,<= 1e-14,PASS
+D_zmin+ymin+xmin_2x3x4,"R symmetric, SPD (min eig)",2.633e-03,> 0,PASS
+D_zmin+ymin+xmin_2x3x4,v^T R v = sum_f int phi^2 (phi = prod dist to uncontrolled),0.333333333333333,0.333333333333333,PASS
+D_zmin+ymin+xmin_2x3x4,v^T K_Gamma v = sum_f int |grad_f phi|^2,2,1.99999999995396,PASS
+D_zmin+ymin+xmin_2x3x4,1^T M_Gamma 1 = sum_f |Gamma_f|,3,3,PASS
+D_zmin+ymin+xmin_2x3x4,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,2.16666666666666,2.16666666666667,PASS
+D_zmin+ymin+xmin_2x3x4,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),3.66e-17,<= 1e-15,PASS
+D_zmin+ymin+xmin_2x3x4,NEGATIVE: double-counted face -> area mismatch,4,!= 3,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,M_Gamma (before elim.) = sum_f M1 (x) M1,6.44e-15,<= 1e-14,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,K_Gamma (before elim.) = sum_f [K1(x)M1 + M1(x)K1],7.24e-15,<= 1e-13,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,"R = M_ref[C, C]",6.44e-15,<= 1e-14,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,"R symmetric, SPD (min eig)",2.396e-03,> 0,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,v^T R v = sum_f int phi^2 (phi = prod dist to uncontrolled),6,6,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,v^T K_Gamma v = sum_f int |grad_f phi|^2,-4.11429894435843e-14,0,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,1^T M_Gamma 1 = sum_f |Gamma_f|,6,6,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,6.66666666666666,6.66666666666667,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),3.66e-17,<= 1e-15,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,NEGATIVE: double-counted face -> area mismatch,7,!= 6,PASS
+D_zmin+zmax_4x4x2_nonunit,M_Gamma (before elim.) = sum_f M1 (x) M1,6.54e-15,<= 1e-14,PASS
+D_zmin+zmax_4x4x2_nonunit,K_Gamma (before elim.) = sum_f [K1(x)M1 + M1(x)K1],7.49e-15,<= 1e-13,PASS
+D_zmin+zmax_4x4x2_nonunit,"R = M_ref[C, C]",6.54e-15,<= 1e-14,PASS
+D_zmin+zmax_4x4x2_nonunit,"R symmetric, SPD (min eig)",7.828e-03,> 0,PASS
+D_zmin+zmax_4x4x2_nonunit,v^T R v = sum_f int phi^2 (phi = prod dist to uncontrolled),2.27555555555556,2.27555555555555,PASS
+D_zmin+zmax_4x4x2_nonunit,v^T K_Gamma v = sum_f int |grad_f phi|^2,11.3777777777778,11.3777777774654,PASS
+D_zmin+zmax_4x4x2_nonunit,1^T M_Gamma 1 = sum_f |Gamma_f|,8,8,PASS
+D_zmin+zmax_4x4x2_nonunit,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,60.2666666666666,60.2666666666667,PASS
+D_zmin+zmax_4x4x2_nonunit,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),0.00e+00,<= 1e-15,PASS
+D_zmin+zmax_4x4x2_nonunit,NEGATIVE: double-counted face -> area mismatch,12,!= 8,PASS
+D_xmax+ymax_4x4x2_nonunit,M_Gamma (before elim.) = sum_f M1 (x) M1,6.73e-15,<= 1e-14,PASS
+D_xmax+ymax_4x4x2_nonunit,K_Gamma (before elim.) = sum_f [K1(x)M1 + M1(x)K1],7.37e-15,<= 1e-13,PASS
+D_xmax+ymax_4x4x2_nonunit,"R = M_ref[C, C]",6.73e-15,<= 1e-14,PASS
+D_xmax+ymax_4x4x2_nonunit,"R symmetric, SPD (min eig)",4.715e-03,> 0,PASS
+D_xmax+ymax_4x4x2_nonunit,v^T R v = sum_f int phi^2 (phi = prod dist to uncontrolled),0.0222222222222222,0.0222222222222222,PASS
+D_xmax+ymax_4x4x2_nonunit,v^T K_Gamma v = sum_f int |grad_f phi|^2,0.905555555555554,0.905555555535665,PASS
+D_xmax+ymax_4x4x2_nonunit,1^T M_Gamma 1 = sum_f |Gamma_f|,2,2,PASS
+D_xmax+ymax_4x4x2_nonunit,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,43.0083333333333,43.0083333333333,PASS
+D_xmax+ymax_4x4x2_nonunit,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),0.00e+00,<= 1e-15,PASS
+D_xmax+ymax_4x4x2_nonunit,NEGATIVE: double-counted face -> area mismatch,3,!= 2,PASS
+D_xmax+ymax+zmax_4x4x2_nonunit,M_Gamma (before elim.) = sum_f M1 (x) M1,6.34e-15,<= 1e-14,PASS
+D_xmax+ymax+zmax_4x4x2_nonunit,K_Gamma (before elim.) = sum_f [K1(x)M1 + M1(x)K1],7.37e-15,<= 1e-13,PASS
+D_xmax+ymax+zmax_4x4x2_nonunit,"R = M_ref[C, C]",6.34e-15,<= 1e-14,PASS
+D_xmax+ymax+zmax_4x4x2_nonunit,"R symmetric, SPD (min eig)",4.148e-03,> 0,PASS
+D_xmax+ymax+zmax_4x4x2_nonunit,v^T R v = sum_f int phi^2 (phi = prod dist to uncontrolled),2.66666666666667,2.66666666666667,PASS
+D_xmax+ymax+zmax_4x4x2_nonunit,v^T K_Gamma v = sum_f int |grad_f phi|^2,14,13.9999999996837,PASS
+D_xmax+ymax+zmax_4x4x2_nonunit,1^T M_Gamma 1 = sum_f |Gamma_f|,6,6,PASS
+D_xmax+ymax+zmax_4x4x2_nonunit,v^T M v = sum_f int (x^2+yz-2z^2+x)^2 dS,69.1416666666667,69.1416666666667,PASS
+D_xmax+ymax+zmax_4x4x2_nonunit,M_Gamma(union) = sum_f M_Gamma(single f) (separate runs),2.44e-17,<= 1e-15,PASS
+D_xmax+ymax+zmax_4x4x2_nonunit,NEGATIVE: double-counted face -> area mismatch,7,!= 6,PASS

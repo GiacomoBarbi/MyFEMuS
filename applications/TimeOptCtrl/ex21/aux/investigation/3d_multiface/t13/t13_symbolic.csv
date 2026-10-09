@@ -1,0 +1,167 @@
+check,value,verdict
+M1 opp wsym state residual,0.000e+00,PASS
+M2 opp wsym adjoint residual,0.000e+00,PASS
+M3 opp wsym nu dn y - eta u on zmin,0.000e+00,PASS
+M5 opp wsym nu dn p + (w.n) p on zmin,0.000e+00,PASS
+M7 opp wsym stationarity alpha_u u + eta p on zmin,0.000e+00,PASS
+M4 opp wsym nu dn y on ymin,0.000e+00,PASS
+M5 opp wsym nu dn p + (w.n) p on ymin,0.000e+00,PASS
+M4 opp wsym nu dn y on xmax,0.000e+00,PASS
+M5 opp wsym nu dn p + (w.n) p on xmax,0.000e+00,PASS
+M4 opp wsym nu dn y on ymax,0.000e+00,PASS
+M5 opp wsym nu dn p + (w.n) p on ymax,0.000e+00,PASS
+M4 opp wsym nu dn y on xmin,0.000e+00,PASS
+M5 opp wsym nu dn p + (w.n) p on xmin,0.000e+00,PASS
+M3 opp wsym nu dn y - eta u on zmax,0.000e+00,PASS
+M5 opp wsym nu dn p + (w.n) p on zmax,0.000e+00,PASS
+M7 opp wsym stationarity alpha_u u + eta p on zmax,0.000e+00,PASS
+M6 opp wsym p(T),0.000e+00,PASS
+M8 opp wsym edge compatibility d_nB g_A = d_nA g_B on all 12 edges (max),0.000e+00,PASS
+N2 opp wsym NEG y without the zmax corrector: flux on zmax violated,2.039e-01,PASS
+M1 opp heat state residual,0.000e+00,PASS
+M2 opp heat adjoint residual,0.000e+00,PASS
+M3 opp heat nu dn y - eta u on zmin,0.000e+00,PASS
+M5 opp heat nu dn p + (w.n) p on zmin,0.000e+00,PASS
+M7 opp heat stationarity alpha_u u + eta p on zmin,0.000e+00,PASS
+M4 opp heat nu dn y on ymin,0.000e+00,PASS
+M5 opp heat nu dn p + (w.n) p on ymin,0.000e+00,PASS
+M4 opp heat nu dn y on xmax,0.000e+00,PASS
+M5 opp heat nu dn p + (w.n) p on xmax,0.000e+00,PASS
+M4 opp heat nu dn y on ymax,0.000e+00,PASS
+M5 opp heat nu dn p + (w.n) p on ymax,0.000e+00,PASS
+M4 opp heat nu dn y on xmin,0.000e+00,PASS
+M5 opp heat nu dn p + (w.n) p on xmin,0.000e+00,PASS
+M3 opp heat nu dn y - eta u on zmax,0.000e+00,PASS
+M5 opp heat nu dn p + (w.n) p on zmax,0.000e+00,PASS
+M7 opp heat stationarity alpha_u u + eta p on zmax,0.000e+00,PASS
+M6 opp heat p(T),0.000e+00,PASS
+M8 opp heat edge compatibility d_nB g_A = d_nA g_B on all 12 edges (max),0.000e+00,PASS
+N2 opp heat NEG y without the zmax corrector: flux on zmax violated,1.699e+00,PASS
+M1 opp wA state residual,0.000e+00,PASS
+M2 opp wA adjoint residual,0.000e+00,PASS
+M3 opp wA nu dn y - eta u on zmin,0.000e+00,PASS
+M5 opp wA nu dn p + (w.n) p on zmin,0.000e+00,PASS
+M7 opp wA stationarity alpha_u u + eta p on zmin,0.000e+00,PASS
+M4 opp wA nu dn y on ymin,0.000e+00,PASS
+M5 opp wA nu dn p + (w.n) p on ymin,0.000e+00,PASS
+M4 opp wA nu dn y on xmax,0.000e+00,PASS
+M5 opp wA nu dn p + (w.n) p on xmax,0.000e+00,PASS
+M4 opp wA nu dn y on ymax,0.000e+00,PASS
+M5 opp wA nu dn p + (w.n) p on ymax,0.000e+00,PASS
+M4 opp wA nu dn y on xmin,0.000e+00,PASS
+M5 opp wA nu dn p + (w.n) p on xmin,0.000e+00,PASS
+M3 opp wA nu dn y - eta u on zmax,0.000e+00,PASS
+M5 opp wA nu dn p + (w.n) p on zmax,0.000e+00,PASS
+M7 opp wA stationarity alpha_u u + eta p on zmax,0.000e+00,PASS
+M6 opp wA p(T),0.000e+00,PASS
+M8 opp wA edge compatibility d_nB g_A = d_nA g_B on all 12 edges (max),0.000e+00,PASS
+N2 opp wA NEG y without the zmax corrector: flux on zmax violated,3.412e+01,PASS
+"M1 adj w(a,b,a)sym state residual",0.000e+00,PASS
+"M2 adj w(a,b,a)sym adjoint residual",0.000e+00,PASS
+"M3 adj w(a,b,a)sym nu dn y - eta u on zmin",0.000e+00,PASS
+"M5 adj w(a,b,a)sym nu dn p + (w.n) p on zmin",0.000e+00,PASS
+"M7 adj w(a,b,a)sym stationarity alpha_u u + eta p on zmin",0.000e+00,PASS
+"M4 adj w(a,b,a)sym nu dn y on ymin",0.000e+00,PASS
+"M5 adj w(a,b,a)sym nu dn p + (w.n) p on ymin",0.000e+00,PASS
+"M4 adj w(a,b,a)sym nu dn y on xmax",0.000e+00,PASS
+"M5 adj w(a,b,a)sym nu dn p + (w.n) p on xmax",0.000e+00,PASS
+"M4 adj w(a,b,a)sym nu dn y on ymax",0.000e+00,PASS
+"M5 adj w(a,b,a)sym nu dn p + (w.n) p on ymax",0.000e+00,PASS
+"M3 adj w(a,b,a)sym nu dn y - eta u on xmin",0.000e+00,PASS
+"M5 adj w(a,b,a)sym nu dn p + (w.n) p on xmin",0.000e+00,PASS
+"M7 adj w(a,b,a)sym stationarity alpha_u u + eta p on xmin",0.000e+00,PASS
+"M4 adj w(a,b,a)sym nu dn y on zmax",0.000e+00,PASS
+"M5 adj w(a,b,a)sym nu dn p + (w.n) p on zmax",0.000e+00,PASS
+"M6 adj w(a,b,a)sym p(T)",0.000e+00,PASS
+"M8 adj w(a,b,a)sym edge compatibility d_nB g_A = d_nA g_B on all 12 edges (max)",0.000e+00,PASS
+"M9 adj w(a,b,a)sym control on the internal edge x=z=0 nonzero",1.288e+00,PASS
+M1 adj heat state residual,0.000e+00,PASS
+M2 adj heat adjoint residual,0.000e+00,PASS
+M3 adj heat nu dn y - eta u on zmin,0.000e+00,PASS
+M5 adj heat nu dn p + (w.n) p on zmin,0.000e+00,PASS
+M7 adj heat stationarity alpha_u u + eta p on zmin,0.000e+00,PASS
+M4 adj heat nu dn y on ymin,0.000e+00,PASS
+M5 adj heat nu dn p + (w.n) p on ymin,0.000e+00,PASS
+M4 adj heat nu dn y on xmax,0.000e+00,PASS
+M5 adj heat nu dn p + (w.n) p on xmax,0.000e+00,PASS
+M4 adj heat nu dn y on ymax,0.000e+00,PASS
+M5 adj heat nu dn p + (w.n) p on ymax,0.000e+00,PASS
+M3 adj heat nu dn y - eta u on xmin,0.000e+00,PASS
+M5 adj heat nu dn p + (w.n) p on xmin,0.000e+00,PASS
+M7 adj heat stationarity alpha_u u + eta p on xmin,0.000e+00,PASS
+M4 adj heat nu dn y on zmax,0.000e+00,PASS
+M5 adj heat nu dn p + (w.n) p on zmax,0.000e+00,PASS
+M6 adj heat p(T),0.000e+00,PASS
+M8 adj heat edge compatibility d_nB g_A = d_nA g_B on all 12 edges (max),0.000e+00,PASS
+M9 adj heat control on the internal edge x=z=0 nonzero,1.288e+00,PASS
+"M1 adj w(.6,-.4,.6) state residual",0.000e+00,PASS
+"M2 adj w(.6,-.4,.6) adjoint residual",0.000e+00,PASS
+"M3 adj w(.6,-.4,.6) nu dn y - eta u on zmin",0.000e+00,PASS
+"M5 adj w(.6,-.4,.6) nu dn p + (w.n) p on zmin",0.000e+00,PASS
+"M7 adj w(.6,-.4,.6) stationarity alpha_u u + eta p on zmin",0.000e+00,PASS
+"M4 adj w(.6,-.4,.6) nu dn y on ymin",0.000e+00,PASS
+"M5 adj w(.6,-.4,.6) nu dn p + (w.n) p on ymin",0.000e+00,PASS
+"M4 adj w(.6,-.4,.6) nu dn y on xmax",0.000e+00,PASS
+"M5 adj w(.6,-.4,.6) nu dn p + (w.n) p on xmax",0.000e+00,PASS
+"M4 adj w(.6,-.4,.6) nu dn y on ymax",0.000e+00,PASS
+"M5 adj w(.6,-.4,.6) nu dn p + (w.n) p on ymax",0.000e+00,PASS
+"M3 adj w(.6,-.4,.6) nu dn y - eta u on xmin",0.000e+00,PASS
+"M5 adj w(.6,-.4,.6) nu dn p + (w.n) p on xmin",0.000e+00,PASS
+"M7 adj w(.6,-.4,.6) stationarity alpha_u u + eta p on xmin",0.000e+00,PASS
+"M4 adj w(.6,-.4,.6) nu dn y on zmax",0.000e+00,PASS
+"M5 adj w(.6,-.4,.6) nu dn p + (w.n) p on zmax",0.000e+00,PASS
+"M6 adj w(.6,-.4,.6) p(T)",0.000e+00,PASS
+"M8 adj w(.6,-.4,.6) edge compatibility d_nB g_A = d_nA g_B on all 12 edges (max)",0.000e+00,PASS
+"M9 adj w(.6,-.4,.6) control on the internal edge x=z=0 nonzero",1.288e+00,PASS
+N1 adj NEG w_x != w_z: p_x - p_z at x=z=0 (= -(w_x - w_z) p/nu) nonzero,2.700e+01,PASS
+D1 dopp heat Qs0: homogeneous adjoint residual / p (max on grid),0.000e+00,PASS
+D1 dopp heat Qs1: homogeneous adjoint residual / p (max on grid),0.000e+00,PASS
+D2 dopp heat Qs0(z=0) = 0,0.000e+00,PASS
+D2 dopp heat Qs1(z=1) = 0,0.000e+00,PASS
+D4 dopp heat dz Qs1(1) + exp(-a) dz Qs0(0) = 0,0.000e+00,PASS
+D5 dopp heat L2 stationarity zmax: u1 - exp(-a) u0 = 0,0.000e+00,PASS
+D6 dopp heat -Lap_Gamma S - 2 pi^2 S on zmin and zmax (same S),0.000e+00,PASS
+D6 dopp heat S = 0 on the perimeter of each face,0.000e+00,PASS
+"D3 dopp heat adjoint residual outside omega, z<=1/4 (psi=0) (rel., grid)",0.000e+00,PASS
+"D3 dopp heat adjoint residual outside omega, z>=3/4 (psi=1) (rel., grid)",0.000e+00,PASS
+D7 dopp heat y - eta u0 on zmin,0.000e+00,PASS
+D7 dopp heat y - eta u1 on zmax,0.000e+00,PASS
+D7 dopp heat y on x=0,0.000e+00,PASS
+D7 dopp heat y on x=1,0.000e+00,PASS
+D7 dopp heat y on y=0,0.000e+00,PASS
+D7 dopp heat y on y=1,0.000e+00,PASS
+"D8 dopp heat max |Qs0|, |Qs1| at tau = 1e-4 on [0,1]",1.080e-172,PASS
+D1 dopp wN Qs0: homogeneous adjoint residual / p (max on grid),0.000e+00,PASS
+D1 dopp wN Qs1: homogeneous adjoint residual / p (max on grid),0.000e+00,PASS
+D2 dopp wN Qs0(z=0) = 0,0.000e+00,PASS
+D2 dopp wN Qs1(z=1) = 0,0.000e+00,PASS
+D4 dopp wN dz Qs1(1) + exp(-a) dz Qs0(0) = 0,0.000e+00,PASS
+D5 dopp wN L2 stationarity zmax: u1 - exp(-a) u0 = 0,0.000e+00,PASS
+N3 dopp wN NEG u1 = u0 (no exp(-a)) violates zmax stationarity,2.167e+00,PASS
+D6 dopp wN -Lap_Gamma S - 2 pi^2 S on zmin and zmax (same S),0.000e+00,PASS
+D6 dopp wN S = 0 on the perimeter of each face,0.000e+00,PASS
+"D3 dopp wN adjoint residual outside omega, z<=1/4 (psi=0) (rel., grid)",0.000e+00,PASS
+"D3 dopp wN adjoint residual outside omega, z>=3/4 (psi=1) (rel., grid)",0.000e+00,PASS
+D7 dopp wN y - eta u0 on zmin,0.000e+00,PASS
+D7 dopp wN y - eta u1 on zmax,0.000e+00,PASS
+D7 dopp wN y on x=0,0.000e+00,PASS
+D7 dopp wN y on x=1,0.000e+00,PASS
+D7 dopp wN y on y=0,0.000e+00,PASS
+D7 dopp wN y on y=1,0.000e+00,PASS
+"D8 dopp wN max |Qs0|, |Qs1| at tau = 1e-4 on [0,1]",4.840e-172,PASS
+D1 dopp wA Qs0: homogeneous adjoint residual / p (max on grid),0.000e+00,PASS
+D1 dopp wA Qs1: homogeneous adjoint residual / p (max on grid),0.000e+00,PASS
+D2 dopp wA Qs0(z=0) = 0,0.000e+00,PASS
+D2 dopp wA Qs1(z=1) = 0,0.000e+00,PASS
+D4 dopp wA dz Qs1(1) + exp(-a) dz Qs0(0) = 0,0.000e+00,PASS
+D5 dopp wA L2 stationarity zmax: u1 - exp(-a) u0 = 0,0.000e+00,PASS
+N3 dopp wA NEG u1 = u0 (no exp(-a)) violates zmax stationarity,2.860e-01,PASS
+"D3 dopp wA adjoint residual outside omega, z<=1/4 (psi=0) (rel., grid)",0.000e+00,PASS
+"D3 dopp wA adjoint residual outside omega, z>=3/4 (psi=1) (rel., grid)",0.000e+00,PASS
+D7 dopp wA y - eta u0 on zmin,0.000e+00,PASS
+D7 dopp wA y - eta u1 on zmax,0.000e+00,PASS
+D7 dopp wA y on x=0,0.000e+00,PASS
+D7 dopp wA y on x=1,0.000e+00,PASS
+D7 dopp wA y on y=0,0.000e+00,PASS
+D7 dopp wA y on y=1,0.000e+00,PASS
+"D8 dopp wA max |Qs0|, |Qs1| at tau = 1e-4 on [0,1]",4.839e-172,PASS

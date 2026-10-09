@@ -1,0 +1,151 @@
+case,check,value,reference,verdict
+"G1D_zmin+zmax_w(1,0.5,-0.75)","C + C^T = sum_f (w.n_f) M_f on I u C, rel. to max|C|",3.0e-14,<=1e-13,PASS
+"G1D_zmin+zmax_w(1,0.5,-0.75)",NEG face zmin (w.n = 0.75) dropped from the sum: detected,1.1e+00,> 1e-6,PASS
+"G1D_zmin+xmin_w(1,0.5,-0.75)","C + C^T = sum_f (w.n_f) M_f on I u C, rel. to max|C|",2.5e-14,<=1e-13,PASS
+"G1D_zmin+xmin_w(1,0.5,-0.75)",NEG face zmin (w.n = 0.75) dropped from the sum: detected,1.1e+00,> 1e-6,PASS
+"G1D_ymin+xmax+zmax_w(-2,1,0.5)","C + C^T = sum_f (w.n_f) M_f on I u C, rel. to max|C|",2.8e-14,<=1e-13,PASS
+"G1D_ymin+xmax+zmax_w(-2,1,0.5)",NEG face ymin (w.n = -1) dropped from the sum: detected,7.5e-01,> 1e-6,PASS
+"G1D_zmin+xmax+xmin_w(1,0.5,-0.75)","C + C^T = sum_f (w.n_f) M_f on I u C, rel. to max|C|",2.8e-14,<=1e-13,PASS
+"G1D_zmin+xmax+xmin_w(1,0.5,-0.75)",NEG face zmin (w.n = 0.75) dropped from the sum: detected,1.1e+00,> 1e-6,PASS
+"G1D_zmin+ymin+xmax+ymax+xmin+zmax_w(-2,1,0.5)","C + C^T = sum_f (w.n_f) M_f on I u C, rel. to max|C|",2.8e-14,<=1e-13,PASS
+"G1D_zmin+ymin+xmax+ymax+xmin+zmax_w(-2,1,0.5)",NEG face zmin (w.n = -0.5) dropped from the sum: detected,3.7e-01,> 1e-6,PASS
+zmin+zmax_be_heat_2x2x2,dumped C = geometric C (union minus uncontrolled faces),18,18,PASS
+zmin+zmax_be_heat_2x2x2,ApplyBDT uses L^T iff convection,0,0,PASS
+zmin+zmax_be_heat_2x2x2,dumped B_D = formula B_D (rel.),1.7e-16,<=1e-13,PASS
+zmin+zmax_be_heat_2x2x2,dumped B_D^T = (formula B_D)^T (rel.),1.7e-16,<=1e-13,PASS
+zmin+zmax_be_heat_2x2x2,dumped B_D^T = (dumped B_D)^T (rel.),5.2e-18,<=1e-13,PASS
+zmin+zmax_be_heat_2x2x2,"<B_D u, p> = <u, B_D^T p> (rel.)",1.3e-16,<=1e-13,PASS
+zmin+zmax_be_heat_2x2x2,NEG wrong C: face zmax omitted: detected,1.0e+00,> 1e-6,PASS
+zmin+zmax_be_heat_2x2x2,"NEG forward-L B_D^T: equals (L symmetric, heat)",1.7e-16,<=1e-13,PASS
+zmin+zmax_be_wind_2x2x2,dumped C = geometric C (union minus uncontrolled faces),18,18,PASS
+zmin+zmax_be_wind_2x2x2,ApplyBDT uses L^T iff convection,1,1,PASS
+zmin+zmax_be_wind_2x2x2,dumped B_D = formula B_D (rel.),1.4e-16,<=1e-13,PASS
+zmin+zmax_be_wind_2x2x2,dumped B_D^T = (formula B_D)^T (rel.),1.4e-16,<=1e-13,PASS
+zmin+zmax_be_wind_2x2x2,dumped B_D^T = (dumped B_D)^T (rel.),0.0e+00,<=1e-13,PASS
+zmin+zmax_be_wind_2x2x2,"<B_D u, p> = <u, B_D^T p> (rel.)",9.9e-16,<=1e-13,PASS
+zmin+zmax_be_wind_2x2x2,NEG wrong C: face zmax omitted: detected,1.5e+00,> 1e-6,PASS
+zmin+zmax_be_wind_2x2x2,NEG forward-L B_D^T (L instead of L^T): detected,3.5e-01,> 1e-6,PASS
+zmin+zmax_cn_heat_2x2x2,dumped C = geometric C (union minus uncontrolled faces),18,18,PASS
+zmin+zmax_cn_heat_2x2x2,ApplyBDT uses L^T iff convection,0,0,PASS
+zmin+zmax_cn_heat_2x2x2,dumped B_D = formula B_D (rel.),1.2e-16,<=1e-13,PASS
+zmin+zmax_cn_heat_2x2x2,dumped B_D^T = (formula B_D)^T (rel.),1.2e-16,<=1e-13,PASS
+zmin+zmax_cn_heat_2x2x2,dumped B_D^T = (dumped B_D)^T (rel.),5.9e-17,<=1e-13,PASS
+zmin+zmax_cn_heat_2x2x2,"<B_D u, p> = <u, B_D^T p> (rel.)",3.6e-16,<=1e-13,PASS
+zmin+zmax_cn_heat_2x2x2,NEG wrong C: face zmax omitted: detected,1.0e+00,> 1e-6,PASS
+zmin+zmax_cn_heat_2x2x2,"NEG forward-L B_D^T: equals (L symmetric, heat)",1.2e-16,<=1e-13,PASS
+zmin+zmax_cn_heat_2x2x2,NEG CN coupling p_{n-1} instead of p_{n+1}: detected,1.0e+00,> 1e-6,PASS
+zmin+zmax_cn_wind_2x2x2,dumped C = geometric C (union minus uncontrolled faces),18,18,PASS
+zmin+zmax_cn_wind_2x2x2,ApplyBDT uses L^T iff convection,1,1,PASS
+zmin+zmax_cn_wind_2x2x2,dumped B_D = formula B_D (rel.),5.1e-17,<=1e-13,PASS
+zmin+zmax_cn_wind_2x2x2,dumped B_D^T = (formula B_D)^T (rel.),5.1e-17,<=1e-13,PASS
+zmin+zmax_cn_wind_2x2x2,dumped B_D^T = (dumped B_D)^T (rel.),5.1e-17,<=1e-13,PASS
+zmin+zmax_cn_wind_2x2x2,"<B_D u, p> = <u, B_D^T p> (rel.)",1.7e-16,<=1e-13,PASS
+zmin+zmax_cn_wind_2x2x2,NEG wrong C: face zmax omitted: detected,1.4e+00,> 1e-6,PASS
+zmin+zmax_cn_wind_2x2x2,NEG forward-L B_D^T (L instead of L^T): detected,2.6e-01,> 1e-6,PASS
+zmin+zmax_cn_wind_2x2x2,NEG CN coupling p_{n-1} instead of p_{n+1}: detected,1.0e+00,> 1e-6,PASS
+zmin+xmin_be_heat_2x2x2,dumped C = geometric C (union minus uncontrolled faces),21,21,PASS
+zmin+xmin_be_heat_2x2x2,ApplyBDT uses L^T iff convection,0,0,PASS
+zmin+xmin_be_heat_2x2x2,dumped B_D = formula B_D (rel.),1.7e-16,<=1e-13,PASS
+zmin+xmin_be_heat_2x2x2,dumped B_D^T = (formula B_D)^T (rel.),1.7e-16,<=1e-13,PASS
+zmin+xmin_be_heat_2x2x2,dumped B_D^T = (dumped B_D)^T (rel.),0.0e+00,<=1e-13,PASS
+zmin+xmin_be_heat_2x2x2,"<B_D u, p> = <u, B_D^T p> (rel.)",2.1e-16,<=1e-13,PASS
+zmin+xmin_be_heat_2x2x2,NEG wrong C: internal edges constrained (3 nodes): detected,4.8e-01,> 1e-6,PASS
+zmin+xmin_be_heat_2x2x2,NEG wrong C: face xmin omitted: detected,1.0e+00,> 1e-6,PASS
+zmin+xmin_be_heat_2x2x2,"NEG forward-L B_D^T: equals (L symmetric, heat)",1.7e-16,<=1e-13,PASS
+zmin+xmin_be_wind_2x2x2,dumped C = geometric C (union minus uncontrolled faces),21,21,PASS
+zmin+xmin_be_wind_2x2x2,ApplyBDT uses L^T iff convection,1,1,PASS
+zmin+xmin_be_wind_2x2x2,dumped B_D = formula B_D (rel.),1.3e-16,<=1e-13,PASS
+zmin+xmin_be_wind_2x2x2,dumped B_D^T = (formula B_D)^T (rel.),1.3e-16,<=1e-13,PASS
+zmin+xmin_be_wind_2x2x2,dumped B_D^T = (dumped B_D)^T (rel.),0.0e+00,<=1e-13,PASS
+zmin+xmin_be_wind_2x2x2,"<B_D u, p> = <u, B_D^T p> (rel.)",0.0e+00,<=1e-13,PASS
+zmin+xmin_be_wind_2x2x2,NEG wrong C: internal edges constrained (3 nodes): detected,3.8e-01,> 1e-6,PASS
+zmin+xmin_be_wind_2x2x2,NEG wrong C: face xmin omitted: detected,1.6e+00,> 1e-6,PASS
+zmin+xmin_be_wind_2x2x2,NEG forward-L B_D^T (L instead of L^T): detected,4.7e-01,> 1e-6,PASS
+zmin+xmin_cn_heat_2x2x2,dumped C = geometric C (union minus uncontrolled faces),21,21,PASS
+zmin+xmin_cn_heat_2x2x2,ApplyBDT uses L^T iff convection,0,0,PASS
+zmin+xmin_cn_heat_2x2x2,dumped B_D = formula B_D (rel.),1.2e-16,<=1e-13,PASS
+zmin+xmin_cn_heat_2x2x2,dumped B_D^T = (formula B_D)^T (rel.),1.2e-16,<=1e-13,PASS
+zmin+xmin_cn_heat_2x2x2,dumped B_D^T = (dumped B_D)^T (rel.),1.5e-17,<=1e-13,PASS
+zmin+xmin_cn_heat_2x2x2,"<B_D u, p> = <u, B_D^T p> (rel.)",2.4e-16,<=1e-13,PASS
+zmin+xmin_cn_heat_2x2x2,NEG wrong C: internal edges constrained (3 nodes): detected,3.8e-01,> 1e-6,PASS
+zmin+xmin_cn_heat_2x2x2,NEG wrong C: face xmin omitted: detected,1.0e+00,> 1e-6,PASS
+zmin+xmin_cn_heat_2x2x2,"NEG forward-L B_D^T: equals (L symmetric, heat)",1.2e-16,<=1e-13,PASS
+zmin+xmin_cn_heat_2x2x2,NEG CN coupling p_{n-1} instead of p_{n+1}: detected,1.0e+00,> 1e-6,PASS
+zmin+xmin_cn_wind_2x2x2,dumped C = geometric C (union minus uncontrolled faces),21,21,PASS
+zmin+xmin_cn_wind_2x2x2,ApplyBDT uses L^T iff convection,1,1,PASS
+zmin+xmin_cn_wind_2x2x2,dumped B_D = formula B_D (rel.),4.9e-17,<=1e-13,PASS
+zmin+xmin_cn_wind_2x2x2,dumped B_D^T = (formula B_D)^T (rel.),4.9e-17,<=1e-13,PASS
+zmin+xmin_cn_wind_2x2x2,dumped B_D^T = (dumped B_D)^T (rel.),1.2e-17,<=1e-13,PASS
+zmin+xmin_cn_wind_2x2x2,"<B_D u, p> = <u, B_D^T p> (rel.)",1.2e-16,<=1e-13,PASS
+zmin+xmin_cn_wind_2x2x2,NEG wrong C: internal edges constrained (3 nodes): detected,3.2e-01,> 1e-6,PASS
+zmin+xmin_cn_wind_2x2x2,NEG wrong C: face xmin omitted: detected,1.4e+00,> 1e-6,PASS
+zmin+xmin_cn_wind_2x2x2,NEG forward-L B_D^T (L instead of L^T): detected,3.5e-01,> 1e-6,PASS
+zmin+xmin_cn_wind_2x2x2,NEG CN coupling p_{n-1} instead of p_{n+1}: detected,1.0e+00,> 1e-6,PASS
+zmin+ymin+xmin_be_heat_2x2x2,dumped C = geometric C (union minus uncontrolled faces),37,37,PASS
+zmin+ymin+xmin_be_heat_2x2x2,ApplyBDT uses L^T iff convection,0,0,PASS
+zmin+ymin+xmin_be_heat_2x2x2,dumped B_D = formula B_D (rel.),1.7e-16,<=1e-13,PASS
+zmin+ymin+xmin_be_heat_2x2x2,dumped B_D^T = (formula B_D)^T (rel.),1.7e-16,<=1e-13,PASS
+zmin+ymin+xmin_be_heat_2x2x2,dumped B_D^T = (dumped B_D)^T (rel.),0.0e+00,<=1e-13,PASS
+zmin+ymin+xmin_be_heat_2x2x2,"<B_D u, p> = <u, B_D^T p> (rel.)",3.3e-16,<=1e-13,PASS
+zmin+ymin+xmin_be_heat_2x2x2,NEG wrong C: internal edges constrained (10 nodes): detected,4.8e-01,> 1e-6,PASS
+zmin+ymin+xmin_be_heat_2x2x2,NEG wrong C: face xmin omitted: detected,1.0e+00,> 1e-6,PASS
+zmin+ymin+xmin_be_heat_2x2x2,"NEG forward-L B_D^T: equals (L symmetric, heat)",1.7e-16,<=1e-13,PASS
+zmin+ymin+xmin_be_wind_2x2x2,dumped C = geometric C (union minus uncontrolled faces),37,37,PASS
+zmin+ymin+xmin_be_wind_2x2x2,ApplyBDT uses L^T iff convection,1,1,PASS
+zmin+ymin+xmin_be_wind_2x2x2,dumped B_D = formula B_D (rel.),1.3e-16,<=1e-13,PASS
+zmin+ymin+xmin_be_wind_2x2x2,dumped B_D^T = (formula B_D)^T (rel.),1.3e-16,<=1e-13,PASS
+zmin+ymin+xmin_be_wind_2x2x2,dumped B_D^T = (dumped B_D)^T (rel.),0.0e+00,<=1e-13,PASS
+zmin+ymin+xmin_be_wind_2x2x2,"<B_D u, p> = <u, B_D^T p> (rel.)",0.0e+00,<=1e-13,PASS
+zmin+ymin+xmin_be_wind_2x2x2,NEG wrong C: internal edges constrained (10 nodes): detected,4.2e-01,> 1e-6,PASS
+zmin+ymin+xmin_be_wind_2x2x2,NEG wrong C: face xmin omitted: detected,1.1e+00,> 1e-6,PASS
+zmin+ymin+xmin_be_wind_2x2x2,NEG forward-L B_D^T (L instead of L^T): detected,4.7e-01,> 1e-6,PASS
+zmin+ymin+xmin_cn_heat_2x2x2,dumped C = geometric C (union minus uncontrolled faces),37,37,PASS
+zmin+ymin+xmin_cn_heat_2x2x2,ApplyBDT uses L^T iff convection,0,0,PASS
+zmin+ymin+xmin_cn_heat_2x2x2,dumped B_D = formula B_D (rel.),1.2e-16,<=1e-13,PASS
+zmin+ymin+xmin_cn_heat_2x2x2,dumped B_D^T = (formula B_D)^T (rel.),1.2e-16,<=1e-13,PASS
+zmin+ymin+xmin_cn_heat_2x2x2,dumped B_D^T = (dumped B_D)^T (rel.),1.5e-17,<=1e-13,PASS
+zmin+ymin+xmin_cn_heat_2x2x2,"<B_D u, p> = <u, B_D^T p> (rel.)",1.5e-16,<=1e-13,PASS
+zmin+ymin+xmin_cn_heat_2x2x2,NEG wrong C: internal edges constrained (10 nodes): detected,3.8e-01,> 1e-6,PASS
+zmin+ymin+xmin_cn_heat_2x2x2,NEG wrong C: face xmin omitted: detected,1.0e+00,> 1e-6,PASS
+zmin+ymin+xmin_cn_heat_2x2x2,"NEG forward-L B_D^T: equals (L symmetric, heat)",1.2e-16,<=1e-13,PASS
+zmin+ymin+xmin_cn_heat_2x2x2,NEG CN coupling p_{n-1} instead of p_{n+1}: detected,1.0e+00,> 1e-6,PASS
+zmin+ymin+xmin_cn_wind_2x2x2,dumped C = geometric C (union minus uncontrolled faces),37,37,PASS
+zmin+ymin+xmin_cn_wind_2x2x2,ApplyBDT uses L^T iff convection,1,1,PASS
+zmin+ymin+xmin_cn_wind_2x2x2,dumped B_D = formula B_D (rel.),4.9e-17,<=1e-13,PASS
+zmin+ymin+xmin_cn_wind_2x2x2,dumped B_D^T = (formula B_D)^T (rel.),4.9e-17,<=1e-13,PASS
+zmin+ymin+xmin_cn_wind_2x2x2,dumped B_D^T = (dumped B_D)^T (rel.),1.2e-17,<=1e-13,PASS
+zmin+ymin+xmin_cn_wind_2x2x2,"<B_D u, p> = <u, B_D^T p> (rel.)",5.1e-16,<=1e-13,PASS
+zmin+ymin+xmin_cn_wind_2x2x2,NEG wrong C: internal edges constrained (10 nodes): detected,3.4e-01,> 1e-6,PASS
+zmin+ymin+xmin_cn_wind_2x2x2,NEG wrong C: face xmin omitted: detected,1.1e+00,> 1e-6,PASS
+zmin+ymin+xmin_cn_wind_2x2x2,NEG forward-L B_D^T (L instead of L^T): detected,3.5e-01,> 1e-6,PASS
+zmin+ymin+xmin_cn_wind_2x2x2,NEG CN coupling p_{n-1} instead of p_{n+1}: detected,1.0e+00,> 1e-6,PASS
+xmax+ymax_cn_wind_2x3x3,dumped C = geometric C (union minus uncontrolled faces),45,45,PASS
+xmax+ymax_cn_wind_2x3x3,ApplyBDT uses L^T iff convection,1,1,PASS
+xmax+ymax_cn_wind_2x3x3,dumped B_D = formula B_D (rel.),6.0e-17,<=1e-13,PASS
+xmax+ymax_cn_wind_2x3x3,dumped B_D^T = (formula B_D)^T (rel.),6.0e-17,<=1e-13,PASS
+xmax+ymax_cn_wind_2x3x3,dumped B_D^T = (dumped B_D)^T (rel.),3.0e-17,<=1e-13,PASS
+xmax+ymax_cn_wind_2x3x3,"<B_D u, p> = <u, B_D^T p> (rel.)",5.0e-16,<=1e-13,PASS
+xmax+ymax_cn_wind_2x3x3,NEG wrong C: internal edges constrained (5 nodes): detected,2.6e-01,> 1e-6,PASS
+xmax+ymax_cn_wind_2x3x3,NEG wrong C: face ymax omitted: detected,3.1e+00,> 1e-6,PASS
+xmax+ymax_cn_wind_2x3x3,NEG forward-L B_D^T (L instead of L^T): detected,2.9e-01,> 1e-6,PASS
+xmax+ymax_cn_wind_2x3x3,NEG CN coupling p_{n-1} instead of p_{n+1}: detected,1.0e+00,> 1e-6,PASS
+zmin+xmax+xmin_cn_wind_2x3x3,dumped C = geometric C (union minus uncontrolled faces),75,75,PASS
+zmin+xmax+xmin_cn_wind_2x3x3,ApplyBDT uses L^T iff convection,1,1,PASS
+zmin+xmax+xmin_cn_wind_2x3x3,dumped B_D = formula B_D (rel.),2.0e-16,<=1e-13,PASS
+zmin+xmax+xmin_cn_wind_2x3x3,dumped B_D^T = (formula B_D)^T (rel.),2.0e-16,<=1e-13,PASS
+zmin+xmax+xmin_cn_wind_2x3x3,dumped B_D^T = (dumped B_D)^T (rel.),2.5e-17,<=1e-13,PASS
+zmin+xmax+xmin_cn_wind_2x3x3,"<B_D u, p> = <u, B_D^T p> (rel.)",0.0e+00,<=1e-13,PASS
+zmin+xmax+xmin_cn_wind_2x3x3,NEG wrong C: internal edges constrained (10 nodes): detected,2.4e-01,> 1e-6,PASS
+zmin+xmax+xmin_cn_wind_2x3x3,NEG wrong C: face xmin omitted: detected,3.4e-01,> 1e-6,PASS
+zmin+xmax+xmin_cn_wind_2x3x3,NEG forward-L B_D^T (L instead of L^T): detected,3.4e-01,> 1e-6,PASS
+zmin+xmax+xmin_cn_wind_2x3x3,NEG CN coupling p_{n-1} instead of p_{n+1}: detected,1.0e+00,> 1e-6,PASS
+zmin+ymin+xmax+ymax+xmin+zmax_cn_wind_2x3x3,dumped C = geometric C (union minus uncontrolled faces),170,170,PASS
+zmin+ymin+xmax+ymax+xmin+zmax_cn_wind_2x3x3,ApplyBDT uses L^T iff convection,1,1,PASS
+zmin+ymin+xmax+ymax+xmin+zmax_cn_wind_2x3x3,dumped B_D = formula B_D (rel.),1.9e-16,<=1e-13,PASS
+zmin+ymin+xmax+ymax+xmin+zmax_cn_wind_2x3x3,dumped B_D^T = (formula B_D)^T (rel.),1.9e-16,<=1e-13,PASS
+zmin+ymin+xmax+ymax+xmin+zmax_cn_wind_2x3x3,dumped B_D^T = (dumped B_D)^T (rel.),2.4e-17,<=1e-13,PASS
+zmin+ymin+xmax+ymax+xmin+zmax_cn_wind_2x3x3,"<B_D u, p> = <u, B_D^T p> (rel.)",9.0e-16,<=1e-13,PASS
+zmin+ymin+xmax+ymax+xmin+zmax_cn_wind_2x3x3,NEG wrong C: internal edges constrained (60 nodes): detected,3.3e-01,> 1e-6,PASS
+zmin+ymin+xmax+ymax+xmin+zmax_cn_wind_2x3x3,NEG wrong C: face zmax omitted: detected,8.4e-01,> 1e-6,PASS
+zmin+ymin+xmax+ymax+xmin+zmax_cn_wind_2x3x3,NEG forward-L B_D^T (L instead of L^T): detected,2.9e-01,> 1e-6,PASS
+zmin+ymin+xmax+ymax+xmin+zmax_cn_wind_2x3x3,NEG CN coupling p_{n-1} instead of p_{n+1}: detected,1.0e+00,> 1e-6,PASS

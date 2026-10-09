@@ -286,6 +286,12 @@ struct ProblemConfig {
   // face Gamma_c of both boundary control types.
   unsigned neumann_control_face = 1;
   std::string neumann_control_boundary = "y0";
+  /** T13: 3D boundary control on a UNION of whole box faces -- bit (1 << id) for each
+   *  controlled FEMuS face id 1..6 (canonical: the order of the names never matters).
+   *  0 = the single face neumann_control_face (every pre-T13 configuration).  With a
+   *  union, neumann_control_face is the lowest controlled id and neumann_control_boundary
+   *  the comma-joined names in id order. */
+  unsigned control_face_mask = 0;
 
   // Dirichlet control regularization  r(u,v) = (u,v)_Gamma + ell^2 (d_s u, d_s v)_Gamma:
   // the H1(Gamma_c) length scale ell; 0 is the L2(Gamma_c) norm.
@@ -506,7 +512,8 @@ struct ProblemConfig {
     auto refuse = [](const char* what) {
       throw std::invalid_argument(std::string("3D: ") + what);
     };
-    // T11N / T11D-L2: Neumann and Dirichlet boundary control on ONE whole face.
+    // T11N / T11D-L2: Neumann and Dirichlet boundary control on whole faces; T13: a union.
+    if (control_face_mask & ~0x7Eu) refuse("invalid control face set (FEMuS face ids are 1..6)");
     if (control.type == ControlType::DIRICHLET) {
       BoxFace3D face;
       if (!LookupBoxFace3D(neumann_control_face, face))
@@ -768,6 +775,18 @@ inline const char* TrackingTargetName(const ProblemConfig& config) {
   return "constant";
 }
 
+/** T13: the controlled 3D face set as a bitmask (1 << id), and membership. */
+inline unsigned ControlFaceMask3D(const ProblemConfig& config) {
+  return config.control_face_mask ? config.control_face_mask : (1u << config.neumann_control_face);
+}
+inline bool IsControlFace3D(const ProblemConfig& config, unsigned id) {
+  return (ControlFaceMask3D(config) >> id) & 1u;
+}
+inline bool IsMultiFace3D(const ProblemConfig& config) {
+  const unsigned m = ControlFaceMask3D(config);
+  return (m & (m - 1u)) != 0u;
+}
+
 /** Purely geometric control mask, for diagnostics only.
  *
  *  This predicate does NOT build the control: it disagrees with the support of
@@ -782,18 +801,23 @@ inline bool OwnedDofIsControlled(const ProblemConfig& config, double x, double z
   // perimeter is on the homogeneous faces: u = 0 there).
   if (config.dimension == 3u && (config.control.type == ProblemConfig::ControlType::NEUMANN ||
                                  config.control.type == ProblemConfig::ControlType::DIRICHLET)) {
-    BoxFace3D face;
-    if (!LookupBoxFace3D(config.neumann_control_face, face)) return false;
+    // T13: a union of faces -- Neumann: the node lies on a controlled face plane; Dirichlet:
+    // additionally on NO uncontrolled face plane (internal edges/corners of the union active,
+    // the external perimeter of the union constrained).
     const double c[3] = {x, z, axis2};
     const double lo[3] = {config.domain.xmin, config.domain.ymin, config.domain.zmin};
     const double hi[3] = {config.domain.xmax, config.domain.ymax, config.domain.zmax};
-    if (std::fabs(c[face.axis] - (face.at_max ? hi[face.axis] : lo[face.axis])) > tolerance)
-      return false;
-    if (config.control.type == ProblemConfig::ControlType::NEUMANN) return true;
-    for (unsigned a = 0; a < 3u; ++a)
-      if (a != face.axis &&
-          (c[a] <= lo[a] + tolerance || c[a] >= hi[a] - tolerance)) return false;
-    return true;
+    const unsigned mask = config.control_face_mask ? config.control_face_mask
+                                                   : (1u << config.neumann_control_face);
+    bool on_controlled = false, on_uncontrolled = false;
+    for (unsigned id = 1; id <= 6u; ++id) {
+      BoxFace3D face;
+      LookupBoxFace3D(id, face);
+      if (std::fabs(c[face.axis] - (face.at_max ? hi[face.axis] : lo[face.axis])) > tolerance) continue;
+      if (mask & (1u << id)) on_controlled = true; else on_uncontrolled = true;
+    }
+    if (config.control.type == ProblemConfig::ControlType::NEUMANN) return on_controlled;
+    return on_controlled && !on_uncontrolled;
   }
   if (config.control.type == ProblemConfig::ControlType::NEUMANN ||
       config.control.type == ProblemConfig::ControlType::DIRICHLET)

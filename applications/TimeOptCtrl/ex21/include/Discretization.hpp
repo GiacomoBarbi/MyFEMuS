@@ -126,7 +126,7 @@ void InitializeStateSpace(
     femus::MultiLevelSolution& solution, bool with_region_fields = false,
     ProblemConfig::StateBoundaryCondition state_bc =
         ProblemConfig::StateBoundaryCondition::NATURAL,
-    unsigned free_face = 0u, bool simplex = false);   // T12: simplex = P2 (FE type 1)   // T11D: FEMuS face id left unconstrained (0 = none)
+    unsigned free_face_mask = 0u, bool simplex = false);   // T12: simplex = P2 (FE type 1); T11D/T13: bit (1 << id) per face left unconstrained (0 = none)
 
 /** 1-based index of the region of the tracking / distributed-control UNION
  *  containing this element, or 0 if it is in none.
@@ -292,6 +292,14 @@ SpatialFieldIntegrals IntegrateBoundaryField(
  *  (tangential gradients; see Discretization.cpp). */
 SpatialFieldIntegrals IntegrateBoundaryGradient3D(
     femus::Mesh* mesh, unsigned solution_type, unsigned face_id, const double* global_values,
+    void (*exact_gradient)(double, double, double, void*, double*), void* context);
+
+/** T13: the 3D boundary integrators over a union of faces (bit 1 << id per face). */
+SpatialFieldIntegrals IntegrateBoundaryField3DFaces(
+    femus::Mesh* mesh, unsigned solution_type, unsigned face_mask,
+    const double* global_values, SpatialScalarFunction3D exact, void* context);
+SpatialFieldIntegrals IntegrateBoundaryGradient3DFaces(
+    femus::Mesh* mesh, unsigned solution_type, unsigned face_mask, const double* global_values,
     void (*exact_gradient)(double, double, double, void*, double*), void* context);
 
 /** T11H1: max |n . grad_Gamma phi| / |grad_Gamma phi| over the last 3D K_Gamma

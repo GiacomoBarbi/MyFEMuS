@@ -141,7 +141,7 @@ int main(int argc, char** argv) {
   InitializeStateSpace(solution, options.region_fields, config.state_bc,
                        (config.dimension == 3u &&
                         config.control.type == ProblemConfig::ControlType::DIRICHLET)
-                           ? config.neumann_control_face : 0u,
+                           ? ControlFaceMask3D(config) : 0u,   // T13: the face set
       config.IsSimplex());
 
   Mesh* level_mesh = mesh.GetLevel(0);

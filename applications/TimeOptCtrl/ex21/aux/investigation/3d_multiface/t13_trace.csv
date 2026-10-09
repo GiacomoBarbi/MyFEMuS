@@ -1,0 +1,229 @@
+case,check,value,reference,verdict
+N_zmin_3x3x3,trace DOFs = nodes on the union (lattice prediction),49,49,PASS
+N_zmin_3x3x3,support(M_Gamma) = union of face planes,eq,eq,PASS
+N_zmin_3x3x3,shared edges/corners counted once: |union| = incl.-excl.,49,49,PASS
+N_xmax_3x3x3,trace DOFs = nodes on the union (lattice prediction),49,49,PASS
+N_xmax_3x3x3,support(M_Gamma) = union of face planes,eq,eq,PASS
+N_xmax_3x3x3,shared edges/corners counted once: |union| = incl.-excl.,49,49,PASS
+N_zmin+zmax_3x3x3,trace DOFs = nodes on the union (lattice prediction),98,98,PASS
+N_zmin+zmax_3x3x3,support(M_Gamma) = union of face planes,eq,eq,PASS
+N_zmin+zmax_3x3x3,shared edges/corners counted once: |union| = incl.-excl.,98,98,PASS
+N_xmax+xmin_3x3x3,trace DOFs = nodes on the union (lattice prediction),98,98,PASS
+N_xmax+xmin_3x3x3,support(M_Gamma) = union of face planes,eq,eq,PASS
+N_xmax+xmin_3x3x3,shared edges/corners counted once: |union| = incl.-excl.,98,98,PASS
+N_ymin+ymax_3x3x3,trace DOFs = nodes on the union (lattice prediction),98,98,PASS
+N_ymin+ymax_3x3x3,support(M_Gamma) = union of face planes,eq,eq,PASS
+N_ymin+ymax_3x3x3,shared edges/corners counted once: |union| = incl.-excl.,98,98,PASS
+N_zmin+xmin_3x3x3,trace DOFs = nodes on the union (lattice prediction),91,91,PASS
+N_zmin+xmin_3x3x3,support(M_Gamma) = union of face planes,eq,eq,PASS
+N_zmin+xmin_3x3x3,shared edges/corners counted once: |union| = incl.-excl.,91,91,PASS
+N_xmax+ymax_3x3x3,trace DOFs = nodes on the union (lattice prediction),91,91,PASS
+N_xmax+ymax_3x3x3,support(M_Gamma) = union of face planes,eq,eq,PASS
+N_xmax+ymax_3x3x3,shared edges/corners counted once: |union| = incl.-excl.,91,91,PASS
+N_ymin+zmax_3x3x3,trace DOFs = nodes on the union (lattice prediction),91,91,PASS
+N_ymin+zmax_3x3x3,support(M_Gamma) = union of face planes,eq,eq,PASS
+N_ymin+zmax_3x3x3,shared edges/corners counted once: |union| = incl.-excl.,91,91,PASS
+N_zmin+ymin+xmin_3x3x3,trace DOFs = nodes on the union (lattice prediction),127,127,PASS
+N_zmin+ymin+xmin_3x3x3,support(M_Gamma) = union of face planes,eq,eq,PASS
+N_zmin+ymin+xmin_3x3x3,shared edges/corners counted once: |union| = incl.-excl.,127,127,PASS
+N_xmax+ymax+zmax_3x3x3,trace DOFs = nodes on the union (lattice prediction),127,127,PASS
+N_xmax+ymax+zmax_3x3x3,support(M_Gamma) = union of face planes,eq,eq,PASS
+N_xmax+ymax+zmax_3x3x3,shared edges/corners counted once: |union| = incl.-excl.,127,127,PASS
+N_zmin+xmax+xmin_3x3x3,trace DOFs = nodes on the union (lattice prediction),133,133,PASS
+N_zmin+xmax+xmin_3x3x3,support(M_Gamma) = union of face planes,eq,eq,PASS
+N_zmin+xmax+xmin_3x3x3,shared edges/corners counted once: |union| = incl.-excl.,133,133,PASS
+N_zmin+ymin+xmax+ymax+xmin_3x3x3,trace DOFs = nodes on the union (lattice prediction),193,193,PASS
+N_zmin+ymin+xmax+ymax+xmin_3x3x3,support(M_Gamma) = union of face planes,eq,eq,PASS
+N_zmin+ymin+xmax+ymax+xmin_3x3x3,shared edges/corners counted once: |union| = incl.-excl.,193,193,PASS
+N_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,trace DOFs = nodes on the union (lattice prediction),218,218,PASS
+N_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,support(M_Gamma) = union of face planes,eq,eq,PASS
+N_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,shared edges/corners counted once: |union| = incl.-excl.,218,218,PASS
+N_xmax+xmin_2x3x4,trace DOFs = nodes on the union (lattice prediction),126,126,PASS
+N_xmax+xmin_2x3x4,support(M_Gamma) = union of face planes,eq,eq,PASS
+N_xmax+xmin_2x3x4,shared edges/corners counted once: |union| = incl.-excl.,126,126,PASS
+N_zmin+xmin_2x3x4,trace DOFs = nodes on the union (lattice prediction),91,91,PASS
+N_zmin+xmin_2x3x4,support(M_Gamma) = union of face planes,eq,eq,PASS
+N_zmin+xmin_2x3x4,shared edges/corners counted once: |union| = incl.-excl.,91,91,PASS
+N_zmin+ymin+xmin_2x3x4,trace DOFs = nodes on the union (lattice prediction),123,123,PASS
+N_zmin+ymin+xmin_2x3x4,support(M_Gamma) = union of face planes,eq,eq,PASS
+N_zmin+ymin+xmin_2x3x4,shared edges/corners counted once: |union| = incl.-excl.,123,123,PASS
+N_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,trace DOFs = nodes on the union (lattice prediction),210,210,PASS
+N_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,support(M_Gamma) = union of face planes,eq,eq,PASS
+N_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,shared edges/corners counted once: |union| = incl.-excl.,210,210,PASS
+N_zmin+zmax_4x4x2_nonunit,trace DOFs = nodes on the union (lattice prediction),162,162,PASS
+N_zmin+zmax_4x4x2_nonunit,support(M_Gamma) = union of face planes,eq,eq,PASS
+N_zmin+zmax_4x4x2_nonunit,shared edges/corners counted once: |union| = incl.-excl.,162,162,PASS
+N_xmax+ymax_4x4x2_nonunit,trace DOFs = nodes on the union (lattice prediction),85,85,PASS
+N_xmax+ymax_4x4x2_nonunit,support(M_Gamma) = union of face planes,eq,eq,PASS
+N_xmax+ymax_4x4x2_nonunit,shared edges/corners counted once: |union| = incl.-excl.,85,85,PASS
+N_xmax+ymax+zmax_4x4x2_nonunit,trace DOFs = nodes on the union (lattice prediction),149,149,PASS
+N_xmax+ymax+zmax_4x4x2_nonunit,support(M_Gamma) = union of face planes,eq,eq,PASS
+N_xmax+ymax+zmax_4x4x2_nonunit,shared edges/corners counted once: |union| = incl.-excl.,149,149,PASS
+D_zmin_3x3x3,"|C| = lattice prediction (controlled, no uncontrolled face)",25,25,PASS
+D_zmin_3x3x3,|C| = closed form (one:zmin),25,25,PASS
+D_zmin_3x3x3,C = geometric set exactly,eq,eq,PASS
+D_zmin_3x3x3,C = support diag(M_Gamma),eq,eq,PASS
+D_zmin_3x3x3,internal edge/corner nodes of the union active (in C),0,0,PASS
+D_zmin_3x3x3,nodes on an uncontrolled face never in C,0,0,PASS
+D_zmin_3x3x3,D (unhatted) = boundary \ C,193,193,PASS
+D_zmin_3x3x3,C and D disjoint,0,0,PASS
+D_zmin_3x3x3,hatted eliminated set = D u C,218,218,PASS
+D_xmax_3x3x3,"|C| = lattice prediction (controlled, no uncontrolled face)",25,25,PASS
+D_xmax_3x3x3,C = geometric set exactly,eq,eq,PASS
+D_xmax_3x3x3,C = support diag(M_Gamma),eq,eq,PASS
+D_xmax_3x3x3,internal edge/corner nodes of the union active (in C),0,0,PASS
+D_xmax_3x3x3,nodes on an uncontrolled face never in C,0,0,PASS
+D_xmax_3x3x3,D (unhatted) = boundary \ C,193,193,PASS
+D_xmax_3x3x3,C and D disjoint,0,0,PASS
+D_xmax_3x3x3,hatted eliminated set = D u C,218,218,PASS
+D_zmin+zmax_3x3x3,"|C| = lattice prediction (controlled, no uncontrolled face)",50,50,PASS
+D_zmin+zmax_3x3x3,"|C| = closed form (opposite:zmin,zmax)",50,50,PASS
+D_zmin+zmax_3x3x3,C = geometric set exactly,eq,eq,PASS
+D_zmin+zmax_3x3x3,C = support diag(M_Gamma),eq,eq,PASS
+D_zmin+zmax_3x3x3,internal edge/corner nodes of the union active (in C),0,0,PASS
+D_zmin+zmax_3x3x3,nodes on an uncontrolled face never in C,0,0,PASS
+D_zmin+zmax_3x3x3,D (unhatted) = boundary \ C,168,168,PASS
+D_zmin+zmax_3x3x3,C and D disjoint,0,0,PASS
+D_zmin+zmax_3x3x3,hatted eliminated set = D u C,218,218,PASS
+D_xmax+xmin_3x3x3,"|C| = lattice prediction (controlled, no uncontrolled face)",50,50,PASS
+D_xmax+xmin_3x3x3,C = geometric set exactly,eq,eq,PASS
+D_xmax+xmin_3x3x3,C = support diag(M_Gamma),eq,eq,PASS
+D_xmax+xmin_3x3x3,internal edge/corner nodes of the union active (in C),0,0,PASS
+D_xmax+xmin_3x3x3,nodes on an uncontrolled face never in C,0,0,PASS
+D_xmax+xmin_3x3x3,D (unhatted) = boundary \ C,168,168,PASS
+D_xmax+xmin_3x3x3,C and D disjoint,0,0,PASS
+D_xmax+xmin_3x3x3,hatted eliminated set = D u C,218,218,PASS
+D_ymin+ymax_3x3x3,"|C| = lattice prediction (controlled, no uncontrolled face)",50,50,PASS
+D_ymin+ymax_3x3x3,C = geometric set exactly,eq,eq,PASS
+D_ymin+ymax_3x3x3,C = support diag(M_Gamma),eq,eq,PASS
+D_ymin+ymax_3x3x3,internal edge/corner nodes of the union active (in C),0,0,PASS
+D_ymin+ymax_3x3x3,nodes on an uncontrolled face never in C,0,0,PASS
+D_ymin+ymax_3x3x3,D (unhatted) = boundary \ C,168,168,PASS
+D_ymin+ymax_3x3x3,C and D disjoint,0,0,PASS
+D_ymin+ymax_3x3x3,hatted eliminated set = D u C,218,218,PASS
+D_zmin+xmin_3x3x3,"|C| = lattice prediction (controlled, no uncontrolled face)",55,55,PASS
+D_zmin+xmin_3x3x3,"|C| = closed form (adjacent:zmin,xmin)",55,55,PASS
+D_zmin+xmin_3x3x3,C = geometric set exactly,eq,eq,PASS
+D_zmin+xmin_3x3x3,C = support diag(M_Gamma),eq,eq,PASS
+D_zmin+xmin_3x3x3,internal edge/corner nodes of the union active (in C),5,5,PASS
+D_zmin+xmin_3x3x3,nodes on an uncontrolled face never in C,0,0,PASS
+D_zmin+xmin_3x3x3,D (unhatted) = boundary \ C,163,163,PASS
+D_zmin+xmin_3x3x3,C and D disjoint,0,0,PASS
+D_zmin+xmin_3x3x3,hatted eliminated set = D u C,218,218,PASS
+D_xmax+ymax_3x3x3,"|C| = lattice prediction (controlled, no uncontrolled face)",55,55,PASS
+D_xmax+ymax_3x3x3,C = geometric set exactly,eq,eq,PASS
+D_xmax+ymax_3x3x3,C = support diag(M_Gamma),eq,eq,PASS
+D_xmax+ymax_3x3x3,internal edge/corner nodes of the union active (in C),5,5,PASS
+D_xmax+ymax_3x3x3,nodes on an uncontrolled face never in C,0,0,PASS
+D_xmax+ymax_3x3x3,D (unhatted) = boundary \ C,163,163,PASS
+D_xmax+ymax_3x3x3,C and D disjoint,0,0,PASS
+D_xmax+ymax_3x3x3,hatted eliminated set = D u C,218,218,PASS
+D_ymin+zmax_3x3x3,"|C| = lattice prediction (controlled, no uncontrolled face)",55,55,PASS
+D_ymin+zmax_3x3x3,C = geometric set exactly,eq,eq,PASS
+D_ymin+zmax_3x3x3,C = support diag(M_Gamma),eq,eq,PASS
+D_ymin+zmax_3x3x3,internal edge/corner nodes of the union active (in C),5,5,PASS
+D_ymin+zmax_3x3x3,nodes on an uncontrolled face never in C,0,0,PASS
+D_ymin+zmax_3x3x3,D (unhatted) = boundary \ C,163,163,PASS
+D_ymin+zmax_3x3x3,C and D disjoint,0,0,PASS
+D_ymin+zmax_3x3x3,hatted eliminated set = D u C,218,218,PASS
+D_zmin+ymin+xmin_3x3x3,"|C| = lattice prediction (controlled, no uncontrolled face)",91,91,PASS
+D_zmin+ymin+xmin_3x3x3,"|C| = closed form (three:zmin,ymin,xmin)",91,91,PASS
+D_zmin+ymin+xmin_3x3x3,C = geometric set exactly,eq,eq,PASS
+D_zmin+ymin+xmin_3x3x3,C = support diag(M_Gamma),eq,eq,PASS
+D_zmin+ymin+xmin_3x3x3,internal edge/corner nodes of the union active (in C),16,16,PASS
+D_zmin+ymin+xmin_3x3x3,nodes on an uncontrolled face never in C,0,0,PASS
+D_zmin+ymin+xmin_3x3x3,D (unhatted) = boundary \ C,127,127,PASS
+D_zmin+ymin+xmin_3x3x3,C and D disjoint,0,0,PASS
+D_zmin+ymin+xmin_3x3x3,hatted eliminated set = D u C,218,218,PASS
+D_xmax+ymax+zmax_3x3x3,"|C| = lattice prediction (controlled, no uncontrolled face)",91,91,PASS
+D_xmax+ymax+zmax_3x3x3,C = geometric set exactly,eq,eq,PASS
+D_xmax+ymax+zmax_3x3x3,C = support diag(M_Gamma),eq,eq,PASS
+D_xmax+ymax+zmax_3x3x3,internal edge/corner nodes of the union active (in C),16,16,PASS
+D_xmax+ymax+zmax_3x3x3,nodes on an uncontrolled face never in C,0,0,PASS
+D_xmax+ymax+zmax_3x3x3,D (unhatted) = boundary \ C,127,127,PASS
+D_xmax+ymax+zmax_3x3x3,C and D disjoint,0,0,PASS
+D_xmax+ymax+zmax_3x3x3,hatted eliminated set = D u C,218,218,PASS
+D_zmin+xmax+xmin_3x3x3,"|C| = lattice prediction (controlled, no uncontrolled face)",85,85,PASS
+D_zmin+xmax+xmin_3x3x3,C = geometric set exactly,eq,eq,PASS
+D_zmin+xmax+xmin_3x3x3,C = support diag(M_Gamma),eq,eq,PASS
+D_zmin+xmax+xmin_3x3x3,internal edge/corner nodes of the union active (in C),10,10,PASS
+D_zmin+xmax+xmin_3x3x3,nodes on an uncontrolled face never in C,0,0,PASS
+D_zmin+xmax+xmin_3x3x3,D (unhatted) = boundary \ C,133,133,PASS
+D_zmin+xmax+xmin_3x3x3,C and D disjoint,0,0,PASS
+D_zmin+xmax+xmin_3x3x3,hatted eliminated set = D u C,218,218,PASS
+D_zmin+ymin+xmax+ymax+xmin_3x3x3,"|C| = lattice prediction (controlled, no uncontrolled face)",169,169,PASS
+D_zmin+ymin+xmax+ymax+xmin_3x3x3,C = geometric set exactly,eq,eq,PASS
+D_zmin+ymin+xmax+ymax+xmin_3x3x3,C = support diag(M_Gamma),eq,eq,PASS
+D_zmin+ymin+xmax+ymax+xmin_3x3x3,internal edge/corner nodes of the union active (in C),44,44,PASS
+D_zmin+ymin+xmax+ymax+xmin_3x3x3,nodes on an uncontrolled face never in C,0,0,PASS
+D_zmin+ymin+xmax+ymax+xmin_3x3x3,D (unhatted) = boundary \ C,49,49,PASS
+D_zmin+ymin+xmax+ymax+xmin_3x3x3,C and D disjoint,0,0,PASS
+D_zmin+ymin+xmax+ymax+xmin_3x3x3,hatted eliminated set = D u C,218,218,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,"|C| = lattice prediction (controlled, no uncontrolled face)",218,218,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,|C| = closed form (all6),218,218,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,C = geometric set exactly,eq,eq,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,C = support diag(M_Gamma),eq,eq,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,internal edge/corner nodes of the union active (in C),68,68,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,nodes on an uncontrolled face never in C,0,0,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,D (unhatted) = boundary \ C,0,0,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,C and D disjoint,0,0,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_3x3x3,hatted eliminated set = D u C,218,218,PASS
+D_xmax+xmin_2x3x4,"|C| = lattice prediction (controlled, no uncontrolled face)",70,70,PASS
+D_xmax+xmin_2x3x4,C = geometric set exactly,eq,eq,PASS
+D_xmax+xmin_2x3x4,C = support diag(M_Gamma),eq,eq,PASS
+D_xmax+xmin_2x3x4,internal edge/corner nodes of the union active (in C),0,0,PASS
+D_xmax+xmin_2x3x4,nodes on an uncontrolled face never in C,0,0,PASS
+D_xmax+xmin_2x3x4,D (unhatted) = boundary \ C,140,140,PASS
+D_xmax+xmin_2x3x4,C and D disjoint,0,0,PASS
+D_xmax+xmin_2x3x4,hatted eliminated set = D u C,210,210,PASS
+D_zmin+xmin_2x3x4,"|C| = lattice prediction (controlled, no uncontrolled face)",55,55,PASS
+D_zmin+xmin_2x3x4,"|C| = closed form (adjacent:zmin,xmin)",55,55,PASS
+D_zmin+xmin_2x3x4,C = geometric set exactly,eq,eq,PASS
+D_zmin+xmin_2x3x4,C = support diag(M_Gamma),eq,eq,PASS
+D_zmin+xmin_2x3x4,internal edge/corner nodes of the union active (in C),5,5,PASS
+D_zmin+xmin_2x3x4,nodes on an uncontrolled face never in C,0,0,PASS
+D_zmin+xmin_2x3x4,D (unhatted) = boundary \ C,155,155,PASS
+D_zmin+xmin_2x3x4,C and D disjoint,0,0,PASS
+D_zmin+xmin_2x3x4,hatted eliminated set = D u C,210,210,PASS
+D_zmin+ymin+xmin_2x3x4,"|C| = lattice prediction (controlled, no uncontrolled face)",87,87,PASS
+D_zmin+ymin+xmin_2x3x4,"|C| = closed form (three:zmin,ymin,xmin)",87,87,PASS
+D_zmin+ymin+xmin_2x3x4,C = geometric set exactly,eq,eq,PASS
+D_zmin+ymin+xmin_2x3x4,C = support diag(M_Gamma),eq,eq,PASS
+D_zmin+ymin+xmin_2x3x4,internal edge/corner nodes of the union active (in C),16,16,PASS
+D_zmin+ymin+xmin_2x3x4,nodes on an uncontrolled face never in C,0,0,PASS
+D_zmin+ymin+xmin_2x3x4,D (unhatted) = boundary \ C,123,123,PASS
+D_zmin+ymin+xmin_2x3x4,C and D disjoint,0,0,PASS
+D_zmin+ymin+xmin_2x3x4,hatted eliminated set = D u C,210,210,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,"|C| = lattice prediction (controlled, no uncontrolled face)",210,210,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,|C| = closed form (all6),210,210,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,C = geometric set exactly,eq,eq,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,C = support diag(M_Gamma),eq,eq,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,internal edge/corner nodes of the union active (in C),68,68,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,nodes on an uncontrolled face never in C,0,0,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,D (unhatted) = boundary \ C,0,0,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,C and D disjoint,0,0,PASS
+D_zmin+ymin+xmax+ymax+xmin+zmax_2x3x4,hatted eliminated set = D u C,210,210,PASS
+D_zmin+zmax_4x4x2_nonunit,"|C| = lattice prediction (controlled, no uncontrolled face)",98,98,PASS
+D_zmin+zmax_4x4x2_nonunit,C = geometric set exactly,eq,eq,PASS
+D_zmin+zmax_4x4x2_nonunit,C = support diag(M_Gamma),eq,eq,PASS
+D_zmin+zmax_4x4x2_nonunit,internal edge/corner nodes of the union active (in C),0,0,PASS
+D_zmin+zmax_4x4x2_nonunit,nodes on an uncontrolled face never in C,0,0,PASS
+D_zmin+zmax_4x4x2_nonunit,D (unhatted) = boundary \ C,160,160,PASS
+D_zmin+zmax_4x4x2_nonunit,C and D disjoint,0,0,PASS
+D_zmin+zmax_4x4x2_nonunit,hatted eliminated set = D u C,258,258,PASS
+D_xmax+ymax_4x4x2_nonunit,"|C| = lattice prediction (controlled, no uncontrolled face)",45,45,PASS
+D_xmax+ymax_4x4x2_nonunit,C = geometric set exactly,eq,eq,PASS
+D_xmax+ymax_4x4x2_nonunit,C = support diag(M_Gamma),eq,eq,PASS
+D_xmax+ymax_4x4x2_nonunit,internal edge/corner nodes of the union active (in C),3,3,PASS
+D_xmax+ymax_4x4x2_nonunit,nodes on an uncontrolled face never in C,0,0,PASS
+D_xmax+ymax_4x4x2_nonunit,D (unhatted) = boundary \ C,213,213,PASS
+D_xmax+ymax_4x4x2_nonunit,C and D disjoint,0,0,PASS
+D_xmax+ymax_4x4x2_nonunit,hatted eliminated set = D u C,258,258,PASS
+D_xmax+ymax+zmax_4x4x2_nonunit,"|C| = lattice prediction (controlled, no uncontrolled face)",109,109,PASS
+D_xmax+ymax+zmax_4x4x2_nonunit,C = geometric set exactly,eq,eq,PASS
+D_xmax+ymax+zmax_4x4x2_nonunit,C = support diag(M_Gamma),eq,eq,PASS
+D_xmax+ymax+zmax_4x4x2_nonunit,internal edge/corner nodes of the union active (in C),18,18,PASS
+D_xmax+ymax+zmax_4x4x2_nonunit,nodes on an uncontrolled face never in C,0,0,PASS
+D_xmax+ymax+zmax_4x4x2_nonunit,D (unhatted) = boundary \ C,149,149,PASS
+D_xmax+ymax+zmax_4x4x2_nonunit,C and D disjoint,0,0,PASS
+D_xmax+ymax+zmax_4x4x2_nonunit,hatted eliminated set = D u C,258,258,PASS

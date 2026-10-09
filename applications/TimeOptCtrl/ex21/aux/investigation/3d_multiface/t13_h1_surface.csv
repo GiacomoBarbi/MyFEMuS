@@ -1,0 +1,287 @@
+case,check,value,reference,verdict
+zmin+zmax_3x3x3_be,K_union = sum_f [K1(x)M1 + M1(x)K1] (rel. max entrywise),7.34e-15,<= 1e-14,PASS
+zmin+zmax_3x3x3_be,"K_union = sum_f K(single face f), separate runs",0.00e+00,<= 1e-15,PASS
+zmin+zmax_3x3x3_be,K_union symmetric,0.0e+00,<= 1e-15,PASS
+zmin+zmax_3x3x3_be,K_union PSD: lambda_min/lambda_max,-1.8e-16,>= -1e-14,PASS
+zmin+zmax_3x3x3_be,null space dim = connected components of the union,2,2,PASS
+zmin+zmax_3x3x3_be,K_union 1 = 0,3.1e-16,<= 1e-14,PASS
+zmin+zmax_3x3x3_be,"v^T K v = sum_f int |grad_f v|^2, v = 2x - 3y + z + 0.7",25.9999999999999,26,PASS
+zmin+zmax_3x3x3_be,"v^T K v = sum_f int |grad_f v|^2, v = x^2 + yz - 2z^2 + x",9.66666666666663,9.66666666666666,PASS
+zmin+zmax_3x3x3_be,NEG face zmax dropped from K: detected,1.0e+00,> 1e-6,PASS
+zmin+zmax_3x3x3_be,NEG one-direction (1D-tangent analogue) K: detected,5.0e-01,> 1e-6,PASS
+zmin+zmax_3x3x3_be,eliminated K rows/cols off C zero,0,0,PASS
+zmin+zmax_3x3x3_be,K|_C = K_face|_C (exact restriction),0.0e+00,0,PASS
+zmin+zmax_3x3x3_be,K|_C SPD (H1_0 of the union): lambda_min,5.336e-01,> 0,PASS
+zmin+zmax_3x3x3_be,"R = M + ell^2 K SPD on C, ell = 0",4.183e-03,> 0,PASS
+zmin+zmax_3x3x3_be,"R = M + ell^2 K SPD on C, ell = 0.3",7.387e-02,> 0,PASS
+zmin+zmax_3x3x3_be,"R = M + ell^2 K SPD on C, ell = 3",4.828e+00,> 0,PASS
+zmin+zmax_3x3x3_be,sparse R_H1t = What(x)R + gamma/(alpha dt^2) T(x)M (rel.),0.0e+00,<= 1e-14,PASS
+zmin+zmax_3x3x3_be,"R_H1t symmetric, SPD (lambda_min)",3.289e-01,> 0,PASS
+zmin+zmax_3x3x3_be,NEG time term with R instead of M (double count): detected,1.5e+01,> 1e-6,PASS
+zmin+zmax_3x3x3_be,NEG wrong sign of the H1-time term: detected,1.8e+00,> 1e-6,PASS
+zmin+zmax_3x3x3_be,NEG missing 1/dt: detected,8.3e-01,> 1e-6,PASS
+zmin+zmax_3x3x3_be,NEG T_NN = 2 (no natural end condition): detected,4.6e-01,> 1e-6,PASS
+zmin+xmin_3x3x3_be,K_union = sum_f [K1(x)M1 + M1(x)K1] (rel. max entrywise),7.49e-15,<= 1e-14,PASS
+zmin+xmin_3x3x3_be,"K_union = sum_f K(single face f), separate runs",7.81e-17,<= 1e-15,PASS
+zmin+xmin_3x3x3_be,K_union symmetric,0.0e+00,<= 1e-15,PASS
+zmin+xmin_3x3x3_be,K_union PSD: lambda_min/lambda_max,-1.5e-16,>= -1e-14,PASS
+zmin+xmin_3x3x3_be,null space dim = connected components of the union,1,1,PASS
+zmin+xmin_3x3x3_be,K_union 1 = 0,3.1e-16,<= 1e-14,PASS
+zmin+xmin_3x3x3_be,"v^T K v = sum_f int |grad_f v|^2, v = 2x - 3y + z + 0.7",23,23,PASS
+zmin+xmin_3x3x3_be,"v^T K v = sum_f int |grad_f v|^2, v = x^2 + yz - 2z^2 + x",8.33333333333331,8.33333333333333,PASS
+zmin+xmin_3x3x3_be,NEG face xmin dropped from K: detected,1.0e+00,> 1e-6,PASS
+zmin+xmin_3x3x3_be,NEG one-direction (1D-tangent analogue) K: detected,5.0e-01,> 1e-6,PASS
+zmin+xmin_3x3x3_be,eliminated K rows/cols off C zero,0,0,PASS
+zmin+xmin_3x3x3_be,K|_C = K_face|_C (exact restriction),0.0e+00,0,PASS
+zmin+xmin_3x3x3_be,K|_C SPD (H1_0 of the union): lambda_min,3.371e-01,> 0,PASS
+zmin+xmin_3x3x3_be,"R = M + ell^2 K SPD on C, ell = 0",3.536e-03,> 0,PASS
+zmin+xmin_3x3x3_be,"R = M + ell^2 K SPD on C, ell = 0.3",5.677e-02,> 0,PASS
+zmin+xmin_3x3x3_be,"R = M + ell^2 K SPD on C, ell = 3",3.061e+00,> 0,PASS
+zmin+xmin_3x3x3_be,sparse R_H1t = What(x)R + gamma/(alpha dt^2) T(x)M (rel.),0.0e+00,<= 1e-14,PASS
+zmin+xmin_3x3x3_be,"R_H1t symmetric, SPD (lambda_min)",3.076e-01,> 0,PASS
+zmin+xmin_3x3x3_be,NEG time term with R instead of M (double count): detected,1.5e+01,> 1e-6,PASS
+zmin+xmin_3x3x3_be,NEG wrong sign of the H1-time term: detected,1.8e+00,> 1e-6,PASS
+zmin+xmin_3x3x3_be,NEG missing 1/dt: detected,8.3e-01,> 1e-6,PASS
+zmin+xmin_3x3x3_be,NEG T_NN = 2 (no natural end condition): detected,4.6e-01,> 1e-6,PASS
+xmax+ymax_3x3x3_be,K_union = sum_f [K1(x)M1 + M1(x)K1] (rel. max entrywise),7.49e-15,<= 1e-14,PASS
+xmax+ymax_3x3x3_be,"K_union = sum_f K(single face f), separate runs",7.81e-17,<= 1e-15,PASS
+xmax+ymax_3x3x3_be,K_union symmetric,0.0e+00,<= 1e-15,PASS
+xmax+ymax_3x3x3_be,K_union PSD: lambda_min/lambda_max,-1.1e-16,>= -1e-14,PASS
+xmax+ymax_3x3x3_be,null space dim = connected components of the union,1,1,PASS
+xmax+ymax_3x3x3_be,K_union 1 = 0,3.5e-16,<= 1e-14,PASS
+xmax+ymax_3x3x3_be,"v^T K v = sum_f int |grad_f v|^2, v = 2x - 3y + z + 0.7",14.9999999999999,15,PASS
+xmax+ymax_3x3x3_be,"v^T K v = sum_f int |grad_f v|^2, v = x^2 + yz - 2z^2 + x",10.6666666666666,10.6666666666667,PASS
+xmax+ymax_3x3x3_be,NEG face ymax dropped from K: detected,1.0e+00,> 1e-6,PASS
+xmax+ymax_3x3x3_be,NEG one-direction (1D-tangent analogue) K: detected,5.0e-01,> 1e-6,PASS
+xmax+ymax_3x3x3_be,eliminated K rows/cols off C zero,0,0,PASS
+xmax+ymax_3x3x3_be,K|_C = K_face|_C (exact restriction),0.0e+00,0,PASS
+xmax+ymax_3x3x3_be,K|_C SPD (H1_0 of the union): lambda_min,3.371e-01,> 0,PASS
+xmax+ymax_3x3x3_be,"R = M + ell^2 K SPD on C, ell = 0",3.536e-03,> 0,PASS
+xmax+ymax_3x3x3_be,"R = M + ell^2 K SPD on C, ell = 0.3",5.677e-02,> 0,PASS
+xmax+ymax_3x3x3_be,"R = M + ell^2 K SPD on C, ell = 3",3.061e+00,> 0,PASS
+xmax+ymax_3x3x3_be,sparse R_H1t = What(x)R + gamma/(alpha dt^2) T(x)M (rel.),0.0e+00,<= 1e-14,PASS
+xmax+ymax_3x3x3_be,"R_H1t symmetric, SPD (lambda_min)",3.076e-01,> 0,PASS
+xmax+ymax_3x3x3_be,NEG time term with R instead of M (double count): detected,1.5e+01,> 1e-6,PASS
+xmax+ymax_3x3x3_be,NEG wrong sign of the H1-time term: detected,1.8e+00,> 1e-6,PASS
+xmax+ymax_3x3x3_be,NEG missing 1/dt: detected,8.3e-01,> 1e-6,PASS
+xmax+ymax_3x3x3_be,NEG T_NN = 2 (no natural end condition): detected,4.6e-01,> 1e-6,PASS
+zmin+ymin+xmin_3x3x3_be,K_union = sum_f [K1(x)M1 + M1(x)K1] (rel. max entrywise),7.49e-15,<= 1e-14,PASS
+zmin+ymin+xmin_3x3x3_be,"K_union = sum_f K(single face f), separate runs",7.81e-17,<= 1e-15,PASS
+zmin+ymin+xmin_3x3x3_be,K_union symmetric,0.0e+00,<= 1e-15,PASS
+zmin+ymin+xmin_3x3x3_be,K_union PSD: lambda_min/lambda_max,-7.1e-16,>= -1e-14,PASS
+zmin+ymin+xmin_3x3x3_be,null space dim = connected components of the union,1,1,PASS
+zmin+ymin+xmin_3x3x3_be,K_union 1 = 0,3.5e-16,<= 1e-14,PASS
+zmin+ymin+xmin_3x3x3_be,"v^T K v = sum_f int |grad_f v|^2, v = 2x - 3y + z + 0.7",27.9999999999999,28,PASS
+zmin+ymin+xmin_3x3x3_be,"v^T K v = sum_f int |grad_f v|^2, v = x^2 + yz - 2z^2 + x",18,18,PASS
+zmin+ymin+xmin_3x3x3_be,NEG face xmin dropped from K: detected,1.0e+00,> 1e-6,PASS
+zmin+ymin+xmin_3x3x3_be,NEG one-direction (1D-tangent analogue) K: detected,5.0e-01,> 1e-6,PASS
+zmin+ymin+xmin_3x3x3_be,eliminated K rows/cols off C zero,0,0,PASS
+zmin+ymin+xmin_3x3x3_be,K|_C = K_face|_C (exact restriction),0.0e+00,0,PASS
+zmin+ymin+xmin_3x3x3_be,K|_C SPD (H1_0 of the union): lambda_min,1.349e-01,> 0,PASS
+zmin+ymin+xmin_3x3x3_be,"R = M + ell^2 K SPD on C, ell = 0",2.874e-03,> 0,PASS
+zmin+ymin+xmin_3x3x3_be,"R = M + ell^2 K SPD on C, ell = 0.3",3.882e-02,> 0,PASS
+zmin+ymin+xmin_3x3x3_be,"R = M + ell^2 K SPD on C, ell = 3",1.241e+00,> 0,PASS
+zmin+ymin+xmin_3x3x3_be,sparse R_H1t = What(x)R + gamma/(alpha dt^2) T(x)M (rel.),0.0e+00,<= 1e-14,PASS
+zmin+ymin+xmin_3x3x3_be,"R_H1t symmetric, SPD (lambda_min)",2.603e-01,> 0,PASS
+zmin+ymin+xmin_3x3x3_be,NEG time term with R instead of M (double count): detected,1.5e+01,> 1e-6,PASS
+zmin+ymin+xmin_3x3x3_be,NEG wrong sign of the H1-time term: detected,1.8e+00,> 1e-6,PASS
+zmin+ymin+xmin_3x3x3_be,NEG missing 1/dt: detected,8.3e-01,> 1e-6,PASS
+zmin+ymin+xmin_3x3x3_be,NEG T_NN = 2 (no natural end condition): detected,4.6e-01,> 1e-6,PASS
+zmin+xmax+xmin_3x3x3_be,K_union = sum_f [K1(x)M1 + M1(x)K1] (rel. max entrywise),7.49e-15,<= 1e-14,PASS
+zmin+xmax+xmin_3x3x3_be,"K_union = sum_f K(single face f), separate runs",7.81e-17,<= 1e-15,PASS
+zmin+xmax+xmin_3x3x3_be,K_union symmetric,0.0e+00,<= 1e-15,PASS
+zmin+xmax+xmin_3x3x3_be,K_union PSD: lambda_min/lambda_max,-2.4e-16,>= -1e-14,PASS
+zmin+xmax+xmin_3x3x3_be,null space dim = connected components of the union,1,1,PASS
+zmin+xmax+xmin_3x3x3_be,K_union 1 = 0,3.5e-16,<= 1e-14,PASS
+zmin+xmax+xmin_3x3x3_be,"v^T K v = sum_f int |grad_f v|^2, v = 2x - 3y + z + 0.7",32.9999999999999,33,PASS
+zmin+xmax+xmin_3x3x3_be,"v^T K v = sum_f int |grad_f v|^2, v = x^2 + yz - 2z^2 + x",12.3333333333333,12.3333333333333,PASS
+zmin+xmax+xmin_3x3x3_be,NEG face xmin dropped from K: detected,1.0e+00,> 1e-6,PASS
+zmin+xmax+xmin_3x3x3_be,NEG one-direction (1D-tangent analogue) K: detected,5.0e-01,> 1e-6,PASS
+zmin+xmax+xmin_3x3x3_be,eliminated K rows/cols off C zero,0,0,PASS
+zmin+xmax+xmin_3x3x3_be,K|_C = K_face|_C (exact restriction),0.0e+00,0,PASS
+zmin+xmax+xmin_3x3x3_be,K|_C SPD (H1_0 of the union): lambda_min,3.002e-01,> 0,PASS
+zmin+xmax+xmin_3x3x3_be,"R = M + ell^2 K SPD on C, ell = 0",3.408e-03,> 0,PASS
+zmin+xmax+xmin_3x3x3_be,"R = M + ell^2 K SPD on C, ell = 0.3",5.355e-02,> 0,PASS
+zmin+xmax+xmin_3x3x3_be,"R = M + ell^2 K SPD on C, ell = 3",2.729e+00,> 0,PASS
+zmin+xmax+xmin_3x3x3_be,sparse R_H1t = What(x)R + gamma/(alpha dt^2) T(x)M (rel.),0.0e+00,<= 1e-14,PASS
+zmin+xmax+xmin_3x3x3_be,"R_H1t symmetric, SPD (lambda_min)",3.033e-01,> 0,PASS
+zmin+xmax+xmin_3x3x3_be,NEG time term with R instead of M (double count): detected,1.5e+01,> 1e-6,PASS
+zmin+xmax+xmin_3x3x3_be,NEG wrong sign of the H1-time term: detected,1.8e+00,> 1e-6,PASS
+zmin+xmax+xmin_3x3x3_be,NEG missing 1/dt: detected,8.3e-01,> 1e-6,PASS
+zmin+xmax+xmin_3x3x3_be,NEG T_NN = 2 (no natural end condition): detected,4.6e-01,> 1e-6,PASS
+zmin+ymin+xmax+ymax+xmin_3x3x3_be,K_union = sum_f [K1(x)M1 + M1(x)K1] (rel. max entrywise),7.49e-15,<= 1e-14,PASS
+zmin+ymin+xmax+ymax+xmin_3x3x3_be,"K_union = sum_f K(single face f), separate runs",7.81e-17,<= 1e-15,PASS
+zmin+ymin+xmax+ymax+xmin_3x3x3_be,K_union symmetric,0.0e+00,<= 1e-15,PASS
+zmin+ymin+xmax+ymax+xmin_3x3x3_be,K_union PSD: lambda_min/lambda_max,-2.2e-16,>= -1e-14,PASS
+zmin+ymin+xmax+ymax+xmin_3x3x3_be,null space dim = connected components of the union,1,1,PASS
+zmin+ymin+xmax+ymax+xmin_3x3x3_be,K_union 1 = 0,3.5e-16,<= 1e-14,PASS
+zmin+ymin+xmax+ymax+xmin_3x3x3_be,"v^T K v = sum_f int |grad_f v|^2, v = 2x - 3y + z + 0.7",42.9999999999998,43.0000000000001,PASS
+zmin+ymin+xmax+ymax+xmin_3x3x3_be,"v^T K v = sum_f int |grad_f v|^2, v = x^2 + yz - 2z^2 + x",28.6666666666666,28.6666666666667,PASS
+zmin+ymin+xmax+ymax+xmin_3x3x3_be,NEG face xmin dropped from K: detected,1.0e+00,> 1e-6,PASS
+zmin+ymin+xmax+ymax+xmin_3x3x3_be,NEG one-direction (1D-tangent analogue) K: detected,5.0e-01,> 1e-6,PASS
+zmin+ymin+xmax+ymax+xmin_3x3x3_be,eliminated K rows/cols off C zero,0,0,PASS
+zmin+ymin+xmax+ymax+xmin_3x3x3_be,K|_C = K_face|_C (exact restriction),0.0e+00,0,PASS
+zmin+ymin+xmax+ymax+xmin_3x3x3_be,K|_C SPD (H1_0 of the union): lambda_min,4.289e-02,> 0,PASS
+zmin+ymin+xmax+ymax+xmin_3x3x3_be,"R = M + ell^2 K SPD on C, ell = 0",2.626e-03,> 0,PASS
+zmin+ymin+xmax+ymax+xmin_3x3x3_be,"R = M + ell^2 K SPD on C, ell = 0.3",3.081e-02,> 0,PASS
+zmin+ymin+xmax+ymax+xmin_3x3x3_be,"R = M + ell^2 K SPD on C, ell = 3",4.134e-01,> 0,PASS
+zmin+ymin+xmax+ymax+xmin_3x3x3_be,sparse R_H1t = What(x)R + gamma/(alpha dt^2) T(x)M (rel.),0.0e+00,<= 1e-14,PASS
+zmin+ymin+xmax+ymax+xmin_3x3x3_be,"R_H1t symmetric, SPD (lambda_min)",2.538e-01,> 0,PASS
+zmin+ymin+xmax+ymax+xmin_3x3x3_be,NEG time term with R instead of M (double count): detected,1.5e+01,> 1e-6,PASS
+zmin+ymin+xmax+ymax+xmin_3x3x3_be,NEG wrong sign of the H1-time term: detected,1.8e+00,> 1e-6,PASS
+zmin+ymin+xmax+ymax+xmin_3x3x3_be,NEG missing 1/dt: detected,8.3e-01,> 1e-6,PASS
+zmin+ymin+xmax+ymax+xmin_3x3x3_be,NEG T_NN = 2 (no natural end condition): detected,4.6e-01,> 1e-6,PASS
+all6_3x3x3_be,K_union = sum_f [K1(x)M1 + M1(x)K1] (rel. max entrywise),7.49e-15,<= 1e-14,PASS
+all6_3x3x3_be,"K_union = sum_f K(single face f), separate runs",7.81e-17,<= 1e-15,PASS
+all6_3x3x3_be,K_union symmetric,0.0e+00,<= 1e-15,PASS
+all6_3x3x3_be,K_union PSD: lambda_min/lambda_max,1.0e-16,>= -1e-14,PASS
+all6_3x3x3_be,null space dim = connected components of the union,1,1,PASS
+all6_3x3x3_be,K_union 1 = 0,3.5e-16,<= 1e-14,PASS
+all6_3x3x3_be,"v^T K v = sum_f int |grad_f v|^2, v = 2x - 3y + z + 0.7",55.9999999999998,56.0000000000001,PASS
+all6_3x3x3_be,"v^T K v = sum_f int |grad_f v|^2, v = x^2 + yz - 2z^2 + x",33.9999999999999,34,PASS
+all6_3x3x3_be,NEG face zmax dropped from K: detected,1.0e+00,> 1e-6,PASS
+all6_3x3x3_be,NEG one-direction (1D-tangent analogue) K: detected,5.0e-01,> 1e-6,PASS
+all6_3x3x3_be,eliminated K rows/cols off C zero,0,0,PASS
+all6_3x3x3_be,K|_C = K_face|_C (exact restriction),0.0e+00,0,PASS
+all6_3x3x3_be,closed surface: K|_C null space = constants (dim 1),1,1,PASS
+all6_3x3x3_be,"R = M + ell^2 K SPD on C, ell = 0",2.517e-03,> 0,PASS
+all6_3x3x3_be,"R = M + ell^2 K SPD on C, ell = 0.3",2.708e-02,> 0,PASS
+all6_3x3x3_be,"R = M + ell^2 K SPD on C, ell = 3",2.752e-02,> 0,PASS
+all6_3x3x3_be,sparse R_H1t = What(x)R + gamma/(alpha dt^2) T(x)M (rel.),0.0e+00,<= 1e-14,PASS
+all6_3x3x3_be,"R_H1t symmetric, SPD (lambda_min)",2.505e-01,> 0,PASS
+all6_3x3x3_be,NEG time term with R instead of M (double count): detected,1.5e+01,> 1e-6,PASS
+all6_3x3x3_be,NEG wrong sign of the H1-time term: detected,1.8e+00,> 1e-6,PASS
+all6_3x3x3_be,NEG missing 1/dt: detected,8.3e-01,> 1e-6,PASS
+all6_3x3x3_be,NEG T_NN = 2 (no natural end condition): detected,4.6e-01,> 1e-6,PASS
+zmin+zmax_4x3x5_cn,K_union = sum_f [K1(x)M1 + M1(x)K1] (rel. max entrywise),7.34e-15,<= 1e-14,PASS
+zmin+zmax_4x3x5_cn,"K_union = sum_f K(single face f), separate runs",0.00e+00,<= 1e-15,PASS
+zmin+zmax_4x3x5_cn,K_union symmetric,0.0e+00,<= 1e-15,PASS
+zmin+zmax_4x3x5_cn,K_union PSD: lambda_min/lambda_max,-1.7e-16,>= -1e-14,PASS
+zmin+zmax_4x3x5_cn,null space dim = connected components of the union,2,2,PASS
+zmin+zmax_4x3x5_cn,K_union 1 = 0,4.5e-16,<= 1e-14,PASS
+zmin+zmax_4x3x5_cn,"v^T K v = sum_f int |grad_f v|^2, v = 2x - 3y + z + 0.7",26,26,PASS
+zmin+zmax_4x3x5_cn,"v^T K v = sum_f int |grad_f v|^2, v = x^2 + yz - 2z^2 + x",9.66666666666667,9.66666666666666,PASS
+zmin+zmax_4x3x5_cn,NEG face zmax dropped from K: detected,1.0e+00,> 1e-6,PASS
+zmin+zmax_4x3x5_cn,NEG one-direction (1D-tangent analogue) K: detected,3.6e-01,> 1e-6,PASS
+zmin+zmax_4x3x5_cn,eliminated K rows/cols off C zero,0,0,PASS
+zmin+zmax_4x3x5_cn,K|_C = K_face|_C (exact restriction),0.0e+00,0,PASS
+zmin+zmax_4x3x5_cn,K|_C SPD (H1_0 of the union): lambda_min,4.028e-01,> 0,PASS
+zmin+zmax_4x3x5_cn,"R = M + ell^2 K SPD on C, ell = 0",2.861e-03,> 0,PASS
+zmin+zmax_4x3x5_cn,"R = M + ell^2 K SPD on C, ell = 0.3",5.598e-02,> 0,PASS
+zmin+zmax_4x3x5_cn,"R = M + ell^2 K SPD on C, ell = 3",3.645e+00,> 0,PASS
+zmin+zmax_4x3x5_cn,sparse R_H1t = What(x)R + gamma/(alpha dt^2) T(x)M (rel.),0.0e+00,<= 1e-14,PASS
+zmin+zmax_4x3x5_cn,"R_H1t symmetric, SPD (lambda_min)",2.290e-01,> 0,PASS
+zmin+zmax_4x3x5_cn,NEG time term with R instead of M (double count): detected,2.0e+01,> 1e-6,PASS
+zmin+zmax_4x3x5_cn,NEG wrong sign of the H1-time term: detected,1.8e+00,> 1e-6,PASS
+zmin+zmax_4x3x5_cn,NEG missing 1/dt: detected,8.1e-01,> 1e-6,PASS
+zmin+zmax_4x3x5_cn,NEG T_NN = 2 (no natural end condition): detected,4.5e-01,> 1e-6,PASS
+zmin+xmin_4x3x5_cn,K_union = sum_f [K1(x)M1 + M1(x)K1] (rel. max entrywise),7.30e-15,<= 1e-14,PASS
+zmin+xmin_4x3x5_cn,"K_union = sum_f K(single face f), separate runs",6.89e-17,<= 1e-15,PASS
+zmin+xmin_4x3x5_cn,K_union symmetric,0.0e+00,<= 1e-15,PASS
+zmin+xmin_4x3x5_cn,K_union PSD: lambda_min/lambda_max,1.6e-16,>= -1e-14,PASS
+zmin+xmin_4x3x5_cn,null space dim = connected components of the union,1,1,PASS
+zmin+xmin_4x3x5_cn,K_union 1 = 0,5.5e-16,<= 1e-14,PASS
+zmin+xmin_4x3x5_cn,"v^T K v = sum_f int |grad_f v|^2, v = 2x - 3y + z + 0.7",23,23,PASS
+zmin+xmin_4x3x5_cn,"v^T K v = sum_f int |grad_f v|^2, v = x^2 + yz - 2z^2 + x",8.33333333333333,8.33333333333333,PASS
+zmin+xmin_4x3x5_cn,NEG face xmin dropped from K: detected,1.0e+00,> 1e-6,PASS
+zmin+xmin_4x3x5_cn,NEG one-direction (1D-tangent analogue) K: detected,7.4e-01,> 1e-6,PASS
+zmin+xmin_4x3x5_cn,eliminated K rows/cols off C zero,0,0,PASS
+zmin+xmin_4x3x5_cn,K|_C = K_face|_C (exact restriction),0.0e+00,0,PASS
+zmin+xmin_4x3x5_cn,K|_C SPD (H1_0 of the union): lambda_min,2.224e-01,> 0,PASS
+zmin+xmin_4x3x5_cn,"R = M + ell^2 K SPD on C, ell = 0",2.126e-03,> 0,PASS
+zmin+xmin_4x3x5_cn,"R = M + ell^2 K SPD on C, ell = 0.3",3.720e-02,> 0,PASS
+zmin+xmin_4x3x5_cn,"R = M + ell^2 K SPD on C, ell = 3",2.019e+00,> 0,PASS
+zmin+xmin_4x3x5_cn,sparse R_H1t = What(x)R + gamma/(alpha dt^2) T(x)M (rel.),0.0e+00,<= 1e-14,PASS
+zmin+xmin_4x3x5_cn,"R_H1t symmetric, SPD (lambda_min)",2.072e-01,> 0,PASS
+zmin+xmin_4x3x5_cn,NEG time term with R instead of M (double count): detected,2.2e+01,> 1e-6,PASS
+zmin+xmin_4x3x5_cn,NEG wrong sign of the H1-time term: detected,1.8e+00,> 1e-6,PASS
+zmin+xmin_4x3x5_cn,NEG missing 1/dt: detected,8.1e-01,> 1e-6,PASS
+zmin+xmin_4x3x5_cn,NEG T_NN = 2 (no natural end condition): detected,4.5e-01,> 1e-6,PASS
+zmin+ymin+xmin_4x3x5_cn,K_union = sum_f [K1(x)M1 + M1(x)K1] (rel. max entrywise),7.30e-15,<= 1e-14,PASS
+zmin+ymin+xmin_4x3x5_cn,"K_union = sum_f K(single face f), separate runs",6.89e-17,<= 1e-15,PASS
+zmin+ymin+xmin_4x3x5_cn,K_union symmetric,0.0e+00,<= 1e-15,PASS
+zmin+ymin+xmin_4x3x5_cn,K_union PSD: lambda_min/lambda_max,-4.7e-17,>= -1e-14,PASS
+zmin+ymin+xmin_4x3x5_cn,null space dim = connected components of the union,1,1,PASS
+zmin+ymin+xmin_4x3x5_cn,K_union 1 = 0,5.5e-16,<= 1e-14,PASS
+zmin+ymin+xmin_4x3x5_cn,"v^T K v = sum_f int |grad_f v|^2, v = 2x - 3y + z + 0.7",28.0000000000001,28,PASS
+zmin+ymin+xmin_4x3x5_cn,"v^T K v = sum_f int |grad_f v|^2, v = x^2 + yz - 2z^2 + x",18,18,PASS
+zmin+ymin+xmin_4x3x5_cn,NEG face xmin dropped from K: detected,1.0e+00,> 1e-6,PASS
+zmin+ymin+xmin_4x3x5_cn,NEG one-direction (1D-tangent analogue) K: detected,7.4e-01,> 1e-6,PASS
+zmin+ymin+xmin_4x3x5_cn,eliminated K rows/cols off C zero,0,0,PASS
+zmin+ymin+xmin_4x3x5_cn,K|_C = K_face|_C (exact restriction),0.0e+00,0,PASS
+zmin+ymin+xmin_4x3x5_cn,K|_C SPD (H1_0 of the union): lambda_min,7.691e-02,> 0,PASS
+zmin+ymin+xmin_4x3x5_cn,"R = M + ell^2 K SPD on C, ell = 0",1.410e-03,> 0,PASS
+zmin+ymin+xmin_4x3x5_cn,"R = M + ell^2 K SPD on C, ell = 0.3",2.165e-02,> 0,PASS
+zmin+ymin+xmin_4x3x5_cn,"R = M + ell^2 K SPD on C, ell = 3",7.075e-01,> 0,PASS
+zmin+ymin+xmin_4x3x5_cn,sparse R_H1t = What(x)R + gamma/(alpha dt^2) T(x)M (rel.),0.0e+00,<= 1e-14,PASS
+zmin+ymin+xmin_4x3x5_cn,"R_H1t symmetric, SPD (lambda_min)",1.696e-01,> 0,PASS
+zmin+ymin+xmin_4x3x5_cn,NEG time term with R instead of M (double count): detected,2.2e+01,> 1e-6,PASS
+zmin+ymin+xmin_4x3x5_cn,NEG wrong sign of the H1-time term: detected,1.8e+00,> 1e-6,PASS
+zmin+ymin+xmin_4x3x5_cn,NEG missing 1/dt: detected,8.1e-01,> 1e-6,PASS
+zmin+ymin+xmin_4x3x5_cn,NEG T_NN = 2 (no natural end condition): detected,4.5e-01,> 1e-6,PASS
+all6_4x3x5_cn,K_union = sum_f [K1(x)M1 + M1(x)K1] (rel. max entrywise),7.44e-15,<= 1e-14,PASS
+all6_4x3x5_cn,"K_union = sum_f K(single face f), separate runs",6.89e-17,<= 1e-15,PASS
+all6_4x3x5_cn,K_union symmetric,0.0e+00,<= 1e-15,PASS
+all6_4x3x5_cn,K_union PSD: lambda_min/lambda_max,-1.3e-16,>= -1e-14,PASS
+all6_4x3x5_cn,null space dim = connected components of the union,1,1,PASS
+all6_4x3x5_cn,K_union 1 = 0,5.5e-16,<= 1e-14,PASS
+all6_4x3x5_cn,"v^T K v = sum_f int |grad_f v|^2, v = 2x - 3y + z + 0.7",56.0000000000002,56.0000000000001,PASS
+all6_4x3x5_cn,"v^T K v = sum_f int |grad_f v|^2, v = x^2 + yz - 2z^2 + x",34.0000000000001,34,PASS
+all6_4x3x5_cn,NEG face zmax dropped from K: detected,9.2e-01,> 1e-6,PASS
+all6_4x3x5_cn,NEG one-direction (1D-tangent analogue) K: detected,7.4e-01,> 1e-6,PASS
+all6_4x3x5_cn,eliminated K rows/cols off C zero,0,0,PASS
+all6_4x3x5_cn,K|_C = K_face|_C (exact restriction),0.0e+00,0,PASS
+all6_4x3x5_cn,closed surface: K|_C null space = constants (dim 1),1,1,PASS
+all6_4x3x5_cn,"R = M + ell^2 K SPD on C, ell = 0",1.341e-03,> 0,PASS
+all6_4x3x5_cn,"R = M + ell^2 K SPD on C, ell = 0.3",1.532e-02,> 0,PASS
+all6_4x3x5_cn,"R = M + ell^2 K SPD on C, ell = 3",1.587e-02,> 0,PASS
+all6_4x3x5_cn,sparse R_H1t = What(x)R + gamma/(alpha dt^2) T(x)M (rel.),0.0e+00,<= 1e-14,PASS
+all6_4x3x5_cn,"R_H1t symmetric, SPD (lambda_min)",1.653e-01,> 0,PASS
+all6_4x3x5_cn,NEG time term with R instead of M (double count): detected,2.2e+01,> 1e-6,PASS
+all6_4x3x5_cn,NEG wrong sign of the H1-time term: detected,1.8e+00,> 1e-6,PASS
+all6_4x3x5_cn,NEG missing 1/dt: detected,8.1e-01,> 1e-6,PASS
+all6_4x3x5_cn,NEG T_NN = 2 (no natural end condition): detected,4.5e-01,> 1e-6,PASS
+zmin+xmin_4x4x4_nonunit_cn,K_union = sum_f [K1(x)M1 + M1(x)K1] (rel. max entrywise),7.71e-15,<= 1e-14,PASS
+zmin+xmin_4x4x4_nonunit_cn,"K_union = sum_f K(single face f), separate runs",3.67e-17,<= 1e-15,PASS
+zmin+xmin_4x4x4_nonunit_cn,K_union symmetric,0.0e+00,<= 1e-15,PASS
+zmin+xmin_4x4x4_nonunit_cn,K_union PSD: lambda_min/lambda_max,1.1e-16,>= -1e-14,PASS
+zmin+xmin_4x4x4_nonunit_cn,null space dim = connected components of the union,1,1,PASS
+zmin+xmin_4x4x4_nonunit_cn,K_union 1 = 0,2.9e-16,<= 1e-14,PASS
+zmin+xmin_4x4x4_nonunit_cn,"v^T K v = sum_f int |grad_f v|^2, v = 2x - 3y + z + 0.7",61.9999999999996,62,PASS
+zmin+xmin_4x4x4_nonunit_cn,"v^T K v = sum_f int |grad_f v|^2, v = x^2 + yz - 2z^2 + x",43.0833333333331,43.0833333333333,PASS
+zmin+xmin_4x4x4_nonunit_cn,NEG face xmin dropped from K: detected,1.0e+00,> 1e-6,PASS
+zmin+xmin_4x4x4_nonunit_cn,NEG one-direction (1D-tangent analogue) K: detected,9.4e-01,> 1e-6,PASS
+zmin+xmin_4x4x4_nonunit_cn,eliminated K rows/cols off C zero,0,0,PASS
+zmin+xmin_4x4x4_nonunit_cn,K|_C = K_face|_C (exact restriction),0.0e+00,0,PASS
+zmin+xmin_4x4x4_nonunit_cn,K|_C SPD (H1_0 of the union): lambda_min,1.902e-01,> 0,PASS
+zmin+xmin_4x4x4_nonunit_cn,"R = M + ell^2 K SPD on C, ell = 0",1.943e-03,> 0,PASS
+zmin+xmin_4x4x4_nonunit_cn,"R = M + ell^2 K SPD on C, ell = 0.3",4.140e-02,> 0,PASS
+zmin+xmin_4x4x4_nonunit_cn,"R = M + ell^2 K SPD on C, ell = 3",1.749e+00,> 0,PASS
+zmin+xmin_4x4x4_nonunit_cn,sparse R_H1t = What(x)R + gamma/(alpha dt^2) T(x)M (rel.),1.4e-16,<= 1e-14,PASS
+zmin+xmin_4x4x4_nonunit_cn,"R_H1t symmetric, SPD (lambda_min)",1.924e-01,> 0,PASS
+zmin+xmin_4x4x4_nonunit_cn,NEG time term with R instead of M (double count): detected,1.5e+01,> 1e-6,PASS
+zmin+xmin_4x4x4_nonunit_cn,NEG wrong sign of the H1-time term: detected,2.0e+00,> 1e-6,PASS
+zmin+xmin_4x4x4_nonunit_cn,NEG missing 1/dt: detected,9.0e-01,> 1e-6,PASS
+zmin+xmin_4x4x4_nonunit_cn,NEG T_NN = 2 (no natural end condition): detected,4.9e-01,> 1e-6,PASS
+zmin+ymin+xmin_4x4x4_nonunit_cn,K_union = sum_f [K1(x)M1 + M1(x)K1] (rel. max entrywise),7.79e-15,<= 1e-14,PASS
+zmin+ymin+xmin_4x4x4_nonunit_cn,"K_union = sum_f K(single face f), separate runs",7.35e-17,<= 1e-15,PASS
+zmin+ymin+xmin_4x4x4_nonunit_cn,K_union symmetric,0.0e+00,<= 1e-15,PASS
+zmin+ymin+xmin_4x4x4_nonunit_cn,K_union PSD: lambda_min/lambda_max,-8.5e-17,>= -1e-14,PASS
+zmin+ymin+xmin_4x4x4_nonunit_cn,null space dim = connected components of the union,1,1,PASS
+zmin+ymin+xmin_4x4x4_nonunit_cn,K_union 1 = 0,4.4e-16,<= 1e-14,PASS
+zmin+ymin+xmin_4x4x4_nonunit_cn,"v^T K v = sum_f int |grad_f v|^2, v = 2x - 3y + z + 0.7",66.9999999999992,67,PASS
+zmin+ymin+xmin_4x4x4_nonunit_cn,"v^T K v = sum_f int |grad_f v|^2, v = x^2 + yz - 2z^2 + x",57.7499999999997,57.75,PASS
+zmin+ymin+xmin_4x4x4_nonunit_cn,NEG face xmin dropped from K: detected,1.0e+00,> 1e-6,PASS
+zmin+ymin+xmin_4x4x4_nonunit_cn,NEG one-direction (1D-tangent analogue) K: detected,9.4e-01,> 1e-6,PASS
+zmin+ymin+xmin_4x4x4_nonunit_cn,eliminated K rows/cols off C zero,0,0,PASS
+zmin+ymin+xmin_4x4x4_nonunit_cn,K|_C = K_face|_C (exact restriction),0.0e+00,0,PASS
+zmin+ymin+xmin_4x4x4_nonunit_cn,K|_C SPD (H1_0 of the union): lambda_min,1.288e-01,> 0,PASS
+zmin+ymin+xmin_4x4x4_nonunit_cn,"R = M + ell^2 K SPD on C, ell = 0",1.745e-03,> 0,PASS
+zmin+ymin+xmin_4x4x4_nonunit_cn,"R = M + ell^2 K SPD on C, ell = 0.3",3.591e-02,> 0,PASS
+zmin+ymin+xmin_4x4x4_nonunit_cn,"R = M + ell^2 K SPD on C, ell = 3",1.195e+00,> 0,PASS
+zmin+ymin+xmin_4x4x4_nonunit_cn,sparse R_H1t = What(x)R + gamma/(alpha dt^2) T(x)M (rel.),1.4e-16,<= 1e-14,PASS
+zmin+ymin+xmin_4x4x4_nonunit_cn,"R_H1t symmetric, SPD (lambda_min)",1.806e-01,> 0,PASS
+zmin+ymin+xmin_4x4x4_nonunit_cn,NEG time term with R instead of M (double count): detected,1.5e+01,> 1e-6,PASS
+zmin+ymin+xmin_4x4x4_nonunit_cn,NEG wrong sign of the H1-time term: detected,2.0e+00,> 1e-6,PASS
+zmin+ymin+xmin_4x4x4_nonunit_cn,NEG missing 1/dt: detected,9.0e-01,> 1e-6,PASS
+zmin+ymin+xmin_4x4x4_nonunit_cn,NEG T_NN = 2 (no natural end condition): detected,4.9e-01,> 1e-6,PASS

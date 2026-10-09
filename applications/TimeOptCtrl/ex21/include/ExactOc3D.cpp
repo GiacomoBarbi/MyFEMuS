@@ -474,6 +474,253 @@ double NatExactAt3D(double x, double y, double z, void* raw) {   // T10
   }
 }
 
+// ===========================================================================
+// T13: multi-face exact cases (t13_symbolic.py).  g_multi = 1 neumann-opp-3d,
+// 2 neumann-adj-3d, 3 dirichlet-opp-3d (L2, H1-space, H1-time, combined).
+//
+// neumann-opp-3d   Gamma_c = zmin u zmax.  p = alpha_u B X(x) X(y) R_kz(z) (the T11N p:
+//   nu dn p + (w.n) p = 0 on all six faces, any constant wind); u = -(eta/alpha_u) p on
+//   both faces; y = A cos cos cos + kappa0 X X H0(z) + kappa1 X X H1(z),
+//   H0 = z - z^2/2 (H0'(0) = 1, H0'(1) = 0), H1 = z^2/2 (H1'(0) = 0, H1'(1) = 1),
+//   kappa0 = eta^2 B R(0)/nu, kappa1 = -eta^2 B R(1)/nu.
+// neumann-adj-3d   Gamma_c = zmin u xmin, wind with w_x = w_z (refused otherwise: smooth
+//   compatibility at the internal edge x = z = 0 needs p_x = p_z there, and the adjoint
+//   Robin conditions give p_x - p_z = -(w_x - w_z) p/nu).
+//   F_k(s) = exp(-k s)(1 - s)^2 (1 + 2 s): F'(0) = -k F(0) (Robin, controlled face),
+//   F(1) = F'(1) = 0 (uncontrolled faces x = 1, z = 1: p = dn p = 0, edge compatibility);
+//   p = alpha_u B F_k(x) X(y) F_k(z), k = w_x/nu;  u = -(eta/alpha_u) p on both faces;
+//   y = A cos cos cos + kappa X(y) G(x,z), kappa = eta^2 B/nu,
+//   G = F(x) H0(z) + H0(x) F(z) - F'(0) H0(x) H0(z):  G_z(x,0) = F(x), G_x(0,z) = F(z),
+//   G_z(x,1) = G_x(1,z) = 0.
+// dirichlet-opp-3d Gamma_c = zmin u zmax, omega = (0,1)^2 x (1/4,3/4) (n multiple of 4).
+//   p = X(x) X(y) Q,  Q = (1 - psi) Qs0 + psi Qs1, psi the septic step on [1/4, 3/4];
+//   Qs0 = the T11D image solution (sources +-1.2, Qs0(0) = 0), Qs1 = exp(-a z - c tau)
+//   [Phi(z + 0.2) - Phi(z - 2.2)] (Qs1(1) = 0).  dz Qs1(1) = -exp(-a) dz Qs0(0), hence on
+//   zmax the stationarity gives u1 = exp(-a) u0 (a = w_z/(2 nu)) for L2 AND for H1-space /
+//   H1-time (both faces are disjoint, S = X X is a facewise surface eigenfunction, the
+//   temporal problem is linear): u0 = S U(t) (DirH1Time), u1 = exp(-a) S U(t);
+//   y = A S3 S3 S3 + eta S(x,y) [U(t)(1 - z)^3 + exp(-a) U(t) z^3].
+int g_multi = 0;
+constexpr double kOppZa = 0.25, kOppZb = 0.75, kOppSrc1 = -0.2, kOppImg1 = 2.2;
+double NeuH1v(double z) { return 0.5 * z * z; }
+// --- neumann-opp-3d
+double NopKappa0(const ProblemConfig& c, double t) { return c.eta * c.eta * B(c, t) * NatR(NeuKz(c), 0.0).v / c.diffusivity; }
+double NopKappa1(const ProblemConfig& c, double t) { return -c.eta * c.eta * B(c, t) * NatR(NeuKz(c), 1.0).v / c.diffusivity; }
+double NopKappa0Dot(const ProblemConfig& c, double t) { return c.eta * c.eta * dB(c, t) * NatR(NeuKz(c), 0.0).v / c.diffusivity; }
+double NopKappa1Dot(const ProblemConfig& c, double t) { return -c.eta * c.eta * dB(c, t) * NatR(NeuKz(c), 1.0).v / c.diffusivity; }
+Prod NopG1Shape(const ProblemConfig& c, double x, double y, double z) {   // X(x) X(y) H1(z)
+  return Product(c, NeuX(x), NeuX(y), F1{NeuH1v(z), z, 1.0});
+}
+// --- neumann-adj-3d
+double NadK(const ProblemConfig& c) { return HasConvection(c) ? c.convection.vx / c.diffusivity : 0.0; }
+F1 NadF(double k, double s) {
+  const double e = std::exp(-k * s);
+  const double q = (1.0 - s) * (1.0 - s) * (1.0 + 2.0 * s), q1 = -6.0 * s + 6.0 * s * s, q2 = -6.0 + 12.0 * s;
+  return {e * q, e * (q1 - k * q), e * (q2 - 2.0 * k * q1 + k * k * q)};
+}
+Prod NadPShape(const ProblemConfig& c, double x, double y, double z) {
+  return Product(c, NadF(NadK(c), x), NeuX(y), NadF(NadK(c), z));
+}
+Prod NadTShape(const ProblemConfig& c, double x, double y, double z) {   // X(y) G(x,z)
+  const double k = NadK(c), fp0 = -k;
+  const F1 Fx = NadF(k, x), Fz = NadF(k, z), Hx = NeuH(x), Hz = NeuH(z), Y = NeuX(y);
+  const double G = Fx.v * Hz.v + Hx.v * Fz.v - fp0 * Hx.v * Hz.v;
+  const double Gx = Fx.d * Hz.v + Hx.d * Fz.v - fp0 * Hx.d * Hz.v;
+  const double Gz = Fx.v * Hz.d + Hx.v * Fz.d - fp0 * Hx.v * Hz.d;
+  const double Gxx = Fx.dd * Hz.v + Hx.dd * Fz.v - fp0 * Hx.dd * Hz.v;
+  const double Gzz = Fx.v * Hz.dd + Hx.v * Fz.dd - fp0 * Hx.v * Hz.dd;
+  const double w[3] = {HasConvection(c) ? c.convection.vx : 0.0, HasConvection(c) ? c.convection.vy : 0.0,
+                       HasConvection(c) ? c.convection.vz : 0.0};
+  return {Y.v * G, w[0] * Y.v * Gx + w[1] * Y.d * G + w[2] * Y.v * Gz, Y.dd * G + Y.v * (Gxx + Gzz)};
+}
+double NadKappa(const ProblemConfig& c, double t) { return c.eta * c.eta * B(c, t) / c.diffusivity; }
+double NadKappaDot(const ProblemConfig& c, double t) { return c.eta * c.eta * dB(c, t) / c.diffusivity; }
+// --- shared Neumann multi-face y, p, u, f, y_d
+Prod MnPShape(const ProblemConfig& c, double x, double y, double z) {
+  return g_multi == 2 ? NadPShape(c, x, y, z) : NeuPShape(c, x, y, z);
+}
+struct MnY { double v, dt, lap, wgrad; };
+MnY MnYParts(const ProblemConfig& c, double x, double y, double z, double t) {
+  const Prod Y = NatYShape(c, x, y, z);
+  MnY r{A(t) * Y.v, dA(t) * Y.v, A(t) * Y.lap, A(t) * Y.wgrad};
+  if (g_multi == 2) {
+    const Prod T = NadTShape(c, x, y, z);
+    const double k = NadKappa(c, t);
+    r.v += k * T.v; r.dt += NadKappaDot(c, t) * T.v; r.lap += k * T.lap; r.wgrad += k * T.wgrad;
+  } else {
+    const Prod G0 = NeuGShape(c, x, y, z), G1 = NopG1Shape(c, x, y, z);
+    const double k0 = NopKappa0(c, t), k1 = NopKappa1(c, t);
+    r.v += k0 * G0.v + k1 * G1.v;
+    r.dt += NopKappa0Dot(c, t) * G0.v + NopKappa1Dot(c, t) * G1.v;
+    r.lap += k0 * G0.lap + k1 * G1.lap;
+    r.wgrad += k0 * G0.wgrad + k1 * G1.wgrad;
+  }
+  return r;
+}
+double MnExactY(const ProblemConfig& c, double x, double y, double z, double t) { return MnYParts(c, x, y, z, t).v; }
+double MnExactP(const ProblemConfig& c, double x, double y, double z, double t) {
+  return c.alpha_u * B(c, t) * MnPShape(c, x, y, z).v;
+}
+/** the exact control at a point of Gamma_c (either face): -(eta/alpha_u) p */
+double MnExactU(const ProblemConfig& c, double x, double y, double z, double t) {
+  return -c.eta * MnExactP(c, x, y, z, t) / c.alpha_u;
+}
+double MnSource3D(const ProblemConfig& c, double x, double y, double z, double t) {
+  const MnY Y = MnYParts(c, x, y, z, t);
+  return Y.dt - c.diffusivity * Y.lap + Y.wgrad;
+}
+double MnTarget3D(const ProblemConfig& c, double x, double y, double z, double t) {
+  const Prod P = MnPShape(c, x, y, z);
+  const double q = c.alpha_u * (dB(c, t) * P.v + c.diffusivity * B(c, t) * P.lap + B(c, t) * P.wgrad);
+  return MnExactY(c, x, y, z, t) + q / c.alpha_track;
+}
+double MnInitial3D(const ProblemConfig& c, double x, double y, double z) { return MnExactY(c, x, y, z, 0.0); }
+double MnExactAt3D(double x, double y, double z, void* raw) {
+  const Context3D* e = static_cast<const Context3D*>(raw);
+  switch (e->field) {
+    case 0: return MnExactY(*e->config, x, y, z, e->time);
+    case 1: return MnExactP(*e->config, x, y, z, e->time);
+    default: return MnExactU(*e->config, x, y, z, e->time);
+  }
+}
+// --- dirichlet-opp-3d
+/** the T11D image solution with the sources at z = src and z = img: exp(-a z - cc tau) [Phi(z - src) - Phi(z - img)] */
+Heat3 OppQs(const ProblemConfig& c, double z, double t, double src, double img) {
+  Heat3 h;
+  const double tau = c.final_time() - t;
+  if (tau <= 1e-14) return h;
+  const double nu = c.diffusivity;
+  const double wz = HasConvection(c) ? c.convection.vz : 0.0;
+  const double a = wz / (2.0 * nu), cc = DirCC(c);
+  auto phi = [&](double xi, double& p0, double& p1, double& p2, double& p3) {
+    p0 = std::exp(-xi * xi / (4.0 * nu * tau)) / std::sqrt(4.0 * kPi * nu * tau);
+    p1 = -xi / (2.0 * nu * tau) * p0;
+    p2 = (xi * xi / (4.0 * nu * nu * tau * tau) - 1.0 / (2.0 * nu * tau)) * p0;
+    p3 = (-xi * xi * xi / (8.0 * nu * nu * nu * tau * tau * tau) + 3.0 * xi / (4.0 * nu * nu * tau * tau)) * p0;
+  };
+  double a0, a1, a2, a3, b0, b1, b2, b3;
+  phi(z - src, a0, a1, a2, a3);
+  phi(z - img, b0, b1, b2, b3);
+  const double V = a0 - b0, Vz = a1 - b1, Vzz = a2 - b2, Vzzz = a3 - b3;
+  const double E = std::exp(-a * z - cc * tau);
+  h.v = E * V;
+  h.z = E * (Vz - a * V);
+  h.zz = E * (Vzz - 2.0 * a * Vz + a * a * V);
+  h.tau = E * (nu * Vzz - cc * V);
+  h.ztau = E * (-cc * (Vz - a * V) + nu * Vzzz - a * nu * Vzz);
+  return h;
+}
+void OppStep(double z, double& f, double& f1, double& f2) {   // septic step 0 -> 1 on [1/4, 3/4]
+  const double L = kOppZb - kOppZa, s = (z - kOppZa) / L;
+  if (s <= 0.0) { f = f1 = f2 = 0.0; return; }
+  if (s >= 1.0) { f = 1.0; f1 = f2 = 0.0; return; }
+  const double s2 = s * s, s3 = s2 * s, s4 = s3 * s;
+  f = s4 * (35.0 - 84.0 * s + 70.0 * s2 - 20.0 * s3);
+  f1 = 140.0 * s3 * (1.0 - s) * (1.0 - s) * (1.0 - s) / L;
+  f2 = 420.0 * s2 * (1.0 - s) * (1.0 - s) * (1.0 - 2.0 * s) / (L * L);
+}
+ZQ OppQ(const ProblemConfig& c, double z, double t) {
+  const Heat3 q0 = OppQs(c, z, t, kDir3Z1, -kDir3Z1), q1 = OppQs(c, z, t, kOppSrc1, kOppImg1);
+  double f, f1, f2;
+  OppStep(z, f, f1, f2);
+  return {(1.0 - f) * q0.v + f * q1.v,
+          -f1 * q0.v + (1.0 - f) * q0.z + f1 * q1.v + f * q1.z,
+          -f2 * q0.v - 2.0 * f1 * q0.z + (1.0 - f) * q0.zz + f2 * q1.v + 2.0 * f1 * q1.z + f * q1.zz,
+          -((1.0 - f) * q0.tau + f * q1.tau)};
+}
+double OppE(const ProblemConfig& c) {   // u_zmax / u_zmin = exp(-a), a = w_z/(2 nu)
+  return std::exp(-(HasConvection(c) ? c.convection.vz : 0.0) / (2.0 * c.diffusivity));
+}
+double DopExactP(const ProblemConfig& c, double x, double y, double z, double t) {
+  return DirX(DirC(c, 0), x).v * DirX(DirC(c, 1), y).v * OppQ(c, z, t).v;
+}
+double DopExactU(const ProblemConfig& c, double x, double y, double z, double t) {
+  const double S = DirX(DirC(c, 0), x).v * DirX(DirC(c, 1), y).v;
+  return S * DirH1Time(c, t).U * (z > 0.5 ? OppE(c) : 1.0);
+}
+void DopExactUGrad(double x, double y, double z, void* raw, double* g) {
+  const Context3D* e = static_cast<const Context3D*>(raw);
+  const ProblemConfig& c = *e->config;
+  const F1 X = DirX(DirC(c, 0), x), Y = DirX(DirC(c, 1), y);
+  const double U = DirH1Time(c, e->time).U * (z > 0.5 ? OppE(c) : 1.0);
+  g[0] = U * X.d * Y.v;
+  g[1] = U * X.v * Y.d;
+  g[2] = 0.0;
+}
+YParts DopY(const ProblemConfig& c, double x, double y, double z, double t) {
+  const Prod S3 = Product(c, Sin3F(x), Sin3F(y), Sin3F(z));
+  const double wx = HasConvection(c) ? c.convection.vx : 0.0, wy = HasConvection(c) ? c.convection.vy : 0.0,
+               wz = HasConvection(c) ? c.convection.vz : 0.0;
+  const F1 X = DirX(DirC(c, 0), x), Y = DirX(DirC(c, 1), y);
+  const DirTime ht = DirH1Time(c, t);
+  const double e1 = OppE(c);
+  const double k = c.eta * ht.U, kd = c.eta * ht.Ut;
+  // h(z) = (1 - z)^3 + e1 z^3
+  const double g = (1.0 - z) * (1.0 - z) * (1.0 - z) + e1 * z * z * z,
+               g1 = -3.0 * (1.0 - z) * (1.0 - z) + 3.0 * e1 * z * z, g2 = 6.0 * (1.0 - z) + 6.0 * e1 * z;
+  YParts r;
+  r.v = A(t) * S3.v + k * X.v * Y.v * g;
+  r.wgrad = A(t) * S3.wgrad + k * (wx * X.d * Y.v * g + wy * X.v * Y.d * g + wz * X.v * Y.v * g1);
+  r.lap = A(t) * S3.lap + k * ((X.dd * Y.v + X.v * Y.dd) * g + X.v * Y.v * g2);
+  r.dt = dA(t) * S3.v + kd * X.v * Y.v * g;
+  return r;
+}
+double DopExactY(const ProblemConfig& c, double x, double y, double z, double t) { return DopY(c, x, y, z, t).v; }
+double DopSource3D(const ProblemConfig& c, double x, double y, double z, double t) {
+  const YParts Y = DopY(c, x, y, z, t);
+  return Y.dt - c.diffusivity * Y.lap + Y.wgrad;
+}
+double DopTarget3D(const ProblemConfig& c, double x, double y, double z, double t) {
+  const F1 X = DirX(DirC(c, 0), x), Y = DirX(DirC(c, 1), y);
+  const ZQ Q = OppQ(c, z, t);
+  const double wx = HasConvection(c) ? c.convection.vx : 0.0, wy = HasConvection(c) ? c.convection.vy : 0.0,
+               wz = HasConvection(c) ? c.convection.vz : 0.0;
+  const double r = -X.v * Y.v * Q.t - c.diffusivity * (X.dd * Y.v * Q.v + X.v * Y.dd * Q.v + X.v * Y.v * Q.zz) -
+                   (wx * X.d * Y.v * Q.v + wy * X.v * Y.d * Q.v + wz * X.v * Y.v * Q.z);
+  return DopExactY(c, x, y, z, t) - r / c.alpha_track;
+}
+double DopInitial3D(const ProblemConfig& c, double x, double y, double z) { return DopExactY(c, x, y, z, 0.0); }
+double DopExactAt3D(double x, double y, double z, void* raw) {
+  const Context3D* e = static_cast<const Context3D*>(raw);
+  switch (e->field) {
+    case 0: return DopExactY(*e->config, x, y, z, e->time);
+    case 1: return DopExactP(*e->config, x, y, z, e->time);
+    default: return DopExactU(*e->config, x, y, z, e->time);
+  }
+}
+/** T13: controlled-node geometry of the face set (Neumann: on the union; Dirichlet: on the
+ *  union and on no uncontrolled face) */
+bool OnControlSet3D(const ProblemConfig& c, double x, double y, double z, bool dirichlet) {
+  const double p[3] = {x, y, z};
+  const double lo[3] = {c.domain.xmin, c.domain.ymin, c.domain.zmin}, hi[3] = {c.domain.xmax, c.domain.ymax, c.domain.zmax};
+  bool on_c = false, on_u = false;
+  for (unsigned id = 1; id <= 6u; ++id) {
+    BoxFace3D f;
+    LookupBoxFace3D(id, f);
+    if (std::fabs(p[f.axis] - (f.at_max ? hi[f.axis] : lo[f.axis])) > 1e-12) continue;
+    (IsControlFace3D(c, id) ? on_c : on_u) = true;
+  }
+  return on_c && (!dirichlet || !on_u);
+}
+long long ExpectedControlNodes3D(const ProblemConfig& c, bool dirichlet) {
+  const unsigned n[3] = {2u * c.mesh.nx, 2u * c.mesh.ny, 2u * c.mesh.nz};
+  long long count = 0;
+  for (unsigned i = 0; i <= n[0]; ++i)
+    for (unsigned j = 0; j <= n[1]; ++j)
+      for (unsigned k = 0; k <= n[2]; ++k) {
+        bool on_c = false, on_u = false;
+        const unsigned idx[3] = {i, j, k};
+        for (unsigned id = 1; id <= 6u; ++id) {
+          BoxFace3D f;
+          LookupBoxFace3D(id, f);
+          if (idx[f.axis] != (f.at_max ? n[f.axis] : 0u)) continue;
+          (IsControlFace3D(c, id) ? on_c : on_u) = true;
+        }
+        if (on_c && (!dirichlet || !on_u)) ++count;
+      }
+  return count;
+}
+
 double RelDiff(Vec x, Vec b) {
   Vec d = nullptr;
   PetscCallAbort(PETSC_COMM_WORLD, VecDuplicate(x, &d));
@@ -490,14 +737,16 @@ double RelDiff(Vec x, Vec b) {
 void ApplyExactOptimalControl3D(ProblemConfig& config, const std::string& name,
                                 double alpha_u, double final_time, double nu) {
   if (name != "conv-sin-3d" && name != "conv-sin3-3d" && name != "natural-conv-3d" &&
-      name != "neumann-conv-3d" && name != "dirichlet-conv-3d" && name != "dirichlet-h1-3d")
+      name != "neumann-conv-3d" && name != "dirichlet-conv-3d" && name != "dirichlet-h1-3d" &&
+      name != "neumann-opp-3d" && name != "neumann-adj-3d" && name != "dirichlet-opp-3d")   // T13
     throw std::invalid_argument(
         "the 3D exact OC cases are conv-sin-3d, conv-sin3-3d, natural-conv-3d, neumann-conv-3d,"
-        " dirichlet-conv-3d and dirichlet-h1-3d");
+        " dirichlet-conv-3d, dirichlet-h1-3d, neumann-opp-3d, neumann-adj-3d and dirichlet-opp-3d");
+  g_multi = name == "neumann-opp-3d" ? 1 : name == "neumann-adj-3d" ? 2 : name == "dirichlet-opp-3d" ? 3 : 0;
   g_cubic = name == "conv-sin3-3d";
   g_natural = name == "natural-conv-3d";
-  g_neumann = name == "neumann-conv-3d";
-  g_dir_h1 = name == "dirichlet-h1-3d";   // T11H1
+  g_neumann = name == "neumann-conv-3d" || g_multi == 1 || g_multi == 2;
+  g_dir_h1 = name == "dirichlet-h1-3d" || g_multi == 3;   // T11H1 (T13: dirichlet-opp-3d, L2 and H1)
   g_dirichlet = name == "dirichlet-conv-3d" || g_dir_h1;
   if (name == "dirichlet-conv-3d" &&
       (config.control_h1_length != 0.0 || config.control_h1_time_weight != 0.0))
@@ -526,6 +775,25 @@ void ApplyExactOptimalControl3D(ProblemConfig& config, const std::string& name,
     config.neumann_control_boundary = "zmin";
     config.tracking_box = {0.0, 1.0, 0.5, 1.0};
   }
+  if (g_multi) {   // T13: the face set of the case
+    config.control_face_mask = g_multi == 2 ? ((1u << 1) | (1u << 5)) : ((1u << 1) | (1u << 6));
+    config.neumann_control_face = 1u;
+    config.neumann_control_boundary = g_multi == 2 ? "zmin,xmin" : "zmin,zmax";
+    if (g_multi == 3) {
+      config.tracking_box = {0.0, 1.0, kOppZa, kOppZb};   // omega = (0,1)^2 x (1/4,3/4)
+      // omega must be a union of whole elements: z = 1/4, 3/4 element faces (n_z = 2 puts them on
+      // the element centroids, i.e. an EMPTY tracking region; other n_z not multiple of 4 cut elements)
+      if (config.mesh.nz % 4u != 0u)
+        throw std::invalid_argument(
+            "dirichlet-opp-3d needs --nz a multiple of 4 (omega = (0,1)^2 x (1/4,3/4) must be resolved by"
+            " whole elements)");
+    }
+    if (g_multi == 2 && HasConvection(config) && config.convection.vx != config.convection.vz)
+      throw std::invalid_argument(
+          "neumann-adj-3d needs w_x = w_z (--vx = --vz): smooth compatibility at the internal edge"
+          " x = z = 0 requires p_x = p_z there, and the adjoint Robin conditions give"
+          " p_x - p_z = -(w_x - w_z) p/nu");
+  }
   config.additional_control_regions.clear();
   config.additional_tracking_regions.clear();
   config.source_regions.clear();
@@ -541,13 +809,21 @@ void ApplyExactOptimalControl3D(ProblemConfig& config, const std::string& name,
     if (config.control_h1_length > 0.0 && HasConvection(config) &&
         (config.convection.vx != 0.0 || config.convection.vy != 0.0))
       throw std::invalid_argument(
-          "dirichlet-h1-3d with ell > 0 needs a wind normal to Gamma_c (--vx 0 --vy 0): the control"
+          std::string(g_multi ? "dirichlet-opp-3d" : "dirichlet-h1-3d") +   // T13: name the case
+          " with ell > 0 needs a wind normal to Gamma_c (--vx 0 --vy 0): the control"
           " shape must be an eigenfunction of the surface Laplacian");
     if (config.control_h1_time_weight > 0.0 &&
         !(DirCC(config) > std::sqrt(DirH1A(config) / config.control_h1_time_weight)))
       throw std::invalid_argument(
-          "dirichlet-h1-3d: gamma_u too small for the closed form (needs cc > sqrt(alpha_u (1 + 2 pi^2"
+          std::string(g_multi ? "dirichlet-opp-3d" : "dirichlet-h1-3d") +
+          ": gamma_u too small for the closed form (needs cc > sqrt(alpha_u (1 + 2 pi^2"
           " ell^2) / gamma_u)); increase --control-h1-time-weight");
+  }
+  if (g_multi) {   // T13
+    config.data_overrides.source3d = g_multi == 3 ? DopSource3D : MnSource3D;
+    config.data_overrides.target3d = g_multi == 3 ? DopTarget3D : MnTarget3D;
+    config.data_overrides.initial3d = g_multi == 3 ? DopInitial3D : MnInitial3D;
+    return;
   }
   config.data_overrides.source3d =
       g_dirichlet ? DirSource3D : (g_neumann ? NeuSource3D : (g_natural ? NatSource3D : Source3D));
@@ -579,7 +855,8 @@ int RunExactOptimalControl3D(const ProblemConfig& config,
   std::printf("EX21_EXACT3D_CONFIG case=%s nx=%u ny=%u nz=%u steps=%u T=%.6g dt=%.10e"
               " scheme=%s nu=%.6g convection=%s vx=%.6g vy=%.6g vz=%.6g alpha_u=%.6e"
               " h=%.6e Pe_cell=%.6e dofs=%d spacetime_unknowns=%lld pc=%d\n",
-              g_dir_h1 ? "dirichlet-h1-3d" : g_dirichlet ? "dirichlet-conv-3d" : g_neumann ? "neumann-conv-3d"
+              g_multi == 1 ? "neumann-opp-3d" : g_multi == 2 ? "neumann-adj-3d" : g_multi == 3 ? "dirichlet-opp-3d"
+              : g_dir_h1 ? "dirichlet-h1-3d" : g_dirichlet ? "dirichlet-conv-3d" : g_neumann ? "neumann-conv-3d"
                         : (g_natural ? "natural-conv-3d" : (g_cubic ? "conv-sin3-3d" : "conv-sin-3d")),
               config.mesh.nx, config.mesh.ny, config.mesh.nz, steps, T, dt,
               TimeSchemeName(config), config.diffusivity, HasConvection(config) ? "on" : "off",
@@ -725,7 +1002,8 @@ int RunExactOptimalControl3D(const ProblemConfig& config,
       if (m[static_cast<std::size_t>(i)]) {
         ++n_c;
         const double xi = spatial.layout.x[i], yi = spatial.layout.z[i], zi = spatial.layout.Axis2(i);
-        if (std::fabs(zi) > 1e-12 || xi < 1e-12 || xi > 1 - 1e-12 || yi < 1e-12 || yi > 1 - 1e-12) ++off_plane;
+        if (g_multi ? !OnControlSet3D(config, xi, yi, zi, true)   // T13: the geometric C of the union
+                    : (std::fabs(zi) > 1e-12 || xi < 1e-12 || xi > 1 - 1e-12 || yi < 1e-12 || yi > 1 - 1e-12)) ++off_plane;
       }
       for (unsigned slot = 0; slot < steps; ++slot) {
         const PetscInt k = static_cast<PetscInt>(slot) * local + i;
@@ -741,7 +1019,8 @@ int RunExactOptimalControl3D(const ProblemConfig& config,
                 " max|y_C - eta u|=%.3e max|u|_off_C=%.3e C_nodes=%lld expected=%d C_off_interior=%lld"
                 " B_D^T_transposes_L=%d\n",
                 config.neumann_control_boundary.c_str(), config.neumann_control_face, stat_rel,
-                trace_err, off_max, n_c, (2 * (int)config.mesh.nx - 1) * (2 * (int)config.mesh.ny - 1),
+                trace_err, off_max, n_c,
+                g_multi ? (int)ExpectedControlNodes3D(config, true) : (2 * (int)config.mesh.nx - 1) * (2 * (int)config.mesh.ny - 1),
                 off_plane, dc.transposes_stiffness() ? 1 : 0);
     PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(&ru));
     PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(&bp));
@@ -777,13 +1056,16 @@ int RunExactOptimalControl3D(const ProblemConfig& config,
     for (PetscInt i = 0; i < local; ++i)
       if (active[i]) {
         ++n_active;
-        if (std::fabs(spatial.layout.Axis2(i) - config.domain.zmin) > 1e-12) ++off_plane;
+        if (g_multi ? !OnControlSet3D(config, spatial.layout.x[i], spatial.layout.z[i], spatial.layout.Axis2(i), false)
+                    : std::fabs(spatial.layout.Axis2(i) - config.domain.zmin) > 1e-12) ++off_plane;
       }
     stat_rel = std::sqrt(num / (den > 0.0 ? den : 1.0));
     std::printf("EX21_NEUMANN3D_STATIONARITY face=%s(id %u) |M_G(alpha_u u + eta p)|/|alpha_u M_G u|=%.3e"
                 " max|u|_off_face=%.3e active_nodes=%lld expected=%d active_off_plane=%lld\n",
                 config.neumann_control_boundary.c_str(), config.neumann_control_face, stat_rel, off_max,
-                n_active, (2 * (int)config.mesh.nx + 1) * (2 * (int)config.mesh.ny + 1), off_plane);
+                n_active,
+                g_multi ? (int)ExpectedControlNodes3D(config, false) : (2 * (int)config.mesh.nx + 1) * (2 * (int)config.mesh.ny + 1),
+                off_plane);
     PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(&v));
     PetscCallAbort(PETSC_COMM_WORLD, VecDestroy(&w));
   }
@@ -802,7 +1084,11 @@ int RunExactOptimalControl3D(const ProblemConfig& config,
       // T11N: the Neumann control lives on Gamma_c -- its error is the surface L2
       // norm on the face (the face quadrature that assembled M_Gamma)
       const SpatialFieldIntegrals I =
-          g_dirichlet ? (which == 2 ? IntegrateBoundaryField3D(mesh, solution_type,
+          g_multi ? (which == 2 ? IntegrateBoundaryField3DFaces(mesh, solution_type, ControlFaceMask3D(config), a,
+                                                                g_multi == 3 ? DopExactAt3D : MnExactAt3D, &ctx)
+                                : IntegrateSpatialField3D(mesh, solution_type, a,
+                                                          g_multi == 3 ? DopExactAt3D : MnExactAt3D, &ctx))   // T13: sum_f
+          : g_dirichlet ? (which == 2 ? IntegrateBoundaryField3D(mesh, solution_type,
                                                                config.neumann_control_face, a,
                                                                DirExactAt3D, &ctx)
                                     : IntegrateSpatialField3D(mesh, solution_type, a, DirExactAt3D, &ctx))
@@ -823,8 +1109,9 @@ int RunExactOptimalControl3D(const ProblemConfig& config,
       const PetscScalar* a = nullptr;
       PetscCallAbort(PETSC_COMM_WORLD, VecGetArrayRead(r, &a));
       Context3D ctx{&config, tn, 2};
-      const SpatialFieldIntegrals Ig = IntegrateBoundaryGradient3D(
-          mesh, solution_type, config.neumann_control_face, a, DirExactUGrad, &ctx);
+      const SpatialFieldIntegrals Ig = g_multi
+          ? IntegrateBoundaryGradient3DFaces(mesh, solution_type, ControlFaceMask3D(config), a, DopExactUGrad, &ctx)
+          : IntegrateBoundaryGradient3D(mesh, solution_type, config.neumann_control_face, a, DirExactUGrad, &ctx);
       PetscCallAbort(PETSC_COMM_WORLD, VecRestoreArrayRead(r, &a));
       eg.e += dt * Ig.error_squared;
       eg.x += dt * Ig.exact_squared;

@@ -30,7 +30,7 @@ static ProblemConfig::StateBoundaryCondition g_state_bc =
 // 0 = none (every other run).  FEMuS's GenerateBdc only ever SETS a node to
 // constrained, so the perimeter of this face -- shared with the neighbouring
 // homogeneous faces -- stays constrained.
-static unsigned g_free_face = 0u;
+static unsigned g_free_face_mask = 0u;   // T13: bit (1 << id) per face left free (T11D: one face)
 
 /** NATURAL leaves every boundary unconstrained.  HOMOGENEOUS_DIRICHLET
  *  constrains the state to zero on the whole external boundary; the carrier
@@ -43,7 +43,10 @@ static bool StateBoundaryCondition(const std::vector<double>&,
   value = 0.0;
   if (g_state_bc == ProblemConfig::StateBoundaryCondition::NATURAL)
     return false;
-  if (g_free_face != 0u && face_index == static_cast<int>(g_free_face)) return false;   // T11D
+  // T11D / T13: every controlled Dirichlet face is free; GenerateBdc only ever SETS a node
+  // constrained, so a node also touched by an uncontrolled face stays constrained (external
+  // perimeter of the union), while internal edges/corners of the union stay free.
+  if (face_index >= 1 && face_index <= 6 && ((g_free_face_mask >> face_index) & 1u)) return false;
   return std::string(name) == "Ti";
 }
 
@@ -217,9 +220,9 @@ void BuildMesh(const ProblemConfig& config, MultiLevelMesh& mesh) {
 void InitializeStateSpace(MultiLevelSolution& solution,
                           bool with_region_fields,
                           ProblemConfig::StateBoundaryCondition state_bc,
-                          unsigned free_face, bool simplex) {
+                          unsigned free_face_mask, bool simplex) {
   g_state_bc = state_bc;
-  g_free_face = free_face;
+  g_free_face_mask = free_face_mask;
   if (with_region_fields) {
     // Piecewise constant, one DOF per element: FEMuS emits solutions of this
     // type as VTK <CellData>, which a centroid-selected region needs -- nodal
@@ -703,7 +706,8 @@ NativeSpatialOperators BuildNativeSpatialOperators(
                           config.control.type == ProblemConfig::ControlType::DIRICHLET);
   const bool dirichlet3d = config.dimension == 3u &&
                            config.control.type == ProblemConfig::ControlType::DIRICHLET;
-  double face_area_normal[4] = {0.0, 0.0, 0.0, 0.0};   // area, int n_x, n_y, n_z
+  // T13: per controlled face id (1..6): area, int n_x, n_y, n_z
+  double face_area_normal[7][4] = {};
   for (unsigned element = mesh->_elementOffset[rank];
        element < mesh->_elementOffset[rank + 1u]; ++element) {
     const ElementData data = GatherElementData(mesh, solution_type, element);
@@ -853,8 +857,9 @@ NativeSpatialOperators BuildNativeSpatialOperators(
     // faces have a non-negative neighbour index.
     for (unsigned face = 0; neumann3d && face < mesh->GetElementFaceNumber(element); ++face) {
       const int index = mesh->el->GetFaceElementIndex(element, face);
-      if (index >= 0 || static_cast<unsigned>(-(index + 1)) != config.neumann_control_face)
+      if (index >= 0 || !IsControlFace3D(config, static_cast<unsigned>(-(index + 1))))   // T13: union
         continue;
+      const unsigned face_id = static_cast<unsigned>(-(index + 1));
       const unsigned face_dofs = mesh->GetElementFaceDofNumber(element, face, solution_type);
       const unsigned face_geometry = mesh->GetElementFaceType(element, face);
       std::vector<int> face_system_dofs(face_dofs);
@@ -876,9 +881,9 @@ NativeSpatialOperators BuildNativeSpatialOperators(
       const elem_type* face_element = mesh->_finiteElement[face_geometry][solution_type];
       for (unsigned gauss = 0; gauss < face_element->GetGaussPointNumber(); ++gauss) {
         face_element->JacobianSur(face_coordinates, gauss, weight, phi, gradient, normal);
-        face_area_normal[0] += weight;
+        face_area_normal[face_id][0] += weight;
         for (unsigned axis = 0; axis < 3u; ++axis)
-          face_area_normal[1 + axis] += normal[axis] * weight;
+          face_area_normal[face_id][1 + axis] += normal[axis] * weight;
         for (unsigned a = 0; a < face_dofs; ++a)
           for (unsigned b = 0; b < face_dofs; ++b)
             local_boundary[a * face_dofs + b] += phi[a] * phi[b] * weight;
@@ -902,25 +907,28 @@ NativeSpatialOperators BuildNativeSpatialOperators(
     }
   }
   if (neumann3d) {
-    // T11N: the selected face must be the requested one -- outward unit
-    // normal +-e_axis and area = the product of the two other extents.
-    double g[4] = {0.0, 0.0, 0.0, 0.0};
-    MPI_Allreduce(face_area_normal, g, 4, MPI_DOUBLE, MPI_SUM, PETSC_COMM_WORLD);
-    BoxFace3D face;
-    LookupBoxFace3D(config.neumann_control_face, face);
+    // T11N: the selected face must be the requested one -- outward unit normal +-e_axis and
+    // area = the product of the two other extents.  T13: checked for EVERY controlled face.
+    double g[7][4] = {};
+    MPI_Allreduce(&face_area_normal[0][0], &g[0][0], 28, MPI_DOUBLE, MPI_SUM, PETSC_COMM_WORLD);
     const double extent[3] = {config.domain.xmax - config.domain.xmin,
                               config.domain.ymax - config.domain.ymin,
                               config.domain.zmax - config.domain.zmin};
-    const double area = extent[(face.axis + 1u) % 3u] * extent[(face.axis + 2u) % 3u];
-    double mismatch = std::fabs(g[0] - area) / area;
-    for (unsigned axis = 0; axis < 3u; ++axis) {
-      const double expected = axis == face.axis ? (face.at_max ? 1.0 : -1.0) : 0.0;
-      mismatch = std::max(mismatch, std::fabs(g[1 + axis] / (g[0] > 0.0 ? g[0] : 1.0) - expected));
+    for (unsigned id = 1; id <= 6u; ++id) {
+      if (!IsControlFace3D(config, id)) continue;
+      BoxFace3D face;
+      LookupBoxFace3D(id, face);
+      const double area = extent[(face.axis + 1u) % 3u] * extent[(face.axis + 2u) % 3u];
+      double mismatch = std::fabs(g[id][0] - area) / area;
+      for (unsigned axis = 0; axis < 3u; ++axis) {
+        const double expected = axis == face.axis ? (face.at_max ? 1.0 : -1.0) : 0.0;
+        mismatch = std::max(mismatch, std::fabs(g[id][1 + axis] / (g[id][0] > 0.0 ? g[id][0] : 1.0) - expected));
+      }
+      if (!(g[id][0] > 0.0) || mismatch > 1.0e-10)
+        throw std::runtime_error(
+            std::string("3D boundary-control face ") + face.name + " (FEMuS id " +
+            std::to_string(face.id) + "): assembled area/normal do not match the box face");
     }
-    if (!(g[0] > 0.0) || mismatch > 1.0e-10)
-      throw std::runtime_error(
-          std::string("3D boundary-control face ") + face.name + " (FEMuS id " +
-          std::to_string(face.id) + "): assembled area/normal do not match the box face");
   }
   operators.M->close();
   operators.K->close();
@@ -1304,6 +1312,13 @@ SpatialFieldIntegrals IntegrateBoundaryField(
 SpatialFieldIntegrals IntegrateBoundaryField3D(
     Mesh* mesh, unsigned solution_type, unsigned face_id,
     const double* global_values, SpatialScalarFunction3D exact, void* context) {
+  return IntegrateBoundaryField3DFaces(mesh, solution_type, 1u << face_id, global_values, exact, context);
+}
+
+/** T13: the same over a union of faces (bit 1 << id), sum_f int_{Gamma_f}. */
+SpatialFieldIntegrals IntegrateBoundaryField3DFaces(
+    Mesh* mesh, unsigned solution_type, unsigned face_mask,
+    const double* global_values, SpatialScalarFunction3D exact, void* context) {
   SpatialFieldIntegrals totals;
   const unsigned rank = mesh->processor_id();
   const unsigned dimension = mesh->GetDimension();
@@ -1313,7 +1328,7 @@ SpatialFieldIntegrals IntegrateBoundaryField3D(
        element < mesh->_elementOffset[rank + 1u]; ++element) {
     for (unsigned face = 0; face < mesh->GetElementFaceNumber(element); ++face) {
       const int index = mesh->el->GetFaceElementIndex(element, face);
-      if (index >= 0 || static_cast<unsigned>(-(index + 1)) != face_id) continue;
+      if (index >= 0 || !((face_mask >> static_cast<unsigned>(-(index + 1))) & 1u)) continue;
       const unsigned face_dofs = mesh->GetElementFaceDofNumber(element, face, solution_type);
       const unsigned face_geometry = mesh->GetElementFaceType(element, face);
       std::vector<std::vector<double> > face_coordinates(
@@ -1353,6 +1368,14 @@ SpatialFieldIntegrals IntegrateBoundaryField3D(
 SpatialFieldIntegrals IntegrateBoundaryGradient3D(
     Mesh* mesh, unsigned solution_type, unsigned face_id, const double* global_values,
     void (*exact_gradient)(double, double, double, void*, double*), void* context) {
+  return IntegrateBoundaryGradient3DFaces(mesh, solution_type, 1u << face_id, global_values,
+                                          exact_gradient, context);
+}
+
+/** T13: the same over a union of faces (facewise surface gradients). */
+SpatialFieldIntegrals IntegrateBoundaryGradient3DFaces(
+    Mesh* mesh, unsigned solution_type, unsigned face_mask, const double* global_values,
+    void (*exact_gradient)(double, double, double, void*, double*), void* context) {
   SpatialFieldIntegrals totals;
   const unsigned rank = mesh->processor_id();
   const unsigned dimension = mesh->GetDimension();
@@ -1362,7 +1385,7 @@ SpatialFieldIntegrals IntegrateBoundaryGradient3D(
        element < mesh->_elementOffset[rank + 1u]; ++element) {
     for (unsigned face = 0; face < mesh->GetElementFaceNumber(element); ++face) {
       const int index = mesh->el->GetFaceElementIndex(element, face);
-      if (index >= 0 || static_cast<unsigned>(-(index + 1)) != face_id) continue;
+      if (index >= 0 || !((face_mask >> static_cast<unsigned>(-(index + 1))) & 1u)) continue;
       const unsigned face_dofs = mesh->GetElementFaceDofNumber(element, face, solution_type);
       const unsigned face_geometry = mesh->GetElementFaceType(element, face);
       std::vector<std::vector<double> > face_coordinates(

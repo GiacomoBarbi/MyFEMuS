@@ -1,0 +1,60 @@
+study,tag,kind,scheme,n,nt,ref,y,ord_y,p,ord_p,u,ord_u,maxrss_MB,wall_s,stationarity_rel,march_rel
+exact neumann-opp-3d wind A,nopA,exact,CN,2,64,exact,2.3906280275,,0.04801850859,,2.9372172269,,71,0.65,3.975e-17,1.669e-15
+exact neumann-opp-3d wind A,nopA,exact,CN,4,64,exact,0.19984457171,3.58,0.002626991546,4.19,0.3039863484,3.27,290,6.48,3.724e-17,9.577e-16
+exact neumann-opp-3d wind A,nopA,exact,CN,6,64,exact,0.058742472525,3.02,0.00060671715328,3.61,0.086307064651,3.11,874,31.38,3.519e-17,1.369e-15
+exact neumann-opp-3d wind A,nopA,exact,CN,8,64,exact,0.024758593013,3.00,0.0002298277522,3.37,0.036203287914,3.02,1997,151.31,3.713e-17,5.337e-15
+exact neumann-opp-3d wind A,nopA,exact,CN,10,64,exact,0.012675890413,3.00,0.00011193880766,3.22,0.018580037529,2.99,3855,639.24,3.721e-17,6.989e-15
+exact neumann-opp-3d heat,nopH,exact,CN,2,64,exact,0.68912962376,,0.01686966658,,1.1875389473,,69,3.42,3.932e-17,2.415e-15
+exact neumann-opp-3d heat,nopH,exact,CN,4,64,exact,0.052666474446,3.71,0.00091188794961,4.21,0.070084893034,4.08,289,34.83,3.675e-17,4.586e-15
+exact neumann-opp-3d heat,nopH,exact,CN,6,64,exact,0.015223847174,3.06,0.00020323614107,3.70,0.017567714302,3.41,873,133.58,3.877e-17,4.646e-15
+exact neumann-opp-3d heat,nopH,exact,CN,8,64,exact,0.0063716181506,3.03,7.0183827077e-05,3.70,0.0067554727638,3.32,2005,220.59,3.806e-17,5.392e-15
+exact neumann-opp-3d heat,nopH,exact,CN,10,64,exact,0.0032507308011,3.02,3.1277705595e-05,3.62,0.0032912943611,3.22,3896,269.55,3.834e-17,2.380e-14
+exact neumann-adj-3d wind E,nadW,exact,CN,2,64,exact,0.19977081307,,0.0081375740235,,0.25677362399,,69,0.70,4.021e-17,1.373e-15
+exact neumann-adj-3d wind E,nadW,exact,CN,4,64,exact,0.015525637854,3.69,0.00035547708219,4.52,0.012440592485,4.37,290,6.83,3.938e-17,3.215e-15
+exact neumann-adj-3d wind E,nadW,exact,CN,6,64,exact,0.0045051554044,3.05,7.0495539748e-05,3.99,0.0027659075265,3.71,874,35.62,4.000e-17,6.315e-15
+exact neumann-adj-3d wind E,nadW,exact,CN,8,64,exact,0.0018900206665,3.02,2.236170332e-05,3.99,0.00097110293461,3.64,1997,186.03,3.883e-17,1.511e-14
+exact neumann-adj-3d wind E,nadW,exact,CN,10,64,exact,0.00096548280121,3.01,9.1685637701e-06,4.00,0.00044070745432,3.54,3857,904.49,3.814e-17,2.813e-14
+exact neumann-adj-3d heat,nadH,exact,CN,2,64,exact,0.15014781511,,0.0037192557806,,0.27650155226,,69,3.76,4.162e-17,1.826e-15
+exact neumann-adj-3d heat,nadH,exact,CN,4,64,exact,0.011933874669,3.65,0.0001983584961,4.23,0.014660693873,4.24,290,28.02,3.819e-17,1.102e-15
+exact neumann-adj-3d heat,nadH,exact,CN,6,64,exact,0.0034871385289,3.03,4.2540045416e-05,3.80,0.0034494323762,3.57,873,57.24,3.936e-17,1.161e-14
+exact neumann-adj-3d heat,nadH,exact,CN,8,64,exact,0.001466980575,3.01,1.402624831e-05,3.86,0.0012589172044,3.50,2007,140.78,3.824e-17,7.012e-15
+exact neumann-adj-3d heat,nadH,exact,CN,10,64,exact,0.00075040194873,3.00,5.9996707474e-06,3.81,0.0005897571266,3.40,3898,273.33,3.868e-17,3.194e-14
+exact dirichlet-opp-3d L2 wind N,dopN,exact,CN,4,256,exact,0.028423898262,,0.0021315137073,,0.083461281097,,567,12.08,1.684e-16,1.543e-15
+exact dirichlet-opp-3d L2 wind N,dopN,exact,CN,8,256,exact,0.0066942878886,2.09,0.00014509301264,3.88,0.018818213182,2.15,3998,154.22,1.678e-16,2.608e-15
+exact dirichlet-opp-3d L2 wind N,dopN,exact,CN,12,256,exact,0.0017681840349,3.28,4.9146240586e-05,2.67,0.0049733294469,3.28,12760,1204.75,1.699e-16,8.198e-15
+exact dirichlet-opp-3d L2 heat,dopH,exact,CN,4,256,exact,0.015125132426,,0.0012075272042,,0.045005309135,,567,15.59,1.708e-16,1.032e-15
+exact dirichlet-opp-3d L2 heat,dopH,exact,CN,8,256,exact,0.0032787543114,2.21,7.8138104367e-05,3.95,0.0099732191029,2.17,3980,157.14,1.664e-16,1.759e-14
+exact dirichlet-opp-3d L2 heat,dopH,exact,CN,12,256,exact,0.00083943343922,3.36,2.4403910135e-05,2.87,0.002551502632,3.36,13002,454.35,1.673e-16,4.170e-14
+exact dirichlet-opp-3d H1 comb wind N,dopC,exact,CN,4,256,exact,0.0065328940045,,0.0025432327436,,0.010436690402,,623,15.08,2.119e-15,1.618e-15
+exact dirichlet-opp-3d H1 comb wind N,dopC,exact,CN,8,256,exact,0.0024256143522,1.43,0.00019421913815,3.71,0.0063772357425,0.71,4301,117.59,2.644e-15,1.895e-14
+exact dirichlet-opp-3d H1 comb wind N,dopC,exact,CN,12,256,exact,0.00064531543709,3.27,5.0957826177e-05,3.30,0.0016934113034,3.27,14162,317.39,2.310e-15,2.483e-13
+exact dirichlet-opp-3d H1-space wind N,dopS,exact,CN,4,256,exact,0.01702958218,,0.0023038669087,,0.046806203279,,568,15.35,1.854e-15,1.663e-15
+exact dirichlet-opp-3d H1-space wind N,dopS,exact,CN,8,256,exact,0.0042334216792,2.01,0.00015478452519,3.90,0.01148542639,2.03,4011,123.46,6.162e-15,4.154e-15
+exact dirichlet-opp-3d H1-space wind N,dopS,exact,CN,12,256,exact,0.001111468348,3.30,4.6163182397e-05,2.98,0.0030201222324,3.29,13173,577.63,1.472e-14,2.112e-14
+exact dirichlet-opp-3d H1-time wind N,dopT,exact,CN,4,256,exact,0.0071363284603,,0.0025150392977,,0.013175163711,,624,16.43,2.502e-15,1.362e-15
+exact dirichlet-opp-3d H1-time wind N,dopT,exact,CN,8,256,exact,0.0031559673535,1.18,0.00017908329245,3.81,0.0084390552193,0.64,4302,144.53,2.927e-15,5.480e-15
+exact dirichlet-opp-3d H1-time wind N,dopT,exact,CN,12,256,exact,0.00083844176719,3.27,4.8809572421e-05,3.21,0.0022410960671,3.27,14161,353.56,2.480e-15,2.439e-13
+"self-conv Dirichlet adjacent zmin,xmin L2",dsA,self-convergence,CN,2,16,n=12,4.0013e-03,,2.8198e-04,,1.2902e-02,,,,,
+"self-conv Dirichlet adjacent zmin,xmin L2",dsA,self-convergence,CN,4,16,n=12,6.5955e-04,2.60,6.5728e-05,2.10,5.4382e-04,4.57,,,,
+"self-conv Dirichlet adjacent zmin,xmin L2",dsA,self-convergence,CN,6,16,n=12,3.5069e-04,1.56,2.4163e-05,2.47,1.1819e-04,3.76,,,,
+self-conv single face zmin L2 (same data),dssA,self-convergence,CN,2,16,n=12,3.1606e-03,,2.8114e-04,,1.1717e-02,,,,,
+self-conv single face zmin L2 (same data),dssA,self-convergence,CN,4,16,n=12,1.5654e-04,4.34,6.5742e-05,2.10,3.9551e-04,4.89,,,,
+self-conv single face zmin L2 (same data),dssA,self-convergence,CN,6,16,n=12,6.7882e-05,2.06,2.4173e-05,2.47,5.3727e-05,4.92,,,,
+self-conv single face xmin L2 (same data),dsxA,self-convergence,CN,2,16,n=12,2.4640e-03,,2.8154e-04,,5.5170e-03,,,,,
+self-conv single face xmin L2 (same data),dsxA,self-convergence,CN,4,16,n=12,6.4152e-04,1.94,6.5726e-05,2.10,3.7741e-04,3.87,,,,
+self-conv single face xmin L2 (same data),dsxA,self-convergence,CN,6,16,n=12,3.4444e-04,1.53,2.4163e-05,2.47,1.0563e-04,3.14,,,,
+"self-conv Dirichlet adjacent zmin,xmin H1 comb",dsH,self-convergence,CN,2,16,n=12,1.5309e-04,,2.8072e-04,,5.1949e-04,,,,,
+"self-conv Dirichlet adjacent zmin,xmin H1 comb",dsH,self-convergence,CN,4,16,n=12,1.0416e-05,3.88,6.5738e-05,2.09,2.3360e-05,4.47,,,,
+"self-conv Dirichlet adjacent zmin,xmin H1 comb",dsH,self-convergence,CN,6,16,n=12,3.7663e-06,2.51,2.4172e-05,2.47,6.8138e-06,3.04,,,,
+self-conv single face zmin H1 comb,dssH,self-convergence,CN,2,16,n=12,1.2877e-04,,2.8071e-04,,4.7126e-04,,,,,
+self-conv single face zmin H1 comb,dssH,self-convergence,CN,4,16,n=12,4.2672e-06,4.92,6.5740e-05,2.09,1.5428e-05,4.93,,,,
+self-conv single face zmin H1 comb,dssH,self-convergence,CN,6,16,n=12,9.4357e-07,3.72,2.4173e-05,2.47,2.2830e-06,4.71,,,,
+self-conv single face xmin H1 comb,dsxH,self-convergence,CN,2,16,n=12,7.9318e-05,,2.8070e-04,,2.1866e-04,,,,,
+self-conv single face xmin H1 comb,dsxH,self-convergence,CN,4,16,n=12,9.5553e-06,3.05,6.5738e-05,2.09,1.7244e-05,3.66,,,,
+self-conv single face xmin H1 comb,dsxH,self-convergence,CN,6,16,n=12,3.6543e-06,2.37,2.4172e-05,2.47,6.2844e-06,2.49,,,,
+self-conv dirichlet-opp-3d data L2 wind N (ref n=24),dssN,self-convergence,CN,4,16,n=24,2.8275e-02,,2.1680e-03,,8.2731e-02,,,,,
+self-conv dirichlet-opp-3d data L2 wind N (ref n=24),dssN,self-convergence,CN,8,16,n=24,6.5487e-03,2.11,1.5163e-04,3.84,1.8396e-02,2.17,,,,
+self-conv dirichlet-opp-3d data L2 wind N (ref n=24),dssN,self-convergence,CN,12,16,n=24,1.6443e-03,3.41,5.1497e-05,2.66,4.5879e-03,3.42,,,,
+self-conv dirichlet-opp-3d data H1 comb wind N (ref n=24),dssC,self-convergence,CN,4,16,n=24,6.4130e-03,,2.5812e-03,,1.0217e-02,,,,,
+self-conv dirichlet-opp-3d data H1 comb wind N (ref n=24),dssC,self-convergence,CN,8,16,n=24,2.4337e-03,1.40,2.0045e-04,3.69,6.3773e-03,0.68,,,,
+self-conv dirichlet-opp-3d data H1 comb wind N (ref n=24),dssC,self-convergence,CN,12,16,n=24,6.2486e-04,3.35,5.3761e-05,3.25,1.6193e-03,3.38,,,,

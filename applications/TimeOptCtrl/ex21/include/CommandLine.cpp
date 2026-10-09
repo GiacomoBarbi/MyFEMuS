@@ -74,6 +74,7 @@ struct RawCommandLineOptions {
   std::vector<ProblemConfig::Box> tracking_add3d, control_add3d, source_add3d;
   std::string neumann_face3d;       // T11N: --neumann-face3d xmin|xmax|ymin|ymax|zmin|zmax
   std::string dirichlet_face3d;     // T11D: --dirichlet-face3d xmin|xmax|ymin|ymax|zmin|zmax
+  unsigned neumann_face3d_count = 0, dirichlet_face3d_count = 0;   // T13: occurrences of each option
   bool final_time_was_set = false;
   double requested_final_time = 0.0;
 };
@@ -86,7 +87,49 @@ static ProblemConfig::Box ReadBox3D(char** argv, int& argument);
 static bool IsExact3DCase(const std::string& name) {
   return name == "conv-sin-3d" || name == "conv-sin3-3d" || name == "natural-conv-3d" ||
          name == "neumann-conv-3d" || name == "dirichlet-conv-3d" ||   // T11D
-         name == "dirichlet-h1-3d";                                    // T11H1
+         name == "dirichlet-h1-3d" ||                                  // T11H1
+         name == "neumann-opp-3d" || name == "neumann-adj-3d" ||       // T13 (multi-face)
+         name == "dirichlet-opp-3d";
+}
+
+/** T13: parse a 3D control face list "a[,b,...]" (names of LookupBoxFace3D) into the canonical
+ *  bitmask (1 << id).  Empty items, unknown names and duplicates are refused; the order of the
+ *  names never matters. */
+static unsigned ParseFaceList3D(const std::string& list, const char* option) {
+  auto refuse = [&](const std::string& what) {
+    throw std::invalid_argument(std::string("3D: ") + option + ": " + what);
+  };
+  if (list.empty()) refuse("empty face list");
+  unsigned mask = 0u;
+  std::size_t start = 0;
+  while (true) {
+    const std::size_t comma = list.find(',', start);
+    const std::string name = list.substr(start, comma == std::string::npos ? std::string::npos : comma - start);
+    BoxFace3D face;
+    if (name.empty()) refuse("empty face name in \"" + list + "\"");
+    if (!LookupBoxFace3D(name, face))
+      refuse("unknown face \"" + name + "\" (xmin|xmax|ymin|ymax|zmin|zmax, comma-separated)");
+    if (mask & (1u << face.id)) refuse("duplicate face \"" + name + "\"");
+    mask |= 1u << face.id;
+    if (comma == std::string::npos) break;
+    start = comma + 1;
+  }
+  return mask;
+}
+
+/** T13: set the canonical face set: mask, lowest id, comma-joined names in id order. */
+static void SetControlFaces3D(ProblemConfig& config, unsigned mask) {
+  config.control_face_mask = mask;
+  std::string names;
+  config.neumann_control_face = 0;
+  for (unsigned id = 1; id <= 6u; ++id) {
+    if (!(mask & (1u << id))) continue;
+    BoxFace3D face;
+    LookupBoxFace3D(id, face);
+    if (config.neumann_control_face == 0u) config.neumann_control_face = id;
+    names += (names.empty() ? "" : ",") + std::string(face.name);
+  }
+  config.neumann_control_boundary = names;
 }
 
 /** T10: the 3D domain and regions, after every preset / exact case has run
@@ -122,24 +165,25 @@ static void ApplyRegions3D(ProblemConfig& config, const RawCommandLineOptions& r
   if (!raw.dirichlet_face3d.empty() && (!dirichlet || exact3d))
     refuse(exact3d ? "the 3D exact OC cases own their control face (no --dirichlet-face3d)"
                    : "--dirichlet-face3d needs Dirichlet boundary control (--dirichlet-solve)");
+  // T13: ONE control on the union of the listed faces -- the face set is given once, as a list;
+  // a repeated option would read like independent per-face controls (not implemented)
+  if (raw.neumann_face3d_count > 1u || raw.dirichlet_face3d_count > 1u)
+    refuse("give the controlled face set once (--neumann-face3d / --dirichlet-face3d a,b,...): one control"
+           " on the union; independent per-face controls are not implemented");
   if (dirichlet && !exact3d) {
-    BoxFace3D face;
-    if (raw.dirichlet_face3d.empty() || !LookupBoxFace3D(raw.dirichlet_face3d, face))
-      refuse("Dirichlet control needs one whole face: --dirichlet-face3d"
-             " xmin|xmax|ymin|ymax|zmin|zmax");
-    config.neumann_control_face = face.id;
-    config.neumann_control_boundary = face.name;
+    if (raw.dirichlet_face3d.empty())
+      refuse("Dirichlet control needs whole faces: --dirichlet-face3d"
+             " xmin|xmax|ymin|ymax|zmin|zmax[,...]");
+    SetControlFaces3D(config, ParseFaceList3D(raw.dirichlet_face3d, "--dirichlet-face3d"));   // T13
   }
   if (neumann && !exact3d) {
     if (!raw.neumann_control)
       refuse("give the control type explicitly (--distributed-solve or --neumann-solve);"
              " the 2D default (Neumann on the bottom edge) has no 3D meaning");
-    BoxFace3D face;
-    if (raw.neumann_face3d.empty() || !LookupBoxFace3D(raw.neumann_face3d, face))
-      refuse("Neumann control needs one whole face: --neumann-face3d"
-             " xmin|xmax|ymin|ymax|zmin|zmax");
-    config.neumann_control_face = face.id;
-    config.neumann_control_boundary = face.name;
+    if (raw.neumann_face3d.empty())
+      refuse("Neumann control needs whole faces: --neumann-face3d"
+             " xmin|xmax|ymin|ymax|zmin|zmax[,...]");
+    SetControlFaces3D(config, ParseFaceList3D(raw.neumann_face3d, "--neumann-face3d"));   // T13
   }
   if (exact3d) {
     if (any3d || raw.domain_given || raw.tracking_box_2d || raw.control_box_2d ||
@@ -455,8 +499,10 @@ static void ParseArguments(int argc, char** argv, ProblemConfig& config,
       raw.control_add3d.push_back(ReadBox3D(argv, argument));
     } else if (option == "--neumann-face3d" && argument + 1 < argc) {
       raw.neumann_face3d = argv[++argument];   // T11N, resolved in ApplyRegions3D
+      ++raw.neumann_face3d_count;
     } else if (option == "--dirichlet-face3d" && argument + 1 < argc) {
       raw.dirichlet_face3d = argv[++argument];   // T11D, resolved in ApplyRegions3D
+      ++raw.dirichlet_face3d_count;
     } else if (option == "--source-box3d-add" && argument + 6 < argc) {
       raw.source_add3d.push_back(ReadBox3D(argv, argument));
     } else if (option == "--domain" && argument + 4 < argc) {

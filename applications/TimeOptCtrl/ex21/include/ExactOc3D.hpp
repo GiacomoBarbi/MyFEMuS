@@ -50,7 +50,15 @@ class Mesh;
  *  U solving alpha_u (1 + 2 pi^2 ell^2) U - gamma_u U_tt = -eta nu dQs/dz(0,t) with
  *  the natural u_t(T) = 0 (closed form in erfc, the member with u(T) = 0; u(0) is
  *  data through y_0); ell = --control-h1-length, gamma_u = --control-h1-time-weight.
- *  Verified by aux/investigation/3d_boundary/t11h1/scripts/t11h1_symbolic.py.  `alpha_u` <= 0:
+ *  Verified by aux/investigation/3d_boundary/t11h1/scripts/t11h1_symbolic.py.
+ *  T13 (one control on a UNION of faces; u is measured in L2(Gamma_c) = sum over the faces):
+ *  neumann-opp-3d -- Gamma_c = zmin u zmax, the T11N p, y with a corrector on each face;
+ *  neumann-adj-3d -- Gamma_c = zmin u xmin, p = alpha_u B F_k(x) X(y) F_k(z), F_k(s) =
+ *  exp(-k s)(1 - s)^2 (1 + 2s), k = w_x/nu; needs w_x = w_z (internal-edge compatibility);
+ *  dirichlet-opp-3d -- Gamma_c = zmin u zmax, omega = (0,1)^2 x (1/4,3/4) (needs nz % 4 == 0),
+ *  image kernels about z = 0 and z = 1 blended on [1/4, 3/4]; u_zmax = exp(-w_z/(2 nu)) u_zmin,
+ *  L2 and H1-space / H1-time (the dirichlet-h1-3d temporal factor).  Verified by
+ *  aux/investigation/3d_multiface/t13/scripts/t13_symbolic.py.  `alpha_u` <= 0:
  *  1e-2; `final_time` <= 0: 1; `nu` <= 0: 1/4.  The wind is NOT set here:
  *  it is --convection on/off with --vx --vy --vz. */
 void ApplyExactOptimalControl3D(ProblemConfig& config, const std::string& name,
